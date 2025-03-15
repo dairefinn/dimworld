@@ -9,7 +9,7 @@ public partial class TurnOnLights : GoapAction
 
     public override bool Perform(AgentController agent, double delta)
     {
-        DirectionalLight2D Light = agent.GetTree().GetNodesInGroup("lights").OfType<DirectionalLight2D>().FirstOrDefault();
+        Light2D Light = agent.GetTree().GetNodesInGroup("lights").OfType<Light2D>().FirstOrDefault();
 
         if (Light == null)
         {
@@ -21,7 +21,7 @@ public partial class TurnOnLights : GoapAction
 
         if(agent.NavigationAgent.IsNavigationFinished())
         {
-            Light.Visible = true;
+            Light.Enabled = true;
             return true;
         }
         else
