@@ -1,4 +1,4 @@
-[gd_scene load_steps=17 format=4 uid="uid://ddc8qiig7j3wm"]
+[gd_scene load_steps=19 format=4 uid="uid://ddc8qiig7j3wm"]
 
 [ext_resource type="Script" uid="uid://iduydep3olx1" path="res://GameLogic.cs" id="1_mc42q"]
 [ext_resource type="Script" uid="uid://g354xqg3s44p" path="res://InputHandler.cs" id="2_lquwl"]
@@ -1880,6 +1880,16 @@ navigation_layer_0/layers = 1
 sources/0 = SubResource("TileSetAtlasSource_w48qg")
 sources/1 = SubResource("TileSetAtlasSource_vivmo")
 
+[sub_resource type="Gradient" id="Gradient_5vw27"]
+colors = PackedColorArray(1, 1, 1, 1, 0, 0, 0, 1)
+
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_kek77"]
+gradient = SubResource("Gradient_5vw27")
+fill = 1
+fill_from = Vector2(0.5, 0.5)
+fill_to = Vector2(0.9, 0.5)
+metadata/_snap_enabled = true
+
 [node name="Main" type="Node2D"]
 script = ExtResource("1_mc42q")
 
@@ -1925,8 +1935,7 @@ position = Vector2(35, 145)
 
 [node name="GoapPlanner" type="Node" parent="."]
 
-[node name="LightSource" type="DirectionalLight2D" parent="." groups=["lights"]]
-visible = false
-position = Vector2(20, 20)
-energy = 0.58
-max_distance = 1275.0
+[node name="LightSource" type="PointLight2D" parent="." groups=["lights"]]
+position = Vector2(134, 41)
+enabled = false
+texture = SubResource("GradientTexture2D_kek77")
