@@ -1,0 +1,15 @@
+[gd_resource type="Resource" script_class="GoapAction" load_steps=2 format=3 uid="uid://d0w3ss4kpt10s"]
+
+[ext_resource type="Script" uid="uid://dmhsbr32vw1tk" path="res://Goap/GoapAction.cs" id="2_fechr"]
+
+[resource]
+script = ExtResource("2_fechr")
+Name = "Turn off lights"
+Preconditions = Dictionary[String, Variant]({
+"lights_on": true
+})
+Effects = Dictionary[String, Variant]({
+"lights_on": false
+})
+Cost = 1000
+metadata/_custom_type_script = "uid://dmhsbr32vw1tk"
