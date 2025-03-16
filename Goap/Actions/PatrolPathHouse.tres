@@ -1,0 +1,16 @@
+[gd_resource type="Resource" load_steps=2 format=3 uid="uid://c0vymkdfnl7rp"]
+
+[ext_resource type="Script" uid="uid://fanx2vlcdmuw" path="res://Goap/Actions/PatrolPath.cs" id="1_kfsc8"]
+
+[resource]
+script = ExtResource("1_kfsc8")
+PathName = "PatrolPathHouse"
+Name = "Patrol path in house"
+Preconditions = Dictionary[String, Variant]({
+"is_patrolling": false
+})
+Effects = Dictionary[String, Variant]({
+"is_patrolling": true
+})
+Cost = 1000
+metadata/_custom_type_script = "uid://dmhsbr32vw1tk"

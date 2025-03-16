@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_nv8d7")
 Name = "Ensure visibility"
-Priority = 1
+Priority = 2
 DesiredState = Dictionary[String, Variant]({
 "lights_on": true
 })

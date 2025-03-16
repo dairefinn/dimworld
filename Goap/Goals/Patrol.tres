@@ -1,0 +1,12 @@
+[gd_resource type="Resource" script_class="GoapGoal" load_steps=2 format=3 uid="uid://ckvaxlnjoqs1o"]
+
+[ext_resource type="Script" uid="uid://bv86wsekmnlli" path="res://Goap/GoapGoal.cs" id="1_d7bp6"]
+
+[resource]
+script = ExtResource("1_d7bp6")
+Name = "Patrol"
+Priority = 1
+DesiredState = Dictionary[String, Variant]({
+"is_patrolling": true
+})
+metadata/_custom_type_script = "uid://bv86wsekmnlli"

@@ -4,7 +4,6 @@
 
 [resource]
 script = ExtResource("1_ep477")
-position = Vector2(20, 20)
 Name = "Turn on lights"
 Preconditions = Dictionary[String, Variant]({
 "lights_on": false

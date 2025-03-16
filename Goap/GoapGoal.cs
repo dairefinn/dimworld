@@ -18,4 +18,9 @@ public partial class GoapGoal : Resource
         return true;
     }
 
+    public bool IsSatisfied(Dictionary<string, Variant> worldState)
+    {
+        return GoapStateUtils.IsSubsetOf(DesiredState, worldState);
+    }
+
 }

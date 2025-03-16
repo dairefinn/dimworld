@@ -5,11 +5,11 @@ using Godot.Collections;
 
 public class GoapStateUtils
 {
-    public static bool IsSubsetOf(Dictionary<string, Variant> stateA, Dictionary<string, Variant> stateB)
+    public static bool IsSubsetOf(Dictionary<string, Variant> subset, Dictionary<string, Variant> mainState)
     {
-        foreach (string key in stateA.Keys)
+        foreach (string key in subset.Keys)
         {
-            if (!stateB.TryGetValue(key, out Variant value) || !value.Equals(stateA[key]))
+            if (!mainState.ContainsKey(key) || !mainState[key].Equals(subset[key]))
             {
                 return false;
             }

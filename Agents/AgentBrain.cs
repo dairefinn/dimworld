@@ -1,6 +1,5 @@
 namespace Dimworld;
 
-using System;
 using System.Linq;
 using Godot;
 using Godot.Collections;
@@ -17,7 +16,7 @@ public partial class AgentBrain : Node
 
 
     private GoapGoal CurrentGoal { get; set; }
-    private GoapAction[] CurrentPlan { get; set; }
+    private GoapAction[] CurrentPlan { get; set; } = [];
     private int CurrentPlanStep { get; set; } = 0;
 
 
@@ -25,11 +24,17 @@ public partial class AgentBrain : Node
     public override void _Process(double delta)
     {
         GoapGoal bestGoal = GoapPlanner.GetBestGoal(GoalSet.ToArray(), WorldState);
+        if (bestGoal == null)
+        {
+            return;
+        }
 
         if (CurrentGoal == null || bestGoal.Name != CurrentGoal.Name)
         {
+            GD.Print("New goal: " + bestGoal.Name);
             CurrentGoal = bestGoal;
             CurrentPlan = GoapPlanner.GetPlan(bestGoal, WorldState, ActionSet.ToArray());
+            GD.Print("Plan: [" + string.Join(", ", CurrentPlan.Select(action => action.Name)) + "]");
             CurrentPlanStep = 0;
         }
         else
@@ -40,17 +45,12 @@ public partial class AgentBrain : Node
 
     private void FollowPlan(GoapAction[] plan, double delta)
     {
-        if (plan.Length == 0)
-        {
-            GD.Print("Plan: []");
-            return;
-        }
-
-        GD.Print("Plan: [" + string.Join(", ", plan.Select(action => action.Name)) + "]");
+        if (plan == null || plan.Length == 0) return;
 
         bool isStepComplete = plan[CurrentPlanStep].Perform(Agent, delta);
         if (isStepComplete)
         {
+            GD.Print("Step complete: " + plan[CurrentPlanStep].Name);
             GoapStateUtils.Add(WorldState, plan[CurrentPlanStep].Effects);
             if (CurrentPlanStep < plan.Length - 1)
             {

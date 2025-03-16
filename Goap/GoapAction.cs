@@ -22,4 +22,10 @@ public partial class GoapAction : Resource
 		return false;
 	}
 
+	// TODO: Implement these in the planner. Currently it only supports static preconditions and effects. This could be used to check if the player is in range of the agent performing the action.
+	public virtual bool CheckProceduralPrecondition(AgentController agent)
+	{
+		return true;
+	}
+
 }
