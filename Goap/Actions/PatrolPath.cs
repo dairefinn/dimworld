@@ -4,6 +4,7 @@ using System;
 using System.Linq;
 using Godot;
 
+
 public partial class PatrolPath : GoapAction
 {
 
@@ -19,10 +20,10 @@ public partial class PatrolPath : GoapAction
             return false;
         }
 
-        Vector2 nearestPoint = GetNextPointOnPath(agent, Path);
-        agent.NavigateTo(nearestPoint);
+        Vector2 currentPoint = GetNextPointOnPath(agent, Path);
+        agent.NavigateTo(currentPoint);
 
-        return true;
+        return false; // Always return false so the agent will continue to patrol
     }
 
     private Vector2 GetNextPointOnPath(AgentController agent, Polygon2D path)
@@ -50,9 +51,15 @@ public partial class PatrolPath : GoapAction
             return nearestPoint;
         }
 
+        // If the current point has not been reached, continue to the current point
+        if (!agent.NavigationAgent.IsNavigationFinished())
+        {
+            return currentPoint;
+        }
+
         GD.Print("Finding next point on path");
         // Otherwise, find the next point on the path
-        int currentPointIndex = Array.IndexOf(points, currentPoint);
+        int currentPointIndex = System.Array.IndexOf(points, currentPoint);
         int nextPointIndex = currentPointIndex + 1;
         if (nextPointIndex >= points.Length)
         {

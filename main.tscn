@@ -1717,7 +1717,7 @@ GoalSet = Array[Object]([ExtResource("8_5vw27"), ExtResource("9_kek77")])
 [node name="GoapPlanner" type="Node" parent="."]
 
 [node name="LightSource" type="PointLight2D" parent="." groups=["lights"]]
-position = Vector2(88, 72)
+position = Vector2(88, 216)
 enabled = false
 texture = SubResource("GradientTexture2D_kek77")
 

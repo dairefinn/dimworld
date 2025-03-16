@@ -1,7 +1,7 @@
 namespace Dimworld;
 
+using System.Linq;
 using Godot;
-using Godot.Collections;
 
 
 public partial class InputHandler : Node2D
@@ -34,6 +34,8 @@ public partial class InputHandler : Node2D
             bool existingValue = (bool) GoapStateUtils.GetState(TempAgentBrain.WorldState, "lights_on", false);
             GoapStateUtils.SetState(TempAgentBrain.WorldState, "lights_on", !existingValue);
             GD.Print("Lights are now " + (existingValue ? "OFF" : "ON"));
+            Light2D Light = GetTree().GetNodesInGroup("lights").OfType<Light2D>().FirstOrDefault();
+            Light.Enabled = !existingValue;
         }
     }
 

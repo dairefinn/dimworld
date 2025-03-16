@@ -75,7 +75,7 @@ public partial class GoapPlanner : Node
     /// <param name="goal"></param>
     /// <param name="desiredState"></param>
     /// <param name="worldState"></param>
-    /// <returns></returns>
+    /// <returns>The root node of the plan tree</returns>
     private static GoapPlanNode GetPossiblePlans(GoapGoal goal, GoapAction[] possibleActions, Dictionary<string, Variant> desiredState, Dictionary<string, Variant> worldState)
     {
         Dictionary<string, Variant> worldStateCopy = GoapStateUtils.Duplicate(worldState);
