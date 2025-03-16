@@ -27,6 +27,7 @@ public partial class AgentController : CharacterBody2D
 
     public void NavigateTo(Vector2 target)
     {
+        if (NavigationAgent.TargetPosition == target) return;
         NavigationAgent.TargetPosition = target;
     }
 
