@@ -2,32 +2,43 @@ namespace Dimworld;
 
 using System.Linq;
 using Godot;
-
+using Godot.Collections;
 
 public partial class TurnOnLights : GoapAction
 {
 
-    public override bool Perform(AgentController agent, double delta)
-    {
-        Light2D Light = agent.GetTree().GetNodesInGroup("lights").OfType<Light2D>().FirstOrDefault();
+    private Light2D Light = null;
 
+    public override Dictionary<string, Variant> OnStart(AgentBrain agentBrain, Dictionary<string, Variant> worldState)
+    {
+        Light = agentBrain.GetTree().GetNodesInGroup("lights").OfType<Light2D>().FirstOrDefault();
+        GoapStateUtils.SetState(worldState, "lights_on", Light.Enabled);
+        return worldState;
+    }
+
+    public override bool Perform(AgentBrain agentBrain, Dictionary<string, Variant> worldState, double delta)
+    {
         if (Light == null)
         {
             GD.Print("No lights found");
             return false;
         }
 
-        agent.NavigateTo(Light.GlobalPosition);
+        agentBrain.Agent.NavigateTo(Light.GlobalPosition);
 
-        if(agent.NavigationAgent.IsNavigationFinished())
+        if(agentBrain.Agent.NavigationAgent.IsNavigationFinished())
         {
             Light.Enabled = true;
-            return true;
+            GoapStateUtils.SetState(worldState, "lights_on", Light.Enabled);
         }
-        else
-        {
-            return false;
-        }
+
+        return Light.Enabled;
+    }
+    
+    public override Dictionary<string, Variant> OnEnd(AgentBrain agentBrain, Dictionary<string, Variant> worldState)
+    {
+        GoapStateUtils.SetState(worldState, "lights_on", Light.Enabled);
+        return worldState;
     }
 
 }

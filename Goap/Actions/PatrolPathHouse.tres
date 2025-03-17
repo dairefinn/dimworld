@@ -6,9 +6,7 @@
 script = ExtResource("1_kfsc8")
 PathName = "PatrolPathHouse"
 Name = "Patrol path in house"
-Preconditions = Dictionary[String, Variant]({
-"is_patrolling": false
-})
+Preconditions = Dictionary[String, Variant]({})
 Effects = Dictionary[String, Variant]({
 "is_patrolling": true
 })

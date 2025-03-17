@@ -1,5 +1,7 @@
 namespace Dimworld;
 
+using System;
+using System.Linq;
 using Godot;
 using Godot.Collections;
 
@@ -8,35 +10,18 @@ public partial class GoapPlanner : Node
 {
 
     /// <summary>
-    /// Figures out what actions the agent should take to satisfy their goal set given the current world state.
-    /// </summary>
-    /// <param name="worldState">The current state of the agent's world</param>
-    /// <param name="actionSet">The actions the agent can perform</param>
-    /// <param name="goalSet">The goals the agent wants to achieve</param>
-    /// <returns>A of[]actions the agent should attempt to perform</returns>
-    public static GoapAction[] GetPlan(GoapGoal goal, Dictionary<string, Variant> worldState, GoapAction[] actionSet)
-    {
-        if (actionSet.Length == 0) {
-            GD.Print("No actions to plan with");
-            return [];
-        }
-
-        return GetPlan(goal, actionSet, worldState);
-    }
-
-    /// <summary>
     /// Gets the highest priority goal that can be achieved with the current world state.
     /// </summary>
     /// <param name="goalSet">The set of goals to choose from</param>
     /// <returns></returns>
-    public static GoapGoal GetBestGoal(GoapGoal[] goalSet, Dictionary<string, Variant> worldState)
+    public static GoapGoal GetBestGoal(GoapGoal[] goalSet, Dictionary<string, Variant> worldState, AgentBrain agentBrain)
     {
         if (goalSet.Length == 0) return null;
 
         GoapGoal bestGoal = null;
         foreach (GoapGoal goal in goalSet)
         {
-            if (goal.IsSatisfied(worldState)) continue;
+            if (goal.IsSatisfied(worldState, agentBrain)) continue;
             if (!goal.IsValid()) continue;
             if (bestGoal == null || goal.Priority > bestGoal.Priority)
             {
@@ -47,21 +32,24 @@ public partial class GoapPlanner : Node
         return bestGoal;
     }
 
+
     /// <summary>
-    /// Gets a plan to achieve the goal set from the current world state.
+    /// Figures out what actions the agent should take to satisfy their goal set given the current world state.
     /// </summary>
-    /// <param name="worldState"></param>
-    /// <param name="goalSet"></param>
-    /// <returns></returns>
-    private static GoapAction[] GetPlan(GoapGoal goal, GoapAction[] possibleActions, Dictionary<string, Variant> worldState)
+    /// <param name="worldState">The current state of the agent's world</param>
+    /// <param name="actionSet">The actions the agent can perform</param>
+    /// <param name="goalSet">The goals the agent wants to achieve</param>
+    /// <returns>A of[]actions the agent should attempt to perform</returns>
+    public static GoapAction[] GetPlan(GoapGoal goal, Dictionary<string, Variant> worldState, GoapAction[] actionSet, AgentBrain agentBrain)
     {
         if (goal == null) return [];
-        
+        if (actionSet.Length == 0) return [];
+
         // Duplicate desired state of the highest priority goal
         Dictionary<string, Variant> desiredState = GoapStateUtils.Duplicate(goal.DesiredState);
         if (desiredState.Count == 0) return [];
 
-        GoapPlanNode planTree = GetPossiblePlans(goal, possibleActions, desiredState, worldState);
+        GoapPlanNode planTree = GetPossiblePlans(goal, actionSet, desiredState, worldState, agentBrain);
         GD.Print(DrawTree(planTree));
 
         GoapAction[] plan = FindBestPlan(planTree);
@@ -76,86 +64,121 @@ public partial class GoapPlanner : Node
     /// <param name="desiredState"></param>
     /// <param name="worldState"></param>
     /// <returns>The root node of the plan tree</returns>
-    private static GoapPlanNode GetPossiblePlans(GoapGoal goal, GoapAction[] possibleActions, Dictionary<string, Variant> desiredState, Dictionary<string, Variant> worldState)
+    private static GoapPlanNode GetPossiblePlans(GoapGoal goal, GoapAction[] possibleActions, Dictionary<string, Variant> desiredState, Dictionary<string, Variant> worldState, AgentBrain agentBrain)
     {
-        Dictionary<string, Variant> worldStateCopy = GoapStateUtils.Duplicate(worldState);
-
-        // Check if the desired state is already satisfied
-        if (GoapStateUtils.IsSubsetOf(desiredState, worldStateCopy))
-        {
-            return new GoapPlanNode
-            {
-                Action = null,
-                State = worldStateCopy,
-                Children = []
-            };
-        }
-
-        // Root node - Not really used for anything but allows us to build a tree of possible action combinations
-        GoapPlanNode planNode = new()
+        // Create the root node - we don't use this node directly but it's children are all the possible plans we can use
+        GoapPlanNode rootNode = new()
         {
             Action = null,
-            State = worldStateCopy,
+            Cost = 0,
             Children = []
         };
 
-        // Check each possible action to see if it can be performed to achieve the goal
-        foreach (GoapAction action in possibleActions)
-        {
-            // Check if the actions effects result in the desired state
-            if (GoapStateUtils.IsSubsetOf(action.Effects, desiredState))
-            {
-                // Check if the action can be performed with the current world state
-                if (GoapStateUtils.IsSubsetOf(action.Preconditions, worldStateCopy))
-                {
-                    // Create a new world state with the action's effects
-                    Dictionary<string, Variant> newWorldState = GoapStateUtils.Add(worldStateCopy, action.Effects);
+        // Check if the desired state is already satisfied
+        if (GoapStateUtils.IsSubsetOf(desiredState, worldState)) {
+            GD.Print("desired state already satisfied");
+            return rootNode;
+        }
 
-                    // Recursively find the next best action to achieve the goal
-                    GoapPlanNode childNode = GetPossiblePlans(goal, possibleActions, desiredState, newWorldState);
-                    if (childNode != null)
-                    {
-                        childNode.Action = action;
-                        planNode.Children.Add(childNode);
-                    }
-                }
+        // Check each possible action to see if it can be performed to achieve the goal
+        foreach(GoapAction action in possibleActions)
+        {
+            GoapPlanNode childNode = BuildPlanTree(desiredState, worldState, possibleActions, agentBrain, action, action.Cost);
+            if (childNode != null)
+            {
+
+                rootNode.Children.Add(childNode);
             }
         }
 
         // Return null if no valid plans are found
-        return planNode.Children.Count > 0 ? planNode : null;
+        return rootNode;
+    }
+
+    private static GoapPlanNode BuildPlanTree(Dictionary<string, Variant> desiredState, Dictionary<string, Variant> worldState, GoapAction[] possibleActions, AgentBrain agentBrain, GoapAction currentAction, double accumulatedCost)
+    {
+        // If this action does not satisfy the desired state, it's not a valid plan
+        if (!GoapStateUtils.IsSubsetOf(currentAction.Effects, desiredState)) {
+            GD.Print("[Invalid] Action " + currentAction.Name + " WILL NOT satisfy the desired state");
+            return null;
+        }
+
+        GD.Print("Action " + currentAction.Name + " will satisfy the desired state");
+
+        // Create a node for this action
+        GoapPlanNode currentNode = new()
+        {
+            Action = currentAction,
+            Cost = accumulatedCost,
+            Children = []
+        };
+
+        // If we can perform the action, then this is a valid plan
+        if (currentAction.CanPerform(agentBrain, worldState)) {
+            GD.Print("[Valid] Action " + currentAction.Name + " can be performed");
+            return currentNode;
+        }
+
+        GD.Print("Action " + currentAction.Name + " CANNOT be performed");
+
+        // Otherwise, figure out how to satisfy the preconditions of the action
+        Dictionary<string, Variant> desiredStateForAction = GoapStateUtils.Duplicate(currentAction.Preconditions);
+
+        // Check each of the remaining actions recursively to see if they can satisfy the preconditions of this action
+        GoapAction[] remainingActions = possibleActions.Where(action => action != currentAction).ToArray();
+        foreach(GoapAction nextAction in remainingActions)
+        {
+            GD.Print("Checking if " + nextAction.Name + " can satisfy the preconditions of " + currentAction.Name);
+            GoapPlanNode childNode = BuildPlanTree(desiredStateForAction, worldState, possibleActions[1..], agentBrain, nextAction, accumulatedCost + nextAction.Cost);
+            if (childNode != null)
+            {
+                currentNode.Cost += childNode.Cost;
+                currentNode.Children.Add(childNode);
+            }
+        }
+
+        // If this action has any actions that can satisfy its preconditions, then this is a valid plan
+        if (currentNode.Children.Count > 0) {
+            GD.Print("[Valid] Action " + currentAction.Name + " can be performed by satisfying its preconditions");
+            return currentNode;
+        }
+
+        // Otherwise, this is not a valid plan
+        GD.Print("[Invalid] No actions can satisfy the preconditions of " + currentAction.Name);
+        return null;
     }
 
     /// <summary>
-    /// Recursively finds the best plan to achieve the goal from the plan tree
+    /// Finds the best path through the plan tree based on the total cost of the actions.
     /// </summary>
     /// <param name="goapPlanNode">The root node of the action tree</param>
     /// <returns></returns>
     private static GoapAction[] FindBestPlan(GoapPlanNode goapPlanNode)
     {
-        if (goapPlanNode.Children.Count == 0)
-        {
-            return [goapPlanNode.Action];
-        }
-
         GoapAction[] bestPlan = [];
-        foreach (GoapPlanNode child in goapPlanNode.Children)
-        {
-            GoapAction[] plan = FindBestPlan(child);
-            if (plan.Length > bestPlan.Length)
-            {
-                bestPlan = plan;
-            }
-        }
 
+        // This stops the root node from being added to the plan
         if (goapPlanNode.Action != null)
         {
-            System.Collections.Generic.List<GoapAction> planList = [.. bestPlan];
-            planList.Insert(0, goapPlanNode.Action);
-            bestPlan = planList.ToArray();
+            bestPlan = [goapPlanNode.Action];
         }
 
-        return bestPlan;
+        // If we're at a leaf node, return the action
+        if (goapPlanNode.Children.Count == 0) return bestPlan;
+
+        // Otherwise, find the best plan from the children
+        GoapPlanNode lowestCostChild = goapPlanNode.Children[0];
+        for(int i = 1; i < goapPlanNode.Children.Count; i++)
+        {
+            GoapPlanNode currentChild = goapPlanNode.Children[i];
+            if (currentChild.Cost < lowestCostChild.Cost)
+            {
+                lowestCostChild = currentChild;
+            }
+        }
+        
+        // Return this action followed by the best plan from the children
+        return bestPlan.Concat(FindBestPlan(lowestCostChild)).ToArray();
     }
 
     /// <summary>
@@ -187,7 +210,7 @@ public partial class GoapPlanner : Node
     private class GoapPlanNode
     {
         public GoapAction Action { get; set; }
-        public Dictionary<string, Variant> State { get; set; }
+        public double Cost { get; set; }
         public System.Collections.Generic.List<GoapPlanNode> Children { get; set; }
     }
 }

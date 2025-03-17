@@ -1,4 +1,4 @@
-[gd_resource type="TileSet" load_steps=10 format=3 uid="uid://me5j3tknec74"]
+[gd_resource type="TileSet" load_steps=11 format=3 uid="uid://me5j3tknec74"]
 
 [ext_resource type="Texture2D" uid="uid://cm5fkf4n02ibp" path="res://Assets/BaseSet.png" id="1_gj48w"]
 
@@ -9,6 +9,12 @@ outlines = Array[PackedVector2Array]([PackedVector2Array(-8, -8, 8, -8, 8, 8, -8
 agent_radius = 0.0
 
 [sub_resource type="NavigationPolygon" id="NavigationPolygon_kco6d"]
+vertices = PackedVector2Array(8, 8, -8, 8, -8, -8, 8, -8)
+polygons = Array[PackedInt32Array]([PackedInt32Array(0, 1, 2, 3)])
+outlines = Array[PackedVector2Array]([PackedVector2Array(-8, -8, 8, -8, 8, 8, -8, 8)])
+agent_radius = 0.0
+
+[sub_resource type="NavigationPolygon" id="NavigationPolygon_oy4l8"]
 vertices = PackedVector2Array(8, 8, -8, 8, -8, -8, 8, -8)
 polygons = Array[PackedInt32Array]([PackedInt32Array(0, 1, 2, 3)])
 outlines = Array[PackedVector2Array]([PackedVector2Array(-8, -8, 8, -8, 8, 8, -8, 8)])
@@ -2305,8 +2311,11 @@ texture = ExtResource("1_gj48w")
 33:33/0/physics_layer_0/polygon_0/points = PackedVector2Array(-8, -8, 8, -8, 8, 8, -8, 8)
 34:33/0 = 0
 34:33/0/physics_layer_0/polygon_0/points = PackedVector2Array(-8, -8, 8, -8, 8, 8, -8, 8)
+35:33/next_alternative_id = 2
 35:33/0 = 0
 35:33/0/physics_layer_0/polygon_0/points = PackedVector2Array(-8, -8, 8, -8, 8, 8, -8, 8)
+35:33/1 = 1
+35:33/1/navigation_layer_0/polygon = SubResource("NavigationPolygon_oy4l8")
 36:33/0 = 0
 36:33/0/physics_layer_0/polygon_0/points = PackedVector2Array(-8, -8, 8, -8, 8, 8, -8, 8)
 37:33/0 = 0

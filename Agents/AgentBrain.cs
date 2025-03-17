@@ -14,16 +14,29 @@ public partial class AgentBrain : Node
     [Export] public Array<GoapAction> ActionSet { get; set; }
     [Export] public Array<GoapGoal> GoalSet { get; set; }
 
+    // Sensory system properties
+    [Export] public Area2D AreaVision { get; set; }
+    [Export] public Area2D AreaInteraction { get; set; }
+
 
     private GoapGoal CurrentGoal { get; set; }
     private GoapAction[] CurrentPlan { get; set; } = [];
+    private GoapAction CurrentAction { get; set; }
     private int CurrentPlanStep { get; set; } = 0;
+    private float InteractionRadius { get; set; } = 1;
+    private float VisionRadius { get; set; } = 1;
 
 
-    // TODO: Figure out when to call this method
+    public override void _Ready()
+    {
+        base._Ready();
+        GetSensoryRangesFromShapes();
+    }
+
+
     public override void _Process(double delta)
     {
-        GoapGoal bestGoal = GoapPlanner.GetBestGoal(GoalSet.ToArray(), WorldState);
+        GoapGoal bestGoal = GoapPlanner.GetBestGoal(GoalSet.ToArray(), WorldState, this);
         if (bestGoal == null)
         {
             return;
@@ -33,8 +46,11 @@ public partial class AgentBrain : Node
         {
             GD.Print("New goal: " + bestGoal.Name);
             CurrentGoal = bestGoal;
-            CurrentPlan = GoapPlanner.GetPlan(bestGoal, WorldState, ActionSet.ToArray());
-            GD.Print("Plan: [" + string.Join(", ", CurrentPlan.Select(action => action.Name)) + "]");
+            CurrentPlan = GoapPlanner.GetPlan(bestGoal, WorldState, ActionSet.ToArray(), this);
+            if (CurrentPlan.Length > 0)
+            {
+                // GD.Print("Plan: [" + string.Join(", ", CurrentPlan.Select(action => action.Name)) + "]");
+            }
             CurrentPlanStep = 0;
         }
         else
@@ -47,21 +63,64 @@ public partial class AgentBrain : Node
     {
         if (plan == null || plan.Length == 0) return;
 
-        bool isStepComplete = plan[CurrentPlanStep].Perform(Agent, delta);
+        GoapAction actionAtStep = plan[CurrentPlanStep];
+
+        // If the agent is starting a new action, run the OnStart lifecycle event
+        if (CurrentAction != actionAtStep)
+        {
+            GD.Print("New action: " + actionAtStep.Name);
+            CurrentAction?.OnEnd(this, WorldState);
+            CurrentAction = actionAtStep;
+            CurrentAction.OnStart(this, WorldState);
+        }
+
+        // Perform the current action step
+        bool isStepComplete = CurrentAction.Perform(this, WorldState, delta);
+
+        // If the action is complete:
+        // - Add the action's effects to the world state
+        // - Run the OnEnd lifecycle event
+        // - Move to the next step in the plan
         if (isStepComplete)
         {
-            GD.Print("Step complete: " + plan[CurrentPlanStep].Name);
-            GoapStateUtils.Add(WorldState, plan[CurrentPlanStep].Effects);
+            // Update the world state with the action's effects
+            // GoapStateUtils.Add(WorldState, CurrentAction.Effects);
+
+            // Run the OnEnd lifecycle event
+            CurrentAction.OnEnd(this, WorldState);
+
+            // Move to the next step in the plan
             if (CurrentPlanStep < plan.Length - 1)
             {
                 CurrentPlanStep++;
             }
             else
             {
-                CurrentPlan = [];
+                CurrentPlan = []; // TODO: Is this necessary? Seems like it would just freeze the agent or be overwritten by the next plan. Maybe we should set CurrentGoal to null instead?
                 CurrentPlanStep = 0;
             }
         }
     }
 
+
+    // SENSORY AND INTERACTION
+
+    private void GetSensoryRangesFromShapes()
+    {
+        if (AreaVision != null)
+        {
+            if (AreaVision.GetChild<CollisionShape2D>(0).Shape is CircleShape2D circleShape)
+            {
+                VisionRadius = circleShape.Radius;
+            }
+        }
+
+        if (AreaInteraction != null)
+        {
+            if (AreaInteraction.GetChild<CollisionShape2D>(0).Shape is CircleShape2D circleShape)
+            {
+                InteractionRadius = circleShape.Radius;
+            }
+        }
+    }
 }

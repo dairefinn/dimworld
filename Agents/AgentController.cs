@@ -12,6 +12,9 @@ public partial class AgentController : CharacterBody2D
     [ExportGroup("References")]
     [Export] public NavigationAgent2D NavigationAgent { get; set; }
 
+
+    // LIFECYCLE EVENTS
+
     public override void _Ready()
     {
         base._Ready();
@@ -25,6 +28,9 @@ public partial class AgentController : CharacterBody2D
 
         ProcessNavigation(delta);
     }
+
+
+    // NAVIGATION
 
     public void NavigateTo(Vector2 target)
     {

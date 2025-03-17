@@ -16,14 +16,38 @@ public partial class GoapAction : Resource
 
 	[Export] public int Cost = 1000;
 
-	public virtual bool Perform(AgentController agent, double delta)
+
+	// LIFECYCLE EVENTS
+
+	public virtual Dictionary<string, Variant> OnStart(AgentBrain agentBrain, Dictionary<string, Variant> worldState)
+	{
+		GD.Print("Starting action: " + Name);
+		return worldState;
+	}
+
+	public virtual bool Perform(AgentBrain agent, Dictionary<string, Variant> worldState, double delta)
 	{
 		GD.Print("Performing action: " + Name);
 		return false;
 	}
 
-	// TODO: Implement these in the planner. Currently it only supports static preconditions and effects. This could be used to check if the player is in range of the agent performing the action.
-	public virtual bool CheckProceduralPrecondition(AgentController agent)
+	public virtual Dictionary<string, Variant> OnEnd(AgentBrain agentBrain, Dictionary<string, Variant> worldState)
+	{
+		GD.Print("Ending action: " + Name);
+		return worldState;
+	}
+
+
+	// EXECUTION CHECKS
+
+	public bool CanPerform(AgentBrain agentBrain, Dictionary<string, Variant> worldState)
+	{
+		bool staticPreconditionsSatisfied = GoapStateUtils.IsSubsetOf(Preconditions, worldState);
+		bool proceduralPreconditionsSatisfied = CheckProceduralPrecondition(agentBrain);
+		return staticPreconditionsSatisfied && proceduralPreconditionsSatisfied;
+	}
+
+	public virtual bool CheckProceduralPrecondition(AgentBrain agentBrain)
 	{
 		return true;
 	}
