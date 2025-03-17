@@ -1,4 +1,4 @@
-[gd_scene load_steps=4 format=3 uid="uid://b2rac6jo5ig4k"]
+[gd_scene load_steps=5 format=3 uid="uid://b2rac6jo5ig4k"]
 
 [ext_resource type="Script" uid="uid://c77fucrnx1j87" path="res://Agents/AgentController.cs" id="1_kpjcp"]
 [ext_resource type="Texture2D" uid="uid://cnxgp0db6twhr" path="res://Assets/Cute_Fantasy_Free/Player/PlayerAtlasTexture.tres" id="1_xhfnw"]
@@ -6,10 +6,14 @@
 [sub_resource type="CircleShape2D" id="CircleShape2D_ns7eq"]
 radius = 6.0
 
-[node name="CharacterBody2D" type="CharacterBody2D" node_paths=PackedStringArray("NavigationAgent")]
+[sub_resource type="LabelSettings" id="LabelSettings_v5emj"]
+font_size = 10
+
+[node name="CharacterBody2D" type="CharacterBody2D" node_paths=PackedStringArray("NavigationAgent", "TextLabel")]
 script = ExtResource("1_kpjcp")
 Acceleration = 1.0
 NavigationAgent = NodePath("NavigationAgent2D")
+TextLabel = NodePath("Label")
 
 [node name="Sprite2D" type="Sprite2D" parent="."]
 texture_filter = 1
@@ -27,3 +31,20 @@ avoidance_enabled = true
 debug_enabled = true
 debug_use_custom = true
 debug_path_custom_color = Color(0.870387, 1.44392e-06, 1.2514e-06, 1)
+
+[node name="Label" type="Label" parent="."]
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -20.0
+offset_top = -23.0
+offset_right = 20.0
+offset_bottom = -6.0
+grow_horizontal = 2
+grow_vertical = 2
+text = "Test"
+label_settings = SubResource("LabelSettings_v5emj")
+horizontal_alignment = 1
+vertical_alignment = 2

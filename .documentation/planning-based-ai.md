@@ -14,7 +14,3 @@ Based off [this paper](https://www.gamedevs.org/uploads/three-states-plan-ai-of-
 - **Planner**: The planner is responsible for generating a plan based on the current state of the world and the desired goal. The plan is a sequence of actions that the agent must take to reach the goal.
 - **World State**: The world state is a representation of the current state of the world. It includes information about the agent's location, the location of objects, and other relevant information.
 - **Plan**: The plan is a sequence of actions that the agent must take to reach the goal. The planner generates the plan based on the current state of the world and the desired goal.
-
-# Notes
-
-- Should the effects be implemented as classes that inherit from a base class or should they be implemented as game resources?

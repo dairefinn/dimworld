@@ -17,6 +17,7 @@ public partial class AgentBrain : Node
     // Sensory system properties
     [Export] public Area2D AreaVision { get; set; }
     [Export] public Area2D AreaInteraction { get; set; }
+    [Export] public Array<Node> DetectedEntities { get; set; } = [];
 
 
     private GoapGoal CurrentGoal { get; set; }
@@ -30,9 +31,8 @@ public partial class AgentBrain : Node
     public override void _Ready()
     {
         base._Ready();
-        GetSensoryRangesFromShapes();
+        InitSensorySystem();
     }
-
 
     public override void _Process(double delta)
     {
@@ -56,6 +56,7 @@ public partial class AgentBrain : Node
         }
     }
 
+
     private void FollowPlan(GoapAction[] plan, double delta)
     {
         if (plan == null || plan.Length == 0) return;
@@ -75,14 +76,10 @@ public partial class AgentBrain : Node
         bool isStepComplete = CurrentAction.Perform(this, WorldState, delta);
 
         // If the action is complete:
-        // - Add the action's effects to the world state
         // - Run the OnEnd lifecycle event
         // - Move to the next step in the plan
         if (isStepComplete)
         {
-            // Update the world state with the action's effects
-            // GoapStateUtils.Add(WorldState, CurrentAction.Effects);
-
             // Run the OnEnd lifecycle event
             CurrentAction.OnEnd(this, WorldState);
 
@@ -102,7 +99,7 @@ public partial class AgentBrain : Node
 
     // SENSORY AND INTERACTION
 
-    private void GetSensoryRangesFromShapes()
+    private void InitSensorySystem()
     {
         if (AreaVision != null)
         {
@@ -110,14 +107,45 @@ public partial class AgentBrain : Node
             {
                 VisionRadius = circleShape.Radius;
             }
+
+            AreaVision.BodyEntered += OnNodeEnteredVision;
+            AreaVision.BodyExited += OnNodeExitedVision;
         }
 
+        // TODO: This will be used to determine if an entity is close enough to "interact" with
+        // It might just be better to check if you can see it and then if it's close enough distance wise
+        // instead of requiring the CollisionShape.
         if (AreaInteraction != null)
         {
             if (AreaInteraction.GetChild<CollisionShape2D>(0).Shape is CircleShape2D circleShape)
             {
                 InteractionRadius = circleShape.Radius;
             }
+        }
+    }
+
+    private void OnNodeEnteredVision(Node2D node)
+    {
+        DetectedEntities.Add(node);
+        UpdateDebugText();
+    }
+
+    private void OnNodeExitedVision(Node2D node)
+    {
+        DetectedEntities.Remove(node);
+        UpdateDebugText();
+    }
+
+    // TODO: For debugging, remove after
+    private void UpdateDebugText()
+    {
+        if (DetectedEntities.Count() > 0)
+        {
+            Agent.TextLabel.Text = "[" + string.Join(", ", DetectedEntities.Select(e => e.Name)) + "]";
+        }
+        else
+        {
+            Agent.TextLabel.Text = "[]";
         }
     }
 }

@@ -11,6 +11,7 @@ public partial class AgentController : CharacterBody2D
 
     [ExportGroup("References")]
     [Export] public NavigationAgent2D NavigationAgent { get; set; }
+    [Export] public Label TextLabel { get; set; }
 
 
     // LIFECYCLE EVENTS
