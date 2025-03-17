@@ -22,13 +22,15 @@ Currently the agent has two priorities:
 
 They can use the following actions to achieve these goals:
 1. Turn on the light
-2. Equip a sword
-3. Patrol the house (Requires the sword to be equipped)
+2. Patrol the house (Requires the sword to be equipped)
+3. Equip a sword (Requires the sword to be in the agent's detection radius)
 
 The agent will generate a plan to achieve these goals using the GOAP system. This results in some interesting emergent behaviour. For example, if the agent is trying to patrol the house they will come up with a plan that includes equipping the sword first.
 
+I've also added a basic sensory system to the agent can "see" things in their surroundings and use this information to determine if actions can be taken. For examplel, the agent needs to be able to see a sword in order to equip it.
+
 ## Plans
 
-### Sensory system for agents
+### Communication actions
 
-Currently the agent's state is only affected by the actions they perform. I want them to be able to "observe" the properties of the world around. For example, if they spot the player, they should be able to store that in their memory/state which will affect their future plans generated using the GOAP system.
+I want to add an action which will relay information from one agent to another. This will allow agents to share parts of their state with another. For example, if one agent sees a sword they can tell another agent about it.
