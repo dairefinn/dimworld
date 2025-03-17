@@ -178,7 +178,7 @@ public partial class GoapPlanner : Node
         }
         
         // Return this action followed by the best plan from the children
-        return bestPlan.Concat(FindBestPlan(lowestCostChild)).ToArray();
+        return FindBestPlan(lowestCostChild).Concat(bestPlan).ToArray();
     }
 
     /// <summary>

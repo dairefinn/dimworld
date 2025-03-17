@@ -47,10 +47,7 @@ public partial class AgentBrain : Node
             GD.Print("New goal: " + bestGoal.Name);
             CurrentGoal = bestGoal;
             CurrentPlan = GoapPlanner.GetPlan(bestGoal, WorldState, ActionSet.ToArray(), this);
-            if (CurrentPlan.Length > 0)
-            {
-                // GD.Print("Plan: [" + string.Join(", ", CurrentPlan.Select(action => action.Name)) + "]");
-            }
+            GD.Print("Plan: [" + string.Join(", ", CurrentPlan.Select(action => action.Name)) + "]");
             CurrentPlanStep = 0;
         }
         else
