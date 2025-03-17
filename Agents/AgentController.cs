@@ -15,6 +15,7 @@ public partial class AgentController : CharacterBody2D
     public override void _Ready()
     {
         base._Ready();
+        NavigationAgent.VelocityComputed += OnSafeVelocityComputed;
         // NavigationAgent.TargetReached += () => StopNavigating(); // TODO: Trying to hide the debug path after the target has been reached
     }
 
@@ -47,16 +48,21 @@ public partial class AgentController : CharacterBody2D
 
         if (NavigationAgent.AvoidanceEnabled)
         {
-            NavigationAgent.SetVelocityForced(newVelcity);
+            NavigationAgent.Velocity = newVelcity;
         }
         else
         {
-            Velocity = newVelcity;
+            OnSafeVelocityComputed(newVelcity);
         }
 
         // Velocity = Velocity.Lerp(direction * Speed, (float)(Acceleration * delta));
 
         MoveAndSlide();
+    }
+
+    public void OnSafeVelocityComputed(Vector2 safeVelocity)
+    {
+        Velocity = safeVelocity;
     }
 
 }
