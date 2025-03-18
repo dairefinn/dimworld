@@ -21,19 +21,19 @@ public partial class GoapAction : Resource
 
 	public virtual Dictionary<string, Variant> OnStart(AgentBrain agentBrain, Dictionary<string, Variant> worldState)
 	{
-		GD.Print("Starting action: " + Name);
+		// GD.Print("Starting action: " + Name);
 		return worldState;
 	}
 
 	public virtual bool Perform(AgentBrain agent, Dictionary<string, Variant> worldState, double delta)
 	{
-		GD.Print("Performing action: " + Name);
+		// GD.Print("Performing action: " + Name);
 		return false;
 	}
 
 	public virtual Dictionary<string, Variant> OnEnd(AgentBrain agentBrain, Dictionary<string, Variant> worldState)
 	{
-		GD.Print("Ending action: " + Name);
+		// GD.Print("Ending action: " + Name);
 		return worldState;
 	}
 
@@ -42,9 +42,14 @@ public partial class GoapAction : Resource
 
 	public bool CanPerform(AgentBrain agentBrain, Dictionary<string, Variant> worldState)
 	{
-		bool staticPreconditionsSatisfied = GoapStateUtils.IsSubsetOf(Preconditions, worldState);
+		bool staticPreconditionsSatisfied = CheckStaticPreconditions(worldState);
 		bool proceduralPreconditionsSatisfied = CheckProceduralPrecondition(agentBrain);
 		return staticPreconditionsSatisfied && proceduralPreconditionsSatisfied;
+	}
+
+	public bool CheckStaticPreconditions(Dictionary<string, Variant> worldState)
+	{
+		return GoapStateUtils.IsSubsetOf(Preconditions, worldState);
 	}
 
 	public virtual bool CheckProceduralPrecondition(AgentBrain agentBrain)

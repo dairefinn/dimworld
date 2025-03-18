@@ -17,8 +17,7 @@ public partial class AgentBrain : Node
     // Sensory system properties
     [Export] public Area2D AreaVision { get; set; }
     [Export] public Area2D AreaInteraction { get; set; }
-    [Export] public Array<Node> DetectedEntities { get; set; } = [];
-    [Export] public Array<Marker2D> PatrolPath { get; set; } = [];
+    [Export] public Array<Node> DetectedEntities { get; set; }
 
 
     private GoapGoal CurrentGoal { get; set; }
@@ -31,6 +30,7 @@ public partial class AgentBrain : Node
 
     public override void _Ready()
     {
+        DetectedEntities = [];
         base._Ready();
         InitSensorySystem();
     }
@@ -44,6 +44,7 @@ public partial class AgentBrain : Node
     private void UpdateCurrentPlan()
     {
         GoapGoal[] goalsInOrder = GoapPlanner.GetGoalsInOrder(GoalSet.ToArray(), WorldState, this);
+        // GD.Print("Goals in order: [" + string.Join(", ", goalsInOrder.Select(goal => goal.Name)) + "]");
 
         foreach (GoapGoal goal in goalsInOrder)
         {
@@ -58,7 +59,7 @@ public partial class AgentBrain : Node
             if (CurrentPlan == planForGoal) return;
 
             GD.Print("New goal: " + goal.Name);
-            GD.Print("Plan: [" + string.Join(", ", CurrentPlan.Select(action => action.Name)) + "]");
+            GD.Print("Plan: [" + string.Join(", ", planForGoal.Select(action => action.Name)) + "]");
             CurrentGoal = goal;
             CurrentPlan = planForGoal;
             CurrentAction = null;

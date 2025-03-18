@@ -5,9 +5,7 @@
 [resource]
 script = ExtResource("1_ep477")
 Name = "Turn on lights"
-Preconditions = Dictionary[String, Variant]({
-"lights_on": false
-})
+Preconditions = null
 Effects = Dictionary[String, Variant]({
 "lights_on": true
 })

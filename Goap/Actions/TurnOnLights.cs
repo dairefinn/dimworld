@@ -9,6 +9,10 @@ public partial class TurnOnLights : GoapAction
 
     private Light2D Light = null;
 
+    // public override bool CheckProceduralPrecondition(AgentBrain agentBrain)
+    // {
+    //     return false;
+    // }
 
     public override Dictionary<string, Variant> OnStart(AgentBrain agentBrain, Dictionary<string, Variant> worldState)
     {

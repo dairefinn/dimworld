@@ -60,10 +60,10 @@ public partial class GoapPlanner : Node
         };
 
         // Check if the desired state is already satisfied
-        if (goal.IsSatisfied(worldState, agentBrain)) {
-            // GD.Print("desired state already satisfied");
-            return rootNode;
-        }
+        // if (goal.IsSatisfied(worldState, agentBrain)) {
+        //     // GD.Print("desired state already satisfied");
+        //     return rootNode;
+        // }
 
         // Check each possible action to see if it can be performed to achieve the goal
         foreach(GoapAction action in possibleActions)
@@ -99,7 +99,15 @@ public partial class GoapPlanner : Node
         };
 
         // If we can perform the action, then this is a valid plan
-        if (currentAction.CanPerform(agentBrain, worldState)) {
+		bool proceduralPreconditionsSatisfied = currentAction.CheckProceduralPrecondition(agentBrain);
+        if (!proceduralPreconditionsSatisfied) 
+        {
+            // GD.Print("[Invalid] Action " + currentAction.Name + " cannot be performed because procedural preconditions are not satisfied");
+            return null;
+        }
+
+		bool staticPreconditionsSatisfied = currentAction.CheckStaticPreconditions(worldState);
+        if (staticPreconditionsSatisfied) {
             // GD.Print("[Valid] Action " + currentAction.Name + " can be performed");
             return currentNode;
         }

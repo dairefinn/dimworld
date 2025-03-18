@@ -13,14 +13,26 @@ public partial class PatrolPath : GoapAction
 
     public override bool CheckProceduralPrecondition(AgentBrain agentBrain)
     {
-        if (agentBrain.PatrolPath == null) return false;
-        if (agentBrain.PatrolPath.Count == 0) return false;
+        // return false;
+        Array<string> patrolPath = (Array<string>)GoapStateUtils.GetState(agentBrain.WorldState, "patrol_path", new Array<string>());
+        if (patrolPath == null) return false;
+        if (patrolPath.Count == 0) return false;
         return true;
     }
 
     public override bool Perform(AgentBrain agentBrain, Dictionary<string, Variant> worldState, double delta)
     {
-        Vector2[] points = [..agentBrain.PatrolPath.Select(p => p.GlobalPosition)];
+        Array<string> nodeReferences = (Array<string>)GoapStateUtils.GetState(agentBrain.WorldState, "patrol_path", new Array<string>());
+        Array<Marker2D> patrolPath = [];
+        foreach (string nodeReference in nodeReferences)
+        {
+            Node node = agentBrain.GetNodeOrNull(nodeReference);
+            if (node is Marker2D marker)
+            {
+                patrolPath.Add(marker);
+            }
+        }
+        Vector2[] points = [..patrolPath.Select(p => p.GlobalPosition)];
         CurrentPointIndex = GetNextPointOnPath(agentBrain.Agent, points);
         Vector2 currentPoint = points[CurrentPointIndex];
         agentBrain.Agent.NavigateTo(currentPoint);

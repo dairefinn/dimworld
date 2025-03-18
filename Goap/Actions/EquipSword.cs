@@ -14,12 +14,12 @@ public partial class EquipSword : GoapAction
         detectedSword = agentBrain.DetectedEntities.OfType<Sword>().FirstOrDefault();
         if (detectedSword != null)
         {
-            GD.Print("Can see sword");
+            // GD.Print("Can see sword");
             return true;
         }
         else
         {
-            GD.Print("Cannot see sword");
+            // GD.Print("Cannot see sword");
             return false;
         }
     }

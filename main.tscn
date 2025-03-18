@@ -1,4 +1,4 @@
-[gd_scene load_steps=18 format=4 uid="uid://ddc8qiig7j3wm"]
+[gd_scene load_steps=21 format=4 uid="uid://ddc8qiig7j3wm"]
 
 [ext_resource type="Script" uid="uid://g354xqg3s44p" path="res://InputHandler.cs" id="2_lquwl"]
 [ext_resource type="TileSet" uid="uid://me5j3tknec74" path="res://Tileset.tres" id="3_4c57u"]
@@ -8,9 +8,12 @@
 [ext_resource type="Resource" uid="uid://dny1yv708gqi3" path="res://Goap/Actions/EquipSword.tres" id="7_kek77"]
 [ext_resource type="Resource" uid="uid://c0vymkdfnl7rp" path="res://Goap/Actions/PatrolPath.tres" id="8_4c57u"]
 [ext_resource type="Resource" uid="uid://dyo8ce1njn67q" path="res://Goap/Goals/EnsureVisibility.tres" id="8_5vw27"]
+[ext_resource type="Resource" uid="uid://cor2aifcdpfoy" path="res://Goap/Actions/TurnOnLights.tres" id="8_kek77"]
+[ext_resource type="Resource" uid="uid://be3ryk2ex3pr1" path="res://Goap/Actions/Idle.tres" id="8_ycdy4"]
 [ext_resource type="Resource" uid="uid://ckvaxlnjoqs1o" path="res://Goap/Goals/Patrol.tres" id="9_kek77"]
 [ext_resource type="Texture2D" uid="uid://b8efxp0xuux7u" path="res://Assets/Cute_Fantasy_Free/Outdoor decoration/Chest.png" id="10_4c57u"]
 [ext_resource type="Script" uid="uid://ivstvf4bod60" path="res://Sword.cs" id="10_efxa6"]
+[ext_resource type="Resource" uid="uid://c7fy02pjbecvf" path="res://Goap/Goals/Idle.tres" id="11_w48qg"]
 
 [sub_resource type="NavigationPolygon" id="NavigationPolygon_5vw27"]
 vertices = PackedVector2Array(1199, 209, 1199, 287, 1185, 273, 1185, 223, 1121, 209, 1135, 223, 1121, 241, 1135, 273, 1167, 287, 897, 449, 897, 415, 943, 447, 943, 463, 927, 463, 369, 175, 399, 145, 415, 145, 415, 161, 385, 191, 369, 191, 447, 161, 447, 177, 417, 207, 385, 207, 463, 177, 463, 193, 433, 223, 417, 223, 495, 193, 495, 209, 481, 255, 449, 239, 511, 209, 511, 225, 543, 225, 543, 241, 719, 271, 689, 241, 689, 225, 737, 225, 785, 271, 737, 209, 799, 209, 799, 225, 815, 225, 815, 241, 831, 241, 831, 257, 801, 287, 785, 287, 1167, 369, 1279, 369, 1279, 385, 1153, 369, 1233, 415, 1135, 415, 1041, 385, 1153, 319, 1121, 319, 1121, 305, 1153, 305, 1153, 287, 1121, 287, 1121, 255, 929, 241, 943, 255, 929, 257, 943, 271, 863, 271, 849, 351, 833, 319, 863, 289, 895, 289, 895, 321, 865, 367, 911, 321, 911, 337, 881, 383, 865, 383, 927, 337, 927, 353, 881, 415, 959, 353, 959, 369, 1023, 369, 1023, 385, 1007, 415, 975, 431, 1041, 369, 1297, 385, 1297, 369, 1359, 369, 1359, 431, 1233, 431, 1135, 431, 1025, 431, 1025, 415, 1007, 431, 975, 447, 849, 367, 833, 351, 817, 319, 817, 303, 801, 303, 719, 287, 545, 287, 545, 271, 481, 271, 449, 255, 433, 239, 257, 161, 271, 175, 271, 191, 255, 191, 225, 177, 225, 161, 255, 207, 239, 207, 209, 193, 209, 177, 239, 223, 223, 223, 223, 255, 207, 255, 177, 241, 177, 193, 207, 351, 191, 351, 161, 289, 161, 241, 191, 401, 207, 401, 207, 417, 161, 463, 223, 417, 223, 433, 193, 479, 161, 479, 305, 433, 305, 417, 431, 417, 431, 433, 335, 463, 511, 433, 511, 449, 481, 479, 449, 463, 513, 495, 543, 449, 543, 465, 529, 511, 559, 465, 559, 481, 529, 527, 591, 481, 591, 497, 561, 527, 623, 497, 623, 513, 561, 543, 735, 513, 735, 529, 641, 543, 831, 543, 801, 529, 801, 513, 833, 513, 863, 527, 863, 543, 833, 497, 865, 497, 895, 527, 865, 481, 881, 481, 895, 495, 911, 479, 881, 449, 927, 479, 911, 495, 831, 559, 641, 559, 513, 511, 481, 495, 449, 479, 335, 479, 303, 479, 303, 495, 193, 495, 145, 463, 145, 289, 257, 145, 289, 145, 289, 129, 399, 129)
@@ -69,7 +72,7 @@ TempAgentBrain = NodePath("../../Characters/Guard1/Guard1Brain")
 [node name="GoapPlanner" type="Node" parent="World"]
 
 [node name="LightSource" type="PointLight2D" parent="World" groups=["lights"]]
-position = Vector2(1187, 281)
+position = Vector2(937, 411)
 enabled = false
 texture = SubResource("GradientTexture2D_kek77")
 
@@ -102,18 +105,19 @@ zoom = Vector2(2, 2)
 z_index = 1
 position = Vector2(929, 426)
 
-[node name="Guard1Brain" type="Node" parent="Characters/Guard1" node_paths=PackedStringArray("Agent", "AreaVision", "AreaInteraction", "PatrolPath")]
+[node name="Guard1Brain" type="Node" parent="Characters/Guard1" node_paths=PackedStringArray("Agent", "AreaVision", "AreaInteraction", "DetectedEntities")]
 script = ExtResource("6_272bh")
 Agent = NodePath("..")
 WorldState = Dictionary[String, Variant]({
 "lights_on": false,
+"patrol_path": [NodePath("../../../World/Marker2D"), NodePath("../../../World/Marker2D2"), NodePath("../../../World/Marker2D3"), NodePath("../../../World/Marker2D4")],
 "sword_equipped": false
 })
-ActionSet = [ExtResource("8_4c57u"), ExtResource("7_kek77"), ExtResource("7_efxa6")]
-GoalSet = Array[Object]([ExtResource("8_5vw27"), ExtResource("9_kek77")])
+ActionSet = [ExtResource("8_4c57u"), ExtResource("7_kek77"), ExtResource("8_ycdy4"), ExtResource("8_kek77"), ExtResource("7_efxa6")]
+GoalSet = Array[Object]([ExtResource("8_5vw27"), ExtResource("9_kek77"), ExtResource("11_w48qg")])
 AreaVision = NodePath("../AreaVision")
 AreaInteraction = NodePath("../AreaInteraction")
-PatrolPath = [NodePath("../../../World/Marker2D"), NodePath("../../../World/Marker2D2"), NodePath("../../../World/Marker2D3"), NodePath("../../../World/Marker2D4")]
+DetectedEntities = []
 
 [node name="AreaVision" type="Area2D" parent="Characters/Guard1"]
 collision_layer = 0
