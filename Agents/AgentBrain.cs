@@ -21,10 +21,19 @@ public partial class AgentBrain : Node
     private int CurrentPlanStep { get; set; } = 0;
 
 
+    public int lookForGoalsEveryXFrames = 60;
+    private int framesToNextGoalUpdate = 0;
+
+
     public override void _Process(double delta)
     {
-        UpdateCurrentPlan();
+        if (framesToNextGoalUpdate == 0)
+        {
+            UpdateCurrentPlan();
+            framesToNextGoalUpdate = lookForGoalsEveryXFrames + 1;
+        }
         FollowPlan(CurrentPlan, delta);
+        framesToNextGoalUpdate--;
     }
 
     private void UpdateCurrentPlan()

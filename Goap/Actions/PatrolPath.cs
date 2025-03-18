@@ -47,7 +47,6 @@ public partial class PatrolPath : GoapAction
         // If CurrentPoint is not on the path, find the nearest point on the path
         if (!points.Contains(currentTarget))
         {
-            GD.Print("Current point is not on the path");
             int nearestPointIndex = 0;
             float minDistance = float.MaxValue;
             for(int index = 0; index < points.Length; index++)
@@ -71,7 +70,6 @@ public partial class PatrolPath : GoapAction
         }
 
         // Otherwise, find the next point on the path
-        GD.Print("Finding next point on path");
         int nextPointIndex = CurrentPointIndex + 1;
         if (nextPointIndex >= points.Length)
         {
