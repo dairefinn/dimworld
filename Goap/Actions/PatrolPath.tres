@@ -4,8 +4,7 @@
 
 [resource]
 script = ExtResource("1_kfsc8")
-PathName = "PatrolPathHouse"
-Name = "Patrol path in house"
+Name = "Patrol path"
 Preconditions = Dictionary[String, Variant]({
 "sword_equipped": true
 })

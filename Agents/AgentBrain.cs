@@ -18,6 +18,7 @@ public partial class AgentBrain : Node
     [Export] public Area2D AreaVision { get; set; }
     [Export] public Area2D AreaInteraction { get; set; }
     [Export] public Array<Node> DetectedEntities { get; set; } = [];
+    [Export] public Array<Marker2D> PatrolPath { get; set; } = [];
 
 
     private GoapGoal CurrentGoal { get; set; }

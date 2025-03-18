@@ -9,43 +9,23 @@ using Godot.Collections;
 public partial class PatrolPath : GoapAction
 {
 
-    [Export] public string PathName { get; set; }
-
-    private Vector2[] Points { get; set; }
     private int CurrentPointIndex { get; set; } = 0;
 
-    public override Dictionary<string, Variant> OnStart(AgentBrain agentBrain, Dictionary<string, Variant> worldState)
+    public override bool CheckProceduralPrecondition(AgentBrain agentBrain)
     {
-        Polygon2D Path = agentBrain.GetTree().GetNodesInGroup("patrol_paths").OfType<Polygon2D>().Where(p => p.Name == PathName).FirstOrDefault();
-
-        if (Path == null)
-        {
-            GD.Print("No paths found");
-            return worldState;
-        }
-
-        Points = Path.Polygon;
-        CurrentPointIndex = 0;
-
-        // TODO: The goal wants "is_patrolling" to be true but we want the agent to infinitely patrol until another goal takes priority so we should never set "is_patrolling" to anything. Not sure if this is the right way to handle this.
-        // GoapStateUtils.SetState(worldState, "is_patrolling", true);
-
-        return worldState;
+        if (agentBrain.PatrolPath == null) return false;
+        if (agentBrain.PatrolPath.Count == 0) return false;
+        return true;
     }
 
     public override bool Perform(AgentBrain agentBrain, Dictionary<string, Variant> worldState, double delta)
     {
-        CurrentPointIndex = GetNextPointOnPath(agentBrain.Agent, Points);
-        Vector2 currentPoint = Points[CurrentPointIndex];
+        Vector2[] points = [..agentBrain.PatrolPath.Select(p => p.GlobalPosition)];
+        CurrentPointIndex = GetNextPointOnPath(agentBrain.Agent, points);
+        Vector2 currentPoint = points[CurrentPointIndex];
         agentBrain.Agent.NavigateTo(currentPoint);
 
         return false; // Always return false so the agent will continue to patrol
-    }
-
-    public override Dictionary<string, Variant> OnEnd(AgentBrain agentBrain, Dictionary<string, Variant> worldState)
-    {
-        // GoapStateUtils.SetState(worldState, "is_patrolling", false);
-        return worldState;
     }
 
     private int GetNextPointOnPath(AgentController agent, Vector2[] points)
