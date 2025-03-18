@@ -1,56 +1,52 @@
 namespace Dimworld;
 
+using System.Linq;
 using Godot;
 using Godot.Collections;
 
 public partial class EquipSword : GoapAction
 {
 
-    private Chest detectedSword;
+    private Chest detectedChest;
 
-    // TODO: Get closest sword that can be reached instead of doing both checks separately
     public override bool CheckProceduralPrecondition(AgentBrain agentBrain)
     {
-        Array<Chest> detectedSwords = agentBrain.DetectionHandler.GetDetectedInstancesOf<Chest>();
-        if (detectedSwords.Count == 0) return false;
+        // Get any nearby chests that can be reached
+        Array<Chest> detectedChests = [..
+            agentBrain.DetectionHandler.GetDetectedInstancesOf<Chest>()
+            .Where(chest => agentBrain.MovementController.CanReachPoint(chest.GlobalPosition))
+            // TODO: Check if chest contains a sword once the inventory system is implemented
+            .ToArray()
+        ];
+        if (detectedChests.Count == 0) return false;
 
+        // Get the closest chest
         Vector2 agentPosition = agentBrain.MovementController.GlobalPosition;
-        detectedSword = detectedSwords[0];
-        for(int i = 1; i < detectedSwords.Count; i++)
+        detectedChest = detectedChests[0];
+        for(int i = 1; i < detectedChests.Count; i++)
         {
-            Chest sword = detectedSwords[i];
-            if (agentPosition.DistanceTo(sword.GlobalPosition) < agentPosition.DistanceTo(detectedSword.GlobalPosition))
+            Chest sword = detectedChests[i];
+            if (agentPosition.DistanceTo(sword.GlobalPosition) < agentPosition.DistanceTo(detectedChest.GlobalPosition))
             {
-                detectedSword = sword;
+                detectedChest = sword;
             }
         }
 
-        return agentBrain.MovementController.CanReachPoint(detectedSword.GlobalPosition);
+        // If no chest is found, return false
+        if (detectedChest == null) return false;
+        
+        return true;
     }
-
-    // {
-    //     detectedSword = agentBrain.DetectedEntities.OfType<Sword>().FirstOrDefault();
-    //     if (detectedSword != null)
-    //     {
-    //         // GD.Print("Can see sword");
-    //         return true;
-    //     }
-    //     else
-    //     {
-    //         // GD.Print("Cannot see sword");
-    //         return false;
-    //     }
-    // }
 
     public override bool Perform(AgentBrain agentBrain, Dictionary<string, Variant> worldState, double delta)
     {
-        if (detectedSword == null) return false;
+        if (detectedChest == null) return false;
         
-        agentBrain.MovementController.NavigateTo(detectedSword.GlobalPosition);
+        agentBrain.MovementController.NavigateTo(detectedChest.GlobalPosition);
 
         if(agentBrain.MovementController.NavigationAgent.IsNavigationFinished())
         {
-            detectedSword.QueueFree();
+            detectedChest.QueueFree();
             GoapStateUtils.SetState(worldState, "sword_equipped", true);
             return true;
         }

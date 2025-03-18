@@ -6,18 +6,17 @@ using System;
 using System.Linq;
 
 
+// TODO: Should only be able to "use" items within the interaction radius
+// TODO: Should only be able to actually "see" items that are in line of sight (Cast a ray to check if there are obstacles in the way)
 public partial class AgentDetectionHandler : Node2D
 {
     
     // Sensory system properties
     [Export] public Area2D AreaVision { get; set; }
-    [Export] public Area2D AreaInteraction { get; set; }
     [Export] public Array<Node> DetectedEntities { get; set; }
     [Export] public Label DebugTextOutput { get; set; }
-    [Export] public AgentBrain AgentBrain { get; set; }
 
-    private float InteractionRadius { get; set; } = 1;
-    private float VisionRadius { get; set; } = 1;
+    [Export] float InteractionRadius { get; set; } = 1;
 
 
     public override void _Ready()
@@ -32,24 +31,8 @@ public partial class AgentDetectionHandler : Node2D
     {
         if (AreaVision != null)
         {
-            if (AreaVision.GetChild<CollisionShape2D>(0).Shape is CircleShape2D circleShape)
-            {
-                VisionRadius = circleShape.Radius;
-            }
-
             AreaVision.BodyEntered += OnNodeEnteredVision;
             AreaVision.BodyExited += OnNodeExitedVision;
-        }
-
-        // TODO: This will be used to determine if an entity is close enough to "interact" with
-        // It might just be better to check if you can see it and then if it's close enough distance wise
-        // instead of requiring the CollisionShape.
-        if (AreaInteraction != null)
-        {
-            if (AreaInteraction.GetChild<CollisionShape2D>(0).Shape is CircleShape2D circleShape)
-            {
-                InteractionRadius = circleShape.Radius;
-            }
         }
     }
 
@@ -57,32 +40,12 @@ public partial class AgentDetectionHandler : Node2D
     {
         DetectedEntities.Add(node);
         UpdateDebugText();
-        OnDetectedEntitiesChanged();
     }
 
     private void OnNodeExitedVision(Node2D node)
     {
         DetectedEntities.Remove(node);
         UpdateDebugText();
-        OnDetectedEntitiesChanged();
-    }
-
-    private void OnDetectedEntitiesChanged()
-    {
-        bool allLightsEnabled = true;
-
-        foreach (Node entity in DetectedEntities)
-        {
-            if (entity is LightBulb lightBulb)
-            {
-                if (!lightBulb.IsOn)
-                {
-                    allLightsEnabled = false;
-                }
-            }
-        }
-
-        GoapStateUtils.SetState(AgentBrain.WorldState, "all_visible_lights_on", allLightsEnabled);
     }
 
     // TODO: For debugging, remove after

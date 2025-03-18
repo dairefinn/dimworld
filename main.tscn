@@ -1,4 +1,4 @@
-[gd_scene load_steps=22 format=4 uid="uid://ddc8qiig7j3wm"]
+[gd_scene load_steps=20 format=4 uid="uid://ddc8qiig7j3wm"]
 
 [ext_resource type="Script" uid="uid://g354xqg3s44p" path="res://InputHandler.cs" id="2_lquwl"]
 [ext_resource type="TileSet" uid="uid://me5j3tknec74" path="res://Tileset.tres" id="3_4c57u"]
@@ -22,20 +22,11 @@ vertices = PackedVector2Array(1199, 209, 1199, 287, 1185, 273, 1185, 223, 1121, 
 polygons = Array[PackedInt32Array]([PackedInt32Array(0, 1, 2, 3), PackedInt32Array(4, 0, 3, 5), PackedInt32Array(6, 4, 5, 7), PackedInt32Array(2, 1, 8, 7), PackedInt32Array(9, 10, 11, 12, 13), PackedInt32Array(14, 15, 16, 17, 18, 19), PackedInt32Array(18, 17, 20, 21, 22, 23), PackedInt32Array(22, 21, 24, 25, 26, 27), PackedInt32Array(25, 28, 29, 30, 31, 26), PackedInt32Array(29, 32, 33, 30), PackedInt32Array(33, 34, 35), PackedInt32Array(36, 37, 38, 39, 40), PackedInt32Array(39, 41, 42, 43, 40), PackedInt32Array(43, 44, 45, 40), PackedInt32Array(40, 45, 46, 47, 48, 49), PackedInt32Array(50, 51, 52), PackedInt32Array(53, 50, 52, 54, 55, 56), PackedInt32Array(8, 50, 53, 57), PackedInt32Array(57, 58, 59, 60), PackedInt32Array(8, 57, 60), PackedInt32Array(8, 60, 61), PackedInt32Array(7, 8, 61), PackedInt32Array(7, 61, 62), PackedInt32Array(7, 62, 63), PackedInt32Array(6, 7, 63), PackedInt32Array(64, 6, 63, 65), PackedInt32Array(66, 64, 65, 67), PackedInt32Array(66, 67, 68, 47), PackedInt32Array(69, 70, 71, 72, 73, 74), PackedInt32Array(74, 73, 75, 76, 77, 78), PackedInt32Array(77, 76, 79, 80, 10, 81), PackedInt32Array(80, 82, 83, 10), PackedInt32Array(83, 84, 85, 86, 87, 10), PackedInt32Array(56, 88, 53), PackedInt32Array(89, 90, 91, 92), PackedInt32Array(52, 89, 92, 93, 54), PackedInt32Array(56, 55, 94, 95, 96), PackedInt32Array(85, 56, 96, 86), PackedInt32Array(86, 97, 87), PackedInt32Array(87, 98, 11, 10), PackedInt32Array(74, 99, 69), PackedInt32Array(69, 100, 70), PackedInt32Array(68, 71, 70, 101, 102, 47), PackedInt32Array(102, 103, 48, 47), PackedInt32Array(36, 104, 105, 106, 37), PackedInt32Array(106, 107, 30, 33, 35), PackedInt32Array(30, 108, 31), PackedInt32Array(31, 109, 26), PackedInt32Array(110, 111, 112, 113, 114, 115), PackedInt32Array(114, 113, 116, 117, 118, 119), PackedInt32Array(117, 120, 121, 118), PackedInt32Array(118, 121, 122, 123, 124, 125), PackedInt32Array(124, 123, 126, 127, 128, 129), PackedInt32Array(130, 131, 132, 133), PackedInt32Array(133, 132, 134, 135, 136, 137), PackedInt32Array(138, 139, 140, 141, 142), PackedInt32Array(141, 143, 144, 145, 146), PackedInt32Array(147, 144, 148, 149, 150), PackedInt32Array(150, 149, 151, 152, 153), PackedInt32Array(152, 154, 155, 156, 153), PackedInt32Array(155, 157, 158, 159, 156), PackedInt32Array(158, 160, 161, 162, 159), PackedInt32Array(163, 164, 165, 166, 167, 168), PackedInt32Array(167, 166, 169, 170, 171), PackedInt32Array(170, 172, 173, 174, 171), PackedInt32Array(175, 173, 176, 9, 13), PackedInt32Array(13, 177, 175), PackedInt32Array(173, 175, 178, 174), PackedInt32Array(161, 164, 163, 179, 180, 162), PackedInt32Array(150, 181, 147), PackedInt32Array(144, 147, 182, 145), PackedInt32Array(145, 183, 146), PackedInt32Array(141, 146, 142), PackedInt32Array(138, 142, 184, 185, 135), PackedInt32Array(135, 185, 186, 187, 136), PackedInt32Array(130, 133, 188, 189, 128, 127), PackedInt32Array(111, 110, 190, 191, 14), PackedInt32Array(191, 192, 193, 15, 14), PackedInt32Array(106, 35, 37)])
 agent_radius = 1.0
 
-[sub_resource type="Gradient" id="Gradient_5vw27"]
-colors = PackedColorArray(1, 1, 1, 1, 0, 0, 0, 1)
-
-[sub_resource type="GradientTexture2D" id="GradientTexture2D_kek77"]
-gradient = SubResource("Gradient_5vw27")
-fill = 1
-fill_from = Vector2(0.5, 0.5)
-fill_to = Vector2(0.9, 0.5)
-metadata/_snap_enabled = true
-
 [sub_resource type="CircleShape2D" id="CircleShape2D_5vw27"]
 radius = 100.0
 
-[sub_resource type="CircleShape2D" id="CircleShape2D_kek77"]
+[sub_resource type="LabelSettings" id="LabelSettings_2cqfq"]
+font_size = 10
 
 [node name="Main" type="Node2D"]
 
@@ -71,25 +62,18 @@ TempAgentBrain = NodePath("../../Characters/Guard1/Guard1Brain")
 
 [node name="GoapPlanner" type="Node" parent="World"]
 
-[node name="LightSource" type="PointLight2D" parent="World" groups=["lights"]]
-position = Vector2(937, 411)
-enabled = false
-texture = SubResource("GradientTexture2D_kek77")
+[node name="PatrolNodes" type="Node" parent="World"]
 
-[node name="PatrolPathHouse" type="Polygon2D" parent="World" groups=["patrol_paths"]]
-modulate = Color(1, 1, 1, 0.0980392)
-polygon = PackedVector2Array(1129, 218, 1192, 218, 1192, 280, 1129, 280)
-
-[node name="Marker2D" type="Marker2D" parent="World"]
+[node name="Marker2D" type="Marker2D" parent="World/PatrolNodes"]
 position = Vector2(1130, 279)
 
-[node name="Marker2D2" type="Marker2D" parent="World"]
+[node name="Marker2D2" type="Marker2D" parent="World/PatrolNodes"]
 position = Vector2(1130, 219)
 
-[node name="Marker2D3" type="Marker2D" parent="World"]
+[node name="Marker2D3" type="Marker2D" parent="World/PatrolNodes"]
 position = Vector2(1190, 219)
 
-[node name="Marker2D4" type="Marker2D" parent="World"]
+[node name="Marker2D4" type="Marker2D" parent="World/PatrolNodes"]
 position = Vector2(1190, 279)
 
 [node name="Characters" type="Node" parent="."]
@@ -101,11 +85,36 @@ position = Vector2(876, 319)
 [node name="Camera2D" type="Camera2D" parent="Characters/Player"]
 zoom = Vector2(2, 2)
 
-[node name="Label2" type="Label" parent="Characters/Player"]
-offset_left = -283.0
-offset_top = -157.0
-offset_right = -243.0
-offset_bottom = -134.0
+[node name="PlayerDetection" type="Node2D" parent="Characters/Player" node_paths=PackedStringArray("AreaVision", "DetectedEntities", "DebugTextOutput")]
+script = ExtResource("13_2cqfq")
+AreaVision = NodePath("../AreaVision")
+DetectedEntities = []
+DebugTextOutput = NodePath("../Label")
+
+[node name="AreaVision" type="Area2D" parent="Characters/Player"]
+collision_layer = 0
+collision_mask = 2
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Characters/Player/AreaVision"]
+shape = SubResource("CircleShape2D_5vw27")
+debug_color = Color(0, 0.608985, 0.644943, 0.42)
+
+[node name="Label" type="Label" parent="Characters/Player"]
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -20.0
+offset_top = -23.0
+offset_right = 20.0
+offset_bottom = -6.0
+grow_horizontal = 2
+grow_vertical = 2
+text = "Test"
+label_settings = SubResource("LabelSettings_2cqfq")
+horizontal_alignment = 1
+vertical_alignment = 2
 
 [node name="Guard1" parent="Characters" instance=ExtResource("5_lquwl")]
 z_index = 1
@@ -116,18 +125,16 @@ script = ExtResource("6_272bh")
 MovementController = NodePath("..")
 DetectionHandler = NodePath("../Guard1Detection")
 WorldState = Dictionary[String, Variant]({
-"patrol_path": [NodePath("../../../World/Marker2D"), NodePath("../../../World/Marker2D2"), NodePath("../../../World/Marker2D3"), NodePath("../../../World/Marker2D4")]
+"patrol_path": [NodePath("../../../World/PatrolNodes/Marker2D"), NodePath("../../../World/PatrolNodes/Marker2D2"), NodePath("../../../World/PatrolNodes/Marker2D3"), NodePath("../../../World/PatrolNodes/Marker2D4")]
 })
 ActionSet = [ExtResource("8_4c57u"), ExtResource("7_kek77"), ExtResource("8_ycdy4"), ExtResource("8_kek77"), ExtResource("7_efxa6")]
 GoalSet = Array[Object]([ExtResource("8_5vw27"), ExtResource("9_kek77"), ExtResource("11_w48qg")])
 
-[node name="Guard1Detection" type="Node2D" parent="Characters/Guard1" node_paths=PackedStringArray("AreaVision", "AreaInteraction", "DetectedEntities", "DebugTextOutput", "AgentBrain")]
+[node name="Guard1Detection" type="Node2D" parent="Characters/Guard1" node_paths=PackedStringArray("AreaVision", "DetectedEntities", "DebugTextOutput")]
 script = ExtResource("13_2cqfq")
 AreaVision = NodePath("../AreaVision")
-AreaInteraction = NodePath("../AreaInteraction")
 DetectedEntities = []
-DebugTextOutput = NodePath("../../Player/Label2")
-AgentBrain = NodePath("../Guard1Brain")
+DebugTextOutput = NodePath("../Label")
 
 [node name="AreaVision" type="Area2D" parent="Characters/Guard1"]
 collision_layer = 0
@@ -137,11 +144,22 @@ collision_mask = 2
 shape = SubResource("CircleShape2D_5vw27")
 debug_color = Color(0, 0.608985, 0.644943, 0.42)
 
-[node name="AreaInteraction" type="Area2D" parent="Characters/Guard1"]
-
-[node name="CollisionShape2D" type="CollisionShape2D" parent="Characters/Guard1/AreaInteraction"]
-shape = SubResource("CircleShape2D_kek77")
-debug_color = Color(0.777575, 0.439139, 0, 0.42)
+[node name="Label" type="Label" parent="Characters/Guard1"]
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -20.0
+offset_top = -23.0
+offset_right = 20.0
+offset_bottom = -6.0
+grow_horizontal = 2
+grow_vertical = 2
+text = "Test"
+label_settings = SubResource("LabelSettings_2cqfq")
+horizontal_alignment = 1
+vertical_alignment = 2
 
 [node name="Items" type="Node" parent="."]
 
