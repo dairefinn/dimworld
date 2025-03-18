@@ -4,10 +4,10 @@
 [ext_resource type="TileSet" uid="uid://me5j3tknec74" path="res://Tileset.tres" id="3_4c57u"]
 [ext_resource type="PackedScene" uid="uid://b2rac6jo5ig4k" path="res://Agents/Agent.tscn" id="5_lquwl"]
 [ext_resource type="Script" uid="uid://bwbmuqkjtx0ns" path="res://Agents/AgentBrain.cs" id="6_272bh"]
+[ext_resource type="Resource" uid="uid://d0w3ss4kpt10s" path="res://Goap/Actions/TurnOffLights.tres" id="7_efxa6"]
 [ext_resource type="Resource" uid="uid://dny1yv708gqi3" path="res://Goap/Actions/EquipSword.tres" id="7_kek77"]
 [ext_resource type="Resource" uid="uid://c0vymkdfnl7rp" path="res://Goap/Actions/PatrolPath.tres" id="8_4c57u"]
 [ext_resource type="Resource" uid="uid://dyo8ce1njn67q" path="res://Goap/Goals/EnsureVisibility.tres" id="8_5vw27"]
-[ext_resource type="Resource" uid="uid://cor2aifcdpfoy" path="res://Goap/Actions/TurnOnLights.tres" id="8_kek77"]
 [ext_resource type="Resource" uid="uid://ckvaxlnjoqs1o" path="res://Goap/Goals/Patrol.tres" id="9_kek77"]
 [ext_resource type="Texture2D" uid="uid://b8efxp0xuux7u" path="res://Assets/Cute_Fantasy_Free/Outdoor decoration/Chest.png" id="10_4c57u"]
 [ext_resource type="Script" uid="uid://ivstvf4bod60" path="res://Sword.cs" id="10_efxa6"]
@@ -69,7 +69,7 @@ TempAgentBrain = NodePath("../../Characters/Guard1/Guard1Brain")
 [node name="GoapPlanner" type="Node" parent="World"]
 
 [node name="LightSource" type="PointLight2D" parent="World" groups=["lights"]]
-position = Vector2(936, 411)
+position = Vector2(1187, 281)
 enabled = false
 texture = SubResource("GradientTexture2D_kek77")
 
@@ -100,7 +100,7 @@ zoom = Vector2(2, 2)
 
 [node name="Guard1" parent="Characters" instance=ExtResource("5_lquwl")]
 z_index = 1
-position = Vector2(875, 490)
+position = Vector2(929, 426)
 
 [node name="Guard1Brain" type="Node" parent="Characters/Guard1" node_paths=PackedStringArray("Agent", "AreaVision", "AreaInteraction", "PatrolPath")]
 script = ExtResource("6_272bh")
@@ -109,7 +109,7 @@ WorldState = Dictionary[String, Variant]({
 "lights_on": false,
 "sword_equipped": false
 })
-ActionSet = [ExtResource("8_kek77"), ExtResource("8_4c57u"), ExtResource("7_kek77")]
+ActionSet = [ExtResource("8_4c57u"), ExtResource("7_kek77"), ExtResource("7_efxa6")]
 GoalSet = Array[Object]([ExtResource("8_5vw27"), ExtResource("9_kek77")])
 AreaVision = NodePath("../AreaVision")
 AreaInteraction = NodePath("../AreaInteraction")

@@ -9,6 +9,7 @@ public partial class TurnOnLights : GoapAction
 
     private Light2D Light = null;
 
+
     public override Dictionary<string, Variant> OnStart(AgentBrain agentBrain, Dictionary<string, Variant> worldState)
     {
         Light = agentBrain.GetTree().GetNodesInGroup("lights").OfType<Light2D>().FirstOrDefault();

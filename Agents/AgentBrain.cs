@@ -37,24 +37,35 @@ public partial class AgentBrain : Node
 
     public override void _Process(double delta)
     {
-        GoapGoal bestGoal = GoapPlanner.GetBestGoal(GoalSet.ToArray(), WorldState, this);
-        if (bestGoal == null)
+        UpdateCurrentPlan();
+        FollowPlan(CurrentPlan, delta);
+    }
+
+    private void UpdateCurrentPlan()
+    {
+        GoapGoal[] goalsInOrder = GoapPlanner.GetGoalsInOrder(GoalSet.ToArray(), WorldState, this);
+
+        foreach (GoapGoal goal in goalsInOrder)
         {
+            if (!goal.IsValid()) continue;
+            if (goal.IsSatisfied(WorldState, this)) continue;
+
+            GoapAction[] planForGoal = GoapPlanner.GetPlan(goal, WorldState, ActionSet.ToArray(), this);
+            if (planForGoal.Length == 0) continue;
+
+            // If nothing has changed, don't update the plan
+            if (CurrentGoal == goal) return;
+            if (CurrentPlan == planForGoal) return;
+
+            GD.Print("New goal: " + goal.Name);
+            GD.Print("Plan: [" + string.Join(", ", CurrentPlan.Select(action => action.Name)) + "]");
+            CurrentGoal = goal;
+            CurrentPlan = planForGoal;
+            CurrentAction = null;
+            CurrentPlanStep = 0;
             return;
         }
 
-        if (CurrentGoal == null || bestGoal.Name != CurrentGoal.Name)
-        {
-            GD.Print("New goal: " + bestGoal.Name);
-            CurrentGoal = bestGoal;
-            CurrentPlan = GoapPlanner.GetPlan(bestGoal, WorldState, ActionSet.ToArray(), this);
-            GD.Print("Plan: [" + string.Join(", ", CurrentPlan.Select(action => action.Name)) + "]");
-            CurrentPlanStep = 0;
-        }
-        else
-        {
-            FollowPlan(CurrentPlan, delta);
-        }
     }
 
 
