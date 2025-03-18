@@ -13,7 +13,6 @@ public partial class PatrolPath : GoapAction
 
     public override bool CheckProceduralPrecondition(AgentBrain agentBrain)
     {
-        // return false;
         Array<string> patrolPath = (Array<string>)GoapStateUtils.GetState(agentBrain.WorldState, "patrol_path", new Array<string>());
         if (patrolPath == null) return false;
         if (patrolPath.Count == 0) return false;
@@ -33,14 +32,14 @@ public partial class PatrolPath : GoapAction
             }
         }
         Vector2[] points = [..patrolPath.Select(p => p.GlobalPosition)];
-        CurrentPointIndex = GetNextPointOnPath(agentBrain.Agent, points);
+        CurrentPointIndex = GetNextPointOnPath(agentBrain.MovementController, points);
         Vector2 currentPoint = points[CurrentPointIndex];
-        agentBrain.Agent.NavigateTo(currentPoint);
+        agentBrain.MovementController.NavigateTo(currentPoint);
 
         return false; // Always return false so the agent will continue to patrol
     }
 
-    private int GetNextPointOnPath(AgentController agent, Vector2[] points)
+    private int GetNextPointOnPath(AgentMovementController agent, Vector2[] points)
     {
         Vector2 currentPosition = agent.GlobalPosition;
         Vector2 currentTarget = agent.NavigationAgent.TargetPosition;

@@ -1,9 +1,10 @@
 [gd_resource type="Resource" load_steps=2 format=3 uid="uid://cor2aifcdpfoy"]
 
-[ext_resource type="Script" uid="uid://0ndeixx8v5d1" path="res://Goap/Actions/TurnOnLights.cs" id="1_ep477"]
+[ext_resource type="Script" uid="uid://b4osq1wxsjqd1" path="res://Goap/Actions/ToggleLight.cs" id="1_ep477"]
 
 [resource]
 script = ExtResource("1_ep477")
+lightStateToChange = false
 Name = "Turn on lights"
 Preconditions = null
 Effects = Dictionary[String, Variant]({

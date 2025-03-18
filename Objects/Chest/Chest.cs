@@ -2,7 +2,7 @@ namespace Dimworld;
 
 using Godot;
 
-public partial class Sword : StaticBody2D
+public partial class Chest : StaticBody2D
 {
     
 }

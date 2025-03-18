@@ -2,7 +2,8 @@ namespace Dimworld;
 
 using Godot;
 
-public partial class AgentController : CharacterBody2D
+
+public partial class AgentMovementController : CharacterBody2D
 {
 
     [ExportGroup("Properties")]
@@ -11,7 +12,6 @@ public partial class AgentController : CharacterBody2D
 
     [ExportGroup("References")]
     [Export] public NavigationAgent2D NavigationAgent { get; set; }
-    [Export] public Label TextLabel { get; set; }
 
 
     // LIFECYCLE EVENTS
@@ -42,6 +42,16 @@ public partial class AgentController : CharacterBody2D
     public void StopNavigating()
     {
         NavigationAgent.TargetPosition = GlobalPosition;
+    }
+
+    public bool CanReachPoint(Vector2 targetPoint)
+    {
+        NavigationAgent2D tempNavigationAgent = new();
+        AddChild(tempNavigationAgent);
+        tempNavigationAgent.TargetPosition = targetPoint;
+        bool isTargetReachable = tempNavigationAgent.IsTargetReachable();
+        tempNavigationAgent.QueueFree();
+        return isTargetReachable;
     }
 
     private void ProcessNavigation(double delta)

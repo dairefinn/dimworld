@@ -27,7 +27,7 @@ They can use the following actions to achieve these goals:
 
 The agent will generate a plan to achieve these goals using the GOAP system. This results in some interesting emergent behaviour. For example, if the agent is trying to patrol the house they will come up with a plan that includes equipping the sword first.
 
-I've also added a basic sensory system to the agent can "see" things in their surroundings and use this information to determine if actions can be taken. For examplel, the agent needs to be able to see a sword in order to equip it.
+I've also added a basic sensory system to the agent can "see" things in their surroundings and use this information to determine if actions can be taken. For example, the agent needs to be able to see a sword in order to equip it.
 
 ## Plans
 

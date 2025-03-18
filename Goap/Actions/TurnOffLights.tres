@@ -1,9 +1,10 @@
-[gd_resource type="Resource" script_class="GoapAction" load_steps=2 format=3 uid="uid://d0w3ss4kpt10s"]
+[gd_resource type="Resource" load_steps=2 format=3 uid="uid://d0w3ss4kpt10s"]
 
-[ext_resource type="Script" uid="uid://dmhsbr32vw1tk" path="res://Goap/GoapAction.cs" id="2_fechr"]
+[ext_resource type="Script" uid="uid://b4osq1wxsjqd1" path="res://Goap/Actions/ToggleLight.cs" id="1_wnst2"]
 
 [resource]
-script = ExtResource("2_fechr")
+script = ExtResource("1_wnst2")
+lightStateToChange = true
 Name = "Turn off lights"
 Preconditions = null
 Effects = Dictionary[String, Variant]({

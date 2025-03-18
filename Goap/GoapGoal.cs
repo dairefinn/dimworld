@@ -21,8 +21,12 @@ public partial class GoapGoal : Resource
     public bool IsSatisfied(Dictionary<string, Variant> worldState, AgentBrain agentBrain)
     {
         bool worldStateSatisfied = GoapStateUtils.IsSubsetOf(DesiredState, worldState);
+        if (!worldStateSatisfied) return false;
+
         bool isConditionalSatisfied = IsSatisfiedConditional(worldState, agentBrain);
-        return worldStateSatisfied && isConditionalSatisfied;
+        if (!isConditionalSatisfied) return false;
+
+        return true;
     }
 
     public virtual bool IsSatisfiedConditional(Dictionary<string, Variant> worldState, AgentBrain agentBrain)
