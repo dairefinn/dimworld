@@ -17,7 +17,6 @@ metadata/_custom_type_script = "uid://bm0o5ggnfmm6y"
 
 [sub_resource type="LabelSettings" id="LabelSettings_o4ioh"]
 line_spacing = 0.0
-font_size = 32
 shadow_size = 5
 shadow_color = Color(0, 0, 0, 0.588235)
 
@@ -28,9 +27,9 @@ shadow_size = 5
 shadow_color = Color(0, 0, 0, 0.588235)
 
 [node name="InventorySlotUI" type="Panel"]
-custom_minimum_size = Vector2(150, 150)
-offset_right = 200.0
-offset_bottom = 200.0
+custom_minimum_size = Vector2(100, 100)
+offset_right = 100.0
+offset_bottom = 100.0
 theme_override_styles/panel = SubResource("StyleBoxFlat_4iwih")
 script = ExtResource("1_8v1c1")
 TargetSlot = SubResource("Resource_o4ioh")

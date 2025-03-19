@@ -1,17 +1,25 @@
-[gd_scene load_steps=4 format=3 uid="uid://bcpksn1hqwpab"]
+[gd_scene load_steps=5 format=3 uid="uid://bcpksn1hqwpab"]
 
 [ext_resource type="Script" uid="uid://ivstvf4bod60" path="res://Objects/Chest/Chest.cs" id="1_qf57r"]
 [ext_resource type="Texture2D" uid="uid://b8efxp0xuux7u" path="res://Assets/Cute_Fantasy_Free/Outdoor decoration/Chest.png" id="2_7f4fk"]
+[ext_resource type="Script" uid="uid://dph74un0q20el" path="res://Inventory/Inventory.cs" id="3_dpdkb"]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_efxa6"]
 
-[node name="ItemChest" type="StaticBody2D"]
+[node name="ItemChest" type="StaticBody2D" node_paths=PackedStringArray("Inventory")]
 collision_layer = 2
 collision_mask = 0
 script = ExtResource("1_qf57r")
+Inventory = NodePath("Inventory")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 shape = SubResource("CircleShape2D_efxa6")
 
 [node name="Sprite2D" type="Sprite2D" parent="."]
 texture = ExtResource("2_7f4fk")
+
+[node name="Inventory" type="Node" parent="."]
+script = ExtResource("3_dpdkb")
+InventoryName = "Chest contents"
+Slots = [null, null, null, null, null, null, null, null, null, null, null, null, null, null, null]
+metadata/_custom_type_script = "uid://dph74un0q20el"

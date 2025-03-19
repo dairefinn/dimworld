@@ -3,55 +3,71 @@
 [ext_resource type="Script" uid="uid://ycsgnu3vc3d" path="res://Inventory/UI/InventoryUI.cs" id="1_dhcfh"]
 [ext_resource type="PackedScene" uid="uid://cbc7lb60qv02d" path="res://Inventory/UI/InventorySlotUI.tscn" id="2_eslls"]
 
-[node name="InventoryUI" type="GridContainer"]
-offset_right = 40.0
-offset_bottom = 40.0
-theme_override_constants/h_separation = 20
-theme_override_constants/v_separation = 20
-columns = 5
+[node name="InventoryUI" type="MarginContainer"]
+offset_right = 550.0
+offset_bottom = 357.0
+theme_override_constants/margin_left = 5
+theme_override_constants/margin_top = 5
+theme_override_constants/margin_right = 5
+theme_override_constants/margin_bottom = 5
 script = ExtResource("1_dhcfh")
 
-[node name="InventorySlotUI" parent="." instance=ExtResource("2_eslls")]
+[node name="VBoxContainer" type="VBoxContainer" parent="."]
 layout_mode = 2
 
-[node name="InventorySlotUI2" parent="." instance=ExtResource("2_eslls")]
+[node name="InventoryTitle" type="Label" parent="VBoxContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+text = "Inventory name"
+
+[node name="SlotsGrid" type="GridContainer" parent="VBoxContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+theme_override_constants/h_separation = 10
+theme_override_constants/v_separation = 10
+columns = 5
+
+[node name="InventorySlotUI" parent="VBoxContainer/SlotsGrid" instance=ExtResource("2_eslls")]
 layout_mode = 2
 
-[node name="InventorySlotUI3" parent="." instance=ExtResource("2_eslls")]
+[node name="InventorySlotUI2" parent="VBoxContainer/SlotsGrid" instance=ExtResource("2_eslls")]
 layout_mode = 2
 
-[node name="InventorySlotUI4" parent="." instance=ExtResource("2_eslls")]
+[node name="InventorySlotUI3" parent="VBoxContainer/SlotsGrid" instance=ExtResource("2_eslls")]
 layout_mode = 2
 
-[node name="InventorySlotUI5" parent="." instance=ExtResource("2_eslls")]
+[node name="InventorySlotUI4" parent="VBoxContainer/SlotsGrid" instance=ExtResource("2_eslls")]
 layout_mode = 2
 
-[node name="InventorySlotUI6" parent="." instance=ExtResource("2_eslls")]
+[node name="InventorySlotUI5" parent="VBoxContainer/SlotsGrid" instance=ExtResource("2_eslls")]
 layout_mode = 2
 
-[node name="InventorySlotUI7" parent="." instance=ExtResource("2_eslls")]
+[node name="InventorySlotUI6" parent="VBoxContainer/SlotsGrid" instance=ExtResource("2_eslls")]
 layout_mode = 2
 
-[node name="InventorySlotUI8" parent="." instance=ExtResource("2_eslls")]
+[node name="InventorySlotUI7" parent="VBoxContainer/SlotsGrid" instance=ExtResource("2_eslls")]
 layout_mode = 2
 
-[node name="InventorySlotUI9" parent="." instance=ExtResource("2_eslls")]
+[node name="InventorySlotUI8" parent="VBoxContainer/SlotsGrid" instance=ExtResource("2_eslls")]
 layout_mode = 2
 
-[node name="InventorySlotUI10" parent="." instance=ExtResource("2_eslls")]
+[node name="InventorySlotUI9" parent="VBoxContainer/SlotsGrid" instance=ExtResource("2_eslls")]
 layout_mode = 2
 
-[node name="InventorySlotUI11" parent="." instance=ExtResource("2_eslls")]
+[node name="InventorySlotUI10" parent="VBoxContainer/SlotsGrid" instance=ExtResource("2_eslls")]
 layout_mode = 2
 
-[node name="InventorySlotUI12" parent="." instance=ExtResource("2_eslls")]
+[node name="InventorySlotUI11" parent="VBoxContainer/SlotsGrid" instance=ExtResource("2_eslls")]
 layout_mode = 2
 
-[node name="InventorySlotUI13" parent="." instance=ExtResource("2_eslls")]
+[node name="InventorySlotUI12" parent="VBoxContainer/SlotsGrid" instance=ExtResource("2_eslls")]
 layout_mode = 2
 
-[node name="InventorySlotUI14" parent="." instance=ExtResource("2_eslls")]
+[node name="InventorySlotUI13" parent="VBoxContainer/SlotsGrid" instance=ExtResource("2_eslls")]
 layout_mode = 2
 
-[node name="InventorySlotUI15" parent="." instance=ExtResource("2_eslls")]
+[node name="InventorySlotUI14" parent="VBoxContainer/SlotsGrid" instance=ExtResource("2_eslls")]
+layout_mode = 2
+
+[node name="InventorySlotUI15" parent="VBoxContainer/SlotsGrid" instance=ExtResource("2_eslls")]
 layout_mode = 2

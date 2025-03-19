@@ -7,7 +7,7 @@ public partial class PlayerController : Node
 {
 
     [Export] public bool IsCurrentPlayer { get; set; } = false;
-    [Export] public Inventory Inventory { get; set; }
+    [Export] public InventoryHandler InventoryHandler { get; set; }
     [Export] public PlayerInteractionHandler InteractionHandler { get; set; }
 
 

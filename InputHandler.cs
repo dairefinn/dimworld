@@ -7,11 +7,7 @@ public partial class InputHandler : Node2D
 {
 
     [Export] public AgentMovementController PlayerAgent { get; set; }
-
-    [Export] public Inventory PlayerInventory { get; set; }
-    [Export] public InventoryUI InventoryUI { get; set; }
-
-    [Export] public InventoryItem TempItem { get; set; }
+    [Export] public InventoryHandler InventoryHandler { get; set; }
 
     public override void _Process(double delta)
     {
@@ -31,7 +27,11 @@ public partial class InputHandler : Node2D
 
         if (Input.IsActionJustPressed("toggle_inventory"))
         {
-            InventoryUI.ToggleVisibility();
+            InventoryHandler.SetPrimaryInventoryVisibility(!InventoryHandler.GetPrimaryInventoryVisibility());
+            if (InventoryHandler.GetSecondaryInventoryVisibility())
+            {
+                InventoryHandler.SetSecondaryInventoryVisibility(false);
+            }
         }
 
         // TODO: Remove when done debugging
@@ -64,6 +64,12 @@ public partial class InputHandler : Node2D
         if (Input.IsActionJustPressed("interact"))
         {
             Globals.GetInstance().MainPlayer.InteractionHandler.TryInteract();
+        }
+
+        if (Input.IsActionJustPressed("ui_cancel"))
+        {
+            InventoryHandler.SetPrimaryInventoryVisibility(false);
+            InventoryHandler.SetSecondaryInventoryVisibility(false);
         }
     }
 

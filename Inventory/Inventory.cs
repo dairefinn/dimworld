@@ -4,9 +4,11 @@ using Godot;
 using Godot.Collections;
 
 
+[GlobalClass]
 public partial class Inventory : Node
 {
 
+    [Export] public string InventoryName = "Inventory";
     [Export] public Array<InventorySlot> Slots = [];
 
 
