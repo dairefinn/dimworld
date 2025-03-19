@@ -5,8 +5,15 @@ using Godot;
 [GlobalClass]
 public partial class InventorySlot : Resource
 {
+
+    [Signal] public delegate void OnUpdatedEventHandler();
+
     [Export] public InventoryItem Item = null;
-    [Export] public int Quantity = 0;
+    [Export] public int Quantity {
+        get => _quantity;
+        set => SetQuantity(value);
+    }
+    private int _quantity = 0;
 
     public bool IsEmpty => Item == null;
     public bool IsFull => Item != null && Item.MaxStackSize == Quantity;
@@ -19,18 +26,18 @@ public partial class InventorySlot : Resource
     /// <returns>A boolean indicating whether the item was added successfully.</returns>
     public bool AddItem(InventoryItem item)
     {
+        if (IsFull) return false;
+
         if (IsEmpty)
         {
             Item = item;
-            Quantity = 1;
-            return true;
+            Quantity = 0;
         }
 
-        if (item != Item) return false;
-
-        if (IsFull) return false;
-
         Quantity++;
+
+        EmitSignal(SignalName.OnUpdated);
+
         return true;
     }
 
@@ -49,6 +56,16 @@ public partial class InventorySlot : Resource
             Item = null;
         }
 
+        EmitSignal(SignalName.OnUpdated);
+
         return true;
     }
+
+    private void SetQuantity(int value)
+    {
+        if (Item == null) return;
+        _quantity = Mathf.Clamp(value, 0, Item.MaxStackSize);
+        EmitSignal(SignalName.OnUpdated);
+    }
+
 }

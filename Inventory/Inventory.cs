@@ -10,6 +10,9 @@ public partial class Inventory : Node
     [Export] public Array<InventorySlot> Slots = [];
 
 
+    [Signal] public delegate void OnUpdatedEventHandler();
+
+
     /// <summary>
     /// Add an item to the inventory.
     /// </summary>
@@ -20,6 +23,7 @@ public partial class Inventory : Node
         InventorySlot slot = GetFirstSlotWithItem(item, true);
         if (slot == null)
         {
+            GD.Print("No slot found for item: " + item.ItemName);
             slot = GetFirstEmptySlot();
         }
         if (slot == null) return false;
@@ -86,7 +90,8 @@ public partial class Inventory : Node
     {
         foreach (InventorySlot slot in Slots)
         {
-            if (slot.Item != item) continue;
+            if (slot.IsEmpty) continue;
+            if (slot.Item.id != item.id) continue;
             if (ignoreFull && slot.IsFull) continue;
             return slot;
         }

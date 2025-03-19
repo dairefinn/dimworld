@@ -6,6 +6,8 @@
 [node name="InventoryUI" type="GridContainer"]
 offset_right = 40.0
 offset_bottom = 40.0
+theme_override_constants/h_separation = 20
+theme_override_constants/v_separation = 20
 columns = 5
 script = ExtResource("1_dhcfh")
 

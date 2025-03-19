@@ -1,4 +1,4 @@
-[gd_scene load_steps=35 format=4 uid="uid://ddc8qiig7j3wm"]
+[gd_scene load_steps=39 format=4 uid="uid://ddc8qiig7j3wm"]
 
 [ext_resource type="Script" uid="uid://g354xqg3s44p" path="res://InputHandler.cs" id="2_lquwl"]
 [ext_resource type="TileSet" uid="uid://me5j3tknec74" path="res://Tileset.tres" id="3_4c57u"]
@@ -6,6 +6,7 @@
 [ext_resource type="Script" uid="uid://dph74un0q20el" path="res://Inventory/Inventory.cs" id="5_yaehf"]
 [ext_resource type="Script" uid="uid://bwbmuqkjtx0ns" path="res://Agents/AgentBrain.cs" id="6_272bh"]
 [ext_resource type="Script" uid="uid://bm0o5ggnfmm6y" path="res://Inventory/InventorySlot.cs" id="6_cegan"]
+[ext_resource type="Resource" uid="uid://cganauotis1vm" path="res://Items/TestItem.tres" id="7_82xsv"]
 [ext_resource type="Resource" uid="uid://d0w3ss4kpt10s" path="res://Goap/Actions/TurnOffLights.tres" id="7_efxa6"]
 [ext_resource type="Resource" uid="uid://dny1yv708gqi3" path="res://Goap/Actions/EquipSword.tres" id="7_kek77"]
 [ext_resource type="Resource" uid="uid://c0vymkdfnl7rp" path="res://Goap/Actions/PatrolPath.tres" id="8_4c57u"]
@@ -91,7 +92,29 @@ script = ExtResource("6_cegan")
 Quantity = 0
 metadata/_custom_type_script = "uid://bm0o5ggnfmm6y"
 
+[sub_resource type="Resource" id="Resource_seu75"]
+script = ExtResource("6_cegan")
+Quantity = 0
+metadata/_custom_type_script = "uid://bm0o5ggnfmm6y"
+
+[sub_resource type="Resource" id="Resource_htxhm"]
+script = ExtResource("6_cegan")
+Quantity = 0
+metadata/_custom_type_script = "uid://bm0o5ggnfmm6y"
+
+[sub_resource type="Resource" id="Resource_jq2sk"]
+script = ExtResource("6_cegan")
+Quantity = 0
+metadata/_custom_type_script = "uid://bm0o5ggnfmm6y"
+
 [node name="Main" type="Node2D"]
+
+[node name="InputHandler" type="Node2D" parent="." node_paths=PackedStringArray("PlayerAgent", "PlayerInventory", "InventoryUI")]
+script = ExtResource("2_lquwl")
+PlayerAgent = NodePath("../Characters/Player")
+PlayerInventory = NodePath("../Characters/Player/PlayerInventory")
+InventoryUI = NodePath("../UI/InventoryUI")
+TempItem = ExtResource("7_82xsv")
 
 [node name="World" type="Node" parent="."]
 
@@ -118,11 +141,6 @@ tile_map_data = PackedByteArray("AAA6ABkAAAAZAB8AAAA=")
 tile_set = ExtResource("3_4c57u")
 navigation_enabled = false
 
-[node name="InputHandler" type="Node2D" parent="World" node_paths=PackedStringArray("PlayerAgent", "TempAgentBrain")]
-script = ExtResource("2_lquwl")
-PlayerAgent = NodePath("../../Characters/Player")
-TempAgentBrain = NodePath("../../Characters/Guard1/Guard1Brain")
-
 [node name="GoapPlanner" type="Node" parent="World"]
 
 [node name="PatrolNodes" type="Node" parent="World"]
@@ -143,10 +161,7 @@ position = Vector2(1190, 279)
 
 [node name="Player" parent="Characters" instance=ExtResource("5_lquwl")]
 z_index = 1
-position = Vector2(876, 319)
-
-[node name="Camera2D" type="Camera2D" parent="Characters/Player"]
-zoom = Vector2(2, 2)
+position = Vector2(288, 162)
 
 [node name="PlayerDetection" type="Node2D" parent="Characters/Player" node_paths=PackedStringArray("AreaVision", "DetectedEntities", "DebugTextOutput")]
 script = ExtResource("13_2cqfq")
@@ -163,6 +178,7 @@ shape = SubResource("CircleShape2D_5vw27")
 debug_color = Color(0, 0.608985, 0.644943, 0.42)
 
 [node name="Label" type="Label" parent="Characters/Player"]
+visible = false
 anchors_preset = 8
 anchor_left = 0.5
 anchor_top = 0.5
@@ -181,7 +197,10 @@ vertical_alignment = 2
 
 [node name="PlayerInventory" type="Node" parent="Characters/Player"]
 script = ExtResource("5_yaehf")
-Slots = [SubResource("Resource_cegan"), SubResource("Resource_82xsv"), SubResource("Resource_getpj"), SubResource("Resource_ryguw"), SubResource("Resource_d13ii"), SubResource("Resource_1u8w0"), SubResource("Resource_0odxb"), SubResource("Resource_lswn8"), SubResource("Resource_a6jrf"), SubResource("Resource_xuqvo"), SubResource("Resource_qsp4k"), SubResource("Resource_kq58d")]
+Slots = [SubResource("Resource_cegan"), SubResource("Resource_82xsv"), SubResource("Resource_getpj"), SubResource("Resource_ryguw"), SubResource("Resource_d13ii"), SubResource("Resource_1u8w0"), SubResource("Resource_0odxb"), SubResource("Resource_lswn8"), SubResource("Resource_a6jrf"), SubResource("Resource_xuqvo"), SubResource("Resource_qsp4k"), SubResource("Resource_kq58d"), SubResource("Resource_seu75"), SubResource("Resource_htxhm"), SubResource("Resource_jq2sk")]
+
+[node name="Camera2D" type="Camera2D" parent="Characters/Player"]
+zoom = Vector2(2, 2)
 
 [node name="Guard1" parent="Characters" instance=ExtResource("5_lquwl")]
 z_index = 1
@@ -196,6 +215,7 @@ WorldState = Dictionary[String, Variant]({
 })
 ActionSet = [ExtResource("8_4c57u"), ExtResource("7_kek77"), ExtResource("8_ycdy4"), ExtResource("8_kek77"), ExtResource("7_efxa6")]
 GoalSet = Array[Object]([ExtResource("8_5vw27"), ExtResource("9_kek77"), ExtResource("11_w48qg")])
+IsPlanningEnabled = false
 
 [node name="Guard1Detection" type="Node2D" parent="Characters/Guard1" node_paths=PackedStringArray("AreaVision", "DetectedEntities", "DebugTextOutput")]
 script = ExtResource("13_2cqfq")
@@ -243,7 +263,9 @@ position = Vector2(1162, 247)
 [node name="UI" type="CanvasLayer" parent="."]
 
 [node name="InventoryUI" parent="UI" node_paths=PackedStringArray("TargetInventory") instance=ExtResource("19_cegan")]
-modulate = Color(1, 0, 0, 1)
-offset_right = 116.0
-offset_bottom = 68.0
+visible = false
+offset_left = 10.0
+offset_top = 10.0
+offset_right = 276.0
+offset_bottom = 168.0
 TargetInventory = NodePath("../../Characters/Player/PlayerInventory")

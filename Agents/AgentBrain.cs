@@ -14,6 +14,7 @@ public partial class AgentBrain : Node
     [Export] public Dictionary<string, Variant> WorldState { get; set; }
     [Export] public Array<GoapAction> ActionSet { get; set; }
     [Export] public Array<GoapGoal> GoalSet { get; set; }
+    [Export] public bool IsPlanningEnabled { get; set; } = true;
 
     private GoapGoal CurrentGoal { get; set; }
     private GoapAction[] CurrentPlan { get; set; } = [];
@@ -38,6 +39,7 @@ public partial class AgentBrain : Node
 
     private void UpdateCurrentPlan()
     {
+        if (!IsPlanningEnabled) return;
         if (MovementController == null) return;
 
         GoapGoal[] goalsInOrder = GoapPlanner.GetGoalsInOrder(GoalSet.ToArray(), WorldState, this);
