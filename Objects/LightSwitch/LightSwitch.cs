@@ -2,7 +2,6 @@ namespace Dimworld;
 
 using Godot;
 using Godot.Collections;
-using System.Linq;
 
 
 public partial class LightSwitch : StaticBody2D
@@ -12,17 +11,7 @@ public partial class LightSwitch : StaticBody2D
 
     [Export] public bool IsOn {
         get => _isOn;
-        set {
-            _isOn = value;
-            if (_isOn)
-            {
-                TurnOn();
-            }
-            else
-            {
-                TurnOff();
-            }
-        }
+        set => OnSetIsOn(value);
     }
     private bool _isOn = false;
 
@@ -48,29 +37,28 @@ public partial class LightSwitch : StaticBody2D
         return false;
     }
 
-    public void TurnOn()
+    private void OnSetIsOn(bool value)
     {
+        _isOn = value;
         foreach (LightBulb light in AssociatedLights)
         {
-            light.TurnOn();
+            light.IsOn = value;
         }
+    }
+
+    public void TurnOn()
+    {
+        IsOn = true;
     }
 
     public void TurnOff()
     {
-        foreach (LightBulb light in AssociatedLights)
-        {
-            light.TurnOff();
-        }
+        IsOn = false;
     }
 
     public void Toggle()
     {
-        if (!HasAssociatedLights()) return;
-        foreach (LightBulb light in AssociatedLights)
-        {
-            light.Toggle();
-        }
+        IsOn = !IsOn;
     }
 
 }
