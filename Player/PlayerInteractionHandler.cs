@@ -11,19 +11,15 @@ public partial class PlayerInteractionHandler : Node
     [Export] public CursorFollower CursorFollower { get; set; }
 
 
-    public override void _Process(double delta)
+    public void TryInteract()
     {
-        base._Process(delta);
-
-        if (Input.IsActionJustPressed("test_input"))
+        if (CursorFollower == null) return;
+        ICanBeInteractedWith interactableObject = CursorFollower.InteractableObject;
+        if (interactableObject == null) return;
+        if (interactableObject is Node2D interactableObjectNode2D)
         {
-            ICanBeInteractedWith interactableObject = CursorFollower.InteractableObject;
-            if (interactableObject == null) return;
-            if (interactableObject is Node2D interactableObjectNode2D)
-            {
-                if (!AgentDetectionHandler.CanSee(interactableObjectNode2D)) return;
-                interactableObject.InteractWith();
-            }
+            if (!AgentDetectionHandler.CanSee(interactableObjectNode2D)) return;
+            interactableObject.InteractWith();
         }
     }
 

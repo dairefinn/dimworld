@@ -60,6 +60,11 @@ public partial class InputHandler : Node2D
                 Engine.TimeScale = 1.0f;
             }
         }
+
+        if (Input.IsActionJustPressed("interact"))
+        {
+            Globals.GetInstance().MainPlayer.InteractionHandler.TryInteract();
+        }
     }
 
 }

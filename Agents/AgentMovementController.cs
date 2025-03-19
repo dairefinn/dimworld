@@ -19,8 +19,11 @@ public partial class AgentMovementController : CharacterBody2D
     public override void _Ready()
     {
         base._Ready();
+        if (NavigationAgent == null)
+        {
+            NavigationAgent = GetNode<NavigationAgent2D>("NavigationAgent2D");
+        }
         NavigationAgent.VelocityComputed += OnSafeVelocityComputed;
-        // NavigationAgent.TargetReached += () => StopNavigating(); // TODO: Trying to hide the debug path after the target has been reached
     }
 
     public override void _PhysicsProcess(double delta)
