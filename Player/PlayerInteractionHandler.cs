@@ -11,22 +11,6 @@ public partial class PlayerInteractionHandler : Node
     [Export] public CursorFollower CursorFollower { get; set; }
 
 
-    private void InteractWithItem(ICanBeInteractedWith interactableObject)
-    {
-        interactableObject.InteractWith();
-
-        InventoryItem itemDuplicate = GD.Load("res://Items/TestItem.tres").Duplicate() as InventoryItem;
-        bool success = PlayerInventory.AddItem(itemDuplicate);
-        if (success)
-        {
-            GD.Print("Added item to inventory: " + itemDuplicate.ItemName);
-        }
-        else
-        {
-            GD.Print("Failed to add item to inventory: " + itemDuplicate.ItemName);
-        }
-    }
-
     public override void _Process(double delta)
     {
         base._Process(delta);
@@ -34,9 +18,11 @@ public partial class PlayerInteractionHandler : Node
         if (Input.IsActionJustPressed("test_input"))
         {
             ICanBeInteractedWith interactableObject = CursorFollower.InteractableObject;
-            if (interactableObject != null)
+            if (interactableObject == null) return;
+            if (interactableObject is Node2D interactableObjectNode2D)
             {
-                InteractWithItem(interactableObject);
+                if (!AgentDetectionHandler.CanSee(interactableObjectNode2D)) return;
+                interactableObject.InteractWith();
             }
         }
     }

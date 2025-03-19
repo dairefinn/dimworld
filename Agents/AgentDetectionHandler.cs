@@ -53,6 +53,13 @@ public partial class AgentDetectionHandler : Node2D
         UpdateDebugText();
     }
 
+    public bool CanSee(Node2D node)
+    {
+        if (DetectedEntities.Contains(node)) return true;
+
+        return false;
+    }
+
     // TODO: For debugging, remove after
     private void UpdateDebugText()
     {
