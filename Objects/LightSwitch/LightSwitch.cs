@@ -4,7 +4,7 @@ using Godot;
 using Godot.Collections;
 
 
-public partial class LightSwitch : StaticBody2D
+public partial class LightSwitch : StaticBody2D, ICanBeInteractedWith
 {
 
     [Export] public Array<LightBulb> AssociatedLights { get; set; }
@@ -61,4 +61,8 @@ public partial class LightSwitch : StaticBody2D
         IsOn = !IsOn;
     }
 
+    public void InteractWith()
+    {
+        GD.Print("Interacting with chest");
+    }
 }

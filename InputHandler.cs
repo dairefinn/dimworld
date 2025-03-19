@@ -37,15 +37,27 @@ public partial class InputHandler : Node2D
         // TODO: Remove when done debugging
         if (Input.IsActionJustPressed("test_input"))
         {
-            InventoryItem itemDuplicate = TempItem.Duplicate() as InventoryItem;
-            bool success = PlayerInventory.AddItem(itemDuplicate);
-            if (success)
+            // InventoryItem itemDuplicate = TempItem.Duplicate() as InventoryItem;
+            // bool success = PlayerInventory.AddItem(itemDuplicate);
+            // if (success)
+            // {
+            //     GD.Print("Added item to inventory: " + itemDuplicate.ItemName);
+            // }
+            // else
+            // {
+            //     GD.Print("Failed to add item to inventory: " + itemDuplicate.ItemName);
+            // }
+        }
+
+        if (Input.IsActionJustPressed("toggle_timescale"))
+        {
+            if (Engine.TimeScale == 1.0)
             {
-                GD.Print("Added item to inventory: " + itemDuplicate.ItemName);
+                Engine.TimeScale = 0.1f;
             }
             else
             {
-                GD.Print("Failed to add item to inventory: " + itemDuplicate.ItemName);
+                Engine.TimeScale = 1.0f;
             }
         }
     }

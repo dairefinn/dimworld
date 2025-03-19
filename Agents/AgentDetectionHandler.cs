@@ -10,8 +10,11 @@ using System.Linq;
 // TODO: Should only be able to actually "see" items that are in line of sight (Cast a ray to check if there are obstacles in the way)
 public partial class AgentDetectionHandler : Node2D
 {
-    
-    // Sensory system properties
+
+    [Signal] public delegate void OnNodeDetectedEventHandler(Node node);
+    [Signal] public delegate void OnNodeLostEventHandler(Node node);
+
+
     [Export] public Area2D AreaVision { get; set; }
     [Export] public Array<Node> DetectedEntities { get; set; }
     [Export] public Label DebugTextOutput { get; set; }
@@ -39,12 +42,14 @@ public partial class AgentDetectionHandler : Node2D
     private void OnNodeEnteredVision(Node2D node)
     {
         DetectedEntities.Add(node);
+        EmitSignal(SignalName.OnNodeDetected, node);
         UpdateDebugText();
     }
 
     private void OnNodeExitedVision(Node2D node)
     {
         DetectedEntities.Remove(node);
+        EmitSignal(SignalName.OnNodeLost, node);
         UpdateDebugText();
     }
 
