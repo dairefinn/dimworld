@@ -21,8 +21,6 @@ public partial class InventoryHandler : Control
         primaryInventoryUI.TargetInventory = MainInventory;
         primaryInventoryUI.SetVisibility(false);
         secondaryInventoryUI.SetVisibility(false);
-
-        secondaryInventoryUI.OnVisibilityChanged += OnSecondaryInventoryVisibilityChanged;
     }
 
 
@@ -39,14 +37,6 @@ public partial class InventoryHandler : Control
         SecondaryInventory = null;
         secondaryInventoryUI.TargetInventory = null;
         secondaryInventoryUI.SetVisibility(false);
-    }
-
-    private void OnSecondaryInventoryVisibilityChanged(bool visible)
-    {
-        if (!visible)
-        {
-            CloseSecondaryInventory();
-        }
     }
 
     public bool GetPrimaryInventoryVisibility()

@@ -10,12 +10,7 @@ public partial class InventoryUI : Container
 
     [Export] public Inventory TargetInventory {
         get => _targetInventory;
-        set
-        {
-            _targetInventory = value;
-            InventoryTitle.Text = value.InventoryName;
-            value.OnUpdated += UpdateUI;
-        }
+        set => SetTargetInventory(value);
     }
     private Inventory _targetInventory;
     [Export] public PackedScene SlotUIScene = GD.Load<PackedScene>("res://Inventory/UI/InventorySlotUI.tscn");
@@ -29,23 +24,23 @@ public partial class InventoryUI : Container
     {
         InventoryTitle = GetNode<Label>("%InventoryTitle");
         SlotsGrid = GetNode<GridContainer>("%SlotsGrid");
+    }
+
+
+    public void UpdateUI()
+    {
+        if (_targetInventory == null) return;
+        if (SlotsGrid == null) return;
+        if (InventoryTitle == null) return;
+
+        InventoryTitle.Text = _targetInventory.InventoryName;
 
         foreach (Node child in SlotsGrid.GetChildren())
         {
             child.QueueFree();
         }
 
-        UpdateUI();
-    }
-
-
-    public void UpdateUI()
-    {
-        if (TargetInventory == null) return;
-
-        InventoryTitle.Text = TargetInventory.InventoryName;
-
-        foreach (InventorySlot slot in TargetInventory.Slots)
+        foreach (InventorySlot slot in _targetInventory.Slots)
         {
             InventorySlotUI slotUI = SlotUIScene.Instantiate<InventorySlotUI>();
             slotUI.TargetSlot = slot;
@@ -73,6 +68,15 @@ public partial class InventoryUI : Container
         // {
         //     Input.MouseMode = Input.MouseModeEnum.Visible;
         // }
+    }
+
+    private void SetTargetInventory(Inventory inventory)
+    {
+        _targetInventory = inventory;
+
+        if (_targetInventory == null) return;
+
+        _targetInventory.OnUpdated += UpdateUI;
     }
 
 }

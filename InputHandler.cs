@@ -30,7 +30,7 @@ public partial class InputHandler : Node2D
             InventoryHandler.SetPrimaryInventoryVisibility(!InventoryHandler.GetPrimaryInventoryVisibility());
             if (InventoryHandler.GetSecondaryInventoryVisibility())
             {
-                InventoryHandler.SetSecondaryInventoryVisibility(false);
+                InventoryHandler.CloseSecondaryInventory();
             }
         }
 
@@ -69,7 +69,7 @@ public partial class InputHandler : Node2D
         if (Input.IsActionJustPressed("ui_cancel"))
         {
             InventoryHandler.SetPrimaryInventoryVisibility(false);
-            InventoryHandler.SetSecondaryInventoryVisibility(false);
+            InventoryHandler.CloseSecondaryInventory();
         }
     }
 

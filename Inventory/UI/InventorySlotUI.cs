@@ -7,7 +7,11 @@ public partial class InventorySlotUI : Panel
 
     [Signal] public delegate void OnClickedEventHandler();
 
-    [Export] public InventorySlot TargetSlot;
+    [Export] public InventorySlot TargetSlot {
+        get => _targetSlot;
+        set => SetTargetSlot(value);
+    }
+    private InventorySlot _targetSlot;
 
     private Label QuantityLabel;
     private Label ItemLabel;
@@ -25,10 +29,6 @@ public partial class InventorySlotUI : Panel
         ItemLabel.Text = "";
         QuantityLabel.Text = "0";
         ItemIcon.Texture = null;
-
-        UpdateUI();
-        
-        TargetSlot.OnUpdated += UpdateUI;
     }
 
     public override void _GuiInput(InputEvent @event)
@@ -44,15 +44,23 @@ public partial class InventorySlotUI : Panel
         }
     }
 
-
-    public void UpdateUI()
+    public void SetTargetSlot(InventorySlot slot)
     {
-        if (TargetSlot == null) return;
-        if (TargetSlot.IsEmpty) return;
+        _targetSlot = slot;
 
-        ItemLabel.Text = TargetSlot.Item.ItemName;
-        QuantityLabel.Text = TargetSlot.Quantity.ToString();
-        ItemIcon.Texture = TargetSlot.Item.Icon;
+        if (_targetSlot == null) return;
+
+        _targetSlot.OnUpdated += UpdateUI;
+    }
+
+    private void UpdateUI()
+    {
+        if (_targetSlot == null) return;
+        if (_targetSlot.IsEmpty) return;
+
+        ItemLabel.Text = _targetSlot.Item.ItemName;
+        QuantityLabel.Text = _targetSlot.Quantity.ToString();
+        ItemIcon.Texture = _targetSlot.Item.Icon;
     }
 
 }
