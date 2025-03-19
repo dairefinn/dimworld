@@ -1,0 +1,19 @@
+[gd_scene load_steps=2 format=3 uid="uid://cbc7lb60qv02d"]
+
+[ext_resource type="Script" uid="uid://bo1stix1esiy8" path="res://Inventory/UI/InventorySlotUI.cs" id="1_8v1c1"]
+
+[node name="InventorySlotUI" type="Panel"]
+modulate = Color(1, 0, 1, 1)
+custom_minimum_size = Vector2(20, 20)
+offset_right = 20.0
+offset_bottom = 20.0
+script = ExtResource("1_8v1c1")
+
+[node name="ColorRect" type="ColorRect" parent="."]
+visible = false
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2

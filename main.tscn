@@ -1,9 +1,11 @@
-[gd_scene load_steps=20 format=4 uid="uid://ddc8qiig7j3wm"]
+[gd_scene load_steps=35 format=4 uid="uid://ddc8qiig7j3wm"]
 
 [ext_resource type="Script" uid="uid://g354xqg3s44p" path="res://InputHandler.cs" id="2_lquwl"]
 [ext_resource type="TileSet" uid="uid://me5j3tknec74" path="res://Tileset.tres" id="3_4c57u"]
 [ext_resource type="PackedScene" uid="uid://b2rac6jo5ig4k" path="res://Agents/Agent.tscn" id="5_lquwl"]
+[ext_resource type="Script" uid="uid://dph74un0q20el" path="res://Inventory/Inventory.cs" id="5_yaehf"]
 [ext_resource type="Script" uid="uid://bwbmuqkjtx0ns" path="res://Agents/AgentBrain.cs" id="6_272bh"]
+[ext_resource type="Script" uid="uid://bm0o5ggnfmm6y" path="res://Inventory/InventorySlot.cs" id="6_cegan"]
 [ext_resource type="Resource" uid="uid://d0w3ss4kpt10s" path="res://Goap/Actions/TurnOffLights.tres" id="7_efxa6"]
 [ext_resource type="Resource" uid="uid://dny1yv708gqi3" path="res://Goap/Actions/EquipSword.tres" id="7_kek77"]
 [ext_resource type="Resource" uid="uid://c0vymkdfnl7rp" path="res://Goap/Actions/PatrolPath.tres" id="8_4c57u"]
@@ -16,6 +18,7 @@
 [ext_resource type="PackedScene" uid="uid://bcpksn1hqwpab" path="res://Objects/Chest/Chest.tscn" id="13_w48qg"]
 [ext_resource type="PackedScene" uid="uid://dsrrvsvuuvj3b" path="res://Objects/LightSwitch/LightSwitch.tscn" id="14_vivmo"]
 [ext_resource type="PackedScene" uid="uid://cq105v4igaxh5" path="res://Objects/LightBulb/LightBulb.tscn" id="15_vivmo"]
+[ext_resource type="PackedScene" uid="uid://bypfigpr23v58" path="res://Inventory/UI/InventoryUI.tscn" id="19_cegan"]
 
 [sub_resource type="NavigationPolygon" id="NavigationPolygon_5vw27"]
 vertices = PackedVector2Array(1199, 209, 1199, 287, 1185, 273, 1185, 223, 1121, 209, 1135, 223, 1121, 241, 1135, 273, 1167, 287, 897, 449, 897, 415, 943, 447, 943, 463, 927, 463, 369, 175, 399, 145, 415, 145, 415, 161, 385, 191, 369, 191, 447, 161, 447, 177, 417, 207, 385, 207, 463, 177, 463, 193, 433, 223, 417, 223, 495, 193, 495, 209, 481, 255, 449, 239, 511, 209, 511, 225, 543, 225, 543, 241, 719, 271, 689, 241, 689, 225, 737, 225, 785, 271, 737, 209, 799, 209, 799, 225, 815, 225, 815, 241, 831, 241, 831, 257, 801, 287, 785, 287, 1167, 369, 1279, 369, 1279, 385, 1153, 369, 1233, 415, 1135, 415, 1041, 385, 1153, 319, 1121, 319, 1121, 305, 1153, 305, 1153, 287, 1121, 287, 1121, 255, 929, 241, 943, 255, 929, 257, 943, 271, 863, 271, 849, 351, 833, 319, 863, 289, 895, 289, 895, 321, 865, 367, 911, 321, 911, 337, 881, 383, 865, 383, 927, 337, 927, 353, 881, 415, 959, 353, 959, 369, 1023, 369, 1023, 385, 1007, 415, 975, 431, 1041, 369, 1297, 385, 1297, 369, 1359, 369, 1359, 431, 1233, 431, 1135, 431, 1025, 431, 1025, 415, 1007, 431, 975, 447, 849, 367, 833, 351, 817, 319, 817, 303, 801, 303, 719, 287, 545, 287, 545, 271, 481, 271, 449, 255, 433, 239, 257, 161, 271, 175, 271, 191, 255, 191, 225, 177, 225, 161, 255, 207, 239, 207, 209, 193, 209, 177, 239, 223, 223, 223, 223, 255, 207, 255, 177, 241, 177, 193, 207, 351, 191, 351, 161, 289, 161, 241, 191, 401, 207, 401, 207, 417, 161, 463, 223, 417, 223, 433, 193, 479, 161, 479, 305, 433, 305, 417, 431, 417, 431, 433, 335, 463, 511, 433, 511, 449, 481, 479, 449, 463, 513, 495, 543, 449, 543, 465, 529, 511, 559, 465, 559, 481, 529, 527, 591, 481, 591, 497, 561, 527, 623, 497, 623, 513, 561, 543, 735, 513, 735, 529, 641, 543, 831, 543, 801, 529, 801, 513, 833, 513, 863, 527, 863, 543, 833, 497, 865, 497, 895, 527, 865, 481, 881, 481, 895, 495, 911, 479, 881, 449, 927, 479, 911, 495, 831, 559, 641, 559, 513, 511, 481, 495, 449, 479, 335, 479, 303, 479, 303, 495, 193, 495, 145, 463, 145, 289, 257, 145, 289, 145, 289, 129, 399, 129)
@@ -27,6 +30,66 @@ radius = 100.0
 
 [sub_resource type="LabelSettings" id="LabelSettings_2cqfq"]
 font_size = 10
+
+[sub_resource type="Resource" id="Resource_cegan"]
+script = ExtResource("6_cegan")
+Quantity = 0
+metadata/_custom_type_script = "uid://bm0o5ggnfmm6y"
+
+[sub_resource type="Resource" id="Resource_82xsv"]
+script = ExtResource("6_cegan")
+Quantity = 0
+metadata/_custom_type_script = "uid://bm0o5ggnfmm6y"
+
+[sub_resource type="Resource" id="Resource_getpj"]
+script = ExtResource("6_cegan")
+Quantity = 0
+metadata/_custom_type_script = "uid://bm0o5ggnfmm6y"
+
+[sub_resource type="Resource" id="Resource_ryguw"]
+script = ExtResource("6_cegan")
+Quantity = 0
+metadata/_custom_type_script = "uid://bm0o5ggnfmm6y"
+
+[sub_resource type="Resource" id="Resource_d13ii"]
+script = ExtResource("6_cegan")
+Quantity = 0
+metadata/_custom_type_script = "uid://bm0o5ggnfmm6y"
+
+[sub_resource type="Resource" id="Resource_1u8w0"]
+script = ExtResource("6_cegan")
+Quantity = 0
+metadata/_custom_type_script = "uid://bm0o5ggnfmm6y"
+
+[sub_resource type="Resource" id="Resource_0odxb"]
+script = ExtResource("6_cegan")
+Quantity = 0
+metadata/_custom_type_script = "uid://bm0o5ggnfmm6y"
+
+[sub_resource type="Resource" id="Resource_lswn8"]
+script = ExtResource("6_cegan")
+Quantity = 0
+metadata/_custom_type_script = "uid://bm0o5ggnfmm6y"
+
+[sub_resource type="Resource" id="Resource_a6jrf"]
+script = ExtResource("6_cegan")
+Quantity = 0
+metadata/_custom_type_script = "uid://bm0o5ggnfmm6y"
+
+[sub_resource type="Resource" id="Resource_xuqvo"]
+script = ExtResource("6_cegan")
+Quantity = 0
+metadata/_custom_type_script = "uid://bm0o5ggnfmm6y"
+
+[sub_resource type="Resource" id="Resource_qsp4k"]
+script = ExtResource("6_cegan")
+Quantity = 0
+metadata/_custom_type_script = "uid://bm0o5ggnfmm6y"
+
+[sub_resource type="Resource" id="Resource_kq58d"]
+script = ExtResource("6_cegan")
+Quantity = 0
+metadata/_custom_type_script = "uid://bm0o5ggnfmm6y"
 
 [node name="Main" type="Node2D"]
 
@@ -116,6 +179,10 @@ label_settings = SubResource("LabelSettings_2cqfq")
 horizontal_alignment = 1
 vertical_alignment = 2
 
+[node name="PlayerInventory" type="Node" parent="Characters/Player"]
+script = ExtResource("5_yaehf")
+Slots = [SubResource("Resource_cegan"), SubResource("Resource_82xsv"), SubResource("Resource_getpj"), SubResource("Resource_ryguw"), SubResource("Resource_d13ii"), SubResource("Resource_1u8w0"), SubResource("Resource_0odxb"), SubResource("Resource_lswn8"), SubResource("Resource_a6jrf"), SubResource("Resource_xuqvo"), SubResource("Resource_qsp4k"), SubResource("Resource_kq58d")]
+
 [node name="Guard1" parent="Characters" instance=ExtResource("5_lquwl")]
 z_index = 1
 position = Vector2(929, 426)
@@ -172,3 +239,11 @@ AssociatedLights = [NodePath("../LightBulb")]
 
 [node name="LightBulb" parent="Items" instance=ExtResource("15_vivmo")]
 position = Vector2(1162, 247)
+
+[node name="UI" type="CanvasLayer" parent="."]
+
+[node name="InventoryUI" parent="UI" node_paths=PackedStringArray("TargetInventory") instance=ExtResource("19_cegan")]
+modulate = Color(1, 0, 0, 1)
+offset_right = 116.0
+offset_bottom = 68.0
+TargetInventory = NodePath("../../Characters/Player/PlayerInventory")

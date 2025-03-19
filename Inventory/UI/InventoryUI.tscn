@@ -1,0 +1,55 @@
+[gd_scene load_steps=3 format=3 uid="uid://bypfigpr23v58"]
+
+[ext_resource type="Script" uid="uid://ycsgnu3vc3d" path="res://Inventory/UI/InventoryUI.cs" id="1_dhcfh"]
+[ext_resource type="PackedScene" uid="uid://cbc7lb60qv02d" path="res://Inventory/UI/InventorySlotUI.tscn" id="2_eslls"]
+
+[node name="InventoryUI" type="GridContainer"]
+offset_right = 40.0
+offset_bottom = 40.0
+columns = 5
+script = ExtResource("1_dhcfh")
+
+[node name="InventorySlotUI" parent="." instance=ExtResource("2_eslls")]
+layout_mode = 2
+
+[node name="InventorySlotUI2" parent="." instance=ExtResource("2_eslls")]
+layout_mode = 2
+
+[node name="InventorySlotUI3" parent="." instance=ExtResource("2_eslls")]
+layout_mode = 2
+
+[node name="InventorySlotUI4" parent="." instance=ExtResource("2_eslls")]
+layout_mode = 2
+
+[node name="InventorySlotUI5" parent="." instance=ExtResource("2_eslls")]
+layout_mode = 2
+
+[node name="InventorySlotUI6" parent="." instance=ExtResource("2_eslls")]
+layout_mode = 2
+
+[node name="InventorySlotUI7" parent="." instance=ExtResource("2_eslls")]
+layout_mode = 2
+
+[node name="InventorySlotUI8" parent="." instance=ExtResource("2_eslls")]
+layout_mode = 2
+
+[node name="InventorySlotUI9" parent="." instance=ExtResource("2_eslls")]
+layout_mode = 2
+
+[node name="InventorySlotUI10" parent="." instance=ExtResource("2_eslls")]
+layout_mode = 2
+
+[node name="InventorySlotUI11" parent="." instance=ExtResource("2_eslls")]
+layout_mode = 2
+
+[node name="InventorySlotUI12" parent="." instance=ExtResource("2_eslls")]
+layout_mode = 2
+
+[node name="InventorySlotUI13" parent="." instance=ExtResource("2_eslls")]
+layout_mode = 2
+
+[node name="InventorySlotUI14" parent="." instance=ExtResource("2_eslls")]
+layout_mode = 2
+
+[node name="InventorySlotUI15" parent="." instance=ExtResource("2_eslls")]
+layout_mode = 2
