@@ -21,9 +21,9 @@
 [ext_resource type="PackedScene" uid="uid://cq105v4igaxh5" path="res://Objects/LightBulb/LightBulb.tscn" id="15_vivmo"]
 [ext_resource type="Texture2D" uid="uid://cm5fkf4n02ibp" path="res://Assets/BaseSet.png" id="18_1u8w0"]
 [ext_resource type="Script" uid="uid://frg4uic6tym5" path="res://Inventory/InventoryItem.cs" id="19_0odxb"]
-[ext_resource type="PackedScene" uid="uid://bypfigpr23v58" path="res://Inventory/UI/InventoryUI.tscn" id="22_d13ii"]
+[ext_resource type="Resource" uid="uid://cganauotis1vm" path="res://Items/TestItem.tres" id="20_1u8w0"]
 [ext_resource type="Script" uid="uid://080qtwyw16wf" path="res://CursorFollower.cs" id="22_ryguw"]
-[ext_resource type="Script" uid="uid://dnfjwmt5hy17g" path="res://Player/InventoryHandler.cs" id="24_1u8w0"]
+[ext_resource type="PackedScene" uid="uid://d21nkwnu7y4od" path="res://Inventory/UI/InventoryViewer.tscn" id="23_d13ii"]
 
 [sub_resource type="NavigationPolygon" id="NavigationPolygon_5vw27"]
 vertices = PackedVector2Array(1199, 209, 1199, 287, 1185, 273, 1185, 223, 1121, 209, 1135, 223, 1121, 287, 1135, 273, 1153, 287, 1167, 287, 897, 449, 897, 415, 943, 447, 943, 463, 927, 463, 369, 175, 399, 145, 415, 145, 415, 161, 385, 191, 369, 191, 447, 161, 447, 177, 417, 207, 385, 207, 463, 177, 463, 193, 433, 223, 417, 223, 495, 193, 495, 209, 481, 255, 449, 239, 511, 209, 511, 225, 543, 225, 543, 241, 719, 271, 689, 241, 689, 225, 737, 225, 785, 271, 737, 209, 799, 209, 799, 225, 815, 225, 815, 241, 831, 241, 831, 257, 801, 287, 785, 287, 863, 257, 863, 289, 817, 303, 801, 303, 849, 351, 833, 319, 895, 289, 895, 321, 865, 367, 911, 321, 911, 337, 881, 383, 865, 383, 927, 337, 927, 353, 881, 415, 959, 353, 959, 369, 1023, 369, 1023, 385, 1007, 415, 975, 431, 1041, 385, 1041, 369, 1153, 369, 1135, 415, 1153, 319, 1121, 319, 1121, 305, 1153, 305, 1167, 369, 1279, 369, 1279, 385, 1233, 415, 1297, 385, 1297, 369, 1359, 369, 1359, 431, 1233, 431, 1135, 431, 1025, 431, 1025, 415, 1007, 431, 975, 447, 849, 367, 833, 351, 817, 319, 719, 287, 545, 287, 545, 271, 481, 271, 449, 255, 433, 239, 257, 161, 271, 175, 271, 191, 255, 191, 225, 177, 225, 161, 255, 207, 239, 207, 209, 193, 209, 177, 239, 223, 223, 223, 223, 255, 207, 255, 177, 241, 177, 193, 207, 351, 191, 351, 161, 289, 161, 241, 191, 401, 207, 401, 207, 417, 161, 463, 223, 417, 223, 433, 193, 479, 161, 479, 305, 433, 305, 417, 431, 417, 431, 433, 335, 463, 511, 433, 511, 449, 481, 479, 449, 463, 513, 495, 543, 449, 543, 465, 529, 511, 559, 465, 559, 481, 529, 527, 591, 481, 591, 497, 561, 527, 623, 497, 623, 513, 561, 543, 735, 513, 735, 529, 671, 559, 641, 543, 831, 543, 801, 529, 801, 513, 833, 513, 863, 527, 863, 543, 833, 497, 865, 497, 895, 527, 865, 481, 881, 481, 895, 495, 911, 479, 881, 449, 927, 479, 911, 495, 831, 559, 671, 575, 655, 575, 641, 561, 655, 607, 639, 607, 625, 577, 625, 561, 609, 609, 639, 639, 623, 639, 593, 625, 623, 655, 607, 655, 577, 625, 607, 687, 591, 687, 577, 657, 591, 703, 561, 703, 561, 657, 593, 609, 609, 577, 513, 511, 481, 495, 449, 479, 335, 479, 303, 479, 303, 495, 193, 495, 145, 463, 145, 289, 257, 145, 289, 145, 289, 129, 399, 129)
@@ -138,7 +138,8 @@ metadata/_custom_type_script = "uid://bm0o5ggnfmm6y"
 
 [sub_resource type="Resource" id="Resource_come4"]
 script = ExtResource("6_cegan")
-Quantity = 0
+Item = ExtResource("20_1u8w0")
+Quantity = 1
 metadata/_custom_type_script = "uid://bm0o5ggnfmm6y"
 
 [sub_resource type="Resource" id="Resource_h8e4i"]
@@ -218,7 +219,7 @@ metadata/_custom_type_script = "uid://dph74un0q20el"
 
 [node name="InputHandler" type="Node2D" parent="." node_paths=PackedStringArray("InventoryHandler")]
 script = ExtResource("2_lquwl")
-InventoryHandler = NodePath("../UI/MarginContainer/InventoryHandler")
+InventoryHandler = NodePath("../UI/MarginContainer/InventoryViewer")
 
 [node name="World" type="Node" parent="."]
 
@@ -269,7 +270,7 @@ position = Vector2(994, 407)
 script = ExtResource("5_d13ii")
 IsCurrentPlayer = true
 Inventory = SubResource("Resource_facbu")
-InventoryHandler = NodePath("../../../UI/MarginContainer/InventoryHandler")
+InventoryHandler = NodePath("../../../UI/MarginContainer/InventoryViewer")
 MovementController = NodePath("..")
 AgentDetectionHandler = NodePath("../PlayerDetection")
 CursorFollower = NodePath("../../../CursorFollower")
@@ -393,16 +394,5 @@ layout_mode = 2
 horizontal_alignment = 2
 vertical_alignment = 2
 
-[node name="InventoryHandler" type="HBoxContainer" parent="UI/MarginContainer" node_paths=PackedStringArray("primaryInventoryUI", "secondaryInventoryUI")]
-layout_mode = 2
-theme_override_constants/separation = 50
-alignment = 1
-script = ExtResource("24_1u8w0")
-primaryInventoryUI = NodePath("InventoryUI")
-secondaryInventoryUI = NodePath("InventoryUI2")
-
-[node name="InventoryUI" parent="UI/MarginContainer/InventoryHandler" instance=ExtResource("22_d13ii")]
-layout_mode = 2
-
-[node name="InventoryUI2" parent="UI/MarginContainer/InventoryHandler" instance=ExtResource("22_d13ii")]
+[node name="InventoryViewer" parent="UI/MarginContainer" instance=ExtResource("23_d13ii")]
 layout_mode = 2

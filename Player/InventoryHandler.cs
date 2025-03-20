@@ -9,8 +9,8 @@ public partial class InventoryHandler : Control
     [Export] public Inventory MainInventory;
     [Export] public Inventory SecondaryInventory;
 
-    [Export] public InventoryUI primaryInventoryUI;
-    [Export] public InventoryUI secondaryInventoryUI;
+    private InventoryUI primaryInventoryUI;
+    private InventoryUI secondaryInventoryUI;
 
     public bool IsViewing => GetPrimaryInventoryVisibility() || GetSecondaryInventoryVisibility();
 
@@ -35,19 +35,25 @@ public partial class InventoryHandler : Control
 
     public override void _Ready()
     {
+        primaryInventoryUI = GetNode<InventoryUI>("%PrimaryInventoryUI");
+        secondaryInventoryUI = GetNode<InventoryUI>("%SecondaryInventoryUI");
+
         SetPrimaryInventory(MainInventory);
         SetSecondaryInventory(SecondaryInventory);
 
         primaryInventoryUI.SetVisibility(false);
         primaryInventoryUI.OnSlotClicked += OnSlotClicked;
+        primaryInventoryUI.OnVisibilityChanged += OnPrimaryVisibilityChanged;
 
         secondaryInventoryUI.SetVisibility(false);
         secondaryInventoryUI.OnSlotClicked += OnSlotClicked;
+        secondaryInventoryUI.OnVisibilityChanged += OnSecondaryVisibilityChanged;
     }
 
     public void SetPrimaryInventory(Inventory inventory)
     {
         MainInventory = inventory;
+        if (primaryInventoryUI == null) return;
         primaryInventoryUI.TargetInventory = inventory;
     }
 
@@ -92,9 +98,8 @@ public partial class InventoryHandler : Control
         secondaryInventoryUI.SetVisibility(visible);
     }
 
-    public void OnSlotClicked(InventorySlotUI slotUI)
+    private void OnSlotClicked(InventorySlotUI slotUI)
     {
-        GD.Print("Slot clicked: " + slotUI);
         if (slotUI == null) return;
 
         // If there is nothing selected already and the slot is empty, do nothing
@@ -110,41 +115,41 @@ public partial class InventoryHandler : Control
         // If nothing has been selected already, select the slot
         if (SelectedSlot == null)
         {
-            GD.Print("Slot selected: " + slotUI);
             SelectedSlot = slotUI;
             return;
         }
 
-        // TODO: Might want to use the Inventory.AddItem methods here instead. Probaly want an AddItemAtIndex method so it goes to a specific slot.
-
         // If something has been selected already and the next slot has something in it, swap the items
         if (slotUI.TargetSlot.Item != null)
         {
-            GD.Print("Swapping items: " + SelectedSlot + " and " + slotUI);
-
-            InventoryItem sourceItem = SelectedSlot.TargetSlot.Item;
-            int sourceQuantity = SelectedSlot.TargetSlot.Quantity;
-
-            SelectedSlot.TargetSlot.Item = null;
-
-            // InventoryItem targetItem = slotUI.TargetSlot.Item;
-            // int targetQuantity = slotUI.TargetSlot.Quantity;
-
-            // SelectedSlot.TargetSlot.Item = null;
-            // slotUI.TargetSlot.Item = null;
-
-            // slotUI.TargetSlot.Item = sourceItem;
-            // slotUI.TargetSlot.Quantity = sourceQuantity;
+            slotUI.TargetSlot.SwapWithExisting(SelectedSlot.TargetSlot);
 
             SelectedSlot = null;
             return;
         }
 
         // If something has been selected already and the next slot is empty, move the item
-        GD.Print("Moving item: " + SelectedSlot + " to " + slotUI);
         slotUI.TargetSlot.AddFromExisting(SelectedSlot.TargetSlot);
         SelectedSlot.UpdateUI();
         SelectedSlot = null;
+    }
+
+    private void OnPrimaryVisibilityChanged(bool visible)
+    {
+        OnAnyVisibilityChanged(visible);
+    }
+
+    private void OnSecondaryVisibilityChanged(bool visible)
+    {
+        OnAnyVisibilityChanged(visible);
+    }
+
+    private void OnAnyVisibilityChanged(bool visible)
+    {
+        if (!visible)
+        {
+            SelectedSlot = null;
+        }
     }
 
 }

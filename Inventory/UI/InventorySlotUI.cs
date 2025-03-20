@@ -75,17 +75,17 @@ public partial class InventorySlotUI : Panel
             itemIcon = _targetSlot.Item.Icon;
         }
 
-        if (ItemLabel != null)
+        if (IsInstanceValid(ItemLabel))
         {
             ItemLabel.Text = itemName;
         }
 
-        if (QuantityLabel != null)
+        if (IsInstanceValid(QuantityLabel))
         {
             QuantityLabel.Text = itemQuantity.ToString();
         }
 
-        if (ItemIcon != null)
+        if (IsInstanceValid(ItemIcon))
         {
             ItemIcon.Texture = itemIcon;
         }

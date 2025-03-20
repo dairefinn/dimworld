@@ -110,6 +110,27 @@ public partial class InventorySlot : Resource
         EmitSignal(SignalName.OnUpdated);
     }
 
+    public void SwapWithExisting(InventorySlot slot)
+    {
+        if (slot == null) return;
+        if (slot.IsEmpty) return;
+        if (IsEmpty) return;
+
+        InventorySlot slotPrevious = new()
+        {
+            Item = _item,
+            Quantity = _quantity
+        };
+
+        _item = slot.Item;
+        _quantity = slot.Quantity;
+
+        slot.Item = slotPrevious.Item;
+        slot.Quantity = slotPrevious.Quantity;
+
+        EmitSignal(SignalName.OnUpdated);
+    }
+
     public void ClearSlot()
     {
         _item = null;

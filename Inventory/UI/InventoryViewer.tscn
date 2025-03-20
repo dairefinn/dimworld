@@ -1,0 +1,19 @@
+[gd_scene load_steps=3 format=3 uid="uid://d21nkwnu7y4od"]
+
+[ext_resource type="Script" uid="uid://dnfjwmt5hy17g" path="res://Player/InventoryHandler.cs" id="1_tdqb6"]
+[ext_resource type="PackedScene" uid="uid://bypfigpr23v58" path="res://Inventory/UI/InventoryUI.tscn" id="2_wxqvu"]
+
+[node name="InventoryViewer" type="HBoxContainer"]
+theme_override_constants/separation = 50
+alignment = 1
+script = ExtResource("1_tdqb6")
+
+[node name="PrimaryInventoryUI" parent="." instance=ExtResource("2_wxqvu")]
+unique_name_in_owner = true
+visible = false
+layout_mode = 2
+
+[node name="SecondaryInventoryUI" parent="." instance=ExtResource("2_wxqvu")]
+unique_name_in_owner = true
+visible = false
+layout_mode = 2
