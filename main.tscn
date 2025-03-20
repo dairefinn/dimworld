@@ -277,16 +277,15 @@ metadata/_custom_type_script = "uid://bm0o5ggnfmm6y"
 [sub_resource type="Resource" id="Resource_wu3dr"]
 script = ExtResource("5_yaehf")
 InventoryName = "Chest 2 contents"
-Slots = [SubResource("Resource_6iyjs"), SubResource("Resource_4w656"), SubResource("Resource_e71vb"), SubResource("Resource_rnkwl"), SubResource("Resource_vke2r"), SubResource("Resource_uit24"), SubResource("Resource_ruth0"), SubResource("Resource_rm4vd"), SubResource("Resource_pjyto"), SubResource("Resource_sm6fg"), SubResource("Resource_b17eg"), SubResource("Resource_ntx8l"), SubResource("Resource_uatky"), SubResource("Resource_rqtf5"), SubResource("Resource_1vm84")]
+Slots = Array[ExtResource("6_cegan")]([SubResource("Resource_6iyjs"), SubResource("Resource_4w656"), SubResource("Resource_e71vb"), SubResource("Resource_rnkwl"), SubResource("Resource_vke2r"), SubResource("Resource_uit24"), SubResource("Resource_ruth0"), SubResource("Resource_rm4vd"), SubResource("Resource_pjyto"), SubResource("Resource_sm6fg"), SubResource("Resource_b17eg"), SubResource("Resource_ntx8l"), SubResource("Resource_uatky"), SubResource("Resource_rqtf5"), SubResource("Resource_1vm84")])
 metadata/_custom_type_script = "uid://dph74un0q20el"
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_ryguw"]
 
 [node name="Main" type="Node2D"]
 
-[node name="InputHandler" type="Node2D" parent="." node_paths=PackedStringArray("InventoryHandler")]
+[node name="InputHandler" type="Node2D" parent="."]
 script = ExtResource("2_lquwl")
-InventoryHandler = NodePath("../UI/MarginContainer/InventoryViewer")
 
 [node name="World" type="Node" parent="."]
 

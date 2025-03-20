@@ -6,11 +6,27 @@ using Godot;
 public partial class InventoryHandler : Control
 {
 
-    [Export] public Inventory MainInventory;
-    [Export] public Inventory SecondaryInventory;
+    [Export] public Inventory PrimaryInventory {
+        get => _primaryInventory;
+        set => SetPrimaryInventory(value);
+    }
+    private Inventory _primaryInventory;
+    [Export] public Inventory SecondaryInventory {
+        get => _secondaryInventory;
+        set => SetSecondaryInventory(value);
+    }
+    private Inventory _secondaryInventory;
 
-    private InventoryUI primaryInventoryUI;
-    private InventoryUI secondaryInventoryUI;
+    private InventoryUI primaryInventoryUI {
+        get => _primaryInventoryUI;
+        set => SetPrimaryInventoryUI(value);
+    }
+    private InventoryUI _primaryInventoryUI;
+    private InventoryUI secondaryInventoryUI {
+        get => _secondaryInventoryUI;
+        set => SetSecondaryInventoryUI(value);
+    }
+    private InventoryUI _secondaryInventoryUI;
 
     public bool IsViewing => GetPrimaryInventoryVisibility() || GetSecondaryInventoryVisibility();
 
@@ -37,36 +53,59 @@ public partial class InventoryHandler : Control
     {
         primaryInventoryUI = GetNode<InventoryUI>("%PrimaryInventoryUI");
         secondaryInventoryUI = GetNode<InventoryUI>("%SecondaryInventoryUI");
-
-        SetPrimaryInventory(MainInventory);
-        SetSecondaryInventory(SecondaryInventory);
-
-        primaryInventoryUI.SetVisibility(false);
-        primaryInventoryUI.OnSlotClicked += OnSlotClicked;
-        primaryInventoryUI.OnVisibilityChanged += OnPrimaryVisibilityChanged;
-
-        secondaryInventoryUI.SetVisibility(false);
-        secondaryInventoryUI.OnSlotClicked += OnSlotClicked;
-        secondaryInventoryUI.OnVisibilityChanged += OnSecondaryVisibilityChanged;
     }
 
-    public void SetPrimaryInventory(Inventory inventory)
+    private void SetPrimaryInventory(Inventory value)
     {
-        MainInventory = inventory;
-        primaryInventoryUI.TargetInventory = inventory;
-        if (inventory == null)
+        _primaryInventory = value;
+
+        if (primaryInventoryUI != null)
+        {
+            primaryInventoryUI.TargetInventory = value;
+        }
+
+        if (value == null)
         {
             SetPrimaryInventoryVisibility(false);
         }
     }
 
-    public void SetSecondaryInventory(Inventory inventory)
+    private void SetSecondaryInventory(Inventory value)
     {
-        SecondaryInventory = inventory;
-        secondaryInventoryUI.TargetInventory = inventory;
-        if (inventory == null)
+        _secondaryInventory = value;
+        
+        if (secondaryInventoryUI != null)
+        {
+            secondaryInventoryUI.TargetInventory = value;
+        }
+
+        if (value == null)
         {
             SetSecondaryInventoryVisibility(false);
+        }
+    }
+
+    private void SetPrimaryInventoryUI(InventoryUI value)
+    {
+        _primaryInventoryUI = value;
+
+        if (value != null)
+        {
+            _primaryInventoryUI.TargetInventory = PrimaryInventory;
+            _primaryInventoryUI.OnSlotClicked += OnSlotClicked;
+            _primaryInventoryUI.OnVisibilityChanged += OnPrimaryVisibilityChanged;
+        }
+    }
+
+    private void SetSecondaryInventoryUI(InventoryUI value)
+    {
+        _secondaryInventoryUI = value;
+
+        if (value != null)
+        {
+            _secondaryInventoryUI.TargetInventory = SecondaryInventory;
+            _secondaryInventoryUI.OnSlotClicked += OnSlotClicked;
+            _secondaryInventoryUI.OnVisibilityChanged += OnSecondaryVisibilityChanged;
         }
     }
 

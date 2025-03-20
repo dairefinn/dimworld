@@ -21,16 +21,17 @@ public partial class PlayerController : Node
         if (IsCurrentPlayer && Globals.GetInstance().MainPlayer == null)
         {
             Globals.GetInstance().MainPlayer = this;
-            InventoryHandler.SetPrimaryInventory(Inventory);
+            InventoryHandler.PrimaryInventory = Inventory;
         }
     }
 
     public void TryInteract()
     {
-        GD.Print("Trying to interact");
         if (CursorFollower == null) return;
+
         ICanBeInteractedWith interactableObject = CursorFollower.InteractableObject;
         if (interactableObject == null) return;
+
         if (interactableObject is Node2D interactableObjectNode2D)
         {
             if (!AgentDetectionHandler.CanSee(interactableObjectNode2D)) return;
