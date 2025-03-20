@@ -1,13 +1,15 @@
-[gd_resource type="Resource" load_steps=2 format=3 uid="uid://dny1yv708gqi3"]
+[gd_resource type="Resource" load_steps=3 format=3 uid="uid://dny1yv708gqi3"]
 
 [ext_resource type="Script" uid="uid://bidknfnplpm7g" path="res://Goap/Actions/EquipSword.cs" id="1_7b0ac"]
+[ext_resource type="Resource" uid="uid://octn8jxqeqaq" path="res://Items/Sword.tres" id="2_4h1j3"]
 
 [resource]
 script = ExtResource("1_7b0ac")
+swordItem = ExtResource("2_4h1j3")
 Name = "Equip sword"
 Preconditions = null
 Effects = Dictionary[String, Variant]({
-"sword_equipped": true
+"has_items": ["item-sword"]
 })
 Cost = 1000
 metadata/_custom_type_script = "uid://dmhsbr32vw1tk"

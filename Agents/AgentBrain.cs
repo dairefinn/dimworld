@@ -16,6 +16,8 @@ public partial class AgentBrain : Node
     [Export] public Array<GoapGoal> GoalSet { get; set; }
     [Export] public bool IsPlanningEnabled { get; set; } = true;
 
+    [Export] public Inventory Inventory { get; set; }
+
     private GoapGoal CurrentGoal { get; set; }
     private GoapAction[] CurrentPlan { get; set; } = [];
     private GoapAction CurrentAction { get; set; }
@@ -35,6 +37,22 @@ public partial class AgentBrain : Node
         }
         FollowPlan(CurrentPlan, delta);
         framesToNextGoalUpdate--;
+
+        Inventory.OnUpdated += OnInventoryUpdated;
+
+        // Print inventory slots w/ item counts
+        // if (Inventory != null)
+        // {
+        //     string inventoryString = "Inventory: ";
+        //     System.Collections.Generic.List<string> contentsStrings = [];
+        //     foreach (InventorySlot slot in Inventory.Slots)
+        //     {
+        //         if (slot.IsEmpty) continue;
+        //         contentsStrings.Add(slot.Item.ItemName + " (" + slot.Quantity + ")");
+        //     }
+        //     inventoryString += string.Join(", ", contentsStrings);
+        //     GD.Print(inventoryString);
+        // }
     }
 
     private void UpdateCurrentPlan()
@@ -46,6 +64,7 @@ public partial class AgentBrain : Node
 
         foreach (GoapGoal goal in goalsInOrder)
         {
+            GD.Print("Checking goal: " + goal.Name);
             if (!goal.IsValid()) continue;
             if (goal.IsSatisfied(WorldState, this)) continue;
 
@@ -105,6 +124,20 @@ public partial class AgentBrain : Node
                 CurrentPlanStep = 0;
             }
         }
+    }
+
+    private void OnInventoryUpdated()
+    {
+        Array<string> itemsInInventory = [];
+
+        foreach (InventorySlot slot in Inventory.Slots)
+        {
+            if (slot.IsEmpty) continue;
+            itemsInInventory.Add(slot.Item.id);
+        }
+
+        GD.Print("Items in inventory: " + string.Join(", ", itemsInInventory));
+        WorldState["has_items"] = itemsInInventory;
     }
 
 }

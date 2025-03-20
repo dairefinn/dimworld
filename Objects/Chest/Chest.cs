@@ -13,4 +13,14 @@ public partial class Chest : StaticBody2D, ICanBeInteractedWith
         Globals.GetInstance().MainPlayer.InventoryHandler.OpenSecondaryInventory(Inventory);
     }
 
+    public bool ContainsItem(InventoryItem item)
+    {
+        return Inventory.HasItem(item);
+    }
+
+    public bool ContainsItem(string itemId)
+    {
+        return Inventory.HasItem(itemId);
+    }
+
 }

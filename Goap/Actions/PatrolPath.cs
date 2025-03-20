@@ -9,13 +9,19 @@ using Godot.Collections;
 public partial class PatrolPath : GoapAction
 {
 
+    [Export] public InventoryItem swordItem;
+
+
     private int CurrentPointIndex { get; set; } = 0;
+
 
     public override bool CheckProceduralPrecondition(AgentBrain agentBrain)
     {
+        // Check if the agent has a set patrol path stored
         Array<string> patrolPath = (Array<string>)GoapStateUtils.GetState(agentBrain.WorldState, "patrol_path", new Array<string>());
         if (patrolPath == null) return false;
         if (patrolPath.Count == 0) return false;
+
         return true;
     }
 

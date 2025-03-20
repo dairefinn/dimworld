@@ -62,7 +62,19 @@ public partial class Inventory : Resource
 	{
 		foreach (InventorySlot slot in Slots)
 		{
+			if (slot.IsEmpty) continue;
 			if (slot.Item == item) return true;
+		}
+		
+		return false;
+	}
+
+	public bool HasItem(string itemId)
+	{
+		foreach (InventorySlot slot in Slots)
+		{
+			if (slot.IsEmpty) continue;
+			if (slot.Item.id == itemId) return true;
 		}
 		
 		return false;
@@ -99,6 +111,29 @@ public partial class Inventory : Resource
 		}
 
 		return null;
+	}
+
+	public InventorySlot GetFirstSlotWithItem(string itemId, bool ignoreFull = false)
+	{
+		foreach (InventorySlot slot in Slots)
+		{
+			if (slot.IsEmpty) continue;
+			if (slot.Item.id != itemId) continue;
+			if (ignoreFull && slot.IsFull) continue;
+			return slot;
+		}
+
+		return null;
+	}
+
+	public bool IsFull()
+	{
+		foreach (InventorySlot slot in Slots)
+		{
+			if (slot.IsEmpty) return false;
+		}
+
+		return true;
 	}
 
 }

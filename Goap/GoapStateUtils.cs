@@ -11,10 +11,26 @@ public class GoapStateUtils
     {
         foreach (string key in subset.Keys)
         {
-            if (!mainState.ContainsKey(key) || !mainState[key].Equals(subset[key]))
-            {
-                return false;
+            if (!mainState.ContainsKey(key)) {
+                return false; // Key must exist in main state
             }
+
+            // Check if the value can be converted to an array
+            Array<string> subsetArray = subset[key].As<Array<string>>();
+            Array<string> mainStateArray = mainState[key].As<Array<string>>();
+
+            if (subsetArray != null && mainStateArray != null)
+            {
+                // The main array must contain all the elements of the subset array but doesn't need to be exactly the same
+                foreach (string element in subsetArray)
+                {
+                    if (!mainStateArray.Contains(element)) return false;
+                }
+
+                continue;
+            }
+
+            if (!mainState[key].Equals(subset[key])) return false; // Key must have the same value
         }
 
         return true;

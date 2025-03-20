@@ -33,8 +33,9 @@ public class GoapPlanner
         Dictionary<string, Variant> desiredState = GoapStateUtils.Duplicate(goal.DesiredState);
         if (desiredState.Count == 0) return [];
 
-        GoapPlanNode planTree = GetPossiblePlans(goal, actionSet, desiredState, worldState, agentBrain);
-        // GD.Print(DrawTree(planTree));
+
+        GoapPlanNode planTree = GetPossiblePlans(actionSet, desiredState, worldState, agentBrain);
+        GD.Print(DrawTree(planTree));
 
         GoapAction[] plan = FindBestPlan(planTree);
 
@@ -48,7 +49,7 @@ public class GoapPlanner
     /// <param name="desiredState"></param>
     /// <param name="worldState"></param>
     /// <returns>The root node of the plan tree</returns>
-    private static GoapPlanNode GetPossiblePlans(GoapGoal goal, GoapAction[] possibleActions, Dictionary<string, Variant> desiredState, Dictionary<string, Variant> worldState, AgentBrain agentBrain)
+    private static GoapPlanNode GetPossiblePlans(GoapAction[] possibleActions, Dictionary<string, Variant> desiredState, Dictionary<string, Variant> worldState, AgentBrain agentBrain)
     {
         // Create the root node - we don't use this node directly but it's children are all the possible plans we can use
         GoapPlanNode rootNode = new()
@@ -57,12 +58,6 @@ public class GoapPlanner
             Cost = 0,
             Children = []
         };
-
-        // Check if the desired state is already satisfied
-        // if (goal.IsSatisfied(worldState, agentBrain)) {
-        //     // GD.Print("desired state already satisfied");
-        //     return rootNode;
-        // }
 
         // Check each possible action to see if it can be performed to achieve the goal
         foreach(GoapAction action in possibleActions)
@@ -83,11 +78,11 @@ public class GoapPlanner
     {
         // If this action does not satisfy the desired state, it's not a valid plan
         if (!GoapStateUtils.IsSubsetOf(currentAction.Effects, desiredState)) {
-            // GD.Print("[Invalid] Action " + currentAction.Name + " WILL NOT satisfy the desired state");
+            GD.Print("[Invalid] Action " + currentAction.Name + " WILL NOT satisfy the desired state");
             return null;
         }
 
-        // GD.Print("Action " + currentAction.Name + " will satisfy the desired state");
+        GD.Print("Action " + currentAction.Name + " will satisfy the desired state");
 
         // Create a node for this action
         GoapPlanNode currentNode = new()
@@ -101,17 +96,18 @@ public class GoapPlanner
 		bool proceduralPreconditionsSatisfied = currentAction.CheckProceduralPrecondition(agentBrain);
         if (!proceduralPreconditionsSatisfied) 
         {
-            // GD.Print("[Invalid] Action " + currentAction.Name + " cannot be performed because procedural preconditions are not satisfied");
+            GD.Print("[Invalid] Action " + currentAction.Name + " cannot be performed because procedural preconditions are not satisfied");
             return null;
         }
 
 		bool staticPreconditionsSatisfied = currentAction.CheckStaticPreconditions(worldState);
         if (staticPreconditionsSatisfied) {
-            // GD.Print("[Valid] Action " + currentAction.Name + " can be performed");
+            GD.Print("[Valid] Action " + currentAction.Name + " can be performed");
             return currentNode;
         }
 
-        // GD.Print("Action " + currentAction.Name + " CANNOT be performed");
+        GD.Print("Action " + currentAction.Name + " CANNOT be performed");
+        GoapStateUtils.PrintState(currentAction.Preconditions, "Preconditions");
 
         // Otherwise, figure out how to satisfy the preconditions of the action
         Dictionary<string, Variant> desiredStateForAction = GoapStateUtils.Duplicate(currentAction.Preconditions);
@@ -120,7 +116,8 @@ public class GoapPlanner
         GoapAction[] remainingActions = possibleActions.Where(action => action != currentAction).ToArray();
         foreach(GoapAction nextAction in remainingActions)
         {
-            // GD.Print("Checking if " + nextAction.Name + " can satisfy the preconditions of " + currentAction.Name);
+            GD.Print("Checking if " + nextAction.Name + " can satisfy the preconditions of " + currentAction.Name);
+            GoapStateUtils.PrintState(nextAction.Effects, "Action effects");
             GoapPlanNode childNode = BuildPlanTree(desiredStateForAction, worldState, possibleActions[1..], agentBrain, nextAction, accumulatedCost + nextAction.Cost);
             if (childNode != null)
             {
@@ -131,12 +128,12 @@ public class GoapPlanner
 
         // If this action has any actions that can satisfy its preconditions, then this is a valid plan
         if (currentNode.Children.Count > 0) {
-            // GD.Print("[Valid] Action " + currentAction.Name + " can be performed by satisfying its preconditions");
+            GD.Print("[Valid] Action " + currentAction.Name + " can be performed by satisfying its preconditions");
             return currentNode;
         }
 
         // Otherwise, this is not a valid plan
-        // GD.Print("[Invalid] No actions can satisfy the preconditions of " + currentAction.Name);
+        GD.Print("[Invalid] No actions can satisfy the preconditions of " + currentAction.Name);
         return null;
     }
 

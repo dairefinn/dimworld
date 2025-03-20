@@ -7,15 +7,29 @@ using Godot.Collections;
 public partial class EquipSword : GoapAction
 {
 
+    [Export] public InventoryItem swordItem;
+
     private Chest detectedChest;
 
     public override bool CheckProceduralPrecondition(AgentBrain agentBrain)
     {
+        // Sword item is required
+        if (swordItem == null) {
+            GD.PushError("EquipSword action requires a sword item to be set.");
+            return false;
+        }
+
+        // Cannot pick up a sword if the agent's inventory is full
+        if (agentBrain.Inventory.IsFull()) return false;
+
         // Get any nearby chests that can be reached
         Array<Chest> detectedChests = [..
             agentBrain.DetectionHandler.GetDetectedInstancesOf<Chest>()
-            .Where(chest => agentBrain.MovementController.CanReachPoint(chest.GlobalPosition))
-            // TODO: Check if chest contains a sword once the inventory system is implemented
+            .Where(chest => {
+                if (!agentBrain.MovementController.CanReachPoint(chest.GlobalPosition)) return false;
+                if (!chest.ContainsItem(swordItem)) return false;
+                return true;
+            })
             .ToArray()
         ];
         if (detectedChests.Count == 0) return false;
@@ -46,8 +60,9 @@ public partial class EquipSword : GoapAction
 
         if(agentBrain.MovementController.NavigationAgent.IsNavigationFinished())
         {
-            detectedChest.QueueFree();
-            GoapStateUtils.SetState(worldState, "sword_equipped", true);
+            InventorySlot agentSlot = agentBrain.Inventory.GetFirstEmptySlot();
+            InventorySlot chestSlot = detectedChest.Inventory.GetFirstSlotWithItem(swordItem);
+            agentSlot.AddFromExisting(chestSlot);
             return true;
         }
 
