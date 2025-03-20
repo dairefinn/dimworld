@@ -7,6 +7,8 @@ public partial class InventoryUI : Container
 {
 
     [Signal] public delegate void OnVisibilityChangedEventHandler(bool visible);
+    [Signal] public delegate void OnSlotClickedEventHandler(InventorySlotUI slot);
+
 
     [Export] public Inventory TargetInventory {
         get => _targetInventory;
@@ -14,7 +16,6 @@ public partial class InventoryUI : Container
     }
     private Inventory _targetInventory;
     [Export] public PackedScene SlotUIScene = GD.Load<PackedScene>("res://Inventory/UI/InventorySlotUI.tscn");
-    [Export] public int SelectedSlotIndex = -1; // TODO: Should I store the index or the slot here?
 
 
     private Label InventoryTitle;
@@ -25,7 +26,7 @@ public partial class InventoryUI : Container
     {
         InventoryTitle = GetNode<Label>("%InventoryTitle");
         SlotsGrid = GetNode<GridContainer>("%SlotsGrid");
-        OnVisibilityChanged += OnVisibilityChangedInner;
+        UpdateUI();
     }
 
 
@@ -75,18 +76,7 @@ public partial class InventoryUI : Container
 
     private void OnClickSlot(InventorySlotUI slotUI)
     {
-        GD.Print("Slot clicked: " + slotUI);
-        slotUI.IsSelected = true;
-        int slotIndex = _targetInventory.Slots.IndexOf(slotUI.TargetSlot);
-        SelectedSlotIndex = slotIndex;
-    }
-
-    private void OnVisibilityChangedInner(bool isVisible)
-    {
-        if (!isVisible)
-        {
-            SelectedSlotIndex = -1;
-        }
+        EmitSignal(SignalName.OnSlotClicked, slotUI);
     }
 
 }

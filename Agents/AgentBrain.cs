@@ -43,7 +43,6 @@ public partial class AgentBrain : Node
         if (MovementController == null) return;
 
         GoapGoal[] goalsInOrder = GoapPlanner.GetGoalsInOrder(GoalSet.ToArray(), WorldState, this);
-        // GD.Print("Goals in order: [" + string.Join(", ", goalsInOrder.Select(goal => goal.Name)) + "]");
 
         foreach (GoapGoal goal in goalsInOrder)
         {

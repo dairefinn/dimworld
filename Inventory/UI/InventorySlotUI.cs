@@ -7,16 +7,13 @@ public partial class InventorySlotUI : Panel
 
     [Signal] public delegate void OnClickedEventHandler();
 
+
     [Export] public InventorySlot TargetSlot {
         get => _targetSlot;
         set => SetTargetSlot(value);
     }
     private InventorySlot _targetSlot;
-    [Export] public bool IsSelected {
-        get => _isSelected;
-        set => SetSelected(value);
-    }
-    private bool _isSelected;
+
 
     private Label QuantityLabel;
     private Label ItemLabel;
@@ -34,6 +31,8 @@ public partial class InventorySlotUI : Panel
         ItemLabel.Text = "";
         QuantityLabel.Text = "0";
         ItemIcon.Texture = null;
+
+        UpdateUI();
     }
 
     public override void _GuiInput(InputEvent @event)
@@ -61,21 +60,35 @@ public partial class InventorySlotUI : Panel
         _targetSlot.OnUpdated += UpdateUI;
     }
 
-    private void SetSelected(bool isSelected)
-    {
-        GD.Print("Setting selected to " + isSelected);
-        _isSelected = isSelected;
-        // TODO: Show something in the UI to indicate that the slot is selected
-    }
-
-    private void UpdateUI()
+    public void UpdateUI()
     {
         if (_targetSlot == null) return;
-        if (_targetSlot.IsEmpty) return;
 
-        ItemLabel.Text = _targetSlot.Item.ItemName;
-        QuantityLabel.Text = _targetSlot.Quantity.ToString();
-        ItemIcon.Texture = _targetSlot.Item.Icon;
+        string itemName = "";
+        int itemQuantity = 0;
+        Texture2D itemIcon = null;
+
+        if (_targetSlot.Item != null)
+        {
+            itemName = _targetSlot.Item.ItemName;
+            itemQuantity = _targetSlot.Quantity;
+            itemIcon = _targetSlot.Item.Icon;
+        }
+
+        if (ItemLabel != null)
+        {
+            ItemLabel.Text = itemName;
+        }
+
+        if (QuantityLabel != null)
+        {
+            QuantityLabel.Text = itemQuantity.ToString();
+        }
+
+        if (ItemIcon != null)
+        {
+            ItemIcon.Texture = itemIcon;
+        }
     }
 
 }

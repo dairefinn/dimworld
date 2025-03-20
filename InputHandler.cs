@@ -41,7 +41,7 @@ public partial class InputHandler : Node2D
 
         if (canInteract)
         {
-            Globals.GetInstance().MainPlayer.InteractionHandler.TryInteract();
+            Globals.GetInstance().MainPlayer.TryInteract();
         }
 
         if (canCancel)

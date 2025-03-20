@@ -1,4 +1,4 @@
-[gd_scene load_steps=43 format=4 uid="uid://ddc8qiig7j3wm"]
+[gd_scene load_steps=63 format=4 uid="uid://ddc8qiig7j3wm"]
 
 [ext_resource type="Script" uid="uid://g354xqg3s44p" path="res://InputHandler.cs" id="2_lquwl"]
 [ext_resource type="TileSet" uid="uid://me5j3tknec74" path="res://Tileset.tres" id="3_4c57u"]
@@ -11,7 +11,6 @@
 [ext_resource type="Resource" uid="uid://dny1yv708gqi3" path="res://Goap/Actions/EquipSword.tres" id="7_kek77"]
 [ext_resource type="Resource" uid="uid://c0vymkdfnl7rp" path="res://Goap/Actions/PatrolPath.tres" id="8_4c57u"]
 [ext_resource type="Resource" uid="uid://dyo8ce1njn67q" path="res://Goap/Goals/EnsureVisibility.tres" id="8_5vw27"]
-[ext_resource type="Script" uid="uid://doxca8jh70d7s" path="res://Player/PlayerInteractionHandler.cs" id="8_getpj"]
 [ext_resource type="Resource" uid="uid://cor2aifcdpfoy" path="res://Goap/Actions/TurnOnLights.tres" id="8_kek77"]
 [ext_resource type="Resource" uid="uid://be3ryk2ex3pr1" path="res://Goap/Actions/Idle.tres" id="8_ycdy4"]
 [ext_resource type="Resource" uid="uid://ckvaxlnjoqs1o" path="res://Goap/Goals/Patrol.tres" id="9_kek77"]
@@ -20,7 +19,9 @@
 [ext_resource type="PackedScene" uid="uid://bcpksn1hqwpab" path="res://Objects/Chest/Chest.tscn" id="13_w48qg"]
 [ext_resource type="PackedScene" uid="uid://dsrrvsvuuvj3b" path="res://Objects/LightSwitch/LightSwitch.tscn" id="14_vivmo"]
 [ext_resource type="PackedScene" uid="uid://cq105v4igaxh5" path="res://Objects/LightBulb/LightBulb.tscn" id="15_vivmo"]
-[ext_resource type="PackedScene" uid="uid://bypfigpr23v58" path="res://Inventory/UI/InventoryUI.tscn" id="19_cegan"]
+[ext_resource type="Texture2D" uid="uid://cm5fkf4n02ibp" path="res://Assets/BaseSet.png" id="18_1u8w0"]
+[ext_resource type="Script" uid="uid://frg4uic6tym5" path="res://Inventory/InventoryItem.cs" id="19_0odxb"]
+[ext_resource type="PackedScene" uid="uid://bypfigpr23v58" path="res://Inventory/UI/InventoryUI.tscn" id="22_d13ii"]
 [ext_resource type="Script" uid="uid://080qtwyw16wf" path="res://CursorFollower.cs" id="22_ryguw"]
 [ext_resource type="Script" uid="uid://dnfjwmt5hy17g" path="res://Player/InventoryHandler.cs" id="24_1u8w0"]
 
@@ -28,24 +29,6 @@
 vertices = PackedVector2Array(1199, 209, 1199, 287, 1185, 273, 1185, 223, 1121, 209, 1135, 223, 1121, 287, 1135, 273, 1153, 287, 1167, 287, 897, 449, 897, 415, 943, 447, 943, 463, 927, 463, 369, 175, 399, 145, 415, 145, 415, 161, 385, 191, 369, 191, 447, 161, 447, 177, 417, 207, 385, 207, 463, 177, 463, 193, 433, 223, 417, 223, 495, 193, 495, 209, 481, 255, 449, 239, 511, 209, 511, 225, 543, 225, 543, 241, 719, 271, 689, 241, 689, 225, 737, 225, 785, 271, 737, 209, 799, 209, 799, 225, 815, 225, 815, 241, 831, 241, 831, 257, 801, 287, 785, 287, 863, 257, 863, 289, 817, 303, 801, 303, 849, 351, 833, 319, 895, 289, 895, 321, 865, 367, 911, 321, 911, 337, 881, 383, 865, 383, 927, 337, 927, 353, 881, 415, 959, 353, 959, 369, 1023, 369, 1023, 385, 1007, 415, 975, 431, 1041, 385, 1041, 369, 1153, 369, 1135, 415, 1153, 319, 1121, 319, 1121, 305, 1153, 305, 1167, 369, 1279, 369, 1279, 385, 1233, 415, 1297, 385, 1297, 369, 1359, 369, 1359, 431, 1233, 431, 1135, 431, 1025, 431, 1025, 415, 1007, 431, 975, 447, 849, 367, 833, 351, 817, 319, 719, 287, 545, 287, 545, 271, 481, 271, 449, 255, 433, 239, 257, 161, 271, 175, 271, 191, 255, 191, 225, 177, 225, 161, 255, 207, 239, 207, 209, 193, 209, 177, 239, 223, 223, 223, 223, 255, 207, 255, 177, 241, 177, 193, 207, 351, 191, 351, 161, 289, 161, 241, 191, 401, 207, 401, 207, 417, 161, 463, 223, 417, 223, 433, 193, 479, 161, 479, 305, 433, 305, 417, 431, 417, 431, 433, 335, 463, 511, 433, 511, 449, 481, 479, 449, 463, 513, 495, 543, 449, 543, 465, 529, 511, 559, 465, 559, 481, 529, 527, 591, 481, 591, 497, 561, 527, 623, 497, 623, 513, 561, 543, 735, 513, 735, 529, 671, 559, 641, 543, 831, 543, 801, 529, 801, 513, 833, 513, 863, 527, 863, 543, 833, 497, 865, 497, 895, 527, 865, 481, 881, 481, 895, 495, 911, 479, 881, 449, 927, 479, 911, 495, 831, 559, 671, 575, 655, 575, 641, 561, 655, 607, 639, 607, 625, 577, 625, 561, 609, 609, 639, 639, 623, 639, 593, 625, 623, 655, 607, 655, 577, 625, 607, 687, 591, 687, 577, 657, 591, 703, 561, 703, 561, 657, 593, 609, 609, 577, 513, 511, 481, 495, 449, 479, 335, 479, 303, 479, 303, 495, 193, 495, 145, 463, 145, 289, 257, 145, 289, 145, 289, 129, 399, 129)
 polygons = Array[PackedInt32Array]([PackedInt32Array(0, 1, 2, 3), PackedInt32Array(4, 0, 3, 5), PackedInt32Array(6, 4, 5, 7), PackedInt32Array(8, 6, 7, 2), PackedInt32Array(2, 1, 9), PackedInt32Array(8, 2, 9), PackedInt32Array(10, 11, 12, 13, 14), PackedInt32Array(15, 16, 17, 18, 19, 20), PackedInt32Array(19, 18, 21, 22, 23, 24), PackedInt32Array(23, 22, 25, 26, 27, 28), PackedInt32Array(26, 29, 30, 31, 32, 27), PackedInt32Array(30, 33, 34, 31), PackedInt32Array(34, 35, 36), PackedInt32Array(37, 38, 39, 40, 41), PackedInt32Array(40, 42, 43, 44, 41), PackedInt32Array(44, 45, 46, 41), PackedInt32Array(41, 46, 47, 48, 49, 50), PackedInt32Array(49, 48, 51, 52, 53, 54), PackedInt32Array(55, 56, 52, 57, 58, 59), PackedInt32Array(59, 58, 60, 61, 62, 63), PackedInt32Array(62, 61, 64, 65, 11, 66), PackedInt32Array(65, 67, 68, 11), PackedInt32Array(68, 69, 70, 71, 72, 11), PackedInt32Array(73, 74, 75, 76), PackedInt32Array(77, 78, 79, 80), PackedInt32Array(80, 8, 9, 81), PackedInt32Array(77, 80, 81), PackedInt32Array(75, 77, 81), PackedInt32Array(81, 82, 83, 84, 76), PackedInt32Array(85, 86, 87, 88), PackedInt32Array(83, 85, 88, 89, 84), PackedInt32Array(75, 81, 76), PackedInt32Array(73, 76, 90, 91, 92), PackedInt32Array(70, 73, 92, 71), PackedInt32Array(71, 93, 72), PackedInt32Array(72, 94, 12, 11), PackedInt32Array(59, 95, 55), PackedInt32Array(55, 96, 56), PackedInt32Array(56, 97, 53, 52), PackedInt32Array(37, 98, 99, 100, 38), PackedInt32Array(100, 101, 31, 34, 36), PackedInt32Array(31, 102, 32), PackedInt32Array(32, 103, 27), PackedInt32Array(104, 105, 106, 107, 108, 109), PackedInt32Array(108, 107, 110, 111, 112, 113), PackedInt32Array(111, 114, 115, 112), PackedInt32Array(112, 115, 116, 117, 118, 119), PackedInt32Array(118, 117, 120, 121, 122, 123), PackedInt32Array(124, 125, 126, 127), PackedInt32Array(127, 126, 128, 129, 130, 131), PackedInt32Array(132, 133, 134, 135, 136), PackedInt32Array(135, 137, 138, 139, 140), PackedInt32Array(141, 138, 142, 143, 144), PackedInt32Array(144, 143, 145, 146, 147), PackedInt32Array(146, 148, 149, 150, 147), PackedInt32Array(149, 151, 152, 153, 150), PackedInt32Array(152, 154, 155, 156, 157), PackedInt32Array(158, 159, 160, 161, 162, 163), PackedInt32Array(162, 161, 164, 165, 166), PackedInt32Array(165, 167, 168, 169, 166), PackedInt32Array(170, 168, 171, 10, 14), PackedInt32Array(14, 172, 170), PackedInt32Array(168, 170, 173, 169), PackedInt32Array(159, 158, 174, 156, 155), PackedInt32Array(156, 175, 176, 177, 157), PackedInt32Array(176, 178, 179, 180, 181, 177), PackedInt32Array(182, 179, 183, 184, 185), PackedInt32Array(185, 184, 186, 187, 188), PackedInt32Array(187, 189, 190, 191, 188), PackedInt32Array(190, 192, 193, 194, 191), PackedInt32Array(185, 195, 182), PackedInt32Array(179, 182, 196, 180), PackedInt32Array(152, 157, 153), PackedInt32Array(144, 197, 141), PackedInt32Array(138, 141, 198, 139), PackedInt32Array(139, 199, 140), PackedInt32Array(135, 140, 136), PackedInt32Array(132, 136, 200, 201, 129), PackedInt32Array(129, 201, 202, 203, 130), PackedInt32Array(124, 127, 204, 205, 122, 121), PackedInt32Array(105, 104, 206, 207, 15), PackedInt32Array(207, 208, 209, 16, 15), PackedInt32Array(100, 36, 38)])
 agent_radius = 1.0
-
-[sub_resource type="CircleShape2D" id="CircleShape2D_5vw27"]
-radius = 100.0
-
-[sub_resource type="Resource" id="Resource_cegan"]
-script = ExtResource("6_cegan")
-Quantity = 0
-metadata/_custom_type_script = "uid://bm0o5ggnfmm6y"
-
-[sub_resource type="Resource" id="Resource_82xsv"]
-script = ExtResource("6_cegan")
-Quantity = 0
-metadata/_custom_type_script = "uid://bm0o5ggnfmm6y"
-
-[sub_resource type="Resource" id="Resource_getpj"]
-script = ExtResource("6_cegan")
-Quantity = 0
-metadata/_custom_type_script = "uid://bm0o5ggnfmm6y"
 
 [sub_resource type="Resource" id="Resource_ryguw"]
 script = ExtResource("6_cegan")
@@ -107,8 +90,127 @@ script = ExtResource("6_cegan")
 Quantity = 0
 metadata/_custom_type_script = "uid://bm0o5ggnfmm6y"
 
+[sub_resource type="Resource" id="Resource_4k2k6"]
+script = ExtResource("6_cegan")
+Quantity = 0
+metadata/_custom_type_script = "uid://bm0o5ggnfmm6y"
+
+[sub_resource type="Resource" id="Resource_0rl1p"]
+script = ExtResource("6_cegan")
+Quantity = 0
+metadata/_custom_type_script = "uid://bm0o5ggnfmm6y"
+
+[sub_resource type="Resource" id="Resource_ok6jj"]
+script = ExtResource("6_cegan")
+Quantity = 0
+metadata/_custom_type_script = "uid://bm0o5ggnfmm6y"
+
+[sub_resource type="Resource" id="Resource_facbu"]
+script = ExtResource("5_yaehf")
+InventoryName = "Player inventory"
+Slots = Array[ExtResource("6_cegan")]([SubResource("Resource_ryguw"), SubResource("Resource_d13ii"), SubResource("Resource_1u8w0"), SubResource("Resource_0odxb"), SubResource("Resource_lswn8"), SubResource("Resource_a6jrf"), SubResource("Resource_xuqvo"), SubResource("Resource_qsp4k"), SubResource("Resource_kq58d"), SubResource("Resource_seu75"), SubResource("Resource_htxhm"), SubResource("Resource_jq2sk"), SubResource("Resource_4k2k6"), SubResource("Resource_0rl1p"), SubResource("Resource_ok6jj")])
+metadata/_custom_type_script = "uid://dph74un0q20el"
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_5vw27"]
+radius = 100.0
+
 [sub_resource type="LabelSettings" id="LabelSettings_2cqfq"]
 font_size = 10
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_0g53v"]
+atlas = ExtResource("18_1u8w0")
+region = Rect2(480, 416, 16, 16)
+
+[sub_resource type="Resource" id="Resource_6iyjs"]
+script = ExtResource("19_0odxb")
+id = "item-sword"
+ItemName = "Sword"
+ItemDescription = "A generic sword"
+Icon = SubResource("AtlasTexture_0g53v")
+MaxStackSize = 1
+metadata/_custom_type_script = "uid://frg4uic6tym5"
+
+[sub_resource type="Resource" id="Resource_b1qrp"]
+script = ExtResource("6_cegan")
+Item = SubResource("Resource_6iyjs")
+Quantity = 1
+metadata/_custom_type_script = "uid://bm0o5ggnfmm6y"
+
+[sub_resource type="Resource" id="Resource_come4"]
+script = ExtResource("6_cegan")
+Quantity = 0
+metadata/_custom_type_script = "uid://bm0o5ggnfmm6y"
+
+[sub_resource type="Resource" id="Resource_h8e4i"]
+script = ExtResource("6_cegan")
+Quantity = 0
+metadata/_custom_type_script = "uid://bm0o5ggnfmm6y"
+
+[sub_resource type="Resource" id="Resource_4lmeg"]
+script = ExtResource("6_cegan")
+Quantity = 0
+metadata/_custom_type_script = "uid://bm0o5ggnfmm6y"
+
+[sub_resource type="Resource" id="Resource_0cp0l"]
+script = ExtResource("6_cegan")
+Quantity = 0
+metadata/_custom_type_script = "uid://bm0o5ggnfmm6y"
+
+[sub_resource type="Resource" id="Resource_d2t1y"]
+script = ExtResource("6_cegan")
+Quantity = 0
+metadata/_custom_type_script = "uid://bm0o5ggnfmm6y"
+
+[sub_resource type="Resource" id="Resource_gngh3"]
+script = ExtResource("6_cegan")
+Quantity = 0
+metadata/_custom_type_script = "uid://bm0o5ggnfmm6y"
+
+[sub_resource type="Resource" id="Resource_0n3wm"]
+script = ExtResource("6_cegan")
+Quantity = 0
+metadata/_custom_type_script = "uid://bm0o5ggnfmm6y"
+
+[sub_resource type="Resource" id="Resource_qnost"]
+script = ExtResource("6_cegan")
+Quantity = 0
+metadata/_custom_type_script = "uid://bm0o5ggnfmm6y"
+
+[sub_resource type="Resource" id="Resource_wnkbs"]
+script = ExtResource("6_cegan")
+Quantity = 0
+metadata/_custom_type_script = "uid://bm0o5ggnfmm6y"
+
+[sub_resource type="Resource" id="Resource_f6a44"]
+script = ExtResource("6_cegan")
+Quantity = 0
+metadata/_custom_type_script = "uid://bm0o5ggnfmm6y"
+
+[sub_resource type="Resource" id="Resource_0cbny"]
+script = ExtResource("6_cegan")
+Quantity = 0
+metadata/_custom_type_script = "uid://bm0o5ggnfmm6y"
+
+[sub_resource type="Resource" id="Resource_hrvbo"]
+script = ExtResource("6_cegan")
+Quantity = 0
+metadata/_custom_type_script = "uid://bm0o5ggnfmm6y"
+
+[sub_resource type="Resource" id="Resource_uypp3"]
+script = ExtResource("6_cegan")
+Quantity = 0
+metadata/_custom_type_script = "uid://bm0o5ggnfmm6y"
+
+[sub_resource type="Resource" id="Resource_blkrb"]
+script = ExtResource("6_cegan")
+Quantity = 0
+metadata/_custom_type_script = "uid://bm0o5ggnfmm6y"
+
+[sub_resource type="Resource" id="Resource_abqjc"]
+script = ExtResource("5_yaehf")
+InventoryName = "Chest contents"
+Slots = Array[ExtResource("6_cegan")]([SubResource("Resource_b1qrp"), SubResource("Resource_come4"), SubResource("Resource_h8e4i"), SubResource("Resource_4lmeg"), SubResource("Resource_0cp0l"), SubResource("Resource_d2t1y"), SubResource("Resource_gngh3"), SubResource("Resource_0n3wm"), SubResource("Resource_qnost"), SubResource("Resource_wnkbs"), SubResource("Resource_f6a44"), SubResource("Resource_0cbny"), SubResource("Resource_hrvbo"), SubResource("Resource_uypp3"), SubResource("Resource_blkrb")])
+metadata/_custom_type_script = "uid://dph74un0q20el"
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_ryguw"]
 
@@ -143,8 +245,6 @@ tile_map_data = PackedByteArray("AAA6ABkAAAAZAB8AAAA=")
 tile_set = ExtResource("3_4c57u")
 navigation_enabled = false
 
-[node name="GoapPlanner" type="Node" parent="World"]
-
 [node name="PatrolNodes" type="Node" parent="World"]
 
 [node name="Marker2D" type="Marker2D" parent="World/PatrolNodes"]
@@ -165,12 +265,14 @@ position = Vector2(1190, 279)
 z_index = 1
 position = Vector2(994, 407)
 
-[node name="PlayerController" type="Node" parent="Characters/Player" node_paths=PackedStringArray("InventoryHandler", "InteractionHandler", "MovementController")]
+[node name="PlayerController" type="Node" parent="Characters/Player" node_paths=PackedStringArray("InventoryHandler", "MovementController", "AgentDetectionHandler", "CursorFollower")]
 script = ExtResource("5_d13ii")
 IsCurrentPlayer = true
+Inventory = SubResource("Resource_facbu")
 InventoryHandler = NodePath("../../../UI/MarginContainer/InventoryHandler")
-InteractionHandler = NodePath("../PlayerInteraction")
 MovementController = NodePath("..")
+AgentDetectionHandler = NodePath("../PlayerDetection")
+CursorFollower = NodePath("../../../CursorFollower")
 
 [node name="PlayerDetection" type="Node2D" parent="Characters/Player" node_paths=PackedStringArray("AreaVision", "DetectedEntities")]
 script = ExtResource("13_2cqfq")
@@ -185,19 +287,10 @@ collision_mask = 2
 shape = SubResource("CircleShape2D_5vw27")
 debug_color = Color(0, 0.608985, 0.644943, 0.42)
 
-[node name="PlayerInventory" type="Node" parent="Characters/Player"]
-script = ExtResource("5_yaehf")
-InventoryName = "Player Inventory"
-Slots = [SubResource("Resource_cegan"), SubResource("Resource_82xsv"), SubResource("Resource_getpj"), SubResource("Resource_ryguw"), SubResource("Resource_d13ii"), SubResource("Resource_1u8w0"), SubResource("Resource_0odxb"), SubResource("Resource_lswn8"), SubResource("Resource_a6jrf"), SubResource("Resource_xuqvo"), SubResource("Resource_qsp4k"), SubResource("Resource_kq58d"), SubResource("Resource_seu75"), SubResource("Resource_htxhm"), SubResource("Resource_jq2sk")]
-
 [node name="Camera2D" type="Camera2D" parent="Characters/Player"]
 zoom = Vector2(2, 2)
 
-[node name="PlayerInteraction" type="Node" parent="Characters/Player" node_paths=PackedStringArray("PlayerInventory", "AgentDetectionHandler", "CursorFollower")]
-script = ExtResource("8_getpj")
-PlayerInventory = NodePath("../PlayerInventory")
-AgentDetectionHandler = NodePath("../PlayerDetection")
-CursorFollower = NodePath("../../../CursorFollower")
+[node name="PlayerInteraction" type="Node" parent="Characters/Player"]
 
 [node name="Guard1" parent="Characters" instance=ExtResource("5_lquwl")]
 z_index = 1
@@ -249,6 +342,7 @@ vertical_alignment = 2
 
 [node name="ItemChest2" parent="Objects" instance=ExtResource("13_w48qg")]
 position = Vector2(980, 386)
+Inventory = SubResource("Resource_abqjc")
 
 [node name="LightSwitch" parent="Objects" node_paths=PackedStringArray("AssociatedLights") instance=ExtResource("14_vivmo")]
 position = Vector2(1151, 307)
@@ -294,30 +388,21 @@ theme_override_constants/margin_top = 10
 theme_override_constants/margin_right = 10
 theme_override_constants/margin_bottom = 10
 
-[node name="InventoryHandler" type="HBoxContainer" parent="UI/MarginContainer" node_paths=PackedStringArray("MainInventory")]
-layout_mode = 2
-theme_override_constants/separation = 50
-alignment = 1
-script = ExtResource("24_1u8w0")
-MainInventory = NodePath("../../../Characters/Player/PlayerInventory")
-
-[node name="PrimaryInventoryUI" parent="UI/MarginContainer/InventoryHandler" node_paths=PackedStringArray("TargetInventory") instance=ExtResource("19_cegan")]
-unique_name_in_owner = true
-visible = false
-layout_mode = 2
-size_flags_horizontal = 0
-size_flags_vertical = 4
-TargetInventory = NodePath("../../../../Characters/Player/PlayerInventory")
-
-[node name="SecondaryInventoryUI" parent="UI/MarginContainer/InventoryHandler" node_paths=PackedStringArray("TargetInventory") instance=ExtResource("19_cegan")]
-unique_name_in_owner = true
-visible = false
-layout_mode = 2
-size_flags_horizontal = 8
-size_flags_vertical = 4
-TargetInventory = NodePath("../../../../Characters/Player/PlayerInventory")
-
 [node name="DebugLabel" type="Label" parent="UI/MarginContainer"]
 layout_mode = 2
 horizontal_alignment = 2
 vertical_alignment = 2
+
+[node name="InventoryHandler" type="HBoxContainer" parent="UI/MarginContainer" node_paths=PackedStringArray("primaryInventoryUI", "secondaryInventoryUI")]
+layout_mode = 2
+theme_override_constants/separation = 50
+alignment = 1
+script = ExtResource("24_1u8w0")
+primaryInventoryUI = NodePath("InventoryUI")
+secondaryInventoryUI = NodePath("InventoryUI2")
+
+[node name="InventoryUI" parent="UI/MarginContainer/InventoryHandler" instance=ExtResource("22_d13ii")]
+layout_mode = 2
+
+[node name="InventoryUI2" parent="UI/MarginContainer/InventoryHandler" instance=ExtResource("22_d13ii")]
+layout_mode = 2
