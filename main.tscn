@@ -114,9 +114,8 @@ font_size = 10
 
 [node name="Main" type="Node2D"]
 
-[node name="InputHandler" type="Node2D" parent="." node_paths=PackedStringArray("PlayerAgent", "InventoryHandler")]
+[node name="InputHandler" type="Node2D" parent="." node_paths=PackedStringArray("InventoryHandler")]
 script = ExtResource("2_lquwl")
-PlayerAgent = NodePath("../Characters/Player")
 InventoryHandler = NodePath("../UI/MarginContainer/InventoryHandler")
 
 [node name="World" type="Node" parent="."]
@@ -166,11 +165,12 @@ position = Vector2(1190, 279)
 z_index = 1
 position = Vector2(994, 407)
 
-[node name="PlayerController" type="Node" parent="Characters/Player" node_paths=PackedStringArray("InventoryHandler", "InteractionHandler")]
+[node name="PlayerController" type="Node" parent="Characters/Player" node_paths=PackedStringArray("InventoryHandler", "InteractionHandler", "MovementController")]
 script = ExtResource("5_d13ii")
 IsCurrentPlayer = true
 InventoryHandler = NodePath("../../../UI/MarginContainer/InventoryHandler")
 InteractionHandler = NodePath("../PlayerInteraction")
+MovementController = NodePath("..")
 
 [node name="PlayerDetection" type="Node2D" parent="Characters/Player" node_paths=PackedStringArray("AreaVision", "DetectedEntities")]
 script = ExtResource("13_2cqfq")
@@ -251,7 +251,7 @@ vertical_alignment = 2
 position = Vector2(980, 386)
 
 [node name="LightSwitch" parent="Objects" node_paths=PackedStringArray("AssociatedLights") instance=ExtResource("14_vivmo")]
-position = Vector2(742, 230)
+position = Vector2(1151, 307)
 AssociatedLights = [NodePath("../LightBulb"), NodePath("../LightBulb2"), NodePath("../LightBulb3"), NodePath("../LightBulb4")]
 
 [node name="LightBulb" parent="Objects" instance=ExtResource("15_vivmo")]

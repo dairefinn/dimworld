@@ -63,6 +63,7 @@ public partial class LightSwitch : StaticBody2D, ICanBeInteractedWith
 
     public void InteractWith()
     {
-        GD.Print("Interacting with chest");
+        Toggle();
     }
+
 }

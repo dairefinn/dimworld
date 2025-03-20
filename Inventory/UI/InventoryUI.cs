@@ -14,6 +14,7 @@ public partial class InventoryUI : Container
     }
     private Inventory _targetInventory;
     [Export] public PackedScene SlotUIScene = GD.Load<PackedScene>("res://Inventory/UI/InventorySlotUI.tscn");
+    [Export] public int SelectedSlotIndex = -1; // TODO: Should I store the index or the slot here?
 
 
     private Label InventoryTitle;
@@ -24,6 +25,7 @@ public partial class InventoryUI : Container
     {
         InventoryTitle = GetNode<Label>("%InventoryTitle");
         SlotsGrid = GetNode<GridContainer>("%SlotsGrid");
+        OnVisibilityChanged += OnVisibilityChangedInner;
     }
 
 
@@ -45,6 +47,7 @@ public partial class InventoryUI : Container
             InventorySlotUI slotUI = SlotUIScene.Instantiate<InventorySlotUI>();
             slotUI.TargetSlot = slot;
             SlotsGrid.AddChild(slotUI);
+            slotUI.OnClicked += () => OnClickSlot(slotUI);
         }
     }
 
@@ -58,25 +61,32 @@ public partial class InventoryUI : Container
     {
         Visible = !Visible;
         EmitSignal(SignalName.OnVisibilityChanged, Visible);
-
-        // This isn't really needed unless we're confining the mouse in some other way (e.g. if the player has to aim a gun)
-        // if (Visible)
-        // {
-        //     Input.MouseMode = Input.MouseModeEnum.Confined;
-        // }
-        // else
-        // {
-        //     Input.MouseMode = Input.MouseModeEnum.Visible;
-        // }
     }
 
     private void SetTargetInventory(Inventory inventory)
     {
         _targetInventory = inventory;
+        UpdateUI();
 
         if (_targetInventory == null) return;
 
         _targetInventory.OnUpdated += UpdateUI;
+    }
+
+    private void OnClickSlot(InventorySlotUI slotUI)
+    {
+        GD.Print("Slot clicked: " + slotUI);
+        slotUI.IsSelected = true;
+        int slotIndex = _targetInventory.Slots.IndexOf(slotUI.TargetSlot);
+        SelectedSlotIndex = slotIndex;
+    }
+
+    private void OnVisibilityChangedInner(bool isVisible)
+    {
+        if (!isVisible)
+        {
+            SelectedSlotIndex = -1;
+        }
     }
 
 }

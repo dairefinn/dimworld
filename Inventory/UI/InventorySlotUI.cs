@@ -12,6 +12,11 @@ public partial class InventorySlotUI : Panel
         set => SetTargetSlot(value);
     }
     private InventorySlot _targetSlot;
+    [Export] public bool IsSelected {
+        get => _isSelected;
+        set => SetSelected(value);
+    }
+    private bool _isSelected;
 
     private Label QuantityLabel;
     private Label ItemLabel;
@@ -37,20 +42,30 @@ public partial class InventorySlotUI : Panel
         
         if (@event is InputEventMouseButton mouseButtonEvent)
         {
-            if (mouseButtonEvent.ButtonIndex == MouseButton.Left)
+            // TODO: Should I be hardcoding inputs here or using an input action?
+            if (mouseButtonEvent.ButtonIndex == MouseButton.Left && mouseButtonEvent.Pressed)
             {
                 EmitSignal(SignalName.OnClicked);
             }
         }
     }
 
+
     public void SetTargetSlot(InventorySlot slot)
     {
         _targetSlot = slot;
+        UpdateUI();
 
         if (_targetSlot == null) return;
 
         _targetSlot.OnUpdated += UpdateUI;
+    }
+
+    private void SetSelected(bool isSelected)
+    {
+        GD.Print("Setting selected to " + isSelected);
+        _isSelected = isSelected;
+        // TODO: Show something in the UI to indicate that the slot is selected
     }
 
     private void UpdateUI()

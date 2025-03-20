@@ -6,50 +6,52 @@ using Godot;
 public partial class InputHandler : Node2D
 {
 
-    [Export] public AgentMovementController PlayerAgent { get; set; }
     [Export] public InventoryHandler InventoryHandler { get; set; }
+
 
     public override void _Process(double delta)
     {
         base._Process(delta);
 
-        if (Input.IsActionJustPressed("lmb"))
+        PlayerController mainPlayer = Globals.GetInstance().MainPlayer;
+
+        bool canMove = !mainPlayer.InventoryHandler.IsViewing && Input.IsActionJustPressed("lmb");
+        bool canAbortMove = Input.IsActionJustPressed("rmb");
+        bool canToggleInventory = Input.IsActionJustPressed("toggle_inventory");
+        bool canToggleTimescale = Input.IsActionJustPressed("toggle_timescale");
+        bool canInteract = Input.IsActionJustPressed("interact");
+        bool canCancel = Input.IsActionJustPressed("ui_cancel");
+
+        if (canMove)
         {
-            GD.Print("Setting target to mouse position: " + GetGlobalMousePosition());
             Vector2 mousePosition = GetGlobalMousePosition();
-            PlayerAgent.NavigateTo(mousePosition);
+            mainPlayer.MovementController.NavigateTo(mousePosition);
         }
 
-        if (Input.IsActionJustPressed("rmb"))
+        if (canAbortMove)
         {
-            PlayerAgent.StopNavigating();
+            mainPlayer.MovementController.StopNavigating();
         }
 
-        if (Input.IsActionJustPressed("toggle_inventory"))
+        if (canToggleInventory)
         {
             InventoryHandler.SetPrimaryInventoryVisibility(!InventoryHandler.GetPrimaryInventoryVisibility());
-            if (InventoryHandler.GetSecondaryInventoryVisibility())
-            {
-                InventoryHandler.CloseSecondaryInventory();
-            }
+            InventoryHandler.CloseSecondaryInventory();
         }
 
-        // TODO: Remove when done debugging
-        if (Input.IsActionJustPressed("test_input"))
+        if (canInteract)
         {
-            // InventoryItem itemDuplicate = TempItem.Duplicate() as InventoryItem;
-            // bool success = PlayerInventory.AddItem(itemDuplicate);
-            // if (success)
-            // {
-            //     GD.Print("Added item to inventory: " + itemDuplicate.ItemName);
-            // }
-            // else
-            // {
-            //     GD.Print("Failed to add item to inventory: " + itemDuplicate.ItemName);
-            // }
+            Globals.GetInstance().MainPlayer.InteractionHandler.TryInteract();
         }
 
-        if (Input.IsActionJustPressed("toggle_timescale"))
+        if (canCancel)
+        {
+            InventoryHandler.SetPrimaryInventoryVisibility(false);
+            InventoryHandler.CloseSecondaryInventory();
+        }
+        
+        // TODO: Lock behind debug menu
+        if (canToggleTimescale)
         {
             if (Engine.TimeScale == 1.0)
             {
@@ -59,17 +61,6 @@ public partial class InputHandler : Node2D
             {
                 Engine.TimeScale = 1.0f;
             }
-        }
-
-        if (Input.IsActionJustPressed("interact"))
-        {
-            Globals.GetInstance().MainPlayer.InteractionHandler.TryInteract();
-        }
-
-        if (Input.IsActionJustPressed("ui_cancel"))
-        {
-            InventoryHandler.SetPrimaryInventoryVisibility(false);
-            InventoryHandler.CloseSecondaryInventory();
         }
     }
 

@@ -6,7 +6,6 @@ using System;
 using System.Linq;
 
 
-// TODO: Should only be able to "use" items within the interaction radius
 // TODO: Should only be able to actually "see" items that are in line of sight (Cast a ray to check if there are obstacles in the way)
 public partial class AgentDetectionHandler : Node2D
 {

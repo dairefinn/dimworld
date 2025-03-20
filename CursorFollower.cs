@@ -26,7 +26,6 @@ public partial class CursorFollower : Area2D
     {
         if (node is ICanBeInteractedWith interactableObject)
         {
-            GD.Print("Interactable object detected: " + interactableObject);
             InteractableObject = interactableObject;
         }
     }
@@ -34,7 +33,6 @@ public partial class CursorFollower : Area2D
     public void OnBodyExited(Node node)
     {
         if (node != InteractableObject) return;
-        GD.Print("Interactable object lost: " + InteractableObject);
         InteractableObject = null;
     }
 

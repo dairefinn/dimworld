@@ -12,6 +12,8 @@ public partial class InventoryHandler : Control
     private InventoryUI primaryInventoryUI;
     private InventoryUI secondaryInventoryUI;
 
+    public bool IsViewing => GetPrimaryInventoryVisibility() || GetSecondaryInventoryVisibility();
+
 
     public override void _Ready()
     {
