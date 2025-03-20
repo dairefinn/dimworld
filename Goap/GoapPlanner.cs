@@ -1,12 +1,11 @@
 namespace Dimworld;
 
-using System;
 using System.Linq;
 using Godot;
 using Godot.Collections;
 
 
-public partial class GoapPlanner : Node
+public class GoapPlanner
 {
 
     public static GoapGoal[] GetGoalsInOrder(GoapGoal[] goalSet, Dictionary<string, Variant> worldState, AgentBrain agentBrain)

@@ -1,42 +1,62 @@
 namespace Dimworld;
 
-using System.Linq;
 using Godot;
 
 
 public partial class InputHandler : Node2D
 {
 
-    [Export] public AgentMovementController PlayerAgent { get; set; }
-
-    // TODO: These were added temporarily to test the GOAP system
-    [Export] public AgentBrain TempAgentBrain { get; set; }
-
     public override void _Process(double delta)
     {
         base._Process(delta);
 
-        if (Input.IsActionJustPressed("lmb"))
+        PlayerController mainPlayer = Globals.GetInstance().MainPlayer;
+
+        bool canMove = !mainPlayer.InventoryHandler.IsViewing && Input.IsActionJustPressed("lmb");
+        bool canAbortMove = Input.IsActionJustPressed("rmb");
+        bool canToggleTimescale = Input.IsActionJustPressed("toggle_timescale");
+        bool canInteract = Input.IsActionJustPressed("interact") && !mainPlayer.InventoryHandler.IsViewing;
+        bool canOpenInventory = Input.IsActionJustPressed("toggle_inventory") && !mainPlayer.InventoryHandler.IsViewing;
+        bool canCloseInventory = (Input.IsActionJustPressed("toggle_inventory") || Input.IsActionJustPressed("interact") || Input.IsActionJustPressed("ui_cancel")) && mainPlayer.InventoryHandler.IsViewing;
+
+        if (canMove)
         {
-            GD.Print("Setting target to mouse position: " + GetGlobalMousePosition());
             Vector2 mousePosition = GetGlobalMousePosition();
-            PlayerAgent.NavigateTo(mousePosition);
+            mainPlayer.MovementController.NavigateTo(mousePosition);
         }
 
-        if (Input.IsActionJustPressed("rmb"))
+        if (canAbortMove)
         {
-            PlayerAgent.StopNavigating();
+            mainPlayer.MovementController.StopNavigating();
         }
 
-        // if (Input.IsActionJustPressed("toggle_lights"))
-        // {
-        //     // TODO: Make world state global or add a "Vision" system to the agent which will sync their world state with the global world state depending on what they can observe.
-        //     bool existingValue = (bool) GoapStateUtils.GetState(TempAgentBrain.WorldState, "lights_on", false);
-        //     GoapStateUtils.SetState(TempAgentBrain.WorldState, "lights_on", !existingValue);
-        //     GD.Print("Lights are now " + (existingValue ? "OFF" : "ON"));
-        //     Light2D Light = GetTree().GetNodesInGroup("lights").OfType<Light2D>().FirstOrDefault();
-        //     Light.Enabled = !existingValue;
-        // }
+        if (canInteract)
+        {
+            mainPlayer.TryInteract();
+        }
+
+        if (canOpenInventory)
+        {
+            mainPlayer.InventoryHandler.SetPrimaryInventoryVisibility(true);
+        }
+
+        if (canCloseInventory)
+        {
+            mainPlayer.InventoryHandler.SetBothInventoriesVisibility(false);
+        }
+        
+        // TODO: Lock behind debug menu
+        if (canToggleTimescale)
+        {
+            if (Engine.TimeScale == 1.0)
+            {
+                Engine.TimeScale = 0.1f;
+            }
+            else
+            {
+                Engine.TimeScale = 1.0f;
+            }
+        }
     }
 
 }

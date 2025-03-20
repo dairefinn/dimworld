@@ -21,19 +21,16 @@ public partial class GoapAction : Resource
 
 	public virtual Dictionary<string, Variant> OnStart(AgentBrain agentBrain, Dictionary<string, Variant> worldState)
 	{
-		// GD.Print("Starting action: " + Name);
 		return worldState;
 	}
 
 	public virtual bool Perform(AgentBrain agent, Dictionary<string, Variant> worldState, double delta)
 	{
-		// GD.Print("Performing action: " + Name);
 		return false;
 	}
 
 	public virtual Dictionary<string, Variant> OnEnd(AgentBrain agentBrain, Dictionary<string, Variant> worldState)
 	{
-		// GD.Print("Ending action: " + Name);
 		return worldState;
 	}
 

@@ -5,10 +5,8 @@ using Godot;
 using Godot.Collections;
 
 
-public partial class ToggleLight : GoapAction
+public partial class TurnOnLights : GoapAction
 {
-    
-    [Export] public bool lightStateToChange = true;
 
     private LightSwitch detectedLightSwitch = null;
 
@@ -16,7 +14,7 @@ public partial class ToggleLight : GoapAction
     {
         // Get any lightbulbs in the correct state
         Array<LightBulb> lightBulbs = [..agentBrain.DetectionHandler.GetDetectedInstancesOf<LightBulb>()
-            .Where(lightBulb => lightBulb.IsOn == lightStateToChange)
+            .Where(lightBulb => lightBulb.IsOn == true)
             .ToArray()
         ];
         if (lightBulbs.Count == 0) return false;

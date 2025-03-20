@@ -1,0 +1,17 @@
+[gd_resource type="Resource" script_class="InventoryItem" load_steps=4 format=3 uid="uid://octn8jxqeqaq"]
+
+[ext_resource type="Texture2D" uid="uid://cm5fkf4n02ibp" path="res://Assets/BaseSet.png" id="1_5nuw4"]
+[ext_resource type="Script" uid="uid://frg4uic6tym5" path="res://Inventory/InventoryItem.cs" id="1_jm3gf"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_0g53v"]
+atlas = ExtResource("1_5nuw4")
+region = Rect2(480, 416, 16, 16)
+
+[resource]
+script = ExtResource("1_jm3gf")
+id = "item-sword"
+ItemName = "Sword"
+ItemDescription = "A generic sword"
+Icon = SubResource("AtlasTexture_0g53v")
+MaxStackSize = 1
+metadata/_custom_type_script = "uid://frg4uic6tym5"
