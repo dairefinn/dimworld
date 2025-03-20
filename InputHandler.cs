@@ -17,10 +17,10 @@ public partial class InputHandler : Node2D
 
         bool canMove = !mainPlayer.InventoryHandler.IsViewing && Input.IsActionJustPressed("lmb");
         bool canAbortMove = Input.IsActionJustPressed("rmb");
-        bool canToggleInventory = Input.IsActionJustPressed("toggle_inventory");
         bool canToggleTimescale = Input.IsActionJustPressed("toggle_timescale");
-        bool canInteract = Input.IsActionJustPressed("interact");
-        bool canCancel = Input.IsActionJustPressed("ui_cancel");
+        bool canInteract = Input.IsActionJustPressed("interact") && !InventoryHandler.IsViewing;
+        bool canOpenInventory = Input.IsActionJustPressed("toggle_inventory") && !InventoryHandler.IsViewing;
+        bool canCloseInventory = (Input.IsActionJustPressed("toggle_inventory") || Input.IsActionJustPressed("interact") || Input.IsActionJustPressed("ui_cancel")) && InventoryHandler.IsViewing;
 
         if (canMove)
         {
@@ -33,21 +33,19 @@ public partial class InputHandler : Node2D
             mainPlayer.MovementController.StopNavigating();
         }
 
-        if (canToggleInventory)
-        {
-            InventoryHandler.SetPrimaryInventoryVisibility(!InventoryHandler.GetPrimaryInventoryVisibility());
-            InventoryHandler.CloseSecondaryInventory();
-        }
-
         if (canInteract)
         {
             Globals.GetInstance().MainPlayer.TryInteract();
         }
 
-        if (canCancel)
+        if (canOpenInventory)
         {
-            InventoryHandler.SetPrimaryInventoryVisibility(false);
-            InventoryHandler.CloseSecondaryInventory();
+            InventoryHandler.SetPrimaryInventoryVisibility(true);
+        }
+
+        if (canCloseInventory)
+        {
+            InventoryHandler.SetBothInventoriesVisibility(false);
         }
         
         // TODO: Lock behind debug menu

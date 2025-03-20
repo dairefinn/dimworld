@@ -1,4 +1,4 @@
-[gd_scene load_steps=63 format=4 uid="uid://ddc8qiig7j3wm"]
+[gd_scene load_steps=76 format=4 uid="uid://ddc8qiig7j3wm"]
 
 [ext_resource type="Script" uid="uid://g354xqg3s44p" path="res://InputHandler.cs" id="2_lquwl"]
 [ext_resource type="TileSet" uid="uid://me5j3tknec74" path="res://Tileset.tres" id="3_4c57u"]
@@ -19,8 +19,7 @@
 [ext_resource type="PackedScene" uid="uid://bcpksn1hqwpab" path="res://Objects/Chest/Chest.tscn" id="13_w48qg"]
 [ext_resource type="PackedScene" uid="uid://dsrrvsvuuvj3b" path="res://Objects/LightSwitch/LightSwitch.tscn" id="14_vivmo"]
 [ext_resource type="PackedScene" uid="uid://cq105v4igaxh5" path="res://Objects/LightBulb/LightBulb.tscn" id="15_vivmo"]
-[ext_resource type="Texture2D" uid="uid://cm5fkf4n02ibp" path="res://Assets/BaseSet.png" id="18_1u8w0"]
-[ext_resource type="Script" uid="uid://frg4uic6tym5" path="res://Inventory/InventoryItem.cs" id="19_0odxb"]
+[ext_resource type="Resource" uid="uid://octn8jxqeqaq" path="res://Items/Sword.tres" id="18_d13ii"]
 [ext_resource type="Resource" uid="uid://cganauotis1vm" path="res://Items/TestItem.tres" id="20_1u8w0"]
 [ext_resource type="Script" uid="uid://080qtwyw16wf" path="res://CursorFollower.cs" id="22_ryguw"]
 [ext_resource type="PackedScene" uid="uid://d21nkwnu7y4od" path="res://Inventory/UI/InventoryViewer.tscn" id="23_d13ii"]
@@ -117,22 +116,9 @@ radius = 100.0
 [sub_resource type="LabelSettings" id="LabelSettings_2cqfq"]
 font_size = 10
 
-[sub_resource type="AtlasTexture" id="AtlasTexture_0g53v"]
-atlas = ExtResource("18_1u8w0")
-region = Rect2(480, 416, 16, 16)
-
-[sub_resource type="Resource" id="Resource_6iyjs"]
-script = ExtResource("19_0odxb")
-id = "item-sword"
-ItemName = "Sword"
-ItemDescription = "A generic sword"
-Icon = SubResource("AtlasTexture_0g53v")
-MaxStackSize = 1
-metadata/_custom_type_script = "uid://frg4uic6tym5"
-
 [sub_resource type="Resource" id="Resource_b1qrp"]
 script = ExtResource("6_cegan")
-Item = SubResource("Resource_6iyjs")
+Item = ExtResource("18_d13ii")
 Quantity = 1
 metadata/_custom_type_script = "uid://bm0o5ggnfmm6y"
 
@@ -213,6 +199,87 @@ InventoryName = "Chest contents"
 Slots = Array[ExtResource("6_cegan")]([SubResource("Resource_b1qrp"), SubResource("Resource_come4"), SubResource("Resource_h8e4i"), SubResource("Resource_4lmeg"), SubResource("Resource_0cp0l"), SubResource("Resource_d2t1y"), SubResource("Resource_gngh3"), SubResource("Resource_0n3wm"), SubResource("Resource_qnost"), SubResource("Resource_wnkbs"), SubResource("Resource_f6a44"), SubResource("Resource_0cbny"), SubResource("Resource_hrvbo"), SubResource("Resource_uypp3"), SubResource("Resource_blkrb")])
 metadata/_custom_type_script = "uid://dph74un0q20el"
 
+[sub_resource type="Resource" id="Resource_6iyjs"]
+script = ExtResource("6_cegan")
+Quantity = 0
+metadata/_custom_type_script = "uid://bm0o5ggnfmm6y"
+
+[sub_resource type="Resource" id="Resource_4w656"]
+script = ExtResource("6_cegan")
+Quantity = 0
+metadata/_custom_type_script = "uid://bm0o5ggnfmm6y"
+
+[sub_resource type="Resource" id="Resource_e71vb"]
+script = ExtResource("6_cegan")
+Quantity = 0
+metadata/_custom_type_script = "uid://bm0o5ggnfmm6y"
+
+[sub_resource type="Resource" id="Resource_rnkwl"]
+script = ExtResource("6_cegan")
+Quantity = 0
+metadata/_custom_type_script = "uid://bm0o5ggnfmm6y"
+
+[sub_resource type="Resource" id="Resource_vke2r"]
+script = ExtResource("6_cegan")
+Quantity = 0
+metadata/_custom_type_script = "uid://bm0o5ggnfmm6y"
+
+[sub_resource type="Resource" id="Resource_uit24"]
+script = ExtResource("6_cegan")
+Quantity = 0
+metadata/_custom_type_script = "uid://bm0o5ggnfmm6y"
+
+[sub_resource type="Resource" id="Resource_ruth0"]
+script = ExtResource("6_cegan")
+Quantity = 0
+metadata/_custom_type_script = "uid://bm0o5ggnfmm6y"
+
+[sub_resource type="Resource" id="Resource_rm4vd"]
+script = ExtResource("6_cegan")
+Quantity = 0
+metadata/_custom_type_script = "uid://bm0o5ggnfmm6y"
+
+[sub_resource type="Resource" id="Resource_pjyto"]
+script = ExtResource("6_cegan")
+Quantity = 0
+metadata/_custom_type_script = "uid://bm0o5ggnfmm6y"
+
+[sub_resource type="Resource" id="Resource_sm6fg"]
+script = ExtResource("6_cegan")
+Quantity = 0
+metadata/_custom_type_script = "uid://bm0o5ggnfmm6y"
+
+[sub_resource type="Resource" id="Resource_b17eg"]
+script = ExtResource("6_cegan")
+Quantity = 0
+metadata/_custom_type_script = "uid://bm0o5ggnfmm6y"
+
+[sub_resource type="Resource" id="Resource_ntx8l"]
+script = ExtResource("6_cegan")
+Quantity = 0
+metadata/_custom_type_script = "uid://bm0o5ggnfmm6y"
+
+[sub_resource type="Resource" id="Resource_uatky"]
+script = ExtResource("6_cegan")
+Quantity = 0
+metadata/_custom_type_script = "uid://bm0o5ggnfmm6y"
+
+[sub_resource type="Resource" id="Resource_rqtf5"]
+script = ExtResource("6_cegan")
+Quantity = 0
+metadata/_custom_type_script = "uid://bm0o5ggnfmm6y"
+
+[sub_resource type="Resource" id="Resource_1vm84"]
+script = ExtResource("6_cegan")
+Quantity = 0
+metadata/_custom_type_script = "uid://bm0o5ggnfmm6y"
+
+[sub_resource type="Resource" id="Resource_wu3dr"]
+script = ExtResource("5_yaehf")
+InventoryName = "Chest 2 contents"
+Slots = [SubResource("Resource_6iyjs"), SubResource("Resource_4w656"), SubResource("Resource_e71vb"), SubResource("Resource_rnkwl"), SubResource("Resource_vke2r"), SubResource("Resource_uit24"), SubResource("Resource_ruth0"), SubResource("Resource_rm4vd"), SubResource("Resource_pjyto"), SubResource("Resource_sm6fg"), SubResource("Resource_b17eg"), SubResource("Resource_ntx8l"), SubResource("Resource_uatky"), SubResource("Resource_rqtf5"), SubResource("Resource_1vm84")]
+metadata/_custom_type_script = "uid://dph74un0q20el"
+
 [sub_resource type="CircleShape2D" id="CircleShape2D_ryguw"]
 
 [node name="Main" type="Node2D"]
@@ -264,7 +331,7 @@ position = Vector2(1190, 279)
 
 [node name="Player" parent="Characters" instance=ExtResource("5_lquwl")]
 z_index = 1
-position = Vector2(994, 407)
+position = Vector2(1299, 403)
 
 [node name="PlayerController" type="Node" parent="Characters/Player" node_paths=PackedStringArray("InventoryHandler", "MovementController", "AgentDetectionHandler", "CursorFollower")]
 script = ExtResource("5_d13ii")
@@ -341,9 +408,13 @@ vertical_alignment = 2
 
 [node name="Objects" type="Node" parent="."]
 
-[node name="ItemChest2" parent="Objects" instance=ExtResource("13_w48qg")]
-position = Vector2(980, 386)
+[node name="ItemChest" parent="Objects" instance=ExtResource("13_w48qg")]
+position = Vector2(1341, 418)
 Inventory = SubResource("Resource_abqjc")
+
+[node name="ItemChest2" parent="Objects" instance=ExtResource("13_w48qg")]
+position = Vector2(1341, 383)
+Inventory = SubResource("Resource_wu3dr")
 
 [node name="LightSwitch" parent="Objects" node_paths=PackedStringArray("AssociatedLights") instance=ExtResource("14_vivmo")]
 position = Vector2(1151, 307)

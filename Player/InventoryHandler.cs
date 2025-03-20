@@ -53,27 +53,27 @@ public partial class InventoryHandler : Control
     public void SetPrimaryInventory(Inventory inventory)
     {
         MainInventory = inventory;
-        if (primaryInventoryUI == null) return;
         primaryInventoryUI.TargetInventory = inventory;
+        if (inventory == null)
+        {
+            SetPrimaryInventoryVisibility(false);
+        }
     }
 
     public void SetSecondaryInventory(Inventory inventory)
     {
         SecondaryInventory = inventory;
         secondaryInventoryUI.TargetInventory = inventory;
+        if (inventory == null)
+        {
+            SetSecondaryInventoryVisibility(false);
+        }
     }
 
     public void OpenSecondaryInventory(Inventory inventory)
     {
         SetSecondaryInventory(inventory);
-        primaryInventoryUI.SetVisibility(true);
-        secondaryInventoryUI.SetVisibility(true);
-    }
-
-    public void CloseSecondaryInventory()
-    {
-        SetSecondaryInventory(null);
-        secondaryInventoryUI.SetVisibility(false);
+        SetBothInventoriesVisibility(true);
     }
 
     public bool GetPrimaryInventoryVisibility()
@@ -96,6 +96,12 @@ public partial class InventoryHandler : Control
     public void SetSecondaryInventoryVisibility(bool visible)
     {
         secondaryInventoryUI.SetVisibility(visible);
+    }
+
+    public void SetBothInventoriesVisibility(bool visible)
+    {
+        SetPrimaryInventoryVisibility(visible);
+        SetSecondaryInventoryVisibility(visible);
     }
 
     private void OnSlotClicked(InventorySlotUI slotUI)
