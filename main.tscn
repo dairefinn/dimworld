@@ -1,4 +1,4 @@
-[gd_scene load_steps=90 format=4 uid="uid://ddc8qiig7j3wm"]
+[gd_scene load_steps=91 format=4 uid="uid://ddc8qiig7j3wm"]
 
 [ext_resource type="Script" uid="uid://g354xqg3s44p" path="res://InputHandler.cs" id="2_lquwl"]
 [ext_resource type="TileSet" uid="uid://me5j3tknec74" path="res://Tileset.tres" id="3_4c57u"]
@@ -27,6 +27,13 @@
 vertices = PackedVector2Array(1198, 210, 1198, 286, 1186, 274, 1186, 222, 1122, 210, 1134, 222, 1122, 286, 1134, 274, 1154, 286, 1166, 286, 898, 450, 898, 414, 942, 446, 942, 462, 926, 462, 370, 174, 398, 146, 414, 146, 414, 162, 386, 190, 370, 190, 446, 162, 446, 178, 418, 206, 386, 206, 462, 178, 462, 194, 434, 222, 418, 222, 494, 194, 494, 210, 482, 254, 450, 238, 510, 210, 510, 226, 542, 226, 542, 242, 718, 270, 690, 242, 690, 226, 738, 226, 786, 270, 738, 210, 798, 210, 798, 226, 814, 226, 814, 242, 830, 242, 830, 258, 802, 286, 786, 286, 862, 258, 862, 290, 818, 302, 802, 302, 850, 350, 834, 318, 894, 290, 894, 322, 866, 366, 910, 322, 910, 338, 882, 382, 866, 382, 926, 338, 926, 354, 882, 414, 958, 354, 958, 370, 1022, 370, 1022, 386, 1006, 414, 974, 430, 1042, 386, 1042, 370, 1154, 370, 1134, 414, 1154, 318, 1122, 318, 1122, 306, 1154, 306, 1166, 370, 1278, 370, 1278, 386, 1234, 414, 1298, 386, 1298, 370, 1358, 370, 1358, 430, 1234, 430, 1134, 430, 1026, 430, 1026, 414, 1006, 430, 974, 446, 850, 366, 834, 350, 818, 318, 718, 286, 546, 286, 546, 270, 482, 270, 450, 254, 434, 238, 258, 162, 270, 174, 270, 190, 254, 190, 226, 178, 226, 162, 254, 206, 238, 206, 210, 194, 210, 178, 238, 222, 222, 222, 222, 254, 206, 254, 178, 242, 178, 194, 206, 350, 190, 350, 162, 290, 162, 242, 190, 402, 206, 402, 206, 418, 162, 462, 222, 418, 222, 434, 194, 478, 162, 478, 306, 434, 306, 418, 430, 418, 430, 434, 334, 462, 510, 434, 510, 450, 482, 478, 450, 462, 514, 494, 542, 450, 542, 466, 530, 510, 558, 466, 558, 482, 530, 526, 590, 482, 590, 498, 562, 526, 622, 498, 622, 514, 562, 542, 734, 514, 734, 530, 670, 558, 642, 542, 830, 542, 802, 530, 802, 514, 834, 514, 862, 526, 862, 542, 834, 498, 866, 498, 894, 526, 866, 482, 882, 482, 894, 494, 910, 478, 882, 450, 926, 478, 910, 494, 830, 558, 670, 574, 654, 574, 642, 562, 654, 606, 638, 606, 626, 578, 626, 562, 610, 610, 638, 638, 622, 638, 594, 626, 622, 654, 606, 654, 578, 626, 606, 686, 590, 686, 578, 658, 590, 702, 562, 702, 562, 658, 594, 610, 610, 578, 514, 510, 482, 494, 450, 478, 334, 478, 302, 478, 302, 494, 194, 494, 146, 462, 146, 290, 258, 146, 290, 146, 290, 130, 398, 130)
 polygons = Array[PackedInt32Array]([PackedInt32Array(0, 1, 2, 3), PackedInt32Array(4, 0, 3, 5), PackedInt32Array(6, 4, 5, 7), PackedInt32Array(8, 6, 7, 2), PackedInt32Array(2, 1, 9), PackedInt32Array(8, 2, 9), PackedInt32Array(10, 11, 12, 13, 14), PackedInt32Array(15, 16, 17, 18, 19, 20), PackedInt32Array(19, 18, 21, 22, 23, 24), PackedInt32Array(23, 22, 25, 26, 27, 28), PackedInt32Array(26, 29, 30, 31, 32, 27), PackedInt32Array(30, 33, 34, 31), PackedInt32Array(34, 35, 36), PackedInt32Array(37, 38, 39, 40, 41), PackedInt32Array(40, 42, 43, 44, 41), PackedInt32Array(44, 45, 46, 41), PackedInt32Array(41, 46, 47, 48, 49, 50), PackedInt32Array(49, 48, 51, 52, 53, 54), PackedInt32Array(55, 56, 52, 57, 58, 59), PackedInt32Array(59, 58, 60, 61, 62, 63), PackedInt32Array(62, 61, 64, 65, 11, 66), PackedInt32Array(65, 67, 68, 11), PackedInt32Array(68, 69, 70, 71, 72, 11), PackedInt32Array(73, 74, 75, 76), PackedInt32Array(77, 78, 79, 80), PackedInt32Array(80, 8, 9, 81), PackedInt32Array(77, 80, 81), PackedInt32Array(75, 77, 81), PackedInt32Array(81, 82, 83, 84, 76), PackedInt32Array(85, 86, 87, 88), PackedInt32Array(83, 85, 88, 89, 84), PackedInt32Array(75, 81, 76), PackedInt32Array(73, 76, 90, 91, 92), PackedInt32Array(70, 73, 92, 71), PackedInt32Array(71, 93, 72), PackedInt32Array(72, 94, 12, 11), PackedInt32Array(59, 95, 55), PackedInt32Array(55, 96, 56), PackedInt32Array(56, 97, 53, 52), PackedInt32Array(37, 98, 99, 100, 38), PackedInt32Array(100, 101, 31, 34, 36), PackedInt32Array(31, 102, 32), PackedInt32Array(32, 103, 27), PackedInt32Array(104, 105, 106, 107, 108, 109), PackedInt32Array(108, 107, 110, 111, 112, 113), PackedInt32Array(111, 114, 115, 112), PackedInt32Array(112, 115, 116, 117, 118, 119), PackedInt32Array(118, 117, 120, 121, 122, 123), PackedInt32Array(124, 125, 126, 127), PackedInt32Array(127, 126, 128, 129, 130, 131), PackedInt32Array(132, 133, 134, 135, 136), PackedInt32Array(135, 137, 138, 139, 140), PackedInt32Array(141, 138, 142, 143, 144), PackedInt32Array(144, 143, 145, 146, 147), PackedInt32Array(146, 148, 149, 150, 147), PackedInt32Array(149, 151, 152, 153, 150), PackedInt32Array(152, 154, 155, 156, 157), PackedInt32Array(158, 159, 160, 161, 162, 163), PackedInt32Array(162, 161, 164, 165, 166), PackedInt32Array(165, 167, 168, 169, 166), PackedInt32Array(170, 168, 171, 10, 14), PackedInt32Array(14, 172, 170), PackedInt32Array(168, 170, 173, 169), PackedInt32Array(159, 158, 174, 156, 155), PackedInt32Array(156, 175, 176, 177, 157), PackedInt32Array(176, 178, 179, 180, 181, 177), PackedInt32Array(182, 179, 183, 184, 185), PackedInt32Array(185, 184, 186, 187, 188), PackedInt32Array(187, 189, 190, 191, 188), PackedInt32Array(190, 192, 193, 194, 191), PackedInt32Array(185, 195, 182), PackedInt32Array(179, 182, 196, 180), PackedInt32Array(152, 157, 153), PackedInt32Array(144, 197, 141), PackedInt32Array(138, 141, 198, 139), PackedInt32Array(139, 199, 140), PackedInt32Array(135, 140, 136), PackedInt32Array(132, 136, 200, 201, 129), PackedInt32Array(129, 201, 202, 203, 130), PackedInt32Array(124, 127, 204, 205, 122, 121), PackedInt32Array(105, 104, 206, 207, 15), PackedInt32Array(207, 208, 209, 16, 15), PackedInt32Array(100, 36, 38)])
 agent_radius = 2.0
+
+[sub_resource type="Curve2D" id="Curve2D_ryguw"]
+bake_interval = 0.01
+_data = {
+"points": PackedVector2Array(0, 0, 0, 0, 1130, 219, 0, 0, 0, 0, 1190, 219, 0, 0, 0, 0, 1190, 279, 0, 0, 0, 0, 1130, 279)
+}
+point_count = 4
 
 [sub_resource type="Resource" id="Resource_1u8w0"]
 script = ExtResource("6_cegan")
@@ -388,26 +395,14 @@ tile_map_data = PackedByteArray("AABAACMAAAAZABIAAAA9ACYAAAAWABMAAABGACIAAAAWABM
 tile_set = ExtResource("3_4c57u")
 navigation_enabled = false
 
-[node name="PatrolNodes" type="Node" parent="World"]
-
-[node name="Marker2D" type="Marker2D" parent="World/PatrolNodes"]
-position = Vector2(1130, 279)
-
-[node name="Marker2D2" type="Marker2D" parent="World/PatrolNodes"]
-position = Vector2(1130, 219)
-
-[node name="Marker2D3" type="Marker2D" parent="World/PatrolNodes"]
-position = Vector2(1190, 219)
-
-[node name="Marker2D4" type="Marker2D" parent="World/PatrolNodes"]
-position = Vector2(1190, 279)
+[node name="PatrolPathCastle" type="Path2D" parent="World"]
+curve = SubResource("Curve2D_ryguw")
 
 [node name="Characters" type="Node" parent="."]
 
 [node name="Player" parent="Characters" node_paths=PackedStringArray("DetectionHandler") instance=ExtResource("5_lquwl")]
 z_index = 1
 position = Vector2(1323, 412)
-Speed = 50.0
 Acceleration = 25.0
 Inventory = SubResource("Resource_d13ii")
 IsPlanningEnabled = false
@@ -439,12 +434,10 @@ zoom = Vector2(2, 2)
 [node name="Guard" parent="Characters" node_paths=PackedStringArray("DetectionHandler") instance=ExtResource("5_lquwl")]
 z_index = 1
 position = Vector2(961, 378)
-Speed = 50.0
 Acceleration = 25.0
 Inventory = SubResource("Resource_inymm")
-IsPlanningEnabled = true
 WorldState = Dictionary[String, Variant]({
-"patrol_path": [NodePath("../../World/PatrolNodes/Marker2D"), NodePath("../../World/PatrolNodes/Marker2D2"), NodePath("../../World/PatrolNodes/Marker2D3"), NodePath("../../World/PatrolNodes/Marker2D4")]
+"patrol_path": NodePath("../../World/PatrolPathCastle")
 })
 ActionSet = Array[Object]([ExtResource("7_kek77"), ExtResource("8_4c57u"), ExtResource("7_efxa6"), ExtResource("8_kek77"), ExtResource("8_ycdy4")])
 GoalSet = Array[Object]([ExtResource("8_5vw27"), ExtResource("9_kek77"), ExtResource("11_w48qg")])

@@ -17,35 +17,21 @@ public partial class PatrolPath : GoapAction
 
     public override bool CheckProceduralPrecondition(CharacterController characterController)
     {
-        // Check if the agent has a set patrol path stored
-        Array<NodePath> patrolPath = (Array<NodePath>)GoapStateUtils.GetState(characterController.WorldState, "patrol_path", new Array<NodePath>());
-        if (patrolPath == null) return false;
-        if (patrolPath.Count == 0) return false;
-
-        return true;
+        Array<Vector2> patrolPath = GetPatrolPath(characterController);
+        return patrolPath != null;
     }
 
     public override bool Perform(CharacterController characterController, Dictionary<string, Variant> worldState, double delta)
     {
-        Array<NodePath> nodeReferences = (Array<NodePath>)GoapStateUtils.GetState(characterController.WorldState, "patrol_path", new Array<NodePath>());
-        Array<Marker2D> patrolPath = [];
-        foreach (NodePath nodeReference in nodeReferences)
-        {
-            Node node = characterController.GetNodeOrNull(nodeReference);
-            if (node is Marker2D marker)
-            {
-                patrolPath.Add(marker);
-            }
-        }
-        Vector2[] points = [..patrolPath.Select(p => p.GlobalPosition)];
-        CurrentPointIndex = GetNextPointOnPath(characterController, points);
-        Vector2 currentPoint = points[CurrentPointIndex];
+        Array<Vector2> patrolPath = GetPatrolPath(characterController);
+        CurrentPointIndex = GetNextPointOnPath(characterController, patrolPath);
+        Vector2 currentPoint = patrolPath[CurrentPointIndex];
         characterController.NavigateTo(currentPoint);
 
         return false; // Always return false so the agent will continue to patrol
     }
 
-    private int GetNextPointOnPath(CharacterController agent, Vector2[] points)
+    private int GetNextPointOnPath(CharacterController agent, Array<Vector2> points)
     {
         Vector2 currentPosition = agent.GlobalPosition;
         Vector2 currentTarget = agent.NavigationAgent.TargetPosition;
@@ -55,7 +41,7 @@ public partial class PatrolPath : GoapAction
         {
             int nearestPointIndex = 0;
             float minDistance = float.MaxValue;
-            for(int index = 0; index < points.Length; index++)
+            for(int index = 0; index < points.Count; index++)
             {
                 Vector2 point = points[index];
                 float distance = currentPosition.DistanceTo(point);
@@ -77,11 +63,33 @@ public partial class PatrolPath : GoapAction
 
         // Otherwise, find the next point on the path
         int nextPointIndex = CurrentPointIndex + 1;
-        if (nextPointIndex >= points.Length)
+        if (nextPointIndex >= points.Count)
         {
             nextPointIndex = 0;
         }
         return nextPointIndex;
+    }
+
+    private static Array<Vector2> GetPatrolPath(CharacterController characterController)
+    {
+        // Check if the agent has a set patrol path stored
+        NodePath nodePath = characterController.WorldState["patrol_path"].AsNodePath();
+        if (nodePath == null) return null;
+
+        Node node = characterController.GetNodeOrNull(nodePath);
+        if (!IsInstanceValid(node)) return null;
+
+        Path2D patrolPath = (Path2D)node;
+        if (patrolPath.Curve.PointCount == 0) return null;
+
+        Array<Vector2> points = [];
+        for (int i = 0; i < patrolPath.Curve.PointCount; i++)
+        {
+            points.Add(patrolPath.Curve.GetPointPosition(i));
+        }
+        if (points.Count == 0) return null;
+
+        return points;
     }
 
 }
