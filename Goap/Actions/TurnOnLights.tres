@@ -4,8 +4,10 @@
 
 [resource]
 script = ExtResource("1_ep477")
-Name = "GOAP Action"
+Name = "Turn on lights"
 Preconditions = null
-Effects = null
+Effects = Dictionary[String, Variant]({
+"lights_on": true
+})
 Cost = 1000
 metadata/_custom_type_script = "uid://dmhsbr32vw1tk"

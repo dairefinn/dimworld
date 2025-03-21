@@ -15,22 +15,38 @@ public class GoapStateUtils
                 return false; // Key must exist in main state
             }
 
-            // Check if the value can be converted to an array
-            Array<string> subsetArray = subset[key].As<Array<string>>();
-            Array<string> mainStateArray = mainState[key].As<Array<string>>();
+            
+            Variant.Type mainStateType = mainState[key].VariantType;
+            Variant.Type subsetType = subset[key].VariantType;
 
-            if (subsetArray != null && mainStateArray != null)
+            if (mainStateType != subsetType) return false; // Types must match
+
+            switch(mainStateType)
             {
-                // The main array must contain all the elements of the subset array but doesn't need to be exactly the same
-                foreach (string element in subsetArray)
-                {
-                    if (!mainStateArray.Contains(element)) return false;
-                }
+                case Variant.Type.Bool:
+                    if (mainState[key].AsBool() != subset[key].AsBool()) return false;
+                    break;
+                case Variant.Type.Array:
+                    // Check if the value can be converted to an array
+                    Array<string> subsetArray = subset[key].AsGodotArray<string>();
+                    Array<string> mainStateArray = mainState[key].AsGodotArray<string>();
 
-                continue;
+                    if (subsetArray != null && mainStateArray != null)
+                    {
+                        // The main array must contain all the elements of the subset array but doesn't need to be exactly the same
+                        foreach (string element in subsetArray)
+                        {
+                            if (!mainStateArray.Contains(element)) return false;
+                        }
+
+                        continue;
+                    }
+                    break;
+                default:
+                    if (!mainState[key].Equals(subset[key])) return false; // Key must have the same value
+                    return true;
             }
-
-            if (!mainState[key].Equals(subset[key])) return false; // Key must have the same value
+            
         }
 
         return true;
@@ -73,14 +89,17 @@ public class GoapStateUtils
         return state;
     }
 
-    public static void PrintState(Dictionary<string, Variant> state, string label = "State")
+    public static string GetAsString(Dictionary<string, Variant> state, string label = "State")
     {
-        GD.Print(label + ": {");
+        string output = label + ": { ";
+
         foreach (string key in state.Keys)
         {
-            GD.Print(key + ": " + state[key]);
+            output += key + ": " + state[key] + ", ";
         }
-        GD.Print("}");
+        output += "}";
+
+        return output;
     }
 
 }

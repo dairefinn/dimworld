@@ -113,11 +113,6 @@ metadata/_custom_type_script = "uid://dph74un0q20el"
 [sub_resource type="CircleShape2D" id="CircleShape2D_5vw27"]
 radius = 100.0
 
-[sub_resource type="Resource" id="Resource_cyx1q"]
-script = ExtResource("6_cegan")
-Quantity = 0
-metadata/_custom_type_script = "uid://bm0o5ggnfmm6y"
-
 [sub_resource type="Resource" id="Resource_0dhbp"]
 script = ExtResource("6_cegan")
 Quantity = 0
@@ -188,10 +183,15 @@ script = ExtResource("6_cegan")
 Quantity = 0
 metadata/_custom_type_script = "uid://bm0o5ggnfmm6y"
 
+[sub_resource type="Resource" id="Resource_cyx1q"]
+script = ExtResource("6_cegan")
+Quantity = 0
+metadata/_custom_type_script = "uid://bm0o5ggnfmm6y"
+
 [sub_resource type="Resource" id="Resource_1yv1y"]
 script = ExtResource("5_yaehf")
 InventoryName = "Inventory"
-Slots = Array[ExtResource("6_cegan")]([SubResource("Resource_cyx1q"), SubResource("Resource_0dhbp"), SubResource("Resource_jx0wj"), SubResource("Resource_kkkcx"), SubResource("Resource_34ol3"), SubResource("Resource_c2n8d"), SubResource("Resource_wy5fy"), SubResource("Resource_gx4rg"), SubResource("Resource_5dllo"), SubResource("Resource_phcyf"), SubResource("Resource_birbe"), SubResource("Resource_f1p13"), SubResource("Resource_4obbf"), SubResource("Resource_ovcoh"), SubResource("Resource_ppx11")])
+Slots = Array[ExtResource("6_cegan")]([SubResource("Resource_0dhbp"), SubResource("Resource_jx0wj"), SubResource("Resource_kkkcx"), SubResource("Resource_34ol3"), SubResource("Resource_c2n8d"), SubResource("Resource_wy5fy"), SubResource("Resource_gx4rg"), SubResource("Resource_5dllo"), SubResource("Resource_phcyf"), SubResource("Resource_birbe"), SubResource("Resource_f1p13"), SubResource("Resource_4obbf"), SubResource("Resource_ovcoh"), SubResource("Resource_ppx11"), SubResource("Resource_cyx1q")])
 metadata/_custom_type_script = "uid://dph74un0q20el"
 
 [sub_resource type="LabelSettings" id="LabelSettings_2cqfq"]
@@ -411,7 +411,7 @@ position = Vector2(1190, 279)
 
 [node name="Player" parent="Characters" instance=ExtResource("5_lquwl")]
 z_index = 1
-position = Vector2(953, 382)
+position = Vector2(1039, 418)
 
 [node name="PlayerController" type="Node" parent="Characters/Player" node_paths=PackedStringArray("InventoryHandler", "MovementController", "AgentDetectionHandler", "CursorFollower")]
 script = ExtResource("5_d13ii")

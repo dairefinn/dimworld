@@ -8,6 +8,8 @@ using Godot.Collections;
 public class GoapPlanner
 {
 
+    private static readonly bool PrintDebugLogs = false;
+
     public static GoapGoal[] GetGoalsInOrder(GoapGoal[] goalSet, Dictionary<string, Variant> worldState, AgentBrain agentBrain)
     {
         if (goalSet.Length == 0) return [];
@@ -26,6 +28,7 @@ public class GoapPlanner
     /// <returns>A of[]actions the agent should attempt to perform</returns>
     public static GoapAction[] GetPlan(GoapGoal goal, Dictionary<string, Variant> worldState, GoapAction[] actionSet, AgentBrain agentBrain)
     {
+        PrintDebug("========== Getting plan for goal " + goal.Name + " ==========");
         if (goal == null) return [];
         if (actionSet.Length == 0) return [];
 
@@ -35,7 +38,7 @@ public class GoapPlanner
 
 
         GoapPlanNode planTree = GetPossiblePlans(actionSet, desiredState, worldState, agentBrain);
-        GD.Print(DrawTree(planTree));
+        PrintDebug("\n" + DrawTree(planTree));
 
         GoapAction[] plan = FindBestPlan(planTree);
 
@@ -74,15 +77,17 @@ public class GoapPlanner
         return rootNode;
     }
 
-    private static GoapPlanNode BuildPlanTree(Dictionary<string, Variant> desiredState, Dictionary<string, Variant> worldState, GoapAction[] possibleActions, AgentBrain agentBrain, GoapAction currentAction, double accumulatedCost)
+    private static GoapPlanNode BuildPlanTree(Dictionary<string, Variant> desiredState, Dictionary<string, Variant> worldState, GoapAction[] possibleActions, AgentBrain agentBrain, GoapAction currentAction, double accumulatedCost, int depth = 0)
     {
+        PrintDebug(GetIndent(depth) + GoapStateUtils.GetAsString(currentAction.Effects, "Action effects"));
+
         // If this action does not satisfy the desired state, it's not a valid plan
         if (!GoapStateUtils.IsSubsetOf(currentAction.Effects, desiredState)) {
-            GD.Print("[Invalid] Action " + currentAction.Name + " WILL NOT satisfy the desired state");
+            PrintDebug(GetIndent(depth) + "[Invalid] Action " + currentAction.Name + " WILL NOT satisfy the desired state");
             return null;
         }
 
-        GD.Print("Action " + currentAction.Name + " will satisfy the desired state");
+        PrintDebug(GetIndent(depth) + "Action " + currentAction.Name + " will satisfy the desired state");
 
         // Create a node for this action
         GoapPlanNode currentNode = new()
@@ -96,18 +101,18 @@ public class GoapPlanner
 		bool proceduralPreconditionsSatisfied = currentAction.CheckProceduralPrecondition(agentBrain);
         if (!proceduralPreconditionsSatisfied) 
         {
-            GD.Print("[Invalid] Action " + currentAction.Name + " cannot be performed because procedural preconditions are not satisfied");
+            PrintDebug(GetIndent(depth) + "[Invalid] Action " + currentAction.Name + " cannot be performed because procedural preconditions are not satisfied");
             return null;
         }
 
 		bool staticPreconditionsSatisfied = currentAction.CheckStaticPreconditions(worldState);
         if (staticPreconditionsSatisfied) {
-            GD.Print("[Valid] Action " + currentAction.Name + " can be performed");
+            PrintDebug(GetIndent(depth) + "[Valid] Action " + currentAction.Name + " can be performed");
             return currentNode;
         }
 
-        GD.Print("Action " + currentAction.Name + " CANNOT be performed");
-        GoapStateUtils.PrintState(currentAction.Preconditions, "Preconditions");
+        PrintDebug(GetIndent(depth) + "Action " + currentAction.Name + " CANNOT be performed");
+        PrintDebug(GetIndent(depth) + GoapStateUtils.GetAsString(currentAction.Preconditions, "Preconditions"));
 
         // Otherwise, figure out how to satisfy the preconditions of the action
         Dictionary<string, Variant> desiredStateForAction = GoapStateUtils.Duplicate(currentAction.Preconditions);
@@ -116,9 +121,8 @@ public class GoapPlanner
         GoapAction[] remainingActions = possibleActions.Where(action => action != currentAction).ToArray();
         foreach(GoapAction nextAction in remainingActions)
         {
-            GD.Print("Checking if " + nextAction.Name + " can satisfy the preconditions of " + currentAction.Name);
-            GoapStateUtils.PrintState(nextAction.Effects, "Action effects");
-            GoapPlanNode childNode = BuildPlanTree(desiredStateForAction, worldState, possibleActions[1..], agentBrain, nextAction, accumulatedCost + nextAction.Cost);
+            PrintDebug(GetIndent(depth) + "Checking if " + nextAction.Name + " can satisfy the preconditions of " + currentAction.Name);
+            GoapPlanNode childNode = BuildPlanTree(desiredStateForAction, worldState, possibleActions[1..], agentBrain, nextAction, accumulatedCost + nextAction.Cost, depth + 1);
             if (childNode != null)
             {
                 currentNode.Cost += childNode.Cost;
@@ -128,12 +132,12 @@ public class GoapPlanner
 
         // If this action has any actions that can satisfy its preconditions, then this is a valid plan
         if (currentNode.Children.Count > 0) {
-            GD.Print("[Valid] Action " + currentAction.Name + " can be performed by satisfying its preconditions");
+            PrintDebug(GetIndent(depth) + "[Valid] Action " + currentAction.Name + " can be performed by satisfying its preconditions");
             return currentNode;
         }
 
         // Otherwise, this is not a valid plan
-        GD.Print("[Invalid] No actions can satisfy the preconditions of " + currentAction.Name);
+        PrintDebug(GetIndent(depth) + "[Invalid] No actions can satisfy the preconditions of " + currentAction.Name);
         return null;
     }
 
@@ -181,11 +185,18 @@ public class GoapPlanner
     {
         if (rootNode == null) return "";
         string tree = "";
-        for (int i = 0; i < depth; i++)
+        for (int i = 0; i <= depth; i++)
         {
-            tree += "  ";
+            if (i == depth)
+            {
+                tree += "  └─";
+            }
+            else
+            {
+                tree += "    ";
+            }
         }
-        tree += rootNode.Action != null ? rootNode.Action.Name : "Root";
+        tree += rootNode.Action != null ? rootNode.Action.Name : "Goal";
         tree += "\n";
 
         foreach (GoapPlanNode child in rootNode.Children)
@@ -201,5 +212,23 @@ public class GoapPlanner
         public GoapAction Action { get; set; }
         public double Cost { get; set; }
         public System.Collections.Generic.List<GoapPlanNode> Children { get; set; }
+        // public bool IsValid { get; set; } TODO: Might want to add this just so we can log the decision tree and not the entire text based log history
     }
+
+    private static string GetIndent(int depth)
+    {
+        string indent = "";
+        for (int i = 0; i < depth; i++)
+        {
+            indent += "    ";
+        }
+        return indent;
+    }
+
+    private static void PrintDebug(string message)
+    {
+        if (!PrintDebugLogs) return;
+        GD.Print("[GoapPlanner] " + message);
+    }
+
 }

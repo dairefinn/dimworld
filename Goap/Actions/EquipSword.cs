@@ -4,6 +4,8 @@ using System.Linq;
 using Godot;
 using Godot.Collections;
 
+
+// TODO: Might be able to make this more generic. For example, if an action calls for "has_items": [ "item-sword" ], then this action could be built dynamically to fetch a sword item from a nearby chest.
 public partial class EquipSword : GoapAction
 {
 
@@ -63,6 +65,7 @@ public partial class EquipSword : GoapAction
             InventorySlot agentSlot = agentBrain.Inventory.GetFirstEmptySlot();
             InventorySlot chestSlot = detectedChest.Inventory.GetFirstSlotWithItem(swordItem);
             agentSlot.AddFromExisting(chestSlot);
+            agentBrain.SetInventoryState();
             return true;
         }
 

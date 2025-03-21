@@ -28,16 +28,12 @@ public partial class TurnOffLights : GoapAction
                 }
                 return false;
             })
+            .Where(lightSwitch => agentBrain.MovementController.CanReachPoint(lightSwitch.GlobalPosition))
             .ToArray()
         ];
         if (lightSwitches.Count == 0) return false;
 
-        Array<LightSwitch> reachableSwitches = [..lightSwitches
-            .Where(lightSwitch => agentBrain.MovementController.CanReachPoint(lightSwitch.GlobalPosition))
-            .ToArray()
-        ];
-
-        detectedLightSwitch = agentBrain.DetectionHandler.GetClosestInstanceOf(reachableSwitches);
+        detectedLightSwitch = agentBrain.DetectionHandler.GetClosestInstanceOf(lightSwitches);
         if (detectedLightSwitch == null) return false;
 
         return true;

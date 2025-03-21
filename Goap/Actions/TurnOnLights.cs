@@ -14,10 +14,15 @@ public partial class TurnOnLights : GoapAction
     {
         // Get any lightbulbs in the correct state
         Array<LightBulb> lightBulbs = [..agentBrain.DetectionHandler.GetDetectedInstancesOf<LightBulb>()
-            .Where(lightBulb => lightBulb.IsOn == true)
+            .Where(lightBulb => !lightBulb.IsOn)
             .ToArray()
         ];
         if (lightBulbs.Count == 0) return false;
+
+        foreach (LightBulb lightBulb in lightBulbs)
+        {
+            GD.Print("Lightbulb ON: " + lightBulb.GlobalPosition);
+        }
 
         // Get any light switches that control the lightbulbs
         Array<LightSwitch> lightSwitches = [..agentBrain.DetectionHandler.GetDetectedInstancesOf<LightSwitch>()
@@ -28,16 +33,12 @@ public partial class TurnOnLights : GoapAction
                 }
                 return false;
             })
+            .Where(lightSwitch => agentBrain.MovementController.CanReachPoint(lightSwitch.GlobalPosition))
             .ToArray()
         ];
         if (lightSwitches.Count == 0) return false;
 
-        Array<LightSwitch> reachableSwitches = [..lightSwitches
-            .Where(lightSwitch => agentBrain.MovementController.CanReachPoint(lightSwitch.GlobalPosition))
-            .ToArray()
-        ];
-
-        detectedLightSwitch = agentBrain.DetectionHandler.GetClosestInstanceOf(reachableSwitches);
+        detectedLightSwitch = agentBrain.DetectionHandler.GetClosestInstanceOf(lightSwitches);
         if (detectedLightSwitch == null) return false;
 
         return true;

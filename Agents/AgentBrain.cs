@@ -28,6 +28,13 @@ public partial class AgentBrain : Node
     private int framesToNextGoalUpdate = 0;
 
 
+    public override void _Ready()
+    {
+        base._Ready();
+        SetInventoryState();
+    }
+
+
     public override void _Process(double delta)
     {
         if (framesToNextGoalUpdate == 0)
@@ -38,7 +45,7 @@ public partial class AgentBrain : Node
         FollowPlan(CurrentPlan, delta);
         framesToNextGoalUpdate--;
 
-        Inventory.OnUpdated += OnInventoryUpdated;
+        Inventory.OnUpdated += () => SetInventoryState();
 
         // Print inventory slots w/ item counts
         // if (Inventory != null)
@@ -64,7 +71,6 @@ public partial class AgentBrain : Node
 
         foreach (GoapGoal goal in goalsInOrder)
         {
-            GD.Print("Checking goal: " + goal.Name);
             if (!goal.IsValid()) continue;
             if (goal.IsSatisfied(WorldState, this)) continue;
 
@@ -100,6 +106,7 @@ public partial class AgentBrain : Node
             CurrentAction?.OnEnd(this, WorldState);
             CurrentAction = actionAtStep;
             CurrentAction.OnStart(this, WorldState);
+            SetInventoryState();
         }
 
         // Perform the current action step
@@ -126,7 +133,8 @@ public partial class AgentBrain : Node
         }
     }
 
-    private void OnInventoryUpdated()
+    // TODO: Might want to move this to a separate class, e.g. AgentMemoryHandler
+    public void SetInventoryState()
     {
         Array<string> itemsInInventory = [];
 
@@ -134,9 +142,10 @@ public partial class AgentBrain : Node
         {
             if (slot.IsEmpty) continue;
             itemsInInventory.Add(slot.Item.id);
+            GD.Print("Item in inventory: " + slot.Item.id);
         }
 
-        GD.Print("Items in inventory: " + string.Join(", ", itemsInInventory));
+        WorldState.Remove("has_items");
         WorldState["has_items"] = itemsInInventory;
     }
 
