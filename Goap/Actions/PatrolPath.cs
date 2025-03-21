@@ -18,7 +18,7 @@ public partial class PatrolPath : GoapAction
     public override bool CheckProceduralPrecondition(AgentBrain agentBrain)
     {
         // Check if the agent has a set patrol path stored
-        Array<string> patrolPath = (Array<string>)GoapStateUtils.GetState(agentBrain.WorldState, "patrol_path", new Array<string>());
+        Array<NodePath> patrolPath = (Array<NodePath>)GoapStateUtils.GetState(agentBrain.WorldState, "patrol_path", new Array<NodePath>());
         if (patrolPath == null) return false;
         if (patrolPath.Count == 0) return false;
 
@@ -27,9 +27,9 @@ public partial class PatrolPath : GoapAction
 
     public override bool Perform(AgentBrain agentBrain, Dictionary<string, Variant> worldState, double delta)
     {
-        Array<string> nodeReferences = (Array<string>)GoapStateUtils.GetState(agentBrain.WorldState, "patrol_path", new Array<string>());
+        Array<NodePath> nodeReferences = (Array<NodePath>)GoapStateUtils.GetState(agentBrain.WorldState, "patrol_path", new Array<NodePath>());
         Array<Marker2D> patrolPath = [];
-        foreach (string nodeReference in nodeReferences)
+        foreach (NodePath nodeReference in nodeReferences)
         {
             Node node = agentBrain.GetNodeOrNull(nodeReference);
             if (node is Marker2D marker)
@@ -45,7 +45,7 @@ public partial class PatrolPath : GoapAction
         return false; // Always return false so the agent will continue to patrol
     }
 
-    private int GetNextPointOnPath(AgentMovementController agent, Vector2[] points)
+    private int GetNextPointOnPath(MovementController agent, Vector2[] points)
     {
         Vector2 currentPosition = agent.GlobalPosition;
         Vector2 currentTarget = agent.NavigationAgent.TargetPosition;

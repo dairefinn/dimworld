@@ -9,6 +9,9 @@ public class GoapStateUtils
     // TODO: I had { }"is_patrolling": false } as a precondition for the patrol house action but it was breaking because the agent didn't have the property in their state at all. Should I add a way to make "false" properties the same as missing ones?
     public static bool IsSubsetOf(Dictionary<string, Variant> subset, Dictionary<string, Variant> mainState)
     {
+        if (mainState == null) return false;
+        if (subset == null) return true;
+
         foreach (string key in subset.Keys)
         {
             if (!mainState.ContainsKey(key)) {
@@ -75,6 +78,8 @@ public class GoapStateUtils
 
     public static Variant GetState(Dictionary<string, Variant> state, string key, Variant defaultValue)
     {
+        if (state == null) return defaultValue;
+
         if (!state.ContainsKey(key))
         {
             return defaultValue;

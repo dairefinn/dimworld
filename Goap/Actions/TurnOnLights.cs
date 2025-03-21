@@ -19,11 +19,6 @@ public partial class TurnOnLights : GoapAction
         ];
         if (lightBulbs.Count == 0) return false;
 
-        foreach (LightBulb lightBulb in lightBulbs)
-        {
-            GD.Print("Lightbulb ON: " + lightBulb.GlobalPosition);
-        }
-
         // Get any light switches that control the lightbulbs
         Array<LightSwitch> lightSwitches = [..agentBrain.DetectionHandler.GetDetectedInstancesOf<LightSwitch>()
             .Where(lightSwitch => {

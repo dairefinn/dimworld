@@ -7,8 +7,8 @@ using Godot.Collections;
 public partial class AgentBrain : Node
 {
 
-    [Export] public AgentMovementController MovementController { get; set; }
-    [Export] public AgentDetectionHandler DetectionHandler { get; set; }
+    [Export] public MovementController MovementController { get; set; }
+    [Export] public DetectionHandler DetectionHandler { get; set; }
 
     // Goal Oriented Action Planning (GOAP) properties
     [Export] public Dictionary<string, Variant> WorldState { get; set; }
@@ -136,6 +136,11 @@ public partial class AgentBrain : Node
     // TODO: Might want to move this to a separate class, e.g. AgentMemoryHandler
     public void SetInventoryState()
     {
+        if (WorldState == null)
+        {
+            WorldState = [];
+        }
+
         Array<string> itemsInInventory = [];
 
         foreach (InventorySlot slot in Inventory.Slots)

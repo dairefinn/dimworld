@@ -7,23 +7,26 @@ using System.Linq;
 
 
 // TODO: Should only be able to actually "see" items that are in line of sight (Cast a ray to check if there are obstacles in the way)
-public partial class AgentDetectionHandler : Node2D
+public partial class DetectionHandler : Node2D
 {
 
+    [Signal] public delegate void DebugOutputEventHandler(string message);
     [Signal] public delegate void OnNodeDetectedEventHandler(Node node);
     [Signal] public delegate void OnNodeLostEventHandler(Node node);
 
 
     [Export] public Area2D AreaVision { get; set; }
     [Export] public Array<Node> DetectedEntities { get; set; }
-    [Export] public Label DebugTextOutput { get; set; }
 
     [Export] float InteractionRadius { get; set; } = 1;
 
 
     public override void _Ready()
     {
-        DetectedEntities = [];
+        if (DetectedEntities == null)
+        {
+            DetectedEntities = [];
+        }
         base._Ready();
         Initialize();
     }
@@ -42,14 +45,14 @@ public partial class AgentDetectionHandler : Node2D
     {
         DetectedEntities.Add(node);
         EmitSignal(SignalName.OnNodeDetected, node);
-        UpdateDebugText();
+        EmitDebugOutput();
     }
 
     private void OnNodeExitedVision(Node2D node)
     {
         DetectedEntities.Remove(node);
         EmitSignal(SignalName.OnNodeLost, node);
-        UpdateDebugText();
+        EmitDebugOutput();
     }
 
     public bool CanSee(Node2D node)
@@ -59,19 +62,10 @@ public partial class AgentDetectionHandler : Node2D
         return false;
     }
 
-    // TODO: For debugging, remove after
-    private void UpdateDebugText()
+    private void EmitDebugOutput()
     {
-        if (DebugTextOutput == null) return;
-
-        if (DetectedEntities.Count() > 0)
-        {
-            DebugTextOutput.Text = "[" + string.Join(", ", DetectedEntities.Select(e => e.Name)) + "]";
-        }
-        else
-        {
-            DebugTextOutput.Text = "[]";
-        }
+        if (DetectedEntities.Count() == 0) return;
+        EmitSignal(SignalName.DebugOutput, "[" + string.Join(", ", DetectedEntities.Select(e => e.Name)) + "]");
     }
 
     public Array<T> GetDetectedInstancesOf<[MustBeVariant] T>() where T : Node

@@ -3,7 +3,7 @@ namespace Dimworld;
 using Godot;
 
 
-public partial class AgentMovementController : CharacterBody2D
+public partial class MovementController : CharacterBody2D
 {
 
     [ExportGroup("Properties")]
@@ -64,7 +64,8 @@ public partial class AgentMovementController : CharacterBody2D
 
         Vector2 nextPosition = NavigationAgent.GetNextPathPosition();
         Vector2 direction = GlobalPosition.DirectionTo(nextPosition);
-        Vector2 newVelcity = direction * Speed;
+        // Vector2 newVelcity = direction * Speed;
+        Vector2 newVelcity = Velocity.Lerp(direction * Speed, (float)(Acceleration * delta));
 
         if (NavigationAgent.AvoidanceEnabled)
         {
@@ -74,8 +75,6 @@ public partial class AgentMovementController : CharacterBody2D
         {
             OnSafeVelocityComputed(newVelcity);
         }
-
-        // Velocity = Velocity.Lerp(direction * Speed, (float)(Acceleration * delta));
 
         MoveAndSlide();
     }

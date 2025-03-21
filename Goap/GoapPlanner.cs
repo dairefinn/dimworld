@@ -8,7 +8,7 @@ using Godot.Collections;
 public class GoapPlanner
 {
 
-    private static readonly bool PrintDebugLogs = false;
+    private static readonly bool PrintDebugLogs = true;
 
     public static GoapGoal[] GetGoalsInOrder(GoapGoal[] goalSet, Dictionary<string, Variant> worldState, AgentBrain agentBrain)
     {
