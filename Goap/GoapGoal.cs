@@ -18,18 +18,18 @@ public partial class GoapGoal : Resource
         return true;
     }
 
-    public bool IsSatisfied(Dictionary<string, Variant> worldState, AgentBrain agentBrain)
+    public bool IsSatisfied(Dictionary<string, Variant> worldState, CharacterController characterController)
     {
         bool worldStateSatisfied = GoapStateUtils.IsSubsetOf(DesiredState, worldState);
         if (!worldStateSatisfied) return false;
 
-        bool isConditionalSatisfied = IsSatisfiedConditional(worldState, agentBrain);
+        bool isConditionalSatisfied = IsSatisfiedConditional(worldState, characterController);
         if (!isConditionalSatisfied) return false;
 
         return true;
     }
 
-    public virtual bool IsSatisfiedConditional(Dictionary<string, Variant> worldState, AgentBrain agentBrain)
+    public virtual bool IsSatisfiedConditional(Dictionary<string, Variant> worldState, CharacterController characterController)
     {
         return true;
     }

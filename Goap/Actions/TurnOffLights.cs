@@ -10,17 +10,17 @@ public partial class TurnOffLights : GoapAction
 
     private LightSwitch detectedLightSwitch = null;
 
-    public override bool CheckProceduralPrecondition(AgentBrain agentBrain)
+    public override bool CheckProceduralPrecondition(CharacterController characterController)
     {
         // Get any lightbulbs in the correct state
-        Array<LightBulb> lightBulbs = [..agentBrain.DetectionHandler.GetDetectedInstancesOf<LightBulb>()
+        Array<LightBulb> lightBulbs = [..characterController.DetectionHandler.GetDetectedInstancesOf<LightBulb>()
             .Where(lightBulb => lightBulb.IsOn == true)
             .ToArray()
         ];
         if (lightBulbs.Count == 0) return false;
 
         // Get any light switches that control the lightbulbs
-        Array<LightSwitch> lightSwitches = [..agentBrain.DetectionHandler.GetDetectedInstancesOf<LightSwitch>()
+        Array<LightSwitch> lightSwitches = [..characterController.DetectionHandler.GetDetectedInstancesOf<LightSwitch>()
             .Where(lightSwitch => {
                 foreach (LightBulb lightBulb in lightBulbs)
                 {
@@ -28,22 +28,22 @@ public partial class TurnOffLights : GoapAction
                 }
                 return false;
             })
-            .Where(lightSwitch => agentBrain.MovementController.CanReachPoint(lightSwitch.GlobalPosition))
+            .Where(lightSwitch => characterController.CanReachPoint(lightSwitch.GlobalPosition))
             .ToArray()
         ];
         if (lightSwitches.Count == 0) return false;
 
-        detectedLightSwitch = agentBrain.DetectionHandler.GetClosestInstanceOf(lightSwitches);
+        detectedLightSwitch = characterController.DetectionHandler.GetClosestInstanceOf(lightSwitches);
         if (detectedLightSwitch == null) return false;
 
         return true;
     }
 
-    public override bool Perform(AgentBrain agentBrain, Dictionary<string, Variant> worldState, double delta)
+    public override bool Perform(CharacterController characterController, Dictionary<string, Variant> worldState, double delta)
     {
-        agentBrain.MovementController.NavigateTo(detectedLightSwitch.GlobalPosition);
+        characterController.NavigateTo(detectedLightSwitch.GlobalPosition);
 
-        if(agentBrain.MovementController.NavigationAgent.IsNavigationFinished())
+        if(characterController.NavigationAgent.IsNavigationFinished())
         {
             detectedLightSwitch.Toggle();
         }

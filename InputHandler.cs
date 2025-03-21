@@ -22,12 +22,12 @@ public partial class InputHandler : Node2D
         if (canMove)
         {
             Vector2 mousePosition = GetGlobalMousePosition();
-            mainPlayer.MovementController.NavigateTo(mousePosition);
+            mainPlayer.CharacterController.NavigateTo(mousePosition);
         }
 
         if (canAbortMove)
         {
-            mainPlayer.MovementController.StopNavigating();
+            mainPlayer.CharacterController.StopNavigating();
         }
 
         if (canInteract)

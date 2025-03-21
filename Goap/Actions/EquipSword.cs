@@ -13,7 +13,7 @@ public partial class EquipSword : GoapAction
 
     private Chest detectedChest;
 
-    public override bool CheckProceduralPrecondition(AgentBrain agentBrain)
+    public override bool CheckProceduralPrecondition(CharacterController characterController)
     {
         // Sword item is required
         if (swordItem == null) {
@@ -22,13 +22,13 @@ public partial class EquipSword : GoapAction
         }
 
         // Cannot pick up a sword if the agent's inventory is full
-        if (agentBrain.Inventory.IsFull()) return false;
+        if (characterController.Inventory.IsFull()) return false;
 
         // Get any nearby chests that can be reached
         Array<Chest> detectedChests = [..
-            agentBrain.DetectionHandler.GetDetectedInstancesOf<Chest>()
+            characterController.DetectionHandler.GetDetectedInstancesOf<Chest>()
             .Where(chest => {
-                if (!agentBrain.MovementController.CanReachPoint(chest.GlobalPosition)) return false;
+                if (!characterController.CanReachPoint(chest.GlobalPosition)) return false;
                 if (!chest.ContainsItem(swordItem)) return false;
                 return true;
             })
@@ -37,7 +37,7 @@ public partial class EquipSword : GoapAction
         if (detectedChests.Count == 0) return false;
 
         // Get the closest chest
-        Vector2 agentPosition = agentBrain.MovementController.GlobalPosition;
+        Vector2 agentPosition = characterController.GlobalPosition;
         detectedChest = detectedChests[0];
         for(int i = 1; i < detectedChests.Count; i++)
         {
@@ -54,25 +54,25 @@ public partial class EquipSword : GoapAction
         return true;
     }
 
-    public override bool Perform(AgentBrain agentBrain, Dictionary<string, Variant> worldState, double delta)
+    public override bool Perform(CharacterController characterController, Dictionary<string, Variant> worldState, double delta)
     {
         if (detectedChest == null) return false;
         
-        agentBrain.MovementController.NavigateTo(detectedChest.GlobalPosition);
+        characterController.NavigateTo(detectedChest.GlobalPosition);
 
-        if(agentBrain.MovementController.NavigationAgent.IsNavigationFinished())
+        if(characterController.NavigationAgent.IsNavigationFinished())
         {
-            InventorySlot agentSlot = agentBrain.Inventory.GetFirstEmptySlot();
+            InventorySlot agentSlot = characterController.Inventory.GetFirstEmptySlot();
             InventorySlot chestSlot = detectedChest.Inventory.GetFirstSlotWithItem(swordItem);
             agentSlot.AddFromExisting(chestSlot);
-            agentBrain.SetInventoryState();
+            characterController.SetInventoryState();
             return true;
         }
 
         return false;
     }
 
-    public override Dictionary<string, Variant> OnEnd(AgentBrain agentBrain, Dictionary<string, Variant> worldState)
+    public override Dictionary<string, Variant> OnEnd(CharacterController characterController, Dictionary<string, Variant> worldState)
     {
         return worldState;
     }

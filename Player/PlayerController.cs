@@ -7,10 +7,10 @@ public partial class PlayerController : Node
 {
 
     [Export] public bool IsCurrentPlayer { get; set; } = false;
-    [Export] public Inventory Inventory { get; set; }
+    // [Export] public Inventory Inventory { get; set; }
     [Export] public InventoryHandler InventoryHandler { get; set; }
-    [Export] public MovementController MovementController { get; set; }
-    [Export] public DetectionHandler DetectionHandler { get; set; }
+    [Export] public CharacterController CharacterController { get; set; }
+    // [Export] public DetectionHandler DetectionHandler { get; set; }
     [Export] public CursorFollower CursorFollower { get; set; }
 
 
@@ -21,7 +21,7 @@ public partial class PlayerController : Node
         if (IsCurrentPlayer && Globals.GetInstance().MainPlayer == null)
         {
             Globals.GetInstance().MainPlayer = this;
-            InventoryHandler.PrimaryInventory = Inventory;
+            InventoryHandler.PrimaryInventory = CharacterController.Inventory;
         }
     }
 
@@ -34,7 +34,7 @@ public partial class PlayerController : Node
 
         if (interactableObject is Node2D interactableObjectNode2D)
         {
-            if (!DetectionHandler.CanSee(interactableObjectNode2D)) return;
+            if (!CharacterController.DetectionHandler.CanSee(interactableObjectNode2D)) return;
             interactableObject.InteractWith();
         }
     }

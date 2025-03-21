@@ -8,9 +8,9 @@ using Godot.Collections;
 public class GoapPlanner
 {
 
-    private static readonly bool PrintDebugLogs = true;
+    private static readonly bool PrintDebugLogs = false; // TODO: Wire this up to a debug menu
 
-    public static GoapGoal[] GetGoalsInOrder(GoapGoal[] goalSet, Dictionary<string, Variant> worldState, AgentBrain agentBrain)
+    public static GoapGoal[] GetGoalsInOrder(GoapGoal[] goalSet, Dictionary<string, Variant> worldState, CharacterController characterController)
     {
         if (goalSet.Length == 0) return [];
 
@@ -26,7 +26,7 @@ public class GoapPlanner
     /// <param name="actionSet">The actions the agent can perform</param>
     /// <param name="goalSet">The goals the agent wants to achieve</param>
     /// <returns>A of[]actions the agent should attempt to perform</returns>
-    public static GoapAction[] GetPlan(GoapGoal goal, Dictionary<string, Variant> worldState, GoapAction[] actionSet, AgentBrain agentBrain)
+    public static GoapAction[] GetPlan(GoapGoal goal, Dictionary<string, Variant> worldState, GoapAction[] actionSet, CharacterController characterController)
     {
         PrintDebug("========== Getting plan for goal " + goal.Name + " ==========");
         if (goal == null) return [];
@@ -37,7 +37,7 @@ public class GoapPlanner
         if (desiredState.Count == 0) return [];
 
 
-        GoapPlanNode planTree = GetPossiblePlans(actionSet, desiredState, worldState, agentBrain);
+        GoapPlanNode planTree = GetPossiblePlans(actionSet, desiredState, worldState, characterController);
         PrintDebug("\n" + DrawTree(planTree));
 
         GoapAction[] plan = FindBestPlan(planTree);
@@ -52,7 +52,7 @@ public class GoapPlanner
     /// <param name="desiredState"></param>
     /// <param name="worldState"></param>
     /// <returns>The root node of the plan tree</returns>
-    private static GoapPlanNode GetPossiblePlans(GoapAction[] possibleActions, Dictionary<string, Variant> desiredState, Dictionary<string, Variant> worldState, AgentBrain agentBrain)
+    private static GoapPlanNode GetPossiblePlans(GoapAction[] possibleActions, Dictionary<string, Variant> desiredState, Dictionary<string, Variant> worldState, CharacterController characterController)
     {
         // Create the root node - we don't use this node directly but it's children are all the possible plans we can use
         GoapPlanNode rootNode = new()
@@ -65,7 +65,7 @@ public class GoapPlanner
         // Check each possible action to see if it can be performed to achieve the goal
         foreach(GoapAction action in possibleActions)
         {
-            GoapPlanNode childNode = BuildPlanTree(desiredState, worldState, possibleActions, agentBrain, action, action.Cost);
+            GoapPlanNode childNode = BuildPlanTree(desiredState, worldState, possibleActions, characterController, action, action.Cost);
             if (childNode != null)
             {
 
@@ -77,7 +77,7 @@ public class GoapPlanner
         return rootNode;
     }
 
-    private static GoapPlanNode BuildPlanTree(Dictionary<string, Variant> desiredState, Dictionary<string, Variant> worldState, GoapAction[] possibleActions, AgentBrain agentBrain, GoapAction currentAction, double accumulatedCost, int depth = 0)
+    private static GoapPlanNode BuildPlanTree(Dictionary<string, Variant> desiredState, Dictionary<string, Variant> worldState, GoapAction[] possibleActions, CharacterController characterController, GoapAction currentAction, double accumulatedCost, int depth = 0)
     {
         PrintDebug(GetIndent(depth) + GoapStateUtils.GetAsString(currentAction.Effects, "Action effects"));
 
@@ -98,7 +98,7 @@ public class GoapPlanner
         };
 
         // If we can perform the action, then this is a valid plan
-		bool proceduralPreconditionsSatisfied = currentAction.CheckProceduralPrecondition(agentBrain);
+		bool proceduralPreconditionsSatisfied = currentAction.CheckProceduralPrecondition(characterController);
         if (!proceduralPreconditionsSatisfied) 
         {
             PrintDebug(GetIndent(depth) + "[Invalid] Action " + currentAction.Name + " cannot be performed because procedural preconditions are not satisfied");
@@ -122,7 +122,7 @@ public class GoapPlanner
         foreach(GoapAction nextAction in remainingActions)
         {
             PrintDebug(GetIndent(depth) + "Checking if " + nextAction.Name + " can satisfy the preconditions of " + currentAction.Name);
-            GoapPlanNode childNode = BuildPlanTree(desiredStateForAction, worldState, possibleActions[1..], agentBrain, nextAction, accumulatedCost + nextAction.Cost, depth + 1);
+            GoapPlanNode childNode = BuildPlanTree(desiredStateForAction, worldState, possibleActions[1..], characterController, nextAction, accumulatedCost + nextAction.Cost, depth + 1);
             if (childNode != null)
             {
                 currentNode.Cost += childNode.Cost;
