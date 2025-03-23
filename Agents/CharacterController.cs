@@ -173,8 +173,8 @@ public partial class CharacterController : CharacterBody2D
 		foreach (InventorySlot slot in Inventory.Slots)
 		{
 			if (slot.IsEmpty) continue;
-			itemsInInventory.Add(slot.Item.id);
-			GD.Print("Item in inventory: " + slot.Item.id);
+			itemsInInventory.Add(slot.Item.Id);
+			GD.Print("Item in inventory: " + slot.Item.Id);
 		}
 
 		WorldState.Remove("has_items");

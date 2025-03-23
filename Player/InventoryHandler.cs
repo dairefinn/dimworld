@@ -11,6 +11,12 @@ public partial class InventoryHandler : Control
         set => SetPrimaryInventory(value);
     }
     private Inventory _primaryInventory;
+    [Export] public EquipmentHandler PrimaryEquipmentHandler {
+        get => _primaryEquipmentHandler;
+        set => SetPrimaryEquipmentHandler(value);
+    }
+    private EquipmentHandler _primaryEquipmentHandler;
+
     [Export] public Inventory SecondaryInventory {
         get => _secondaryInventory;
         set => SetSecondaryInventory(value);
@@ -150,9 +156,15 @@ public partial class InventoryHandler : Control
         // If there is nothing selected already and the slot is empty, do nothing
         if (SelectedSlot == null && slotUI.TargetSlot.Item == null) return;
 
-        // If we're re-selecting the same slot, deselect it
+        // If we're re-selecting the same slot, deselect it. If the item is usable, use it.
         if (SelectedSlot == slotUI)
         {
+            if (slotUI.TargetSlot.Item.CanBeEquipped)
+            {
+                PrimaryEquipmentHandler.Equip(slotUI.TargetSlot.Item);
+                return;
+            }
+
             SelectedSlot = null;
             return;
         }
@@ -195,6 +207,12 @@ public partial class InventoryHandler : Control
         {
             SelectedSlot = null;
         }
+    }
+
+
+    public void SetPrimaryEquipmentHandler(EquipmentHandler value)
+    {
+        _primaryEquipmentHandler = value;
     }
 
 }

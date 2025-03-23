@@ -74,7 +74,7 @@ public partial class Inventory : Resource
 		foreach (InventorySlot slot in Slots)
 		{
 			if (slot.IsEmpty) continue;
-			if (slot.Item.id == itemId) return true;
+			if (slot.Item.Id == itemId) return true;
 		}
 		
 		return false;
@@ -105,7 +105,7 @@ public partial class Inventory : Resource
 		foreach (InventorySlot slot in Slots)
 		{
 			if (slot.IsEmpty) continue;
-			if (slot.Item.id != item.id) continue;
+			if (slot.Item.Id != item.Id) continue;
 			if (ignoreFull && slot.IsFull) continue;
 			return slot;
 		}
@@ -118,7 +118,7 @@ public partial class Inventory : Resource
 		foreach (InventorySlot slot in Slots)
 		{
 			if (slot.IsEmpty) continue;
-			if (slot.Item.id != itemId) continue;
+			if (slot.Item.Id != itemId) continue;
 			if (ignoreFull && slot.IsFull) continue;
 			return slot;
 		}

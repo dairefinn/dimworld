@@ -1,4 +1,4 @@
-[gd_scene load_steps=91 format=4 uid="uid://ddc8qiig7j3wm"]
+[gd_scene load_steps=93 format=4 uid="uid://ddc8qiig7j3wm"]
 
 [ext_resource type="Script" uid="uid://1f6ukfmh33oo" path="res://DayNightController.cs" id="1_d13ii"]
 [ext_resource type="Script" uid="uid://g354xqg3s44p" path="res://InputHandler.cs" id="2_lquwl"]
@@ -15,6 +15,7 @@
 [ext_resource type="Resource" uid="uid://cor2aifcdpfoy" path="res://Goap/Actions/TurnOnLights.tres" id="8_kek77"]
 [ext_resource type="Resource" uid="uid://be3ryk2ex3pr1" path="res://Goap/Actions/Idle.tres" id="8_ycdy4"]
 [ext_resource type="Resource" uid="uid://ckvaxlnjoqs1o" path="res://Goap/Goals/Patrol.tres" id="9_kek77"]
+[ext_resource type="Script" uid="uid://dphqtgg23pqia" path="res://Agents/EquipmentHandler.cs" id="10_0odxb"]
 [ext_resource type="Resource" uid="uid://c7fy02pjbecvf" path="res://Goap/Goals/Idle.tres" id="11_w48qg"]
 [ext_resource type="Script" uid="uid://cxbp1npv1tukk" path="res://Agents/DetectionHandler.cs" id="13_2cqfq"]
 [ext_resource type="PackedScene" uid="uid://bcpksn1hqwpab" path="res://Objects/Chest/Chest.tscn" id="13_w48qg"]
@@ -22,6 +23,7 @@
 [ext_resource type="PackedScene" uid="uid://cq105v4igaxh5" path="res://Objects/LightBulb/LightBulb.tscn" id="15_vivmo"]
 [ext_resource type="Resource" uid="uid://octn8jxqeqaq" path="res://Items/Sword.tres" id="18_d13ii"]
 [ext_resource type="Resource" uid="uid://cganauotis1vm" path="res://Items/TestItem.tres" id="20_1u8w0"]
+[ext_resource type="Resource" uid="uid://dplke5ijakwt5" path="res://Items/Torch.tres" id="21_1u8w0"]
 [ext_resource type="PackedScene" uid="uid://d21nkwnu7y4od" path="res://Inventory/UI/InventoryViewer.tscn" id="23_d13ii"]
 
 [sub_resource type="NavigationPolygon" id="NavigationPolygon_5vw27"]
@@ -286,7 +288,8 @@ metadata/_custom_type_script = "uid://dph74un0q20el"
 
 [sub_resource type="Resource" id="Resource_6iyjs"]
 script = ExtResource("6_cegan")
-Quantity = 0
+Item = ExtResource("21_1u8w0")
+Quantity = 1
 metadata/_custom_type_script = "uid://bm0o5ggnfmm6y"
 
 [sub_resource type="Resource" id="Resource_4w656"]
@@ -437,6 +440,9 @@ debug_color = Color(0, 0.608985, 0.644943, 0.42)
 [node name="Camera2D" type="Camera2D" parent="Characters/Player"]
 zoom = Vector2(2, 2)
 
+[node name="EquipmentHandler" type="Node2D" parent="Characters/Player"]
+script = ExtResource("10_0odxb")
+
 [node name="Guard" parent="Characters" node_paths=PackedStringArray("DetectionHandler") instance=ExtResource("5_lquwl")]
 z_index = 1
 position = Vector2(961, 378)
@@ -512,5 +518,6 @@ layout_mode = 2
 horizontal_alignment = 2
 vertical_alignment = 2
 
-[node name="InventoryViewer" parent="UI/MarginContainer" instance=ExtResource("23_d13ii")]
+[node name="InventoryViewer" parent="UI/MarginContainer" node_paths=PackedStringArray("PrimaryEquipmentHandler") instance=ExtResource("23_d13ii")]
 layout_mode = 2
+PrimaryEquipmentHandler = NodePath("../../../Characters/Player/EquipmentHandler")
