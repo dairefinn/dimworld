@@ -12,22 +12,22 @@ public partial class InputHandler : Node2D
 
         PlayerController mainPlayer = Globals.GetInstance().MainPlayer;
 
-        bool canMove = !mainPlayer.InventoryHandler.IsViewing && Input.IsActionJustPressed("lmb");
+        bool canMove = !mainPlayer.InventoryViewer.IsViewing && Input.IsActionJustPressed("lmb");
         bool canAbortMove = Input.IsActionJustPressed("rmb");
         bool canToggleTimescale = Input.IsActionJustPressed("toggle_timescale");
-        bool canInteract = Input.IsActionJustPressed("interact") && !mainPlayer.InventoryHandler.IsViewing;
-        bool canOpenInventory = Input.IsActionJustPressed("toggle_inventory") && !mainPlayer.InventoryHandler.IsViewing;
-        bool canCloseInventory = (Input.IsActionJustPressed("toggle_inventory") || Input.IsActionJustPressed("interact") || Input.IsActionJustPressed("ui_cancel")) && mainPlayer.InventoryHandler.IsViewing;
+        bool canInteract = Input.IsActionJustPressed("interact") && !mainPlayer.InventoryViewer.IsViewing;
+        bool canOpenInventory = Input.IsActionJustPressed("toggle_inventory") && !mainPlayer.InventoryViewer.IsViewing;
+        bool canCloseInventory = (Input.IsActionJustPressed("toggle_inventory") || Input.IsActionJustPressed("interact") || Input.IsActionJustPressed("ui_cancel")) && mainPlayer.InventoryViewer.IsViewing;
 
         if (canMove)
         {
             Vector2 mousePosition = GetGlobalMousePosition();
-            mainPlayer.CharacterController.NavigateTo(mousePosition);
+            mainPlayer.NavigateTo(mousePosition);
         }
 
         if (canAbortMove)
         {
-            mainPlayer.CharacterController.StopNavigating();
+            mainPlayer.StopNavigating();
         }
 
         if (canInteract)
@@ -37,12 +37,12 @@ public partial class InputHandler : Node2D
 
         if (canOpenInventory)
         {
-            mainPlayer.InventoryHandler.SetPrimaryInventoryVisibility(true);
+            mainPlayer.InventoryViewer.SetPrimaryInventoryVisibility(true);
         }
 
         if (canCloseInventory)
         {
-            mainPlayer.InventoryHandler.SetBothInventoriesVisibility(false);
+            mainPlayer.InventoryViewer.SetBothInventoriesVisibility(false);
         }
         
         // TODO: Lock behind debug menu

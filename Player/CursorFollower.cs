@@ -8,9 +8,11 @@ public partial class CursorFollower : Area2D
 
     public ICanBeInteractedWith InteractableObject;
 
+
     public override void _Ready()
     {
         base._Ready();
+
         BodyEntered += OnBodyEntered;
         BodyExited += OnBodyExited;
     }

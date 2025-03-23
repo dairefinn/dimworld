@@ -1,7 +1,8 @@
-[gd_scene load_steps=91 format=4 uid="uid://ddc8qiig7j3wm"]
+[gd_scene load_steps=90 format=4 uid="uid://ddc8qiig7j3wm"]
 
 [ext_resource type="Script" uid="uid://g354xqg3s44p" path="res://InputHandler.cs" id="2_lquwl"]
 [ext_resource type="TileSet" uid="uid://me5j3tknec74" path="res://Tileset.tres" id="3_4c57u"]
+[ext_resource type="PackedScene" uid="uid://duk1q562jys3q" path="res://Player/CursorFollower.tscn" id="3_ryguw"]
 [ext_resource type="Script" uid="uid://cjxr3y8xc8pl5" path="res://Player/PlayerController.cs" id="5_d13ii"]
 [ext_resource type="PackedScene" uid="uid://b2rac6jo5ig4k" path="res://Agents/Agent.tscn" id="5_lquwl"]
 [ext_resource type="Script" uid="uid://dph74un0q20el" path="res://Inventory/Inventory.cs" id="5_yaehf"]
@@ -20,7 +21,6 @@
 [ext_resource type="PackedScene" uid="uid://cq105v4igaxh5" path="res://Objects/LightBulb/LightBulb.tscn" id="15_vivmo"]
 [ext_resource type="Resource" uid="uid://octn8jxqeqaq" path="res://Items/Sword.tres" id="18_d13ii"]
 [ext_resource type="Resource" uid="uid://cganauotis1vm" path="res://Items/TestItem.tres" id="20_1u8w0"]
-[ext_resource type="Script" uid="uid://080qtwyw16wf" path="res://CursorFollower.cs" id="22_ryguw"]
 [ext_resource type="PackedScene" uid="uid://d21nkwnu7y4od" path="res://Inventory/UI/InventoryViewer.tscn" id="23_d13ii"]
 
 [sub_resource type="NavigationPolygon" id="NavigationPolygon_5vw27"]
@@ -34,6 +34,16 @@ _data = {
 "points": PackedVector2Array(0, 0, 0, 0, 1130, 219, 0, 0, 0, 0, 1190, 219, 0, 0, 0, 0, 1190, 279, 0, 0, 0, 0, 1130, 279)
 }
 point_count = 4
+
+[sub_resource type="Resource" id="Resource_ryguw"]
+script = ExtResource("6_cegan")
+Quantity = 0
+metadata/_custom_type_script = "uid://bm0o5ggnfmm6y"
+
+[sub_resource type="Resource" id="Resource_d13ii"]
+script = ExtResource("6_cegan")
+Quantity = 0
+metadata/_custom_type_script = "uid://bm0o5ggnfmm6y"
 
 [sub_resource type="Resource" id="Resource_1u8w0"]
 script = ExtResource("6_cegan")
@@ -101,19 +111,9 @@ Quantity = 0
 metadata/_custom_type_script = "uid://bm0o5ggnfmm6y"
 
 [sub_resource type="Resource" id="Resource_facbu"]
-script = ExtResource("6_cegan")
-Quantity = 0
-metadata/_custom_type_script = "uid://bm0o5ggnfmm6y"
-
-[sub_resource type="Resource" id="Resource_5yh34"]
-script = ExtResource("6_cegan")
-Quantity = 0
-metadata/_custom_type_script = "uid://bm0o5ggnfmm6y"
-
-[sub_resource type="Resource" id="Resource_d13ii"]
 script = ExtResource("5_yaehf")
-InventoryName = "Player Inventory"
-Slots = Array[ExtResource("6_cegan")]([SubResource("Resource_1u8w0"), SubResource("Resource_0odxb"), SubResource("Resource_lswn8"), SubResource("Resource_a6jrf"), SubResource("Resource_xuqvo"), SubResource("Resource_qsp4k"), SubResource("Resource_kq58d"), SubResource("Resource_seu75"), SubResource("Resource_htxhm"), SubResource("Resource_jq2sk"), SubResource("Resource_4k2k6"), SubResource("Resource_0rl1p"), SubResource("Resource_ok6jj"), SubResource("Resource_facbu"), SubResource("Resource_5yh34")])
+InventoryName = "Player's inventory"
+Slots = Array[ExtResource("6_cegan")]([SubResource("Resource_ryguw"), SubResource("Resource_d13ii"), SubResource("Resource_1u8w0"), SubResource("Resource_0odxb"), SubResource("Resource_lswn8"), SubResource("Resource_a6jrf"), SubResource("Resource_xuqvo"), SubResource("Resource_qsp4k"), SubResource("Resource_kq58d"), SubResource("Resource_seu75"), SubResource("Resource_htxhm"), SubResource("Resource_jq2sk"), SubResource("Resource_4k2k6"), SubResource("Resource_0rl1p"), SubResource("Resource_ok6jj")])
 metadata/_custom_type_script = "uid://dph74un0q20el"
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_5vw27"]
@@ -364,12 +364,12 @@ InventoryName = "Chest 2 contents"
 Slots = Array[ExtResource("6_cegan")]([SubResource("Resource_6iyjs"), SubResource("Resource_4w656"), SubResource("Resource_e71vb"), SubResource("Resource_rnkwl"), SubResource("Resource_vke2r"), SubResource("Resource_uit24"), SubResource("Resource_ruth0"), SubResource("Resource_rm4vd"), SubResource("Resource_pjyto"), SubResource("Resource_sm6fg"), SubResource("Resource_b17eg"), SubResource("Resource_ntx8l"), SubResource("Resource_uatky"), SubResource("Resource_rqtf5"), SubResource("Resource_1vm84")])
 metadata/_custom_type_script = "uid://dph74un0q20el"
 
-[sub_resource type="CircleShape2D" id="CircleShape2D_ryguw"]
-
 [node name="Main" type="Node2D"]
 
 [node name="InputHandler" type="Node2D" parent="."]
 script = ExtResource("2_lquwl")
+
+[node name="CursorFollower" parent="." instance=ExtResource("3_ryguw")]
 
 [node name="World" type="Node" parent="."]
 
@@ -400,20 +400,17 @@ curve = SubResource("Curve2D_ryguw")
 
 [node name="Characters" type="Node" parent="."]
 
-[node name="Player" parent="Characters" node_paths=PackedStringArray("DetectionHandler") instance=ExtResource("5_lquwl")]
+[node name="Player" parent="Characters" node_paths=PackedStringArray("InventoryViewer", "CursorFollower", "DetectionHandler") instance=ExtResource("5_lquwl")]
 z_index = 1
 position = Vector2(1323, 412)
-Acceleration = 25.0
-Inventory = SubResource("Resource_d13ii")
-IsPlanningEnabled = false
-DetectionHandler = NodePath("DetectionHandler")
-
-[node name="PlayerController" type="Node" parent="Characters/Player" node_paths=PackedStringArray("InventoryHandler", "CharacterController", "CursorFollower")]
 script = ExtResource("5_d13ii")
 IsCurrentPlayer = true
-InventoryHandler = NodePath("../../../UI/MarginContainer/InventoryViewer")
-CharacterController = NodePath("..")
-CursorFollower = NodePath("../../../CursorFollower")
+InventoryViewer = NodePath("../../UI/MarginContainer/InventoryViewer")
+CursorFollower = NodePath("../../CursorFollower")
+Acceleration = 25.0
+Inventory = SubResource("Resource_facbu")
+IsPlanningEnabled = false
+DetectionHandler = NodePath("DetectionHandler")
 
 [node name="DetectionHandler" type="Node2D" parent="Characters/Player" node_paths=PackedStringArray("AreaVision", "DetectedEntities")]
 script = ExtResource("13_2cqfq")
@@ -481,15 +478,6 @@ position = Vector2(1100, 319)
 
 [node name="LightBulb4" parent="Objects" instance=ExtResource("15_vivmo")]
 position = Vector2(1172, 334)
-
-[node name="CursorFollower" type="Area2D" parent="."]
-collision_layer = 0
-collision_mask = 2
-script = ExtResource("22_ryguw")
-
-[node name="CollisionShape2D" type="CollisionShape2D" parent="CursorFollower"]
-modulate = Color(1, 0, 0, 1)
-shape = SubResource("CircleShape2D_ryguw")
 
 [node name="UI" type="CanvasLayer" parent="."]
 

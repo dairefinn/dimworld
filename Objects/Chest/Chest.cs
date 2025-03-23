@@ -10,7 +10,7 @@ public partial class Chest : StaticBody2D, ICanBeInteractedWith
 
     public void InteractWith()
     {
-        Globals.GetInstance().MainPlayer.InventoryHandler.OpenSecondaryInventory(Inventory);
+        Globals.GetInstance().MainPlayer.InventoryViewer.OpenSecondaryInventory(Inventory);
     }
 
     public bool ContainsItem(InventoryItem item)
