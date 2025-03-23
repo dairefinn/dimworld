@@ -1,5 +1,6 @@
-[gd_scene load_steps=90 format=4 uid="uid://ddc8qiig7j3wm"]
+[gd_scene load_steps=91 format=4 uid="uid://ddc8qiig7j3wm"]
 
+[ext_resource type="Script" uid="uid://1f6ukfmh33oo" path="res://DayNightController.cs" id="1_d13ii"]
 [ext_resource type="Script" uid="uid://g354xqg3s44p" path="res://InputHandler.cs" id="2_lquwl"]
 [ext_resource type="TileSet" uid="uid://me5j3tknec74" path="res://Tileset.tres" id="3_4c57u"]
 [ext_resource type="PackedScene" uid="uid://duk1q562jys3q" path="res://Player/CursorFollower.tscn" id="3_ryguw"]
@@ -368,6 +369,14 @@ metadata/_custom_type_script = "uid://dph74un0q20el"
 
 [node name="InputHandler" type="Node2D" parent="."]
 script = ExtResource("2_lquwl")
+
+[node name="DayNightController" type="DirectionalLight2D" parent="."]
+color = Color(0.0784314, 0.0784314, 0.0784314, 1)
+energy = 0.0
+blend_mode = 2
+script = ExtResource("1_d13ii")
+TimePassedPerTick = 1.0
+PercentageOfDay = 100.0
 
 [node name="CursorFollower" parent="." instance=ExtResource("3_ryguw")]
 

@@ -32,9 +32,11 @@ public partial class PlayerController : CharacterController
         ICanBeInteractedWith interactableObject = CursorFollower.InteractableObject;
         if (interactableObject == null) return;
 
+
         if (interactableObject is Node2D interactableObjectNode2D)
         {
             if (!DetectionHandler.CanSee(interactableObjectNode2D)) return;
+
             interactableObject.InteractWith();
         }
     }
