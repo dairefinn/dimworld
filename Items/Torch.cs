@@ -8,6 +8,7 @@ public partial class Torch : InventoryItem
 
     private PointLight2D lightSource = new()
     {
+        Name = "Torch Light",
         Texture = GD.Load<Texture2D>("res://LightTexture.tres")
     };
 
@@ -27,7 +28,14 @@ public partial class Torch : InventoryItem
     {
         InventoryContextMenuUI.ContextMenuOption[] options = [];
 
-        options = [..options, new InventoryContextMenuUI.ContextMenuOption("Equip", () => EquipTorch(contextMenuUI, equipmentHandler))];
+        if (lightSource.GetParent() == null)
+        {
+            options = [..options, new InventoryContextMenuUI.ContextMenuOption("Equip", () => EquipTorch(contextMenuUI, equipmentHandler))];
+        }
+        else
+        {
+            options = [..options, new InventoryContextMenuUI.ContextMenuOption("Unequip", () => UnequipTorch(contextMenuUI, equipmentHandler))];
+        }
 
         return options;
     }

@@ -2,7 +2,7 @@ namespace Dimworld;
 
 using System;
 using Godot;
-using Godot.Collections;
+
 
 public partial class InventoryContextMenuUI : PanelContainer
 {
@@ -57,6 +57,7 @@ public partial class InventoryContextMenuUI : PanelContainer
     /// <param name="options">The options to show in the context menu.</param>
     public void Show(Vector2 globalPosition, ContextMenuOption[] options = null)
     {
+        RemoveAllOptions();
         GlobalPosition = globalPosition;
         Show(options);
     }
@@ -71,7 +72,6 @@ public partial class InventoryContextMenuUI : PanelContainer
         {
             foreach (ContextMenuOption option in options)
             {
-                GD.Print("Adding option: " + option.Label);
                 AddOption(option.Label, option.Action);
             }
         }
