@@ -1,19 +1,32 @@
-[gd_scene load_steps=3 format=3 uid="uid://d21nkwnu7y4od"]
+[gd_scene load_steps=4 format=3 uid="uid://d21nkwnu7y4od"]
 
 [ext_resource type="Script" uid="uid://dnfjwmt5hy17g" path="res://Player/InventoryHandler.cs" id="1_tdqb6"]
 [ext_resource type="PackedScene" uid="uid://bypfigpr23v58" path="res://Inventory/UI/InventoryUI.tscn" id="2_wxqvu"]
+[ext_resource type="PackedScene" uid="uid://dk54wpv1dffmh" path="res://Inventory/InventoryContextMenuUI.tscn" id="3_wxqvu"]
 
-[node name="InventoryViewer" type="HBoxContainer"]
-theme_override_constants/separation = 50
-alignment = 1
+[node name="InventoryViewer" type="Control"]
+layout_mode = 3
+anchors_preset = 0
 script = ExtResource("1_tdqb6")
 
-[node name="PrimaryInventoryUI" parent="." instance=ExtResource("2_wxqvu")]
+[node name="HBoxContainer" type="HBoxContainer" parent="."]
+layout_mode = 0
+offset_right = 550.0
+offset_bottom = 368.0
+theme_override_constants/separation = 50
+alignment = 1
+
+[node name="PrimaryInventoryUI" parent="HBoxContainer" instance=ExtResource("2_wxqvu")]
 unique_name_in_owner = true
 visible = false
 layout_mode = 2
 
-[node name="SecondaryInventoryUI" parent="." instance=ExtResource("2_wxqvu")]
+[node name="SecondaryInventoryUI" parent="HBoxContainer" instance=ExtResource("2_wxqvu")]
 unique_name_in_owner = true
 visible = false
 layout_mode = 2
+
+[node name="ContextMenu" parent="." instance=ExtResource("3_wxqvu")]
+unique_name_in_owner = true
+visible = false
+layout_mode = 0

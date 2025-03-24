@@ -6,6 +6,7 @@ public partial class InventorySlotUI : Panel
 {
 
     [Signal] public delegate void OnClickedEventHandler();
+    [Signal] public delegate void OnClickedAlternateEventHandler();
 
 
     [Export] public InventorySlot TargetSlot {
@@ -41,10 +42,15 @@ public partial class InventorySlotUI : Panel
         
         if (@event is InputEventMouseButton mouseButtonEvent)
         {
-            // TODO: Should I be hardcoding inputs here or using an input action?
+            // TODO: Should I be hardcoding inputs here or using an input action? Can this be handled by the InputHandler to keep everyhting in one place?
             if (mouseButtonEvent.ButtonIndex == MouseButton.Left && mouseButtonEvent.Pressed)
             {
                 EmitSignal(SignalName.OnClicked);
+            }
+
+            if (mouseButtonEvent.ButtonIndex == MouseButton.Right && mouseButtonEvent.Pressed)
+            {
+                EmitSignal(SignalName.OnClickedAlternate);
             }
         }
     }

@@ -3,10 +3,11 @@ namespace Dimworld;
 using Godot;
 using Godot.Collections;
 
+// TODO: Probably want to prevent items being equipped sometimes if a conflicting item is already equipped. For example, two helmets.
 public partial class EquipmentHandler : Node2D
 {
 
-    [Export] public Array<EquipmentSlot> Equipment { get; set; } = [];
+    [Export] public Array<InventoryItem> Equipment { get; set; } = [];
 
 
     public override void _Ready()
@@ -36,24 +37,15 @@ public partial class EquipmentHandler : Node2D
 
     public bool IsEquipped(ICanBeEquipped item)
     {
-        foreach (Node node in Equipment)
+        foreach (InventoryItem node in Equipment)
         {
-            if (node is EquipmentSlot slot)
+            if (node is ICanBeEquipped equippedItem && equippedItem == item)
             {
-                if (slot.Item == item)
-                {
-                    return true;
-                }
+                return true;
             }
         }
 
         return false;
-    }
-
-    public partial class EquipmentSlot : Node
-    {
-        public ICanBeEquipped Item { get; set; }
-        public Node Node { get; set; }
     }
 
 }

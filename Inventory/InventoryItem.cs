@@ -16,6 +16,13 @@ public partial class InventoryItem : Resource, ICanBeEquipped // TODO: Every ite
     
     public bool IsStackable => MaxStackSize > 1;
 
+
+    public virtual InventoryContextMenuUI.ContextMenuOption[] GetContextMenuOptions(InventoryContextMenuUI contextMenuUI, EquipmentHandler equipmentHandler)
+    {
+        return [];
+    }
+
+
     // EQUIPMENT HANDLING
 
     public virtual void OnEquip(EquipmentHandler handler)
@@ -29,5 +36,6 @@ public partial class InventoryItem : Resource, ICanBeEquipped // TODO: Every ite
         if (!CanBeEquipped) return;
         return;
     }
+
 
 }

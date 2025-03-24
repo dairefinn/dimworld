@@ -34,12 +34,10 @@ public partial class InventoryHandler : Control
     }
     private InventoryUI _secondaryInventoryUI;
 
-    public bool IsViewing => GetPrimaryInventoryVisibility() || GetSecondaryInventoryVisibility();
-
-
     private InventorySlotUI SelectedSlot {
         get => _selectedSlot;
         set {
+            // TODO: Improve selected slot UI
             if (_selectedSlot != null)
             {
                 _selectedSlot.Modulate = Colors.White;
@@ -54,12 +52,26 @@ public partial class InventoryHandler : Control
     }
     private InventorySlotUI _selectedSlot;
 
+    private InventoryContextMenuUI ContextMenu;
+
+
+    public bool IsViewing => GetPrimaryInventoryVisibility() || GetSecondaryInventoryVisibility();
+
 
     public override void _Ready()
     {
         primaryInventoryUI = GetNode<InventoryUI>("%PrimaryInventoryUI");
         secondaryInventoryUI = GetNode<InventoryUI>("%SecondaryInventoryUI");
+        ContextMenu = GetNode<InventoryContextMenuUI>("%ContextMenu");
+
+        ContextMenu.Visible = false;
     }
+
+    public override void _Process(double delta)
+    {
+        base._Process(delta);
+    }
+
 
     private void SetPrimaryInventory(Inventory value)
     {
@@ -99,6 +111,7 @@ public partial class InventoryHandler : Control
         {
             _primaryInventoryUI.TargetInventory = PrimaryInventory;
             _primaryInventoryUI.OnSlotClicked += OnSlotClicked;
+            _primaryInventoryUI.OnSlotClickedAlternate += OnSlotClickedAlternate;
             _primaryInventoryUI.OnVisibilityChanged += OnPrimaryVisibilityChanged;
         }
     }
@@ -111,6 +124,7 @@ public partial class InventoryHandler : Control
         {
             _secondaryInventoryUI.TargetInventory = SecondaryInventory;
             _secondaryInventoryUI.OnSlotClicked += OnSlotClicked;
+            _secondaryInventoryUI.OnSlotClickedAlternate += OnSlotClickedAlternate;
             _secondaryInventoryUI.OnVisibilityChanged += OnSecondaryVisibilityChanged;
         }
     }
@@ -159,12 +173,6 @@ public partial class InventoryHandler : Control
         // If we're re-selecting the same slot, deselect it. If the item is usable, use it.
         if (SelectedSlot == slotUI)
         {
-            if (slotUI.TargetSlot.Item.CanBeEquipped)
-            {
-                PrimaryEquipmentHandler.Equip(slotUI.TargetSlot.Item);
-                return;
-            }
-
             SelectedSlot = null;
             return;
         }
@@ -191,6 +199,19 @@ public partial class InventoryHandler : Control
         SelectedSlot = null;
     }
 
+    private void OnSlotClickedAlternate(InventorySlotUI slotUI)
+    {
+        if (slotUI == null) return;
+        if (slotUI.TargetSlot.IsEmpty) return;
+
+        float slotWidth = slotUI.GetRect().Size.X;
+        Vector2 contextMenuPosition = slotUI.GlobalPosition + new Vector2(slotWidth, 10);
+
+        InventoryContextMenuUI.ContextMenuOption[] options = slotUI.TargetSlot.Item.GetContextMenuOptions(ContextMenu, PrimaryEquipmentHandler);
+
+        ContextMenu.Show(contextMenuPosition, options);
+    }
+
     private void OnPrimaryVisibilityChanged(bool visible)
     {
         OnAnyVisibilityChanged(visible);
@@ -206,6 +227,7 @@ public partial class InventoryHandler : Control
         if (!visible)
         {
             SelectedSlot = null;
+            ContextMenu.Hide();
         }
     }
 

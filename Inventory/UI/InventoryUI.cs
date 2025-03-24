@@ -8,6 +8,7 @@ public partial class InventoryUI : Container
 
     [Signal] public delegate void OnVisibilityChangedEventHandler(bool visible);
     [Signal] public delegate void OnSlotClickedEventHandler(InventorySlotUI slot);
+    [Signal] public delegate void OnSlotClickedAlternateEventHandler(InventorySlotUI slot);
 
 
     [Export] public Inventory TargetInventory {
@@ -49,6 +50,7 @@ public partial class InventoryUI : Container
             slotUI.TargetSlot = slot;
             SlotsGrid.AddChild(slotUI);
             slotUI.OnClicked += () => OnClickSlot(slotUI);
+            slotUI.OnClickedAlternate += () => OnClickSlotAlternate(slotUI);
         }
     }
 
@@ -77,6 +79,11 @@ public partial class InventoryUI : Container
     private void OnClickSlot(InventorySlotUI slotUI)
     {
         EmitSignal(SignalName.OnSlotClicked, slotUI);
+    }
+
+    private void OnClickSlotAlternate(InventorySlotUI slotUI)
+    {
+        EmitSignal(SignalName.OnSlotClickedAlternate, slotUI);
     }
 
 }
