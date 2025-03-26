@@ -10,8 +10,6 @@ public partial class InventorySlotClickedState : InventorySlotState
 
 	public override void Enter()
 	{
-        // TODO: Add drag/drop from one slot to another
-		// inventorySlotUI.DropPointDetector.Monitoring = true;
 	}
 
     public override void OnInput(InputEvent @event)

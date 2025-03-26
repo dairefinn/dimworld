@@ -203,12 +203,13 @@ public partial class InventoryHandler : Control
         if (sourceSlot.TargetSlot.IsEmpty) return;
         if (sourceSlot == targetSlot) return;
         
-        bool isChangingInventories = sourceSlot.ParentInventory != targetSlot.ParentInventory;
+        bool isChangingInventories = sourceSlot.ParentInventoryUI != targetSlot.ParentInventoryUI;
+
+        // Perform the actual swap
         targetSlot.TargetSlot.SwapWithExisting(sourceSlot.TargetSlot);
 
         if (isChangingInventories)
         {
-            GD.Print("Changing inventories");
             PrimaryEquipmentHandler.Unequip(sourceSlot.TargetSlot.Item);
             PrimaryEquipmentHandler.Unequip(targetSlot.TargetSlot.Item);
         }
@@ -234,8 +235,10 @@ public partial class InventoryHandler : Control
             return;
         }
 
-        InventoryContextMenuUI.ContextMenuOption[] options = inventorySlotUI.TargetSlot.Item.GetContextMenuOptions(ContextMenu, PrimaryEquipmentHandler);
-        if (options == null) return; // If item returns null for options, don't show the context menu
+        bool itemIsInParentInventory = inventorySlotUI.ParentInventoryUI == primaryInventoryUI;
+
+        InventoryContextMenuUI.ContextMenuOption[] options = inventorySlotUI.TargetSlot.Item.GetContextMenuOptions(ContextMenu, PrimaryEquipmentHandler, itemIsInParentInventory);
+        if (options == null || options.Length == 0) return; // If an item doesn't provide any context menu options, don't show the context menu
 
         ContextMenu.OnOptionSelected += () => OnContextMenuOptionSelected(inventorySlotUI);
         ContextMenu.Show(contextMenuPosition, options);

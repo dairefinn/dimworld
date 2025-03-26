@@ -21,7 +21,7 @@ public partial class InventorySlotDraggingState : InventorySlotState
 			inventorySlotUI.Reparent(uiLayer);
 		}
 
-		inventorySlotUI.Set("theme_override_styles/panel", InventorySlotUI.STYLEBOX_SELECTED); // TODO: Dragging styles
+		inventorySlotUI.Set("theme_override_styles/panel", InventorySlotUI.STYLEBOX_SELECTED);
 
 		minimumDragTimeElapsed = false;
 		SceneTreeTimer thresholdTimer = GetTree().CreateTimer(DRAGGING_MINIMUM_THRESHOLD, false);

@@ -59,7 +59,7 @@ public partial class InventoryItem : Resource, ICanBeEquipped, IHasContextMenu /
 
     // CONTEXT MENU
 
-    public virtual InventoryContextMenuUI.ContextMenuOption[] GetContextMenuOptions(InventoryContextMenuUI contextMenuUI, EquipmentHandler equipmentHandler)
+    public virtual InventoryContextMenuUI.ContextMenuOption[] GetContextMenuOptions(InventoryContextMenuUI contextMenuUI, EquipmentHandler equipmentHandler, bool itemIsInParentInventory)
     {
         return null;
     }

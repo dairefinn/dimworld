@@ -4,7 +4,6 @@ using System;
 using Godot;
 
 
-// TODO: Most of this is ripped from our FarmH& project, need to adapt it to this one.
 public partial class DayNightController : DirectionalLight2D
 {
     
@@ -61,7 +60,7 @@ public partial class DayNightController : DirectionalLight2D
         PercentageOfDay = newPerentageOfDay;
 	}
 
-    // TODO: Since this is a 2D game, we don't need to rotate the sun but this might set the shadow direction?
+    // TODO: Since this is a 2D game, we don't need to rotate the sun but this might set the shadow direction in the future?
 	private void UpdateSunPosition(float percentageOfDay) {
 		// 0 is start of day, 25 is midday. 50 is end of day. 75 is midnight. 100 is start of day.
 		// float percentageOfDayDecimal = percentageOfDay / 100;
@@ -94,15 +93,5 @@ public partial class DayNightController : DirectionalLight2D
         UpdateSunPosition(_percentageOfDay);
         UpdateSkyColour(_percentageOfDay);
     }
-
-	// public SaveData GetSaveData()
-	// {
-	// 	return new DayNightCycleSaveData(this);
-    // }
-
-	// public void LoadFromSaveData(DayNightCycleSaveData dayNightCycleSaveData) {
-	// 	CurrentDay = dayNightCycleSaveData.CurrentDay;
-	// 	PercentageOfDay = dayNightCycleSaveData.PercentageOfDay;
-    // }
 
 }

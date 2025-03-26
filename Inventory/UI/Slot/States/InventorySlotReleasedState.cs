@@ -14,7 +14,7 @@ public partial class InventorySlotReleasedState : InventorySlotState
         InventorySlotDragArea firstTarget = inventorySlotUI.DragArea.Targets.Count > 0 ? inventorySlotUI.DragArea.Targets[0] : null;
         if(firstTarget != null)
         {
-            inventorySlotUI.ParentInventory.ParentHandler.MoveItemFromSlotToSlot(inventorySlotUI, firstTarget.ParentSlot);
+            inventorySlotUI.ParentInventoryUI.ParentHandler.MoveItemFromSlotToSlot(inventorySlotUI, firstTarget.ParentSlot);
         }
     }
 

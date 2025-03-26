@@ -47,7 +47,7 @@ public partial class InventoryUI : Container
         {
             InventorySlotUI slotUI = SlotUIScene.Instantiate<InventorySlotUI>();
             slotUI.TargetSlot = slot;
-            slotUI.ParentInventory = this;
+            slotUI.ParentInventoryUI = this;
             SlotsGrid.AddChild(slotUI);
         }
     }

@@ -151,7 +151,8 @@ public partial class CharacterController : CharacterBody2D
 			}
 			else
 			{
-				CurrentPlan = []; // TODO: Is this necessary? Seems like it would just freeze the agent or be overwritten by the next plan. Maybe we should set CurrentGoal to null instead?
+				CurrentGoal = null;
+				CurrentPlan = [];
 				CurrentPlanStep = 0;
 			}
 		}

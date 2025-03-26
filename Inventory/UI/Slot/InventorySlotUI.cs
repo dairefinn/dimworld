@@ -17,7 +17,7 @@ public partial class InventorySlotUI : Panel
     }
     private InventorySlot _targetSlot;
 
-    public InventoryUI ParentInventory { get; set; }
+    public InventoryUI ParentInventoryUI { get; set; }
 
     public TextureRect ItemIcon;
     public Label QuantityLabel;

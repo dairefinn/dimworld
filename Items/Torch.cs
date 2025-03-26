@@ -42,17 +42,20 @@ public partial class Torch : InventoryItem
     }
 
     // TODO: Might be a cleaner way to do this. Maybe providing a list of options which each have a label, action and condition for displaying.
-    public override InventoryContextMenuUI.ContextMenuOption[] GetContextMenuOptions(InventoryContextMenuUI contextMenuUI, EquipmentHandler equipmentHandler)
+    public override InventoryContextMenuUI.ContextMenuOption[] GetContextMenuOptions(InventoryContextMenuUI contextMenuUI, EquipmentHandler equipmentHandler, bool itemIsInParentInventory)
     {
         InventoryContextMenuUI.ContextMenuOption[] options = [];
 
-        if (IsEquipped)
+        if (itemIsInParentInventory)
         {
-            options = [..options, new InventoryContextMenuUI.ContextMenuOption("Unequip", () => ContextOptionUnequipTorch(contextMenuUI, equipmentHandler))];
-        }
-        else
-        {
-            options = [..options, new InventoryContextMenuUI.ContextMenuOption("Equip", () => ContextOptionEquipTorch(contextMenuUI, equipmentHandler))];
+            if (IsEquipped)
+            {
+                options = [..options, new InventoryContextMenuUI.ContextMenuOption("Unequip", () => ContextOptionUnequipTorch(contextMenuUI, equipmentHandler))];
+            }
+            else
+            {
+                options = [..options, new InventoryContextMenuUI.ContextMenuOption("Equip", () => ContextOptionEquipTorch(contextMenuUI, equipmentHandler))];
+            }
         }
 
         return options;
