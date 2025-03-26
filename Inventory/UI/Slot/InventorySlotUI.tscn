@@ -11,7 +11,7 @@
 [ext_resource type="Script" uid="uid://bfm3m077sdq4j" path="res://Inventory/UI/Slot/States/InventorySlotClickedState.cs" id="7_x15h5"]
 [ext_resource type="Script" uid="uid://dhotkpi4inknx" path="res://Inventory/UI/Slot/States/InventorySlotDraggingState.cs" id="8_nqjmp"]
 [ext_resource type="Script" uid="uid://dr6rusanwjadf" path="res://Inventory/UI/Slot/States/InventorySlotReleasedState.cs" id="9_h2m36"]
-[ext_resource type="Script" uid="uid://d1i1frg0p5yqh" path="res://Inventory/UI/Slot/States/InventorySlotActiveState.cs" id="10_2v54i"]
+[ext_resource type="StyleBox" uid="uid://bcjpx3k1qej8l" path="res://Inventory/UI/Slot/Styles/InventorySlotUI_Hover.tres" id="12_f11j2"]
 
 [sub_resource type="Resource" id="Resource_x15h5"]
 script = ExtResource("4_yjg2m")
@@ -111,5 +111,14 @@ script = ExtResource("8_nqjmp")
 [node name="StateReleased" type="Node" parent="StateMachine"]
 script = ExtResource("9_h2m36")
 
-[node name="StateActive" type="Node" parent="StateMachine"]
-script = ExtResource("10_2v54i")
+[node name="HoverOverlay" type="Panel" parent="."]
+unique_name_in_owner = true
+visible = false
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+theme_override_styles/panel = ExtResource("12_f11j2")

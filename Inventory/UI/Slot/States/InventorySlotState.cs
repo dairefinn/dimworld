@@ -10,8 +10,7 @@ public partial class InventorySlotState : Node
         BASE = 0,
         CLICKED = 1,
         DRAGGING = 2,
-        ACTIVE = 3,
-        RELEASED = 4
+        RELEASED = 3
     }
 
     [Signal] public delegate void TransitionRequestedEventHandler(InventorySlotState from, State to);

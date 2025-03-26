@@ -15,11 +15,6 @@ public partial class InventorySlotBaseState : InventorySlotState
 		{
 			await ToSignal(inventorySlotUI, "ready");
 		}
-
-		inventorySlotUI.Set("theme_override_styles/panel", InventorySlotUI.STYLEBOX_DEFAULT);
-
-		// TODO: This will hide the tooltip when the state changes
-		// Events.Instance.EmitSignal(Events.SignalName.TooltipHideRequested);
 		
 		inventorySlotUI.DragArea.Monitoring = false;
 		inventorySlotUI.DragArea.Monitorable = true;
@@ -36,7 +31,7 @@ public partial class InventorySlotBaseState : InventorySlotState
 			}
 			else if (@event.IsActionPressed("rmb"))
 			{
-				// inventorySlotUI.RequestContextMenu() // TODO: Add context menu
+				inventorySlotUI.ParentInventory.ParentHandler.RequestContextMenu(inventorySlotUI);
 			}
 
 		}
@@ -45,15 +40,11 @@ public partial class InventorySlotBaseState : InventorySlotState
     public override void OnMouseEntered()
     {
 		mouseOverInventorySlot = true;
-		inventorySlotUI.Set("theme_override_styles/panel", InventorySlotUI.STYLEBOX_HOVER);
-		// inventorySlotUI.RequestTooltip(); // TODO: Add tooltips
     }
 
 	public override void OnMouseExited()
 	{
 		mouseOverInventorySlot = false;
-		inventorySlotUI.Set("theme_override_styles/panel", InventorySlotUI.STYLEBOX_DEFAULT);
-		// Events.Instance.EmitSignal(Events.SignalName.TooltipHideRequested);
 	}
 
 }

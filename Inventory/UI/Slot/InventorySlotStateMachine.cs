@@ -57,8 +57,6 @@ public partial class InventorySlotStateMachine : Node
 	{
 		if (from != currentState) return; // Cannot transition from a state that is not the current state
 
-		GD.Print("Transitioning from " + from.StateId + " to " + to);
-
 		InventorySlotState newState = states[to];
 
 		if (newState == null) return; // Cannot transition to a state that does not exist

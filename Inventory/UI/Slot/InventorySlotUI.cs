@@ -9,7 +9,6 @@ public partial class InventorySlotUI : Panel
     public static readonly StyleBox STYLEBOX_DEFAULT = GD.Load<StyleBox>("res://Inventory/UI/Slot/Styles/InventorySlotUI_Default.tres");
     public static readonly StyleBox STYLEBOX_ACTIVE = GD.Load<StyleBox>("res://Inventory/UI/Slot/Styles/InventorySlotUI_Active.tres");
     public static readonly StyleBox STYLEBOX_SELECTED = GD.Load<StyleBox>("res://Inventory/UI/Slot/Styles/InventorySlotUI_Selected.tres");
-    public static readonly StyleBox STYLEBOX_HOVER = GD.Load<StyleBox>("res://Inventory/UI/Slot/Styles/InventorySlotUI_Hover.tres");
 
 
     [Export] public InventorySlot TargetSlot {
@@ -19,10 +18,12 @@ public partial class InventorySlotUI : Panel
     private InventorySlot _targetSlot;
 
     public InventoryUI ParentInventory { get; set; }
+
     public TextureRect ItemIcon;
     public Label QuantityLabel;
     public Label ItemLabel;
     public InventorySlotDragArea DragArea;
+    public Panel HoverOverlay;
 
 
     private InventorySlotStateMachine StateMachine;
@@ -36,6 +37,7 @@ public partial class InventorySlotUI : Panel
         ItemLabel = GetNode<Label>("%ItemLabel");
         ItemIcon = GetNode<TextureRect>("%ItemIcon");
         StateMachine = GetNode<InventorySlotStateMachine>("%StateMachine");
+        HoverOverlay = GetNode<Panel>("%HoverOverlay");
         DragArea = GetNode<InventorySlotDragArea>("%DragArea");
         DragArea.ParentSlot = this;
 
@@ -64,11 +66,13 @@ public partial class InventorySlotUI : Panel
 
 	public void OnMouseEntered()
 	{
+		HoverOverlay.Show();
 		StateMachine.OnMouseEntered();
 	}
 
 	public void OnMouseExited()
 	{
+        HoverOverlay.Hide();
 		StateMachine.OnMouseExited();
 	}
 
@@ -114,6 +118,15 @@ public partial class InventorySlotUI : Panel
         {
             ItemIcon.Texture = itemIcon;
         }
+        
+        if(TargetSlot.Item != null && TargetSlot.Item.IsEquipped)
+		{
+			Set("theme_override_styles/panel", STYLEBOX_ACTIVE);
+		}
+		else
+		{
+			Set("theme_override_styles/panel", STYLEBOX_DEFAULT);
+		}
     }
 
 }

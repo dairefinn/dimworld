@@ -91,22 +91,44 @@ public partial class InventoryHandler : Control
 
     private void SetPrimaryInventoryUI(InventoryUI value)
     {
+        // Unregister old inventory
+        if (_primaryInventoryUI != null)
+        {
+            _primaryInventoryUI.TargetInventory = null;
+            _primaryInventoryUI.ParentHandler = null;
+            _primaryInventoryUI.OnVisibilityChanged -= OnSecondaryVisibilityChanged;
+        }
+
+        // Update value
         _primaryInventoryUI = value;
 
+        // Register new inventory
         if (value != null)
         {
             _primaryInventoryUI.TargetInventory = PrimaryInventory;
+            _primaryInventoryUI.ParentHandler = this;
             _primaryInventoryUI.OnVisibilityChanged += OnPrimaryVisibilityChanged;
         }
     }
 
     private void SetSecondaryInventoryUI(InventoryUI value)
     {
+        // Unregister old inventory
+        if (_secondaryInventoryUI != null)
+        {
+            _secondaryInventoryUI.TargetInventory = null;
+            _secondaryInventoryUI.ParentHandler = null;
+            _secondaryInventoryUI.OnVisibilityChanged -= OnSecondaryVisibilityChanged;
+        }
+
+        // Update value
         _secondaryInventoryUI = value;
 
+        // Register new inventory
         if (value != null)
         {
             _secondaryInventoryUI.TargetInventory = SecondaryInventory;
+            _secondaryInventoryUI.ParentHandler = this;
             _secondaryInventoryUI.OnVisibilityChanged += OnSecondaryVisibilityChanged;
         }
     }
@@ -172,16 +194,39 @@ public partial class InventoryHandler : Control
     }
 
 
-    // CONTEXT MENU
-    // TODO: Re-implement with state machines
+    // MOVING ITEMS
 
-    private void OnSlotClickedAlternate(InventorySlotUI slotUI)
+    public void MoveItemFromSlotToSlot(InventorySlotUI sourceSlot, InventorySlotUI targetSlot)
     {
-        if (slotUI == null) return;
-        if (slotUI.TargetSlot.IsEmpty) return;
+        if (sourceSlot == null) return;
+        if (targetSlot == null) return;
+        if (sourceSlot.TargetSlot.IsEmpty) return;
+        if (sourceSlot == targetSlot) return;
+        
+        bool isChangingInventories = sourceSlot.ParentInventory != targetSlot.ParentInventory;
+        targetSlot.TargetSlot.SwapWithExisting(sourceSlot.TargetSlot);
 
-        float slotWidth = slotUI.GetRect().Size.X;
-        Vector2 contextMenuPosition = slotUI.GlobalPosition + new Vector2(slotWidth, 10);
+        if (isChangingInventories)
+        {
+            GD.Print("Changing inventories");
+            PrimaryEquipmentHandler.Unequip(sourceSlot.TargetSlot.Item);
+            PrimaryEquipmentHandler.Unequip(targetSlot.TargetSlot.Item);
+        }
+
+        sourceSlot.UpdateUI();
+        targetSlot.UpdateUI();
+    }
+
+
+    // CONTEXT MENU
+
+    public void RequestContextMenu(InventorySlotUI inventorySlotUI)
+    {
+        if (inventorySlotUI == null) return;
+        if (inventorySlotUI.TargetSlot.IsEmpty) return;
+
+        float slotWidth = inventorySlotUI.GetRect().Size.X;
+        Vector2 contextMenuPosition = inventorySlotUI.GlobalPosition + new Vector2(slotWidth, 10);
 
         if (ContextMenu.GlobalPosition == contextMenuPosition && ContextMenu.Visible)
         {
@@ -189,35 +234,19 @@ public partial class InventoryHandler : Control
             return;
         }
 
-        InventoryContextMenuUI.ContextMenuOption[] options = slotUI.TargetSlot.Item.GetContextMenuOptions(ContextMenu, PrimaryEquipmentHandler);
+        InventoryContextMenuUI.ContextMenuOption[] options = inventorySlotUI.TargetSlot.Item.GetContextMenuOptions(ContextMenu, PrimaryEquipmentHandler);
         if (options == null) return; // If item returns null for options, don't show the context menu
 
-        // ContextMenu.OnOptionSelected += () => OnContextMenuOptionSelected(slotUI);
+        ContextMenu.OnOptionSelected += () => OnContextMenuOptionSelected(inventorySlotUI);
         ContextMenu.Show(contextMenuPosition, options);
     }
 
-    // public void OnContextMenuOptionSelected(InventorySlotUI slotUI)
-    // {
-    //     if (slotUI == null) return;
+    public void OnContextMenuOptionSelected(InventorySlotUI slotUI)
+    {
+        if (slotUI == null) return;
 
-    //     ContextMenu.Hide();
-
-    //     // SELECTED
-
-    //     if (slotUI == SelectedSlot)
-    //     {
-    //         GD.Print("Selected slot context menu option selected");
-    //         // slotUI.SetTheme(InventorySlotUI.InventorySlotTheme.Selected);
-    //         return;
-    //     }
-
-    //     // DEFAULT
-
-    //     GD.Print("Default slot context menu option selected");
-    //     // slotUI.SetTheme();
-    // }
-
-    // #endregion
-    
+        ContextMenu.Hide();
+        slotUI.UpdateUI();
+    }
 
 }

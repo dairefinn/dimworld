@@ -37,8 +37,8 @@ public partial class InventoryContextMenuUI : PanelContainer
             Text = optionName
         };
         optionButton.Pressed += () => {
-            EmitSignal(SignalName.OnOptionSelected);
             action.Invoke();
+            EmitSignal(SignalName.OnOptionSelected);
         };
         MenuOptionsContainer.AddChild(optionButton);
     }
