@@ -9,9 +9,10 @@ region = Rect2(16, 432, 16, 16)
 
 [resource]
 script = ExtResource("1_40wlf")
-id = "item-testing"
+Id = "item-test"
 ItemName = "Test"
 ItemDescription = "Item description"
 Icon = SubResource("AtlasTexture_yje18")
 MaxStackSize = 10
+CanBeEquipped = false
 metadata/_custom_type_script = "uid://frg4uic6tym5"

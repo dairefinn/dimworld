@@ -11,6 +11,12 @@ public partial class InventoryHandler : Control
         set => SetPrimaryInventory(value);
     }
     private Inventory _primaryInventory;
+    [Export] public EquipmentHandler PrimaryEquipmentHandler {
+        get => _primaryEquipmentHandler;
+        set => SetPrimaryEquipmentHandler(value);
+    }
+    private EquipmentHandler _primaryEquipmentHandler;
+
     [Export] public Inventory SecondaryInventory {
         get => _secondaryInventory;
         set => SetSecondaryInventory(value);
@@ -28,32 +34,30 @@ public partial class InventoryHandler : Control
     }
     private InventoryUI _secondaryInventoryUI;
 
+    private InventoryContextMenuUI ContextMenu;
+
+
     public bool IsViewing => GetPrimaryInventoryVisibility() || GetSecondaryInventoryVisibility();
 
 
-    private InventorySlotUI SelectedSlot {
-        get => _selectedSlot;
-        set {
-            if (_selectedSlot != null)
-            {
-                _selectedSlot.Modulate = Colors.White;
-            }
-
-            _selectedSlot = value;
-            if (_selectedSlot != null)
-            {
-                _selectedSlot.Modulate = Colors.Red;
-            } 
-        }
-    }
-    private InventorySlotUI _selectedSlot;
-
+    // LIFECYCLE EVENTS
 
     public override void _Ready()
     {
         primaryInventoryUI = GetNode<InventoryUI>("%PrimaryInventoryUI");
         secondaryInventoryUI = GetNode<InventoryUI>("%SecondaryInventoryUI");
+        ContextMenu = GetNode<InventoryContextMenuUI>("%ContextMenu");
+
+        ContextMenu.Visible = false;
     }
+
+    public override void _Process(double delta)
+    {
+        base._Process(delta);
+    }
+
+
+    // PROPERTY SETTERS
 
     private void SetPrimaryInventory(Inventory value)
     {
@@ -87,27 +91,55 @@ public partial class InventoryHandler : Control
 
     private void SetPrimaryInventoryUI(InventoryUI value)
     {
+        // Unregister old inventory
+        if (_primaryInventoryUI != null)
+        {
+            _primaryInventoryUI.TargetInventory = null;
+            _primaryInventoryUI.ParentHandler = null;
+            _primaryInventoryUI.OnVisibilityChanged -= OnSecondaryVisibilityChanged;
+        }
+
+        // Update value
         _primaryInventoryUI = value;
 
+        // Register new inventory
         if (value != null)
         {
             _primaryInventoryUI.TargetInventory = PrimaryInventory;
-            _primaryInventoryUI.OnSlotClicked += OnSlotClicked;
+            _primaryInventoryUI.ParentHandler = this;
             _primaryInventoryUI.OnVisibilityChanged += OnPrimaryVisibilityChanged;
         }
     }
 
     private void SetSecondaryInventoryUI(InventoryUI value)
     {
+        // Unregister old inventory
+        if (_secondaryInventoryUI != null)
+        {
+            _secondaryInventoryUI.TargetInventory = null;
+            _secondaryInventoryUI.ParentHandler = null;
+            _secondaryInventoryUI.OnVisibilityChanged -= OnSecondaryVisibilityChanged;
+        }
+
+        // Update value
         _secondaryInventoryUI = value;
 
+        // Register new inventory
         if (value != null)
         {
             _secondaryInventoryUI.TargetInventory = SecondaryInventory;
-            _secondaryInventoryUI.OnSlotClicked += OnSlotClicked;
+            _secondaryInventoryUI.ParentHandler = this;
             _secondaryInventoryUI.OnVisibilityChanged += OnSecondaryVisibilityChanged;
         }
     }
+
+    public void SetPrimaryEquipmentHandler(EquipmentHandler value)
+    {
+        _primaryEquipmentHandler = value;
+    }
+
+
+    // INVENTORY VISIBILITY
 
     public void OpenSecondaryInventory(Inventory inventory)
     {
@@ -143,42 +175,6 @@ public partial class InventoryHandler : Control
         SetSecondaryInventoryVisibility(visible);
     }
 
-    private void OnSlotClicked(InventorySlotUI slotUI)
-    {
-        if (slotUI == null) return;
-
-        // If there is nothing selected already and the slot is empty, do nothing
-        if (SelectedSlot == null && slotUI.TargetSlot.Item == null) return;
-
-        // If we're re-selecting the same slot, deselect it
-        if (SelectedSlot == slotUI)
-        {
-            SelectedSlot = null;
-            return;
-        }
-
-        // If nothing has been selected already, select the slot
-        if (SelectedSlot == null)
-        {
-            SelectedSlot = slotUI;
-            return;
-        }
-
-        // If something has been selected already and the next slot has something in it, swap the items
-        if (slotUI.TargetSlot.Item != null)
-        {
-            slotUI.TargetSlot.SwapWithExisting(SelectedSlot.TargetSlot);
-
-            SelectedSlot = null;
-            return;
-        }
-
-        // If something has been selected already and the next slot is empty, move the item
-        slotUI.TargetSlot.AddFromExisting(SelectedSlot.TargetSlot);
-        SelectedSlot.UpdateUI();
-        SelectedSlot = null;
-    }
-
     private void OnPrimaryVisibilityChanged(bool visible)
     {
         OnAnyVisibilityChanged(visible);
@@ -193,8 +189,67 @@ public partial class InventoryHandler : Control
     {
         if (!visible)
         {
-            SelectedSlot = null;
+            ContextMenu.Hide();
         }
+    }
+
+
+    // MOVING ITEMS
+
+    public void MoveItemFromSlotToSlot(InventorySlotUI sourceSlot, InventorySlotUI targetSlot)
+    {
+        if (sourceSlot == null) return;
+        if (targetSlot == null) return;
+        if (sourceSlot.TargetSlot.IsEmpty) return;
+        if (sourceSlot == targetSlot) return;
+        
+        bool isChangingInventories = sourceSlot.ParentInventoryUI != targetSlot.ParentInventoryUI;
+
+        // Perform the actual swap
+        targetSlot.TargetSlot.SwapWithExisting(sourceSlot.TargetSlot);
+
+        if (isChangingInventories)
+        {
+            PrimaryEquipmentHandler.Unequip(sourceSlot.TargetSlot.Item);
+            PrimaryEquipmentHandler.Unequip(targetSlot.TargetSlot.Item);
+        }
+
+        sourceSlot.UpdateUI();
+        targetSlot.UpdateUI();
+    }
+
+
+    // CONTEXT MENU
+
+    public void RequestContextMenu(InventorySlotUI inventorySlotUI)
+    {
+        if (inventorySlotUI == null) return;
+        if (inventorySlotUI.TargetSlot.IsEmpty) return;
+
+        float slotWidth = inventorySlotUI.GetRect().Size.X;
+        Vector2 contextMenuPosition = inventorySlotUI.GlobalPosition + new Vector2(slotWidth, 10);
+
+        if (ContextMenu.GlobalPosition == contextMenuPosition && ContextMenu.Visible)
+        {
+            ContextMenu.Hide();
+            return;
+        }
+
+        bool itemIsInParentInventory = inventorySlotUI.ParentInventoryUI == primaryInventoryUI;
+
+        InventoryContextMenuUI.ContextMenuOption[] options = inventorySlotUI.TargetSlot.Item.GetContextMenuOptions(ContextMenu, PrimaryEquipmentHandler, itemIsInParentInventory);
+        if (options == null || options.Length == 0) return; // If an item doesn't provide any context menu options, don't show the context menu
+
+        ContextMenu.OnOptionSelected += () => OnContextMenuOptionSelected(inventorySlotUI);
+        ContextMenu.Show(contextMenuPosition, options);
+    }
+
+    public void OnContextMenuOptionSelected(InventorySlotUI slotUI)
+    {
+        if (slotUI == null) return;
+
+        ContextMenu.Hide();
+        slotUI.UpdateUI();
     }
 
 }

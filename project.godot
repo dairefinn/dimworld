@@ -54,8 +54,10 @@ interact={
 
 [layer_names]
 
+2d_physics/layer_1="World"
 2d_navigation/layer_1="Land"
 2d_navigation/layer_2="Water"
+2d_physics/layer_3="InventorySlots"
 
 [rendering]
 
