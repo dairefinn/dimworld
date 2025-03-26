@@ -7,6 +7,8 @@ using Godot;
 public partial class InventoryContextMenuUI : PanelContainer
 {
 
+    [Signal] public delegate void OnOptionSelectedEventHandler();
+
     private VBoxContainer MenuOptionsContainer;
 
 
@@ -34,7 +36,10 @@ public partial class InventoryContextMenuUI : PanelContainer
         {
             Text = optionName
         };
-        optionButton.Pressed += action;
+        optionButton.Pressed += () => {
+            EmitSignal(SignalName.OnOptionSelected);
+            action.Invoke();
+        };
         MenuOptionsContainer.AddChild(optionButton);
     }
     

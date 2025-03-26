@@ -136,4 +136,14 @@ public partial class Inventory : Resource
 		return true;
 	}
 
+	public bool IsSlotInInventory(InventorySlot slot)
+	{
+		foreach (InventorySlot s in Slots)
+		{
+			if (s == slot) return true;
+		}
+
+		return false;
+	}
+
 }

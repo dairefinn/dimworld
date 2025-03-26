@@ -12,47 +12,64 @@ public partial class Torch : InventoryItem
         Texture = GD.Load<Texture2D>("res://LightTexture.tres")
     };
 
-    public override void OnEquip(EquipmentHandler handler)
+
+    public override bool OnEquip(EquipmentHandler handler)
     {
-        handler.Equipment.Add(this);
-        handler.AddChild(lightSource);
+        bool wasSuccessful = base.OnEquip(handler);
+        if (!wasSuccessful) return false;
+
+        // We override this so we can add the light source to the equipment handler of the character using the torch
+        if (!handler.GetChildren().Contains(lightSource))
+        {
+            handler.AddChild(lightSource);
+        }
+
+        return true;
     }
 
-    public override void OnUnequip(EquipmentHandler handler)
+    public override bool OnUnequip(EquipmentHandler handler)
     {
-        handler.Equipment.Remove(this);
-        handler.RemoveChild(lightSource);
+        bool wasSuccessful = base.OnUnequip(handler);
+        if (!wasSuccessful) return false;
+
+        // We override this so we can remove the light source from the equipment handler of the character using the torch
+        if (handler.GetChildren().Contains(lightSource))
+        {
+            handler.RemoveChild(lightSource);
+        }
+
+        return true;
     }
 
+    // TODO: Might be a cleaner way to do this. Maybe providing a list of options which each have a label, action and condition for displaying.
     public override InventoryContextMenuUI.ContextMenuOption[] GetContextMenuOptions(InventoryContextMenuUI contextMenuUI, EquipmentHandler equipmentHandler)
     {
         InventoryContextMenuUI.ContextMenuOption[] options = [];
 
-        if (lightSource.GetParent() == null)
+        if (IsEquipped)
         {
-            options = [..options, new InventoryContextMenuUI.ContextMenuOption("Equip", () => EquipTorch(contextMenuUI, equipmentHandler))];
+            options = [..options, new InventoryContextMenuUI.ContextMenuOption("Unequip", () => ContextOptionUnequipTorch(contextMenuUI, equipmentHandler))];
         }
         else
         {
-            options = [..options, new InventoryContextMenuUI.ContextMenuOption("Unequip", () => UnequipTorch(contextMenuUI, equipmentHandler))];
+            options = [..options, new InventoryContextMenuUI.ContextMenuOption("Equip", () => ContextOptionEquipTorch(contextMenuUI, equipmentHandler))];
         }
 
         return options;
     }
 
-    private void EquipTorch(InventoryContextMenuUI contextMenuUI, EquipmentHandler equipmentHandler)
+    private void ContextOptionEquipTorch(InventoryContextMenuUI contextMenuUI, EquipmentHandler equipmentHandler)
     {
         contextMenuUI.RemoveOption("Equip");
         equipmentHandler.Equip(this);
-        contextMenuUI.AddOption("Unequip", () => UnequipTorch(contextMenuUI, equipmentHandler));
-
+        contextMenuUI.AddOption("Unequip", () => ContextOptionUnequipTorch(contextMenuUI, equipmentHandler));
     }
 
-    private void UnequipTorch(InventoryContextMenuUI contextMenuUI, EquipmentHandler equipmentHandler)
+    private void ContextOptionUnequipTorch(InventoryContextMenuUI contextMenuUI, EquipmentHandler equipmentHandler)
     {
         contextMenuUI.RemoveOption("Unequip");
         equipmentHandler.Unequip(this);
-        contextMenuUI.AddOption("Equip", () => EquipTorch(contextMenuUI, equipmentHandler));
+        contextMenuUI.AddOption("Equip", () => ContextOptionEquipTorch(contextMenuUI, equipmentHandler));
     }
 
 }

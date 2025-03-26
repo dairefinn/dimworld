@@ -1,7 +1,7 @@
 [gd_scene load_steps=4 format=3 uid="uid://bypfigpr23v58"]
 
 [ext_resource type="Script" uid="uid://ycsgnu3vc3d" path="res://Inventory/UI/InventoryUI.cs" id="1_dhcfh"]
-[ext_resource type="PackedScene" uid="uid://cbc7lb60qv02d" path="res://Inventory/UI/InventorySlotUI.tscn" id="2_eslls"]
+[ext_resource type="PackedScene" uid="uid://cbc7lb60qv02d" path="res://Inventory/UI/Slot/InventorySlotUI.tscn" id="2_eslls"]
 
 [sub_resource type="LabelSettings" id="LabelSettings_eslls"]
 font_size = 24

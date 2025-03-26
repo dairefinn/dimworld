@@ -7,8 +7,6 @@ public partial class InventoryUI : Container
 {
 
     [Signal] public delegate void OnVisibilityChangedEventHandler(bool visible);
-    [Signal] public delegate void OnSlotClickedEventHandler(InventorySlotUI slot);
-    [Signal] public delegate void OnSlotClickedAlternateEventHandler(InventorySlotUI slot);
 
 
     [Export] public Inventory TargetInventory {
@@ -16,7 +14,7 @@ public partial class InventoryUI : Container
         set => SetTargetInventory(value);
     }
     private Inventory _targetInventory;
-    [Export] public PackedScene SlotUIScene = GD.Load<PackedScene>("res://Inventory/UI/InventorySlotUI.tscn");
+    [Export] public PackedScene SlotUIScene = GD.Load<PackedScene>("res://Inventory/UI/Slot/InventorySlotUI.tscn");
 
 
     private Label InventoryTitle;
@@ -48,9 +46,8 @@ public partial class InventoryUI : Container
         {
             InventorySlotUI slotUI = SlotUIScene.Instantiate<InventorySlotUI>();
             slotUI.TargetSlot = slot;
+            slotUI.ParentInventory = this;
             SlotsGrid.AddChild(slotUI);
-            slotUI.OnClicked += () => OnClickSlot(slotUI);
-            slotUI.OnClickedAlternate += () => OnClickSlotAlternate(slotUI);
         }
     }
 
@@ -74,16 +71,6 @@ public partial class InventoryUI : Container
         if (_targetInventory == null) return;
 
         _targetInventory.OnUpdated += UpdateUI;
-    }
-
-    private void OnClickSlot(InventorySlotUI slotUI)
-    {
-        EmitSignal(SignalName.OnSlotClicked, slotUI);
-    }
-
-    private void OnClickSlotAlternate(InventorySlotUI slotUI)
-    {
-        EmitSignal(SignalName.OnSlotClickedAlternate, slotUI);
     }
 
 }

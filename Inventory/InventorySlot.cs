@@ -97,26 +97,8 @@ public partial class InventorySlot : Resource
         EmitSignal(SignalName.OnUpdated);
     }
 
-    public bool AddFromExisting(InventorySlot slot)
-    {
-        if (slot == null) return false;
-        if (slot.IsEmpty) return false;
-
-        _item = slot.Item;
-        _quantity = slot.Quantity;
-
-        slot.ClearSlot();
-        
-        EmitSignal(SignalName.OnUpdated);
-        return true;
-    }
-
     public bool SwapWithExisting(InventorySlot slot)
     {
-        if (slot == null) return false;
-        if (slot.IsEmpty) return false;
-        if (IsEmpty) return false;
-
         InventorySlot slotPrevious = new()
         {
             Item = _item,
@@ -130,6 +112,8 @@ public partial class InventorySlot : Resource
         slot.Quantity = slotPrevious.Quantity;
 
         EmitSignal(SignalName.OnUpdated);
+        slot.EmitSignal(SignalName.OnUpdated);
+
         return true;
     }
 

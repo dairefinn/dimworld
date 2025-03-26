@@ -64,7 +64,7 @@ public partial class EquipSword : GoapAction
         {
             InventorySlot agentSlot = characterController.Inventory.GetFirstEmptySlot();
             InventorySlot chestSlot = detectedChest.Inventory.GetFirstSlotWithItem(swordItem);
-            agentSlot.AddFromExisting(chestSlot);
+            agentSlot.SwapWithExisting(chestSlot);
             characterController.SetInventoryState();
             return true;
         }

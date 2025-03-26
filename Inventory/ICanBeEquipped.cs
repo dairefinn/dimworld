@@ -9,8 +9,8 @@ public interface ICanBeEquipped
     public bool CanBeEquipped { get; set; }
 
 
-    public void OnEquip(EquipmentHandler handler);
+    public bool OnEquip(EquipmentHandler handler);
 
-    public void OnUnequip(EquipmentHandler handler);
+    public bool OnUnequip(EquipmentHandler handler);
 
 }

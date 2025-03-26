@@ -1,12 +1,15 @@
 namespace Dimworld;
 
 using Godot;
+using Godot.Collections;
 
 public partial class InventorySlotUI : Panel
 {
 
-    [Signal] public delegate void OnClickedEventHandler();
-    [Signal] public delegate void OnClickedAlternateEventHandler();
+    public static readonly StyleBox STYLEBOX_DEFAULT = GD.Load<StyleBox>("res://Inventory/UI/Slot/Styles/InventorySlotUI_Default.tres");
+    public static readonly StyleBox STYLEBOX_ACTIVE = GD.Load<StyleBox>("res://Inventory/UI/Slot/Styles/InventorySlotUI_Active.tres");
+    public static readonly StyleBox STYLEBOX_SELECTED = GD.Load<StyleBox>("res://Inventory/UI/Slot/Styles/InventorySlotUI_Selected.tres");
+    public static readonly StyleBox STYLEBOX_HOVER = GD.Load<StyleBox>("res://Inventory/UI/Slot/Styles/InventorySlotUI_Hover.tres");
 
 
     [Export] public InventorySlot TargetSlot {
@@ -15,46 +18,62 @@ public partial class InventorySlotUI : Panel
     }
     private InventorySlot _targetSlot;
 
+    public InventoryUI ParentInventory { get; set; }
+    public TextureRect ItemIcon;
+    public Label QuantityLabel;
+    public Label ItemLabel;
+    public InventorySlotDragArea DragArea;
 
-    private Label QuantityLabel;
-    private Label ItemLabel;
-    private TextureRect ItemIcon;
+
+    private InventorySlotStateMachine StateMachine;
 
 
+    // LIFECYCLE EVENTS
+    
     public override void _Ready()
     {
-        base._Ready();
-
         QuantityLabel = GetNode<Label>("%QuantityLabel");
         ItemLabel = GetNode<Label>("%ItemLabel");
         ItemIcon = GetNode<TextureRect>("%ItemIcon");
+        StateMachine = GetNode<InventorySlotStateMachine>("%StateMachine");
+        DragArea = GetNode<InventorySlotDragArea>("%DragArea");
+        DragArea.ParentSlot = this;
 
         ItemLabel.Text = "";
         QuantityLabel.Text = "0";
         ItemIcon.Texture = null;
 
         UpdateUI();
+        StateMachine.Init(this);
+
+        MouseEntered += OnMouseEntered;
+        MouseExited += OnMouseExited;
+    }
+ 
+    public override void _Input(InputEvent @event)
+    {
+		StateMachine.OnInput(@event);
     }
 
     public override void _GuiInput(InputEvent @event)
     {
-        base._GuiInput(@event);
-        
-        if (@event is InputEventMouseButton mouseButtonEvent)
-        {
-            // TODO: Should I be hardcoding inputs here or using an input action? Can this be handled by the InputHandler to keep everyhting in one place?
-            if (mouseButtonEvent.ButtonIndex == MouseButton.Left && mouseButtonEvent.Pressed)
-            {
-                EmitSignal(SignalName.OnClicked);
-            }
-
-            if (mouseButtonEvent.ButtonIndex == MouseButton.Right && mouseButtonEvent.Pressed)
-            {
-                EmitSignal(SignalName.OnClickedAlternate);
-            }
-        }
+        StateMachine.OnGuiInput(@event);
     }
 
+    // SIGNAL HANDLERS
+
+	public void OnMouseEntered()
+	{
+		StateMachine.OnMouseEntered();
+	}
+
+	public void OnMouseExited()
+	{
+		StateMachine.OnMouseExited();
+	}
+
+
+    // SETTERS
 
     public void SetTargetSlot(InventorySlot slot)
     {
