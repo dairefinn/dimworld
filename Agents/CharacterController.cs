@@ -11,6 +11,7 @@ public partial class CharacterController : CharacterBody2D
 	[Export] public float Speed { get; set; } = 50f;
 	[Export] public float Acceleration { get; set; } = 0.1f;
 	[Export] public Inventory Inventory { get; set; }
+	[Export] public AgentStats Stats { get; set; }
 
 	[ExportGroup("GOAP properties")]
 	[Export] public bool IsPlanningEnabled { get; set; } = true;
@@ -40,6 +41,12 @@ public partial class CharacterController : CharacterBody2D
 	public override void _Ready()
 	{
 		base._Ready();
+
+		if (Stats != null)
+		{
+			Stats = new AgentStats(Stats);
+		}
+
 
 		if (NavigationAgent == null)
 		{
