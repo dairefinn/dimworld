@@ -23,6 +23,12 @@ public partial class PlayerController : CharacterController
             Globals.GetInstance().MainPlayer = this;
             InventoryViewer.PrimaryInventory = Inventory;
         }
+
+        SceneTreeTimer timer = GetTree().CreateTimer(3f);
+        timer.Timeout += () => {
+            GD.Print("PlayerController: Timeout");
+            Stats.Health = Stats.MaxHealth / 3;
+        };
     }
 
     public void TryInteract()

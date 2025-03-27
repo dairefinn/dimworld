@@ -11,7 +11,11 @@ public partial class CharacterController : CharacterBody2D
 	[Export] public float Speed { get; set; } = 50f;
 	[Export] public float Acceleration { get; set; } = 0.1f;
 	[Export] public Inventory Inventory { get; set; }
-	[Export] public AgentStats Stats { get; set; }
+	[Export] public AgentStats Stats {
+		get => _stats;
+		set => SetStats(value);
+	}
+	private AgentStats _stats;
 
 	[ExportGroup("GOAP properties")]
 	[Export] public bool IsPlanningEnabled { get; set; } = true;
@@ -22,6 +26,11 @@ public partial class CharacterController : CharacterBody2D
 	[ExportGroup("References")]
 	[Export] public NavigationAgent2D NavigationAgent { get; set; }
 	[Export] public DetectionHandler DetectionHandler { get; set; }
+	[Export] public AgentStatsUI StatsUI {
+		get => _statsUI;
+		set => SetStatsUI(value);
+	}
+	private AgentStatsUI _statsUI;
 
 	// Goal Oriented Action Planning (GOAP) properties
 
@@ -53,6 +62,12 @@ public partial class CharacterController : CharacterBody2D
 			NavigationAgent = GetNode<NavigationAgent2D>("NavigationAgent2D");
 		}
 		NavigationAgent.VelocityComputed += OnSafeVelocityComputed;
+
+		if (StatsUI == null)
+		{
+			StatsUI = GetNode<AgentStatsUI>("AgentStatsUI");
+			StatsUI.Stats = Stats;
+		}
 
 		SetInventoryState();
 	}
@@ -89,6 +104,27 @@ public partial class CharacterController : CharacterBody2D
 		//     inventoryString += string.Join(", ", contentsStrings);
 		//     GD.Print(inventoryString);
 		// }
+	}
+
+
+	// SETTERS
+	
+	public void SetStatsUI(AgentStatsUI statsUI)
+	{
+		_statsUI = statsUI;
+		LinkStatsToUI();
+	}
+
+	public void SetStats(AgentStats stats)
+	{
+		_stats = stats;
+		LinkStatsToUI();
+	}
+
+	private void LinkStatsToUI()
+	{
+		if (StatsUI == null) return;
+		StatsUI.Stats = Stats;
 	}
 
 

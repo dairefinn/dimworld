@@ -25,7 +25,6 @@ offset_left = -16.9999
 offset_right = 5.00006
 offset_bottom = 5.0
 grow_horizontal = 2
-scale = Vector2(20, 20)
 theme_override_styles/panel = SubResource("StyleBoxFlat_v5emj")
 script = ExtResource("1_nuio0")
 Stats = SubResource("Resource_741j8")
