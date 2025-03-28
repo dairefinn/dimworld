@@ -11,24 +11,28 @@ public partial class Explosion : Area2D
     [Export] public float Duration = 1f;
 
 
-    private CollisionShape2D _collisionShape;
-    private Timer _timer;
-
-
     public override void _Ready()
     {
-        _collisionShape = GetNode<CollisionShape2D>("CollisionShape2D");
-        (_collisionShape.Shape as CircleShape2D).Radius = Radius;
+        SetRadius(Radius);
 
         BodyEntered += OnBodyEntered;
 
-        _timer = new Timer();
-        AddChild(_timer);
-        _timer.WaitTime = Duration;
-        _timer.OneShot = true;
-        _timer.Timeout += () => QueueFree();
-        _timer.Start();
+        CreateTimeout(Duration);
     }
+
+
+    private void SetRadius(float radius)
+    {
+        CollisionShape2D collisionShape = GetNode<CollisionShape2D>("CollisionShape2D");
+        (collisionShape.Shape as CircleShape2D).Radius = Radius;
+    }
+
+    private void CreateTimeout(float duration)
+    {
+        SceneTreeTimer timer = GetTree().CreateTimer(duration);
+        timer.Timeout += () => QueueFree();
+    }
+
 
     private void OnBodyEntered(Node body)
     {

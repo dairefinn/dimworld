@@ -7,23 +7,32 @@ public partial class Bomb : StaticBody2D, ICanBeInteractedWith
 {
 
     public static readonly PackedScene EXPLOSION_EFFECT = GD.Load<PackedScene>("res://Effects/Explosion/Explosion.tscn");
+    public static readonly PackedScene FIRE_EFFECT = GD.Load<PackedScene>("res://Effects/Fire/Fire.tscn");
 
-    private const int BOMB_DAMAGE = 100;
-    private const float BOMB_RADIUS = 200f;
-    private const float BOMB_DURATION = 1f;
 
     public void InteractWith()
     {
-        TriggerExplosion();
+        // TriggerExplosion();
+        TriggerFire();
     }
 
     private void TriggerExplosion()
     {
         Explosion explosion = EXPLOSION_EFFECT.Instantiate<Explosion>();
-        explosion.Damage = BOMB_DAMAGE;
-        explosion.Radius = BOMB_RADIUS;
-        explosion.Duration = BOMB_DURATION;
+        explosion.Damage = 100;
+        explosion.Radius = 200;
+        explosion.Duration = 1;
         AddChild(explosion);
+    }
+
+    private void TriggerFire()
+    {
+        Fire fire = FIRE_EFFECT.Instantiate<Fire>();
+        fire.Damage = 10;
+        fire.Radius = 100;
+        fire.Duration = 60;
+        fire.DamageInterval = 1f;
+        AddChild(fire);
     }
 
 }

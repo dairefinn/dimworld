@@ -1,0 +1,11 @@
+[gd_scene load_steps=3 format=3 uid="uid://vymttc0ebu0s"]
+
+[ext_resource type="Script" uid="uid://ce2fjabgcm8gx" path="res://Effects/Fire/Fire.cs" id="1_m2eff"]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_vaboe"]
+
+[node name="Fire" type="Area2D"]
+script = ExtResource("1_m2eff")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource("CircleShape2D_vaboe")
