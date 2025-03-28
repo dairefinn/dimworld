@@ -11,11 +11,6 @@ public partial class InventoryHandler : Control
         set => SetPrimaryInventory(value);
     }
     private Inventory _primaryInventory;
-    [Export] public EquipmentHandler PrimaryEquipmentHandler {
-        get => _primaryEquipmentHandler;
-        set => SetPrimaryEquipmentHandler(value);
-    }
-    private EquipmentHandler _primaryEquipmentHandler;
 
     [Export] public Inventory SecondaryInventory {
         get => _secondaryInventory;
@@ -28,11 +23,13 @@ public partial class InventoryHandler : Control
         set => SetPrimaryInventoryUI(value);
     }
     private InventoryUI _primaryInventoryUI;
+
     private InventoryUI secondaryInventoryUI {
         get => _secondaryInventoryUI;
         set => SetSecondaryInventoryUI(value);
     }
     private InventoryUI _secondaryInventoryUI;
+
 
     private InventoryContextMenuUI ContextMenu;
 
@@ -59,17 +56,26 @@ public partial class InventoryHandler : Control
 
     // PROPERTY SETTERS
 
-    private void SetPrimaryInventory(Inventory value)
+    private void SetPrimaryInventory(Inventory inventory)
     {
-        _primaryInventory = value;
+        if (inventory == null){
+            GD.Print("Primary inventory is null");
+        }
+
+        _primaryInventory = inventory;
 
         if (primaryInventoryUI != null)
         {
-            primaryInventoryUI.TargetInventory = value;
+            primaryInventoryUI.TargetInventory = inventory;
         }
 
-        if (value == null)
+        if (inventory == null)
         {
+            GD.Print("Opening primary inventory: " + inventory.InventoryName);
+            foreach (InventorySlot slot in inventory.Slots)
+            {
+                GD.Print("Slot: " + (slot.Item != null ? slot.Item.ItemName : "Empty"));
+            }
             SetPrimaryInventoryVisibility(false);
         }
     }
@@ -95,7 +101,6 @@ public partial class InventoryHandler : Control
         if (_primaryInventoryUI != null)
         {
             _primaryInventoryUI.TargetInventory = null;
-            _primaryInventoryUI.ParentHandler = null;
             _primaryInventoryUI.OnVisibilityChanged -= OnSecondaryVisibilityChanged;
         }
 
@@ -106,7 +111,6 @@ public partial class InventoryHandler : Control
         if (value != null)
         {
             _primaryInventoryUI.TargetInventory = PrimaryInventory;
-            _primaryInventoryUI.ParentHandler = this;
             _primaryInventoryUI.OnVisibilityChanged += OnPrimaryVisibilityChanged;
         }
     }
@@ -117,7 +121,6 @@ public partial class InventoryHandler : Control
         if (_secondaryInventoryUI != null)
         {
             _secondaryInventoryUI.TargetInventory = null;
-            _secondaryInventoryUI.ParentHandler = null;
             _secondaryInventoryUI.OnVisibilityChanged -= OnSecondaryVisibilityChanged;
         }
 
@@ -128,16 +131,9 @@ public partial class InventoryHandler : Control
         if (value != null)
         {
             _secondaryInventoryUI.TargetInventory = SecondaryInventory;
-            _secondaryInventoryUI.ParentHandler = this;
             _secondaryInventoryUI.OnVisibilityChanged += OnSecondaryVisibilityChanged;
         }
     }
-
-    public void SetPrimaryEquipmentHandler(EquipmentHandler value)
-    {
-        _primaryEquipmentHandler = value;
-    }
-
 
     // INVENTORY VISIBILITY
 
@@ -210,8 +206,8 @@ public partial class InventoryHandler : Control
 
         if (isChangingInventories)
         {
-            PrimaryEquipmentHandler.Unequip(sourceSlot.TargetSlot.Item);
-            PrimaryEquipmentHandler.Unequip(targetSlot.TargetSlot.Item);
+            InputHandler.Instance.PlayerAgent.EquipmentHandler.Unequip(sourceSlot.TargetSlot.Item);
+            InputHandler.Instance.PlayerAgent.EquipmentHandler.Unequip(targetSlot.TargetSlot.Item);
         }
 
         sourceSlot.UpdateUI();
@@ -237,7 +233,7 @@ public partial class InventoryHandler : Control
 
         bool itemIsInParentInventory = inventorySlotUI.ParentInventoryUI == primaryInventoryUI;
 
-        InventoryContextMenuUI.ContextMenuOption[] options = inventorySlotUI.TargetSlot.Item.GetContextMenuOptions(ContextMenu, PrimaryEquipmentHandler, itemIsInParentInventory);
+        InventoryContextMenuUI.ContextMenuOption[] options = inventorySlotUI.TargetSlot.Item.GetContextMenuOptions(ContextMenu, InputHandler.Instance.PlayerAgent.EquipmentHandler, itemIsInParentInventory);
         if (options == null || options.Length == 0) return; // If an item doesn't provide any context menu options, don't show the context menu
 
         ContextMenu.OnOptionSelected += () => OnContextMenuOptionSelected(inventorySlotUI);

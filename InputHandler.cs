@@ -10,8 +10,19 @@ public partial class InputHandler : Node2D
 
 
     [ExportGroup("References")]
-    [Export] public CharacterController PlayerAgent { get; set; }
-    [Export] public InventoryHandler InventoryViewer { get; set; }
+
+    [Export] public CharacterController PlayerAgent {
+        get => _playerAgent;
+        set => SetPlayerAgent(value);
+    }
+    private CharacterController _playerAgent;
+
+    [Export] public InventoryHandler InventoryViewer {
+        get => _inventoryViewer;
+        set => SetInventoryViewer(value);
+    }
+    private InventoryHandler _inventoryViewer;
+
     [Export] public CursorFollower CursorFollower { get; set; }
 
 
@@ -27,6 +38,7 @@ public partial class InputHandler : Node2D
             QueueFree();
         }
     }
+
 
     public override void _Process(double delta)
     {
@@ -78,6 +90,32 @@ public partial class InputHandler : Node2D
             }
         }
     }
+
+
+    // SETTERS
+
+    public void SetPlayerAgent(CharacterController agent)
+    {
+        _playerAgent = agent;
+
+        if (agent != null && InventoryViewer != null)
+        {
+            InventoryViewer.PrimaryInventory = agent.Inventory;
+        }
+    }
+
+    public void SetInventoryViewer(InventoryHandler inventoryHandler)
+    {
+        _inventoryViewer = inventoryHandler;
+
+        if (PlayerAgent != null && inventoryHandler != null)
+        {
+            inventoryHandler.PrimaryInventory = PlayerAgent.Inventory;
+        }
+    }
+
+
+    // INTERACTIONS
 
     public void TryInteract()
     {

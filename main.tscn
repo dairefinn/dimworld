@@ -1,4 +1,4 @@
-[gd_scene load_steps=97 format=4 uid="uid://ddc8qiig7j3wm"]
+[gd_scene load_steps=98 format=4 uid="uid://ddc8qiig7j3wm"]
 
 [ext_resource type="Script" uid="uid://1f6ukfmh33oo" path="res://DayNightController.cs" id="1_d13ii"]
 [ext_resource type="Script" uid="uid://g354xqg3s44p" path="res://InputHandler.cs" id="2_lquwl"]
@@ -15,6 +15,7 @@
 [ext_resource type="Resource" uid="uid://be3ryk2ex3pr1" path="res://Goap/Actions/Idle.tres" id="8_ycdy4"]
 [ext_resource type="Resource" uid="uid://ckvaxlnjoqs1o" path="res://Goap/Goals/Patrol.tres" id="9_kek77"]
 [ext_resource type="Script" uid="uid://cru4kq28c8nuw" path="res://Agents/AgentStats.cs" id="9_lswn8"]
+[ext_resource type="Script" uid="uid://dphqtgg23pqia" path="res://Agents/EquipmentHandler.cs" id="11_0odxb"]
 [ext_resource type="Resource" uid="uid://c7fy02pjbecvf" path="res://Goap/Goals/Idle.tres" id="11_w48qg"]
 [ext_resource type="Script" uid="uid://cxbp1npv1tukk" path="res://Agents/DetectionHandler.cs" id="13_2cqfq"]
 [ext_resource type="PackedScene" uid="uid://bcpksn1hqwpab" path="res://Objects/Chest/Chest.tscn" id="13_w48qg"]
@@ -50,7 +51,8 @@ normal = Vector2(-1, 0)
 
 [sub_resource type="Resource" id="Resource_1u8w0"]
 script = ExtResource("6_cegan")
-Quantity = 0
+Item = ExtResource("18_d13ii")
+Quantity = 1
 metadata/_custom_type_script = "uid://bm0o5ggnfmm6y"
 
 [sub_resource type="Resource" id="Resource_0odxb"]
@@ -125,7 +127,7 @@ metadata/_custom_type_script = "uid://bm0o5ggnfmm6y"
 
 [sub_resource type="Resource" id="Resource_0dhbp"]
 script = ExtResource("5_yaehf")
-InventoryName = "Inventory"
+InventoryName = "Player inventory"
 Slots = Array[ExtResource("6_cegan")]([SubResource("Resource_1u8w0"), SubResource("Resource_0odxb"), SubResource("Resource_lswn8"), SubResource("Resource_a6jrf"), SubResource("Resource_xuqvo"), SubResource("Resource_qsp4k"), SubResource("Resource_kq58d"), SubResource("Resource_seu75"), SubResource("Resource_htxhm"), SubResource("Resource_jq2sk"), SubResource("Resource_4k2k6"), SubResource("Resource_0rl1p"), SubResource("Resource_ok6jj"), SubResource("Resource_facbu"), SubResource("Resource_cyx1q")])
 metadata/_custom_type_script = "uid://dph74un0q20el"
 
@@ -449,27 +451,28 @@ shape = SubResource("WorldBoundaryShape2D_xuqvo")
 
 [node name="Characters" type="Node" parent="."]
 
-[node name="Player" parent="Characters" node_paths=PackedStringArray("DetectionHandler") instance=ExtResource("5_lquwl")]
+[node name="Player" parent="Characters" node_paths=PackedStringArray("EquipmentHandler", "DetectionHandler") instance=ExtResource("5_lquwl")]
 position = Vector2(1311, 379)
 Inventory = SubResource("Resource_0dhbp")
+EquipmentHandler = NodePath("EquipmentHandler")
 Stats = SubResource("Resource_jx0wj")
 IsPlanningEnabled = false
 DetectionHandler = NodePath("DetectionHandler")
 
-[node name="DetectionHandler" type="Node2D" parent="Characters/Player" node_paths=PackedStringArray("AreaVision", "DetectedEntities")]
-script = ExtResource("13_2cqfq")
-AreaVision = NodePath("../DetectionArea")
-DetectedEntities = []
-
-[node name="DetectionArea" type="Area2D" parent="Characters/Player"]
+[node name="DetectionHandler" type="Area2D" parent="Characters/Player" node_paths=PackedStringArray("DetectedEntities")]
 collision_layer = 0
 collision_mask = 2
+script = ExtResource("13_2cqfq")
+DetectedEntities = []
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="Characters/Player/DetectionArea"]
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Characters/Player/DetectionHandler"]
 shape = SubResource("CircleShape2D_5vw27")
 debug_color = Color(0, 0.608985, 0.644943, 0.42)
 
 [node name="Camera2D" type="Camera2D" parent="Characters/Player"]
+
+[node name="EquipmentHandler" type="Node2D" parent="Characters/Player"]
+script = ExtResource("11_0odxb")
 
 [node name="Guard" parent="Characters" node_paths=PackedStringArray("DetectionHandler") instance=ExtResource("5_lquwl")]
 z_index = 1
@@ -483,16 +486,13 @@ ActionSet = Array[Object]([ExtResource("7_kek77"), ExtResource("8_4c57u"), ExtRe
 GoalSet = Array[Object]([ExtResource("8_5vw27"), ExtResource("9_kek77"), ExtResource("11_w48qg")])
 DetectionHandler = NodePath("DetectionHandler")
 
-[node name="DetectionHandler" type="Node2D" parent="Characters/Guard" node_paths=PackedStringArray("AreaVision", "DetectedEntities")]
-script = ExtResource("13_2cqfq")
-AreaVision = NodePath("../DetectionArea")
-DetectedEntities = []
-
-[node name="DetectionArea" type="Area2D" parent="Characters/Guard"]
+[node name="DetectionHandler" type="Area2D" parent="Characters/Guard" node_paths=PackedStringArray("DetectedEntities")]
 collision_layer = 0
 collision_mask = 2
+script = ExtResource("13_2cqfq")
+DetectedEntities = []
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="Characters/Guard/DetectionArea"]
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Characters/Guard/DetectionHandler"]
 shape = SubResource("CircleShape2D_5vw27")
 debug_color = Color(0, 0.608985, 0.644943, 0.42)
 

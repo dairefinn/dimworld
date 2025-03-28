@@ -11,6 +11,7 @@ public partial class CharacterController : CharacterBody2D
 	[Export] public float Speed { get; set; } = 50f;
 	[Export] public float Acceleration { get; set; } = 25f;
 	[Export] public Inventory Inventory { get; set; }
+	[Export] public EquipmentHandler EquipmentHandler { get; set; }
 	[Export] public AgentStats Stats {
 		get => _stats;
 		set => SetStats(value);

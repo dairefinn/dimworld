@@ -31,7 +31,7 @@ public partial class InventorySlotBaseState : InventorySlotState
 			}
 			else if (@event.IsActionPressed("rmb"))
 			{
-				inventorySlotUI.ParentInventoryUI.ParentHandler.RequestContextMenu(inventorySlotUI);
+				InputHandler.Instance.InventoryViewer.RequestContextMenu(inventorySlotUI);
 			}
 
 		}

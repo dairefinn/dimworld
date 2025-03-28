@@ -7,18 +7,14 @@ using System.Linq;
 
 
 // TODO: Should only be able to actually "see" items that are in line of sight (Cast a ray to check if there are obstacles in the way)
-public partial class DetectionHandler : Node2D
+public partial class DetectionHandler : Area2D
 {
 
     [Signal] public delegate void DebugOutputEventHandler(string message);
     [Signal] public delegate void OnNodeDetectedEventHandler(Node node);
     [Signal] public delegate void OnNodeLostEventHandler(Node node);
 
-
-    [Export] public Area2D AreaVision { get; set; }
     [Export] public Array<Node> DetectedEntities { get; set; }
-
-    [Export] float InteractionRadius { get; set; } = 1;
 
 
     public override void _Ready()
@@ -34,11 +30,8 @@ public partial class DetectionHandler : Node2D
 
     private void Initialize()
     {
-        if (AreaVision != null)
-        {
-            AreaVision.BodyEntered += OnNodeEnteredVision;
-            AreaVision.BodyExited += OnNodeExitedVision;
-        }
+        BodyEntered += OnNodeEnteredVision;
+        BodyExited += OnNodeExitedVision;
     }
 
     private void OnNodeEnteredVision(Node2D node)
