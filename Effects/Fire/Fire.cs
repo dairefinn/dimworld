@@ -20,6 +20,7 @@ public partial class Fire : Area2D
         SetRadius(Radius);
 
         BodyEntered += OnBodyEntered;
+        BodyExited += OnBodyExited;
 
         CreateTimeout(Duration);
 
