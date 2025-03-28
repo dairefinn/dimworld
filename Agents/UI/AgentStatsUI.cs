@@ -2,10 +2,8 @@ namespace Dimworld;
 
 using Godot;
 
-
 public partial class AgentStatsUI : PanelContainer
 {
-
     [Export] public AgentStats Stats {
         get => _stats;
         set => SetStats(value);
@@ -15,19 +13,30 @@ public partial class AgentStatsUI : PanelContainer
     private ProgressBar barHealth;
     private ProgressBar barStamina;
 
-    private float barMaxWidth = 20f;
+    private SceneTreeTimer fadeTimer;
 
+    private Tween tweenHealth;
+    private Tween tweenStamina;
+    private Tween tweenVisibility;
+    private bool initialized = false;
+
+
+    // LIFECYCLE EVENTS
 
     public override void _Ready()
     {
         barHealth = GetNode<ProgressBar>("%BarHealth");
         barStamina = GetNode<ProgressBar>("%BarStamina");
 
-        barMaxWidth = barHealth.GetParent<VBoxContainer>().Size.X;
-
-        UpdateUI();
+        // This is a bit of a hack but it prevents the initial stats update from showing the stats UI
+        GetTree().CreateTimer(0.5f).Timeout += () =>
+        {
+            initialized = true;
+        };
     }
 
+
+    // SETTERS
 
     public void SetStats(AgentStats value)
     {
@@ -52,21 +61,50 @@ public partial class AgentStatsUI : PanelContainer
     }
 
 
-    public void UpdateUI()
+    // UI UPDATES
+
+    public async void UpdateUI()
     {
+        if (!IsNodeReady())
+        {
+            await ToSignal(this, "ready");
+        }
+
         if (Stats == null) return;
 
         if (IsInstanceValid(barHealth))
         {
-            GD.Print($"Health: {Stats.GetHealthPercent()}");
-            barHealth.Value = Stats.GetHealthPercent();
+            tweenHealth?.Kill();
+            tweenHealth = CreateTween().SetTrans(Tween.TransitionType.Sine).SetEase(Tween.EaseType.InOut);
+            tweenHealth.TweenProperty(barHealth, "value", Stats.GetHealthPercent(), 0.5f);
         }
 
         if (IsInstanceValid(barStamina))
         {
-            barStamina.Value = Stats.GetStaminaPercent();
+            tweenStamina?.Kill();
+            tweenStamina = CreateTween().SetTrans(Tween.TransitionType.Sine).SetEase(Tween.EaseType.InOut);
+            tweenStamina.TweenProperty(barStamina, "value", Stats.GetStaminaPercent(), 0.5f);
         }
+
+        // Card shows and then fades out over time when the stats change
+        if (!initialized) return;
+
+        Show();
+        if (fadeTimer != null)
+        {
+            fadeTimer.Dispose();
+            fadeTimer = null;
+        }
+
+        fadeTimer = GetTree().CreateTimer(5f);
+        fadeTimer.Timeout += () => StartFadeOut();
     }
 
-
+    private void StartFadeOut()
+    {
+        tweenVisibility?.Kill();
+        tweenVisibility = CreateTween().SetTrans(Tween.TransitionType.Sine).SetEase(Tween.EaseType.InOut);
+        tweenVisibility.TweenProperty(this, "modulate", new Color(Modulate.R, Modulate.G, Modulate.B, 0), 1.0f);
+        tweenVisibility.Finished += () => Hide(); // Hide the UI after the fade-out completes
+    }
 }

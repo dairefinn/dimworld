@@ -68,9 +68,15 @@ public partial class CharacterController : CharacterBody2D
 		{
 			StatsUI = GetNode<AgentStatsUI>("AgentStatsUI");
 			StatsUI.Stats = Stats;
+			// StatsUI.Hide();
 		}
 
 		SetInventoryState();
+
+
+		GetTree().CreateTimer(3f).Timeout += () => {
+			Stats.Health = Stats.MaxHealth / 3;
+		};
 	}
 
 	public override void _PhysicsProcess(double delta)
