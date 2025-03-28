@@ -12,16 +12,16 @@ public partial class AgentStatsUI : PanelContainer
     }
     private AgentStats _stats;
 
-    private ColorRect barHealth;
-    private ColorRect barStamina;
+    private ProgressBar barHealth;
+    private ProgressBar barStamina;
 
     private float barMaxWidth = 20f;
 
 
     public override void _Ready()
     {
-        barHealth = GetNode<ColorRect>("%BarHealth");
-        barStamina = GetNode<ColorRect>("%BarStamina");
+        barHealth = GetNode<ProgressBar>("%BarHealth");
+        barStamina = GetNode<ProgressBar>("%BarStamina");
 
         barMaxWidth = barHealth.GetParent<VBoxContainer>().Size.X;
 
@@ -58,14 +58,13 @@ public partial class AgentStatsUI : PanelContainer
 
         if (IsInstanceValid(barHealth))
         {
-            float healthWidth = Stats.GetHealthPercent() * barMaxWidth;
-            barHealth.Size = new Vector2(healthWidth, barHealth.Size.Y);
+            GD.Print($"Health: {Stats.GetHealthPercent()}");
+            barHealth.Value = Stats.GetHealthPercent();
         }
 
         if (IsInstanceValid(barStamina))
         {
-            float staminaWidth = Stats.GetStaminaPercent() * barMaxWidth;
-            barStamina.Size = new Vector2(staminaWidth, barStamina.Size.Y);
+            barStamina.Value = Stats.GetStaminaPercent();
         }
     }
 

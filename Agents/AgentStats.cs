@@ -83,18 +83,18 @@ public partial class AgentStats : Resource
     {
         if (MaxHealth <= 0) return 0;
         if (Health <= 0) return 0;
-        if (Health == MaxHealth) return 1;
+        if (Health == MaxHealth) return 100;
 
-        return Health / MaxHealth;
+        return Health / MaxHealth * 100;
     }
 
     public float GetStaminaPercent()
     {
         if (MaxStamina <= 0) return 0;
         if (Stamina <= 0) return 0;
-        if (Stamina == MaxStamina) return 1;
+        if (Stamina == MaxStamina) return 100;
 
-        return Stamina / MaxStamina;
+        return Stamina / MaxStamina * 100;
     }
 
 }

@@ -1,4 +1,4 @@
-[gd_scene load_steps=5 format=3 uid="uid://bb462hku8uk8i"]
+[gd_scene load_steps=8 format=3 uid="uid://bb462hku8uk8i"]
 
 [ext_resource type="Script" uid="uid://q0dgqu0eetv" path="res://Agents/UI/AgentStatsUI.cs" id="1_nuio0"]
 [ext_resource type="Script" uid="uid://cru4kq28c8nuw" path="res://Agents/AgentStats.cs" id="2_j3chy"]
@@ -16,6 +16,25 @@ script = ExtResource("2_j3chy")
 MaxHealth = 100.0
 MaxStamina = 100.0
 metadata/_custom_type_script = "uid://cru4kq28c8nuw"
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_741j8"]
+bg_color = Color(1, 1, 1, 0)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_j3chy"]
+bg_color = Color(1, 0.313726, 0.313726, 1)
+corner_radius_top_left = 2
+corner_radius_top_right = 2
+corner_radius_bottom_right = 2
+corner_radius_bottom_left = 2
+anti_aliasing = false
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_kig8y"]
+bg_color = Color(0.313726, 0.313726, 1, 1)
+corner_radius_top_left = 2
+corner_radius_top_right = 2
+corner_radius_bottom_right = 2
+corner_radius_bottom_left = 2
+anti_aliasing = false
 
 [node name="AgentStatsUI" type="PanelContainer"]
 anchors_preset = 5
@@ -41,14 +60,18 @@ custom_minimum_size = Vector2(20, 0)
 layout_mode = 2
 theme_override_constants/separation = 1
 
-[node name="BarHealth" type="ColorRect" parent="MarginContainer/VBoxContainer"]
+[node name="BarHealth" type="ProgressBar" parent="MarginContainer/VBoxContainer"]
 unique_name_in_owner = true
-custom_minimum_size = Vector2(0, 1)
 layout_mode = 2
-color = Color(0.498039, 0.0784314, 0.0784314, 1)
+theme_override_styles/background = SubResource("StyleBoxFlat_741j8")
+theme_override_styles/fill = SubResource("StyleBoxFlat_j3chy")
+value = 50.0
+show_percentage = false
 
-[node name="BarStamina" type="ColorRect" parent="MarginContainer/VBoxContainer"]
+[node name="BarStamina" type="ProgressBar" parent="MarginContainer/VBoxContainer"]
 unique_name_in_owner = true
-custom_minimum_size = Vector2(0, 1)
 layout_mode = 2
-color = Color(0.0784314, 0.0784314, 0.498039, 1)
+theme_override_styles/background = SubResource("StyleBoxFlat_741j8")
+theme_override_styles/fill = SubResource("StyleBoxFlat_kig8y")
+value = 50.0
+show_percentage = false
