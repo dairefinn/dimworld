@@ -9,7 +9,7 @@ public partial class CharacterController : CharacterBody2D
 
 	[ExportGroup("Properties")]
 	[Export] public float Speed { get; set; } = 50f;
-	[Export] public float Acceleration { get; set; } = 0.1f;
+	[Export] public float Acceleration { get; set; } = 25f;
 	[Export] public Inventory Inventory { get; set; }
 	[Export] public AgentStats Stats {
 		get => _stats;
@@ -279,5 +279,14 @@ public partial class CharacterController : CharacterBody2D
 		Velocity = safeVelocity;
 	}
 
+	public void TryInteractWith(ICanBeInteractedWith target)
+	{
+        if (target is Node2D targetNode2D)
+        {
+            if (!DetectionHandler.CanSee(targetNode2D)) return;
+
+            target.InteractWith();
+        }
+	}
 
 }

@@ -1,10 +1,9 @@
-[gd_scene load_steps=99 format=4 uid="uid://ddc8qiig7j3wm"]
+[gd_scene load_steps=97 format=4 uid="uid://ddc8qiig7j3wm"]
 
 [ext_resource type="Script" uid="uid://1f6ukfmh33oo" path="res://DayNightController.cs" id="1_d13ii"]
 [ext_resource type="Script" uid="uid://g354xqg3s44p" path="res://InputHandler.cs" id="2_lquwl"]
 [ext_resource type="TileSet" uid="uid://me5j3tknec74" path="res://Tileset.tres" id="3_4c57u"]
 [ext_resource type="PackedScene" uid="uid://duk1q562jys3q" path="res://Player/CursorFollower.tscn" id="3_ryguw"]
-[ext_resource type="Script" uid="uid://cjxr3y8xc8pl5" path="res://Player/PlayerController.cs" id="5_d13ii"]
 [ext_resource type="PackedScene" uid="uid://b2rac6jo5ig4k" path="res://Agents/Agent.tscn" id="5_lquwl"]
 [ext_resource type="Script" uid="uid://dph74un0q20el" path="res://Inventory/Inventory.cs" id="5_yaehf"]
 [ext_resource type="Script" uid="uid://bm0o5ggnfmm6y" path="res://Inventory/InventorySlot.cs" id="6_cegan"]
@@ -16,7 +15,6 @@
 [ext_resource type="Resource" uid="uid://be3ryk2ex3pr1" path="res://Goap/Actions/Idle.tres" id="8_ycdy4"]
 [ext_resource type="Resource" uid="uid://ckvaxlnjoqs1o" path="res://Goap/Goals/Patrol.tres" id="9_kek77"]
 [ext_resource type="Script" uid="uid://cru4kq28c8nuw" path="res://Agents/AgentStats.cs" id="9_lswn8"]
-[ext_resource type="Script" uid="uid://dphqtgg23pqia" path="res://Agents/EquipmentHandler.cs" id="10_0odxb"]
 [ext_resource type="Resource" uid="uid://c7fy02pjbecvf" path="res://Goap/Goals/Idle.tres" id="11_w48qg"]
 [ext_resource type="Script" uid="uid://cxbp1npv1tukk" path="res://Agents/DetectionHandler.cs" id="13_2cqfq"]
 [ext_resource type="PackedScene" uid="uid://bcpksn1hqwpab" path="res://Objects/Chest/Chest.tscn" id="13_w48qg"]
@@ -49,16 +47,6 @@ normal = Vector2(1, 0)
 
 [sub_resource type="WorldBoundaryShape2D" id="WorldBoundaryShape2D_xuqvo"]
 normal = Vector2(-1, 0)
-
-[sub_resource type="Resource" id="Resource_ryguw"]
-script = ExtResource("6_cegan")
-Quantity = 0
-metadata/_custom_type_script = "uid://bm0o5ggnfmm6y"
-
-[sub_resource type="Resource" id="Resource_d13ii"]
-script = ExtResource("6_cegan")
-Quantity = 0
-metadata/_custom_type_script = "uid://bm0o5ggnfmm6y"
 
 [sub_resource type="Resource" id="Resource_1u8w0"]
 script = ExtResource("6_cegan")
@@ -126,12 +114,22 @@ Quantity = 0
 metadata/_custom_type_script = "uid://bm0o5ggnfmm6y"
 
 [sub_resource type="Resource" id="Resource_facbu"]
-script = ExtResource("5_yaehf")
-InventoryName = "Player's inventory"
-Slots = Array[ExtResource("6_cegan")]([SubResource("Resource_ryguw"), SubResource("Resource_d13ii"), SubResource("Resource_1u8w0"), SubResource("Resource_0odxb"), SubResource("Resource_lswn8"), SubResource("Resource_a6jrf"), SubResource("Resource_xuqvo"), SubResource("Resource_qsp4k"), SubResource("Resource_kq58d"), SubResource("Resource_seu75"), SubResource("Resource_htxhm"), SubResource("Resource_jq2sk"), SubResource("Resource_4k2k6"), SubResource("Resource_0rl1p"), SubResource("Resource_ok6jj")])
-metadata/_custom_type_script = "uid://dph74un0q20el"
+script = ExtResource("6_cegan")
+Quantity = 0
+metadata/_custom_type_script = "uid://bm0o5ggnfmm6y"
 
 [sub_resource type="Resource" id="Resource_cyx1q"]
+script = ExtResource("6_cegan")
+Quantity = 0
+metadata/_custom_type_script = "uid://bm0o5ggnfmm6y"
+
+[sub_resource type="Resource" id="Resource_0dhbp"]
+script = ExtResource("5_yaehf")
+InventoryName = "Inventory"
+Slots = Array[ExtResource("6_cegan")]([SubResource("Resource_1u8w0"), SubResource("Resource_0odxb"), SubResource("Resource_lswn8"), SubResource("Resource_a6jrf"), SubResource("Resource_xuqvo"), SubResource("Resource_qsp4k"), SubResource("Resource_kq58d"), SubResource("Resource_seu75"), SubResource("Resource_htxhm"), SubResource("Resource_jq2sk"), SubResource("Resource_4k2k6"), SubResource("Resource_0rl1p"), SubResource("Resource_ok6jj"), SubResource("Resource_facbu"), SubResource("Resource_cyx1q")])
+metadata/_custom_type_script = "uid://dph74un0q20el"
+
+[sub_resource type="Resource" id="Resource_jx0wj"]
 script = ExtResource("9_lswn8")
 MaxHealth = 100.0
 MaxStamina = 100.0
@@ -388,8 +386,11 @@ metadata/_custom_type_script = "uid://dph74un0q20el"
 
 [node name="Main" type="Node2D"]
 
-[node name="InputHandler" type="Node2D" parent="."]
+[node name="InputHandler" type="Node2D" parent="." node_paths=PackedStringArray("PlayerAgent", "InventoryViewer", "CursorFollower")]
 script = ExtResource("2_lquwl")
+PlayerAgent = NodePath("../Characters/Player")
+InventoryViewer = NodePath("../UI/MarginContainer/InventoryViewer")
+CursorFollower = NodePath("../CursorFollower")
 
 [node name="DayNightController" type="DirectionalLight2D" parent="."]
 color = Color(0.0784314, 0.0784314, 0.0784314, 1)
@@ -448,16 +449,10 @@ shape = SubResource("WorldBoundaryShape2D_xuqvo")
 
 [node name="Characters" type="Node" parent="."]
 
-[node name="Player" parent="Characters" node_paths=PackedStringArray("InventoryViewer", "CursorFollower", "DetectionHandler") instance=ExtResource("5_lquwl")]
-z_index = 1
-position = Vector2(1317, 383)
-script = ExtResource("5_d13ii")
-IsCurrentPlayer = true
-InventoryViewer = NodePath("../../UI/MarginContainer/InventoryViewer")
-CursorFollower = NodePath("../../CursorFollower")
-Acceleration = 25.0
-Inventory = SubResource("Resource_facbu")
-Stats = SubResource("Resource_cyx1q")
+[node name="Player" parent="Characters" node_paths=PackedStringArray("DetectionHandler") instance=ExtResource("5_lquwl")]
+position = Vector2(1311, 379)
+Inventory = SubResource("Resource_0dhbp")
+Stats = SubResource("Resource_jx0wj")
 IsPlanningEnabled = false
 DetectionHandler = NodePath("DetectionHandler")
 
@@ -475,15 +470,10 @@ shape = SubResource("CircleShape2D_5vw27")
 debug_color = Color(0, 0.608985, 0.644943, 0.42)
 
 [node name="Camera2D" type="Camera2D" parent="Characters/Player"]
-zoom = Vector2(2, 2)
-
-[node name="EquipmentHandler" type="Node2D" parent="Characters/Player"]
-script = ExtResource("10_0odxb")
 
 [node name="Guard" parent="Characters" node_paths=PackedStringArray("DetectionHandler") instance=ExtResource("5_lquwl")]
 z_index = 1
 position = Vector2(961, 378)
-Acceleration = 25.0
 Inventory = SubResource("Resource_inymm")
 IsPlanningEnabled = false
 WorldState = Dictionary[String, Variant]({
@@ -556,6 +546,5 @@ layout_mode = 2
 horizontal_alignment = 2
 vertical_alignment = 2
 
-[node name="InventoryViewer" parent="UI/MarginContainer" node_paths=PackedStringArray("PrimaryEquipmentHandler") instance=ExtResource("23_d13ii")]
+[node name="InventoryViewer" parent="UI/MarginContainer" instance=ExtResource("23_d13ii")]
 layout_mode = 2
-PrimaryEquipmentHandler = NodePath("../../../Characters/Player/EquipmentHandler")
