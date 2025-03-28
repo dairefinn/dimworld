@@ -1,0 +1,14 @@
+[gd_scene load_steps=3 format=3 uid="uid://b7tip86v00vab"]
+
+[ext_resource type="Script" uid="uid://dnc1kwl0wio7v" path="res://Effects/Explosion/Explosion.cs" id="1_yxacy"]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_ofla6"]
+radius = 100.0
+
+[node name="Explosion" type="Area2D"]
+collision_layer = 0
+script = ExtResource("1_yxacy")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource("CircleShape2D_ofla6")
+debug_color = Color(0.942286, 0.203436, 0.335928, 0.42)

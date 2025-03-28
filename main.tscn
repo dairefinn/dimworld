@@ -1,4 +1,4 @@
-[gd_scene load_steps=99 format=4 uid="uid://ddc8qiig7j3wm"]
+[gd_scene load_steps=100 format=4 uid="uid://ddc8qiig7j3wm"]
 
 [ext_resource type="Script" uid="uid://1f6ukfmh33oo" path="res://DayNightController.cs" id="1_d13ii"]
 [ext_resource type="Script" uid="uid://g354xqg3s44p" path="res://InputHandler.cs" id="2_lquwl"]
@@ -25,6 +25,7 @@
 [ext_resource type="Resource" uid="uid://cganauotis1vm" path="res://Items/TestItem.tres" id="20_1u8w0"]
 [ext_resource type="Resource" uid="uid://dplke5ijakwt5" path="res://Items/Torch.tres" id="21_1u8w0"]
 [ext_resource type="PackedScene" uid="uid://d21nkwnu7y4od" path="res://Inventory/UI/InventoryViewer.tscn" id="23_d13ii"]
+[ext_resource type="PackedScene" uid="uid://h5wikgb34lv4" path="res://Objects/Bomb/Bomb.tscn" id="25_lswn8"]
 
 [sub_resource type="NavigationPolygon" id="NavigationPolygon_5vw27"]
 vertices = PackedVector2Array(1198, 210, 1198, 286, 1186, 274, 1186, 222, 1122, 210, 1134, 222, 1122, 286, 1134, 274, 1154, 286, 1166, 286, 898, 450, 898, 414, 942, 446, 942, 462, 926, 462, 370, 174, 398, 146, 414, 146, 414, 162, 386, 190, 370, 190, 418, 206, 446, 162, 446, 178, 434, 222, 462, 178, 462, 194, 450, 238, 434, 238, 494, 194, 494, 210, 482, 254, 450, 254, 510, 210, 510, 226, 542, 226, 542, 242, 718, 270, 690, 242, 690, 226, 738, 226, 786, 270, 738, 210, 798, 210, 798, 226, 814, 226, 814, 242, 802, 286, 786, 286, 830, 242, 830, 258, 818, 302, 802, 302, 834, 318, 862, 258, 862, 290, 850, 350, 894, 290, 894, 322, 866, 366, 850, 366, 910, 322, 910, 338, 882, 382, 866, 382, 926, 338, 926, 354, 882, 414, 958, 354, 958, 370, 1022, 370, 1022, 386, 1006, 414, 974, 430, 1042, 386, 1042, 370, 1154, 370, 1134, 414, 1154, 318, 1122, 318, 1122, 306, 1154, 306, 1166, 370, 1278, 370, 1278, 386, 1234, 414, 1298, 386, 1298, 370, 1358, 370, 1358, 430, 1234, 430, 1134, 430, 1026, 430, 1026, 414, 1006, 430, 974, 446, 834, 350, 818, 318, 718, 286, 546, 286, 546, 270, 482, 270, 418, 222, 386, 206, 258, 162, 270, 174, 270, 190, 254, 190, 226, 178, 226, 162, 254, 206, 238, 206, 210, 194, 210, 178, 238, 222, 222, 222, 222, 254, 206, 254, 178, 242, 178, 194, 206, 350, 190, 350, 162, 290, 162, 242, 162, 462, 190, 402, 206, 402, 206, 418, 194, 478, 162, 478, 222, 418, 222, 434, 306, 434, 306, 418, 430, 418, 430, 434, 334, 462, 450, 462, 510, 434, 510, 450, 482, 478, 590, 462, 562, 450, 562, 434, 578, 434, 606, 446, 606, 462, 578, 418, 594, 418, 622, 430, 622, 446, 594, 402, 610, 402, 638, 414, 638, 430, 610, 386, 626, 386, 654, 398, 654, 414, 626, 370, 642, 370, 670, 382, 670, 398, 642, 354, 686, 354, 686, 382, 590, 498, 622, 498, 622, 514, 562, 542, 562, 526, 734, 514, 734, 530, 670, 558, 642, 542, 830, 542, 802, 530, 802, 514, 834, 514, 862, 526, 862, 542, 834, 498, 866, 498, 894, 526, 866, 482, 882, 482, 894, 494, 910, 478, 882, 450, 926, 478, 910, 494, 830, 558, 670, 574, 654, 574, 642, 562, 654, 606, 638, 606, 626, 578, 626, 562, 610, 610, 638, 638, 622, 638, 594, 626, 622, 654, 606, 654, 578, 626, 606, 686, 590, 686, 578, 658, 590, 702, 562, 702, 562, 658, 594, 610, 610, 578, 530, 526, 530, 510, 514, 510, 514, 494, 482, 494, 450, 478, 334, 478, 302, 478, 302, 494, 194, 494, 146, 462, 146, 290, 258, 146, 290, 146, 290, 130, 398, 130)
@@ -462,7 +463,7 @@ shape = SubResource("WorldBoundaryShape2D_xuqvo")
 [node name="Characters" type="Node" parent="World"]
 
 [node name="Player" parent="World/Characters" node_paths=PackedStringArray("EquipmentHandler", "DetectionHandler") instance=ExtResource("5_lquwl")]
-position = Vector2(1311, 379)
+position = Vector2(608, 530)
 Inventory = SubResource("Resource_0dhbp")
 EquipmentHandler = NodePath("EquipmentHandler")
 Stats = SubResource("Resource_jx0wj")
@@ -490,6 +491,7 @@ z_index = 1
 position = Vector2(961, 378)
 Inventory = SubResource("Resource_inymm")
 Stats = SubResource("Resource_kkkcx")
+IsPlanningEnabled = false
 WorldState = Dictionary[String, Variant]({
 "patrol_path": NodePath("../../Level/PatrolPathCastle")
 })
@@ -532,6 +534,9 @@ position = Vector2(1100, 319)
 
 [node name="LightBulb4" parent="World/Objects" instance=ExtResource("15_vivmo")]
 position = Vector2(1172, 334)
+
+[node name="Bomb" parent="World/Objects" instance=ExtResource("25_lswn8")]
+position = Vector2(547, 471)
 
 [node name="UI" type="CanvasLayer" parent="."]
 
