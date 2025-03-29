@@ -307,11 +307,11 @@ public partial class CharacterController : CharacterBody2D, IDamageable, ICanBeM
 		}
     }
 
-    public void ApplyVelocity(Vector2 velocity)
+    public void ApplyVelocity(Vector2 newVelocity, double delta)
     {
 		Vector2 oldVelocity = Velocity;
 
-		Velocity += velocity;
+		Velocity = Velocity.Lerp(newVelocity, (float)(Acceleration * delta));
 
 		MoveAndSlide();
 

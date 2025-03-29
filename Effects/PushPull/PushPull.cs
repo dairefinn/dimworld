@@ -9,6 +9,7 @@ public partial class PushPull : Area2D
 
     [Export] public float Radius = 100f;
     [Export] public float Force = 1000f;
+    [Export] public float Duration = 0.1f;
     [Export] public DirectionType Direction = DirectionType.PUSH;
 
 
@@ -22,29 +23,28 @@ public partial class PushPull : Area2D
         BodyEntered += OnBodyEntered;
         BodyExited += OnBodyExited;
 
-        GetTree().CreateTimer(0.1f).Timeout += () => Run();
+        CreateTimeout(Duration);
     }
 
-
-    private void Run()
+    public override void _Process(double delta)
     {
-        MoveBodies();
-        QueueFree();
+        MoveBodies(delta);
     }
 
-    private void MoveBodies()
+
+    private void MoveBodies(double delta)
     {
         foreach (Node body in _bodies)
         {
             if (body is ICanBeMoved moveable)
             {
-                Vector2 direction = GlobalPosition.DirectionTo(moveable.GetMoveableGlobalPosition());
+                Vector2 pushDirection = GlobalPosition.DirectionTo(moveable.GetMoveableGlobalPosition());
                 if (Direction == DirectionType.PULL)
                 {
-                    direction = -direction;
+                    pushDirection = pushDirection.Rotated(Mathf.DegToRad(180));
                 }
-                Vector2 knockbackVelocity = direction * Force;
-                moveable.ApplyVelocity(knockbackVelocity);
+                Vector2 knockbackVelocity = pushDirection * Force;
+                moveable.ApplyVelocity(knockbackVelocity, delta);
             }
         }
     }
@@ -53,6 +53,12 @@ public partial class PushPull : Area2D
     {
         CollisionShape2D collisionShape = GetNode<CollisionShape2D>("CollisionShape2D");
         (collisionShape.Shape as CircleShape2D).Radius = radius;
+    }
+
+    private void CreateTimeout(float duration)
+    {
+        SceneTreeTimer timer = GetTree().CreateTimer(duration);
+        timer.Timeout += () => QueueFree();
     }
 
 

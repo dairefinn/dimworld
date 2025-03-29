@@ -15,7 +15,9 @@ public partial class Bomb : StaticBody2D, ICanBeInteractedWith
     {
         // TriggerExplosion();
         // TriggerFire();
-        TriggerKnockback();
+        // TriggerKnockback();
+        // TriggerPull();
+        TriggerKnockbackExplosion();
     }
 
     private void TriggerExplosion()
@@ -42,7 +44,34 @@ public partial class Bomb : StaticBody2D, ICanBeInteractedWith
         PushPull knockback = EFFECT_PUSH_PULL.Instantiate<PushPull>();
         knockback.Radius = 100;
         knockback.Force = 1000;
-        knockback.Direction = PushPull.DirectionType.PULL;
+        knockback.Direction = PushPull.DirectionType.PUSH;
+        AddChild(knockback);
+    }
+
+    private void TriggerPull()
+    {
+        PushPull pull = EFFECT_PUSH_PULL.Instantiate<PushPull>();
+        pull.Radius = 100;
+        pull.Force = 1000;
+        pull.Direction = PushPull.DirectionType.PULL;
+        AddChild(pull);
+    }
+
+    private void TriggerKnockbackExplosion()
+    {
+        float duration = 0.1f;
+
+        DamageInstant explosion = EFFECT_EXPLOSION.Instantiate<DamageInstant>();
+        explosion.Damage = 10;
+        explosion.Radius = 200;
+        explosion.Duration = duration;
+
+        PushPull knockback = EFFECT_PUSH_PULL.Instantiate<PushPull>();
+        knockback.Radius = 100;
+        knockback.Force = 3000;
+        knockback.Direction = PushPull.DirectionType.PUSH;
+
+        AddChild(explosion);
         AddChild(knockback);
     }
 
