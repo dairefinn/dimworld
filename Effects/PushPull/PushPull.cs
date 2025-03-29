@@ -4,11 +4,12 @@ using Godot;
 using Godot.Collections;
 
 
-public partial class Knockback : Area2D
+public partial class PushPull : Area2D
 {
 
     [Export] public float Radius = 100f;
     [Export] public float Force = 1000f;
+    [Export] public DirectionType Direction = DirectionType.PUSH;
 
 
     private Array<Node> _bodies = [];
@@ -38,6 +39,10 @@ public partial class Knockback : Area2D
             if (body is ICanBeMoved moveable)
             {
                 Vector2 direction = GlobalPosition.DirectionTo(moveable.GetMoveableGlobalPosition());
+                if (Direction == DirectionType.PULL)
+                {
+                    direction = -direction;
+                }
                 Vector2 knockbackVelocity = direction * Force;
                 moveable.ApplyVelocity(knockbackVelocity);
             }
@@ -65,6 +70,12 @@ public partial class Knockback : Area2D
         {
             _bodies.Remove(body);
         }
+    }
+
+    public enum DirectionType
+    {
+        PUSH,
+        PULL
     }
 
 }

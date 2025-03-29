@@ -8,7 +8,7 @@ public partial class Bomb : StaticBody2D, ICanBeInteractedWith
 
     public static readonly PackedScene EFFECT_EXPLOSION = GD.Load<PackedScene>("res://Effects/DamageInstant/DamageInstant.tscn");
     public static readonly PackedScene EFFECT_DAMAGE_OVER_TIME = GD.Load<PackedScene>("res://Effects/DamageOverTime/DamageOverTime.tscn");
-    public static readonly PackedScene EFFECT_KNOCKBACK = GD.Load<PackedScene>("res://Effects/Knockback/Knockback.tscn");
+    public static readonly PackedScene EFFECT_PUSH_PULL = GD.Load<PackedScene>("res://Effects/PushPull/PushPull.tscn");
 
 
     public void InteractWith()
@@ -39,9 +39,10 @@ public partial class Bomb : StaticBody2D, ICanBeInteractedWith
 
     private void TriggerKnockback()
     {
-        Knockback knockback = EFFECT_KNOCKBACK.Instantiate<Knockback>();
+        PushPull knockback = EFFECT_PUSH_PULL.Instantiate<PushPull>();
         knockback.Radius = 100;
         knockback.Force = 1000;
+        knockback.Direction = PushPull.DirectionType.PULL;
         AddChild(knockback);
     }
 

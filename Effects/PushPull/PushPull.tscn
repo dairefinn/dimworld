@@ -1,6 +1,6 @@
 [gd_scene load_steps=3 format=3 uid="uid://88l5s2emaxab"]
 
-[ext_resource type="Script" uid="uid://dafm45og03gmp" path="res://Effects/Knockback/Knockback.cs" id="1_jy7jl"]
+[ext_resource type="Script" uid="uid://dafm45og03gmp" path="res://Effects/PushPull/PushPull.cs" id="1_jy7jl"]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_bc2wn"]
 
