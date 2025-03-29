@@ -4,7 +4,7 @@ using System.Linq;
 using Godot;
 using Godot.Collections;
 
-public partial class CharacterController : CharacterBody2D, IDamageable
+public partial class CharacterController : CharacterBody2D, IDamageable, ICanBeMoved
 {
 
 	[ExportGroup("Properties")]
@@ -306,4 +306,21 @@ public partial class CharacterController : CharacterBody2D, IDamageable
 			// QueueFree(); // TODO: Implement death logic
 		}
     }
+
+    public void ApplyVelocity(Vector2 velocity)
+    {
+		Vector2 oldVelocity = Velocity;
+
+		Velocity += velocity;
+
+		MoveAndSlide();
+
+		Velocity = oldVelocity;
+    }
+
+	public Vector2 GetMoveableGlobalPosition()
+	{
+		return GlobalPosition;
+	}
+
 }

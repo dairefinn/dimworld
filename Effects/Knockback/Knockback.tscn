@@ -1,0 +1,13 @@
+[gd_scene load_steps=3 format=3 uid="uid://88l5s2emaxab"]
+
+[ext_resource type="Script" uid="uid://dafm45og03gmp" path="res://Effects/Knockback/Knockback.cs" id="1_jy7jl"]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_bc2wn"]
+
+[node name="Knockback" type="Area2D"]
+collision_layer = 0
+script = ExtResource("1_jy7jl")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource("CircleShape2D_bc2wn")
+debug_color = Color(0.579746, 0.548203, 0.186417, 0.42)

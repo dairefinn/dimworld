@@ -1,9 +1,8 @@
 [gd_scene load_steps=3 format=3 uid="uid://b7tip86v00vab"]
 
-[ext_resource type="Script" uid="uid://dnc1kwl0wio7v" path="res://Effects/Explosion/Explosion.cs" id="1_yxacy"]
+[ext_resource type="Script" uid="uid://dnc1kwl0wio7v" path="res://Effects/DamageInstant/DamageInstant.cs" id="1_yxacy"]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_ofla6"]
-radius = 100.0
 
 [node name="Explosion" type="Area2D"]
 collision_layer = 0

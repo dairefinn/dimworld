@@ -3,7 +3,7 @@ namespace Dimworld;
 using Godot;
 
 
-public partial class Explosion : Area2D
+public partial class DamageInstant : Area2D
 {
 
     [Export] public int Damage = 10;
@@ -24,7 +24,7 @@ public partial class Explosion : Area2D
     private void SetRadius(float radius)
     {
         CollisionShape2D collisionShape = GetNode<CollisionShape2D>("CollisionShape2D");
-        (collisionShape.Shape as CircleShape2D).Radius = Radius;
+        (collisionShape.Shape as CircleShape2D).Radius = radius;
     }
 
     private void CreateTimeout(float duration)
