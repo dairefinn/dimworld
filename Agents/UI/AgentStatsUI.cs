@@ -9,6 +9,7 @@ public partial class AgentStatsUI : PanelContainer
         set => SetStats(value);
     }
     private AgentStats _stats;
+    [Export] public float FadeOutTime = 2.5f;
 
     private ProgressBar barHealth;
     private ProgressBar barStamina;
@@ -90,13 +91,14 @@ public partial class AgentStatsUI : PanelContainer
         if (!initialized) return;
 
         Show();
+        Modulate = new Color(Modulate.R, Modulate.G, Modulate.B, 1);
+        
         if (fadeTimer != null)
         {
-            fadeTimer.Dispose();
             fadeTimer = null;
         }
 
-        fadeTimer = GetTree().CreateTimer(5f);
+        fadeTimer = GetTree().CreateTimer(FadeOutTime);
         fadeTimer.Timeout += () => StartFadeOut();
     }
 
@@ -104,7 +106,7 @@ public partial class AgentStatsUI : PanelContainer
     {
         tweenVisibility?.Kill();
         tweenVisibility = CreateTween().SetTrans(Tween.TransitionType.Sine).SetEase(Tween.EaseType.InOut);
-        tweenVisibility.TweenProperty(this, "modulate", new Color(Modulate.R, Modulate.G, Modulate.B, 0), 1.0f);
+        tweenVisibility.TweenProperty(this, "modulate", new Color(Modulate.R, Modulate.G, Modulate.B, 0), 0.5f);
         tweenVisibility.Finished += () => Hide(); // Hide the UI after the fade-out completes
     }
 }

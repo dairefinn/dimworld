@@ -4,7 +4,7 @@ using System.Linq;
 using Godot;
 using Godot.Collections;
 
-public partial class CharacterController : CharacterBody2D, IDamageable, ICanBeMoved
+public partial class CharacterController : CharacterBody2D, IDamageable, ICanBeMoved, IAffectedByConditions
 {
 
 	[ExportGroup("Properties")]
@@ -40,9 +40,9 @@ public partial class CharacterController : CharacterBody2D, IDamageable, ICanBeM
 	private GoapAction[] CurrentPlan { get; set; } = [];
 	private GoapAction CurrentAction { get; set; }
 	private int CurrentPlanStep { get; set; } = 0;
+    public Array<Condition> Conditions { get; set; } = [];
 
-
-	public int lookForGoalsEveryXFrames = 60;
+    public int lookForGoalsEveryXFrames = 60;
 	private int framesToNextGoalUpdate = 0;
 
 
@@ -68,15 +68,9 @@ public partial class CharacterController : CharacterBody2D, IDamageable, ICanBeM
 		{
 			StatsUI = GetNode<AgentStatsUI>("AgentStatsUI");
 			StatsUI.Stats = Stats;
-			// StatsUI.Hide();
 		}
 
 		SetInventoryState();
-
-
-		GetTree().CreateTimer(3f).Timeout += () => {
-			Stats.Health = Stats.MaxHealth / 3;
-		};
 	}
 
 	public override void _PhysicsProcess(double delta)
@@ -97,6 +91,8 @@ public partial class CharacterController : CharacterBody2D, IDamageable, ICanBeM
 		framesToNextGoalUpdate--;
 
 		Inventory.OnUpdated += () => SetInventoryState();
+
+		ProcessConditions(delta);
 
 		// Print inventory slots w/ item counts
 		// if (Inventory != null)
@@ -322,5 +318,29 @@ public partial class CharacterController : CharacterBody2D, IDamageable, ICanBeM
 	{
 		return GlobalPosition;
 	}
+
+	// CONDITIONS
+
+    public void AddCondition(Condition condition)
+    {
+        if (condition == null) return;
+		if (Conditions.Contains(condition)) return;
+		Conditions.Add(condition);
+    }
+
+    public void RemoveCondition(Condition condition)
+    {
+		if (condition == null) return;
+		if (!Conditions.Contains(condition)) return;
+		Conditions.Remove(condition);
+    }
+
+    public void ProcessConditions(double delta)
+    {
+		foreach (Condition condition in Conditions)
+		{
+			condition.OnProcess(delta, this);
+		}
+    }
 
 }

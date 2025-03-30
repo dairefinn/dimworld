@@ -129,7 +129,7 @@ debug_color = Color(0, 0.608985, 0.644943, 0.42)
 script = ExtResource("11_0odxb")
 
 [node name="Camera2D" type="Camera2D" parent="Player"]
-zoom = Vector2(2, 2)
+zoom = Vector2(3, 3)
 
 [node name="LevelTesting" parent="." instance=ExtResource("25_a6jrf")]
 

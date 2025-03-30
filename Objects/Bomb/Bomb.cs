@@ -9,6 +9,7 @@ public partial class Bomb : StaticBody2D, ICanBeInteractedWith
     public static readonly PackedScene EFFECT_EXPLOSION = GD.Load<PackedScene>("res://Effects/DamageInstant/DamageInstant.tscn");
     public static readonly PackedScene EFFECT_DAMAGE_OVER_TIME = GD.Load<PackedScene>("res://Effects/DamageOverTime/DamageOverTime.tscn");
     public static readonly PackedScene EFFECT_PUSH_PULL = GD.Load<PackedScene>("res://Effects/PushPull/PushPull.tscn");
+    public static readonly PackedScene EFFECT_APPLY_CONDITION = GD.Load<PackedScene>("res://Effects/ApplyCondition/ApplyCondition.tscn");
 
 
     public void InteractWith()
@@ -17,7 +18,7 @@ public partial class Bomb : StaticBody2D, ICanBeInteractedWith
         // TriggerFire();
         // TriggerKnockback();
         // TriggerPull();
-        TriggerKnockbackExplosion();
+        TriggerApplyCondition();
     }
 
     private void TriggerExplosion()
@@ -73,6 +74,15 @@ public partial class Bomb : StaticBody2D, ICanBeInteractedWith
 
         AddChild(explosion);
         AddChild(knockback);
+    }
+
+    private void TriggerApplyCondition()
+    {
+        ApplyCondition applyCondition = EFFECT_APPLY_CONDITION.Instantiate<ApplyCondition>();
+        applyCondition.Condition = GD.Load<Slowed>("res://Conditions/Slowed/Slowed.tres");
+        applyCondition.Radius = 100;
+        applyCondition.Duration = 5;
+        AddChild(applyCondition);
     }
 
 }
