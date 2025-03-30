@@ -339,6 +339,12 @@ public partial class CharacterController : CharacterBody2D, IDamageable, ICanBeM
     {
 		foreach (Condition condition in Conditions)
 		{
+			// TODO: Should the velocity be updated by the character or the condition
+			if (condition is Slowed)
+			{
+				Velocity /= 2;
+			}
+
 			condition.OnProcess(delta, this);
 		}
     }

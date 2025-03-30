@@ -4,7 +4,7 @@ using Godot;
 
 
 [GlobalClass]
-public abstract partial class Condition : Resource
+public partial class Condition : Resource
 {
     [Export] public string Name { get; set; } = "Condition Name";
     [Export] public double Duration { get; set; } = -1f; // -1 means infinite duration
