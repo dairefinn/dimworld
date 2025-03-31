@@ -44,6 +44,7 @@ public partial class CharacterController : CharacterBody2D, IDamageable, ICanBeM
 
     public int lookForGoalsEveryXFrames = 60;
 	private int framesToNextGoalUpdate = 0;
+	private Vector2 desiredMovementDirection = Vector2.Zero;
 
 
 	// LIFECYCLE EVENTS
@@ -78,6 +79,8 @@ public partial class CharacterController : CharacterBody2D, IDamageable, ICanBeM
 		base._PhysicsProcess(delta);
 
 		ProcessNavigation(delta);
+
+		PhysicsProcessConditions(delta);
 	}
 
 	public override void _Process(double delta)
@@ -108,7 +111,6 @@ public partial class CharacterController : CharacterBody2D, IDamageable, ICanBeM
 		//     GD.Print(inventoryString);
 		// }
 	}
-
 
 	// SETTERS
 	
@@ -257,6 +259,31 @@ public partial class CharacterController : CharacterBody2D, IDamageable, ICanBeM
 
 	private void ProcessNavigation(double delta)
 	{
+		if (desiredMovementDirection != Vector2.Zero)
+		{
+			ProcessNavigationInput(desiredMovementDirection, delta);
+		}
+		else if (NavigationAgent.IsTargetReached())
+		{
+			Velocity = Velocity.Lerp(Vector2.Zero, (float)(Acceleration * delta));
+		}
+		else
+		{
+			ProcessNavigationPathfinding(delta);
+		}
+
+		MoveAndSlide();
+
+		desiredMovementDirection = Vector2.Zero;
+	}
+
+	private void ProcessNavigationInput(Vector2 desiredMovementDirection, double delta)
+	{
+		Velocity = Velocity.Lerp(desiredMovementDirection * Speed, (float)(Acceleration * delta));
+	}
+
+	private void ProcessNavigationPathfinding(double delta)
+	{
 		if (NavigationAgent == null) return;
 		if (NavigationAgent.IsNavigationFinished()) return;
 
@@ -274,13 +301,21 @@ public partial class CharacterController : CharacterBody2D, IDamageable, ICanBeM
 			OnSafeVelocityComputed(newVelcity);
 		}
 
-		MoveAndSlide();
 	}
 
 	public void OnSafeVelocityComputed(Vector2 safeVelocity)
 	{
 		Velocity = safeVelocity;
 	}
+
+	public void SetMovementDirection(Vector2 direction)
+	{
+		if (direction == Vector2.Zero) return;
+		desiredMovementDirection = direction;
+	}
+
+
+	// INTERACTION
 
 	public void TryInteractWith(ICanBeInteractedWith target)
 	{
@@ -292,6 +327,9 @@ public partial class CharacterController : CharacterBody2D, IDamageable, ICanBeM
         }
 	}
 
+
+	// DAMAGE HANDLING
+
     public void TakeDamage(int damage)
     {
 		GD.Print($"Taking {damage} damage");
@@ -302,6 +340,9 @@ public partial class CharacterController : CharacterBody2D, IDamageable, ICanBeM
 			// QueueFree(); // TODO: Implement death logic
 		}
     }
+
+
+	// FORCE APPLICATION
 
     public void ApplyVelocity(Vector2 newVelocity, double delta)
     {
@@ -339,14 +380,16 @@ public partial class CharacterController : CharacterBody2D, IDamageable, ICanBeM
     {
 		foreach (Condition condition in Conditions)
 		{
-			// TODO: Should the velocity be updated by the character or the condition
-			if (condition is Slowed)
-			{
-				Velocity /= 2;
-			}
-
 			condition.OnProcess(delta, this);
 		}
     }
+
+	public void PhysicsProcessConditions(double delta)
+	{
+		foreach (Condition condition in Conditions)
+		{
+			condition.OnPhysicsProcess(delta, this);
+		}
+	}
 
 }

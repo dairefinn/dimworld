@@ -79,7 +79,8 @@ public partial class Bomb : StaticBody2D, ICanBeInteractedWith
     private void TriggerApplyCondition()
     {
         ApplyCondition applyCondition = EFFECT_APPLY_CONDITION.Instantiate<ApplyCondition>();
-        applyCondition.Condition = GD.Load<Slowed>("res://Conditions/Slowed/Slowed.tres");
+        // applyCondition.Condition = GD.Load<Slowed>("res://Conditions/Slowed/Slowed.tres");
+        applyCondition.Condition = GD.Load<SpeedBoost>("res://Conditions/SpeedBoost/SpeedBoost.tres");
         applyCondition.Radius = 100;
         applyCondition.Duration = 5;
         AddChild(applyCondition);

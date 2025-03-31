@@ -1,0 +1,9 @@
+[gd_resource type="Resource" load_steps=2 format=3 uid="uid://d0nidqv00fm7e"]
+
+[ext_resource type="Script" uid="uid://b5tji2amn185c" path="res://Conditions/SpeedBoost/SpeedBoost.cs" id="1_2vbg8"]
+
+[resource]
+script = ExtResource("1_2vbg8")
+Name = "Speed boost"
+Duration = 5.0
+metadata/_custom_type_script = "uid://bh0buxu0qcdjb"

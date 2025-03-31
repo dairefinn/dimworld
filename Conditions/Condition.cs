@@ -6,6 +6,7 @@ using Godot;
 [GlobalClass]
 public partial class Condition : Resource
 {
+
     [Export] public string Name { get; set; } = "Condition Name";
     [Export] public double Duration { get; set; } = -1f; // -1 means infinite duration
 
@@ -25,6 +26,11 @@ public partial class Condition : Resource
     public virtual void OnProcess(double delta, IAffectedByConditions target)
     {
         UpdateDuration(delta, target);
+    }
+
+    public virtual void OnPhysicsProcess(double delta, IAffectedByConditions target)
+    {
+        return;
     }
 
 
