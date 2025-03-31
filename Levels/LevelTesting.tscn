@@ -383,6 +383,7 @@ z_index = 1
 position = Vector2(961, 378)
 Inventory = SubResource("Resource_x4uyb")
 Stats = SubResource("Resource_630ma")
+IsPlanningEnabled = false
 WorldState = Dictionary[String, Variant]({
 "patrol_path": NodePath("../../World/PatrolPathCastle")
 })

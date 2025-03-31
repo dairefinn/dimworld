@@ -44,7 +44,10 @@ public partial class InputHandler : Node2D
     {
         base._Process(delta);
 
-        bool canMove = !InventoryViewer.IsViewing && Input.IsActionJustPressed("lmb");
+        bool canMove = !InventoryViewer.IsViewing;
+        bool isMovingManually = Input.IsActionPressed("move_up") || Input.IsActionPressed("move_down") || Input.IsActionPressed("move_left") || Input.IsActionPressed("move_right");
+        bool isMovingClick = Input.IsActionJustPressed("lmb");
+
         bool canAbortMove = Input.IsActionJustPressed("rmb");
         bool canToggleTimescale = Input.IsActionJustPressed("toggle_timescale");
         bool canInteract = Input.IsActionJustPressed("interact") && !InventoryViewer.IsViewing;
@@ -53,14 +56,27 @@ public partial class InputHandler : Node2D
 
         if (canMove)
         {
-            Vector2 mousePosition = GetGlobalMousePosition();
-            PlayerAgent.NavigateTo(mousePosition);
+            if (isMovingManually)
+            {
+                Vector2 direction = new(
+                    Input.IsActionPressed("move_right") ? 1 : (Input.IsActionPressed("move_left") ? -1 : 0),
+                    Input.IsActionPressed("move_down") ? 1 : (Input.IsActionPressed("move_up") ? -1 : 0)
+                );
+
+                PlayerAgent.StopNavigating();
+                PlayerAgent.SetMovementDirection(direction);
+            }
+            else if (isMovingClick)
+            {
+                Vector2 mousePosition = GetGlobalMousePosition();
+                PlayerAgent.NavigateTo(mousePosition);
+            }
+            else if (canAbortMove)
+            {
+                PlayerAgent.StopNavigating();
+            }
         }
 
-        if (canAbortMove)
-        {
-            PlayerAgent.StopNavigating();
-        }
 
         if (canInteract)
         {

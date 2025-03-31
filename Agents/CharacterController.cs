@@ -4,7 +4,7 @@ using System.Linq;
 using Godot;
 using Godot.Collections;
 
-public partial class CharacterController : CharacterBody2D, IDamageable, ICanBeMoved
+public partial class CharacterController : CharacterBody2D, IDamageable, ICanBeMoved, IAffectedByConditions
 {
 
 	[ExportGroup("Properties")]
@@ -40,10 +40,11 @@ public partial class CharacterController : CharacterBody2D, IDamageable, ICanBeM
 	private GoapAction[] CurrentPlan { get; set; } = [];
 	private GoapAction CurrentAction { get; set; }
 	private int CurrentPlanStep { get; set; } = 0;
+    public Array<Condition> Conditions { get; set; } = [];
 
-
-	public int lookForGoalsEveryXFrames = 60;
+    public int lookForGoalsEveryXFrames = 60;
 	private int framesToNextGoalUpdate = 0;
+	private Vector2 desiredMovementDirection = Vector2.Zero;
 
 
 	// LIFECYCLE EVENTS
@@ -68,15 +69,9 @@ public partial class CharacterController : CharacterBody2D, IDamageable, ICanBeM
 		{
 			StatsUI = GetNode<AgentStatsUI>("AgentStatsUI");
 			StatsUI.Stats = Stats;
-			// StatsUI.Hide();
 		}
 
 		SetInventoryState();
-
-
-		GetTree().CreateTimer(3f).Timeout += () => {
-			Stats.Health = Stats.MaxHealth / 3;
-		};
 	}
 
 	public override void _PhysicsProcess(double delta)
@@ -84,6 +79,8 @@ public partial class CharacterController : CharacterBody2D, IDamageable, ICanBeM
 		base._PhysicsProcess(delta);
 
 		ProcessNavigation(delta);
+
+		PhysicsProcessConditions(delta);
 	}
 
 	public override void _Process(double delta)
@@ -97,6 +94,8 @@ public partial class CharacterController : CharacterBody2D, IDamageable, ICanBeM
 		framesToNextGoalUpdate--;
 
 		Inventory.OnUpdated += () => SetInventoryState();
+
+		ProcessConditions(delta);
 
 		// Print inventory slots w/ item counts
 		// if (Inventory != null)
@@ -112,7 +111,6 @@ public partial class CharacterController : CharacterBody2D, IDamageable, ICanBeM
 		//     GD.Print(inventoryString);
 		// }
 	}
-
 
 	// SETTERS
 	
@@ -261,6 +259,31 @@ public partial class CharacterController : CharacterBody2D, IDamageable, ICanBeM
 
 	private void ProcessNavigation(double delta)
 	{
+		if (desiredMovementDirection != Vector2.Zero)
+		{
+			ProcessNavigationInput(desiredMovementDirection, delta);
+		}
+		else if (NavigationAgent.IsTargetReached())
+		{
+			Velocity = Velocity.Lerp(Vector2.Zero, (float)(Acceleration * delta));
+		}
+		else
+		{
+			ProcessNavigationPathfinding(delta);
+		}
+
+		MoveAndSlide();
+
+		desiredMovementDirection = Vector2.Zero;
+	}
+
+	private void ProcessNavigationInput(Vector2 desiredMovementDirection, double delta)
+	{
+		Velocity = Velocity.Lerp(desiredMovementDirection * Speed, (float)(Acceleration * delta));
+	}
+
+	private void ProcessNavigationPathfinding(double delta)
+	{
 		if (NavigationAgent == null) return;
 		if (NavigationAgent.IsNavigationFinished()) return;
 
@@ -278,13 +301,21 @@ public partial class CharacterController : CharacterBody2D, IDamageable, ICanBeM
 			OnSafeVelocityComputed(newVelcity);
 		}
 
-		MoveAndSlide();
 	}
 
 	public void OnSafeVelocityComputed(Vector2 safeVelocity)
 	{
 		Velocity = safeVelocity;
 	}
+
+	public void SetMovementDirection(Vector2 direction)
+	{
+		if (direction == Vector2.Zero) return;
+		desiredMovementDirection = direction;
+	}
+
+
+	// INTERACTION
 
 	public void TryInteractWith(ICanBeInteractedWith target)
 	{
@@ -296,6 +327,9 @@ public partial class CharacterController : CharacterBody2D, IDamageable, ICanBeM
         }
 	}
 
+
+	// DAMAGE HANDLING
+
     public void TakeDamage(int damage)
     {
 		GD.Print($"Taking {damage} damage");
@@ -306,6 +340,9 @@ public partial class CharacterController : CharacterBody2D, IDamageable, ICanBeM
 			// QueueFree(); // TODO: Implement death logic
 		}
     }
+
+
+	// FORCE APPLICATION
 
     public void ApplyVelocity(Vector2 newVelocity, double delta)
     {
@@ -321,6 +358,38 @@ public partial class CharacterController : CharacterBody2D, IDamageable, ICanBeM
 	public Vector2 GetMoveableGlobalPosition()
 	{
 		return GlobalPosition;
+	}
+
+	// CONDITIONS
+
+    public void AddCondition(Condition condition)
+    {
+        if (condition == null) return;
+		if (Conditions.Contains(condition)) return;
+		Conditions.Add(condition);
+    }
+
+    public void RemoveCondition(Condition condition)
+    {
+		if (condition == null) return;
+		if (!Conditions.Contains(condition)) return;
+		Conditions.Remove(condition);
+    }
+
+    public void ProcessConditions(double delta)
+    {
+		foreach (Condition condition in Conditions)
+		{
+			condition.OnProcess(delta, this);
+		}
+    }
+
+	public void PhysicsProcessConditions(double delta)
+	{
+		foreach (Condition condition in Conditions)
+		{
+			condition.OnPhysicsProcess(delta, this);
+		}
 	}
 
 }

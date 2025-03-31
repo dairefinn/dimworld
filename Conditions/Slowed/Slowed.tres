@@ -1,0 +1,9 @@
+[gd_resource type="Resource" load_steps=2 format=3 uid="uid://be76ed4vyywkl"]
+
+[ext_resource type="Script" uid="uid://dkglj0a7b8q85" path="res://Conditions/Slowed/Slowed.cs" id="1_4yys1"]
+
+[resource]
+script = ExtResource("1_4yys1")
+Name = "Slowed"
+Duration = 5.0
+metadata/_custom_type_script = "uid://bh0buxu0qcdjb"
