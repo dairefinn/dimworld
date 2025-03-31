@@ -40,13 +40,19 @@ public partial class LevelHandler : Node
         }
     }
 
+    // FIXME: There's an issue here that occurs if the current level has a spawn point with the same name as the target spawn point in the new level. It will use the location of the spawn point in the previous level instead.
     private void LoadLevel(string newLevelPath, string spawnPointName)
     {
         PackedScene newLevelScene = ResourceLoader.Load<PackedScene>(newLevelPath);
         GameLevel gameLevel = newLevelScene.Instantiate<GameLevel>();
         AddChild(gameLevel);
+        CallDeferred(MethodName.MovePlayerToSpawnPoint, [gameLevel, spawnPointName]);
+    }
 
-        SpawnPoint spawnPoint = gameLevel.DefaultSpawnPoint;
+    private void MovePlayerToSpawnPoint(GameLevel currentLevel, string spawnPointName)
+    {
+        SpawnPoint spawnPoint = currentLevel.DefaultSpawnPoint;
+
         if (spawnPointName != null && spawnPointName.Length > 0)
         {
             spawnPoint = GetTree().GetNodesInGroup("spawnpoint").Where(node => node.Name == spawnPointName).FirstOrDefault(spawnPoint) as SpawnPoint;

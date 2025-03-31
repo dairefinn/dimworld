@@ -367,8 +367,8 @@ SpawnPointName = "SpawnPointRoadTop"
 [node name="CollisionShape2D" type="CollisionShape2D" parent="World/LevelTransitionArea"]
 shape = SubResource("RectangleShape2D_3by8r")
 
-[node name="SpawnPointRoadBottom" parent="World" instance=ExtResource("3_3by8r")]
-position = Vector2(577, 681)
+[node name="SpawnPointTest" parent="World" instance=ExtResource("3_3by8r")]
+position = Vector2(579, 680)
 
 [node name="SpawnPointCastle" parent="World" instance=ExtResource("3_3by8r")]
 position = Vector2(1162, 247)
