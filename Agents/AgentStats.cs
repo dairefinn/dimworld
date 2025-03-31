@@ -97,4 +97,27 @@ public partial class AgentStats : Resource
         return Stamina / MaxStamina * 100;
     }
 
+    public void Heal(float amount = 0)
+    {
+        if (amount < 0) return;
+        if (amount == 0)
+        {
+            amount = MaxHealth - Health;
+        }
+
+        GD.Print($"Healing {amount} health");
+        SetHealth(Health + amount);
+    }
+
+    public void RecoverStamina(float amount = 0)
+    {
+        if (amount < 0) return;
+        if (amount == 0)
+        {
+            amount = MaxStamina - Stamina;
+        }
+
+        SetStamina(Stamina + amount);
+    }
+
 }

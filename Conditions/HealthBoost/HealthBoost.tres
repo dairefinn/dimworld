@@ -1,0 +1,9 @@
+[gd_resource type="Resource" load_steps=2 format=3 uid="uid://5kycispmghe4"]
+
+[ext_resource type="Script" uid="uid://bp5dm37n7r82v" path="res://Conditions/HealthBoost/HealthBoost.cs" id="1_pt3e2"]
+
+[resource]
+script = ExtResource("1_pt3e2")
+Name = "Health Boost"
+Duration = 5.0
+metadata/_custom_type_script = "uid://bh0buxu0qcdjb"
