@@ -1,18 +1,18 @@
-[gd_scene load_steps=5 format=3 uid="uid://b2rac6jo5ig4k"]
+[gd_scene load_steps=6 format=3 uid="uid://b2rac6jo5ig4k"]
 
 [ext_resource type="Script" uid="uid://bwbmuqkjtx0ns" path="res://Agents/CharacterController.cs" id="1_v5emj"]
 [ext_resource type="Texture2D" uid="uid://cnxgp0db6twhr" path="res://Assets/Cute_Fantasy_Free/Player/PlayerAtlasTexture.tres" id="1_xhfnw"]
 [ext_resource type="PackedScene" uid="uid://bb462hku8uk8i" path="res://Agents/UI/AgentStatsUI.tscn" id="3_o26ja"]
+[ext_resource type="PackedScene" uid="uid://v23vcyiu8qgc" path="res://Agents/Dialogue/SpeechBubble.tscn" id="4_ia2xe"]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_ns7eq"]
-radius = 6.0
+radius = 12.0
 
 [node name="CharacterBody2D" type="CharacterBody2D"]
 script = ExtResource("1_v5emj")
 
 [node name="Sprite2D" type="Sprite2D" parent="."]
 texture_filter = 1
-scale = Vector2(0.5, 0.5)
 texture = ExtResource("1_xhfnw")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
@@ -27,8 +27,16 @@ debug_use_custom = true
 debug_path_custom_color = Color(0.870387, 1.44392e-06, 1.2514e-06, 1)
 
 [node name="AgentStatsUI" parent="." instance=ExtResource("3_o26ja")]
-visible = false
 offset_left = -11.0
-offset_top = 7.0
+offset_top = 10.0
 offset_right = 11.0
-offset_bottom = 12.0
+offset_bottom = 15.0
+
+[node name="CenterContainer" type="CenterContainer" parent="."]
+offset_top = -30.0
+offset_bottom = -30.0
+use_top_left = true
+
+[node name="SpeechBubble" parent="CenterContainer" instance=ExtResource("4_ia2xe")]
+layout_mode = 2
+Text = "Test"

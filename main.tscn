@@ -1,4 +1,4 @@
-[gd_scene load_steps=32 format=3 uid="uid://ddc8qiig7j3wm"]
+[gd_scene load_steps=34 format=3 uid="uid://ddc8qiig7j3wm"]
 
 [ext_resource type="Script" uid="uid://1f6ukfmh33oo" path="res://DayNightController.cs" id="1_d13ii"]
 [ext_resource type="Script" uid="uid://g354xqg3s44p" path="res://InputHandler.cs" id="2_lquwl"]
@@ -105,11 +105,16 @@ metadata/_custom_type_script = "uid://cru4kq28c8nuw"
 [sub_resource type="CircleShape2D" id="CircleShape2D_5vw27"]
 radius = 100.0
 
+[sub_resource type="Environment" id="Environment_ycdy4"]
+
+[sub_resource type="CameraAttributesPractical" id="CameraAttributesPractical_w48qg"]
+
 [node name="Main" type="Node2D"]
 
 [node name="Player" parent="." node_paths=PackedStringArray("EquipmentHandler", "DetectionHandler") instance=ExtResource("5_lquwl")]
 z_index = 1
-position = Vector2(608, 530)
+position = Vector2(2325, 698)
+Speed = 100.0
 Inventory = SubResource("Resource_0dhbp")
 EquipmentHandler = NodePath("EquipmentHandler")
 Stats = SubResource("Resource_jx0wj")
@@ -146,6 +151,7 @@ InventoryViewer = NodePath("../../UI/MarginContainer/InventoryViewer")
 CursorFollower = NodePath("../CursorFollower")
 
 [node name="DayNightController" type="DirectionalLight2D" parent="Logic"]
+visible = false
 color = Color(0.0784314, 0.0784314, 0.0784314, 1)
 energy = 0.0
 blend_mode = 2
@@ -181,3 +187,7 @@ vertical_alignment = 2
 
 [node name="InventoryViewer" parent="UI/MarginContainer" instance=ExtResource("23_d13ii")]
 layout_mode = 2
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="."]
+environment = SubResource("Environment_ycdy4")
+camera_attributes = SubResource("CameraAttributesPractical_w48qg")
