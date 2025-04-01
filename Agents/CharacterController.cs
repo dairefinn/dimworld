@@ -77,7 +77,7 @@ public partial class CharacterController : CharacterBody2D, IDamageable, ICanBeM
 
 		ProcessNavigation(delta);
 
-		PhysicsProcessConditions(delta);
+		ConditionHandler?.PhysicsProcessConditions(this, delta);
 	}
 
 	public override void _Process(double delta)
@@ -92,7 +92,7 @@ public partial class CharacterController : CharacterBody2D, IDamageable, ICanBeM
 
 		Inventory.OnUpdated += () => SetInventoryState();
 
-		ProcessConditions(delta);
+		ConditionHandler?.ProcessConditions(this, delta);
 
 		// Print inventory slots w/ item counts
 		// if (Inventory != null)
@@ -359,32 +359,9 @@ public partial class CharacterController : CharacterBody2D, IDamageable, ICanBeM
 
 	// CONDITIONS
 
-    public bool AddCondition(Condition condition)
-    {
-		if (ConditionHandler == null) return false;
-		return ConditionHandler.AddCondition(condition);
-    }
-
-    public bool RemoveCondition(Condition condition)
-    {
-		if (ConditionHandler == null) return false;
-		return ConditionHandler.RemoveCondition(condition);
-    }
-
-	public bool HasCondition(Condition condition)
+	public IConditionHandler GetConditionHandler()
 	{
-		if (ConditionHandler == null) return false;
-		return ConditionHandler.HasCondition(condition);
-	}
-
-    public void ProcessConditions(double delta)
-    {
-		ConditionHandler?.ProcessConditions(this, delta);
-    }
-
-	public void PhysicsProcessConditions(double delta)
-	{
-		ConditionHandler?.PhysicsProcessConditions(this, delta);
+		return ConditionHandler;
 	}
 
 

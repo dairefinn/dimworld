@@ -15,20 +15,26 @@ public partial class Condition : Resource
     {
         GD.Print($"Trying to apply condition {Name} to {target}");
 
-        if (!Stacks && target.HasCondition(this))
+        IConditionHandler conditionHandler = target.GetConditionHandler();
+        if (conditionHandler == null) return false;
+
+        if (!Stacks && conditionHandler.HasCondition(this))
         {
             GD.Print($"Condition {Name} already exists on {target}");
             return false;
         }
 
         Condition conditionCopy = Duplicate() as Condition;
-        return target.AddCondition(conditionCopy);
+        return conditionHandler.AddCondition(conditionCopy);
     }
 
     public virtual bool RemoveFrom(IAffectedByConditions target)
     {
+        IConditionHandler conditionHandler = target.GetConditionHandler();
+        if (conditionHandler == null) return false;
+
         GD.Print($"Removing condition {Name} from {target}");
-        return target.RemoveCondition(this);
+        return conditionHandler.RemoveCondition(this);
     }
 
     public virtual void OnProcess(double delta, IAffectedByConditions target)

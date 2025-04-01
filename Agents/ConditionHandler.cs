@@ -4,7 +4,7 @@ using System.Linq;
 using Godot;
 using Godot.Collections;
 
-public partial class ConditionHandler : Node2D
+public partial class ConditionHandler : Node2D, IConditionHandler
 {
 
     public Array<Condition> Conditions { get; set; } = [];
@@ -33,19 +33,19 @@ public partial class ConditionHandler : Node2D
 		return Conditions.Where(c => c.Name == condition.Name).Any();
 	}
 
-    public void ProcessConditions(CharacterController characterController, double delta)
+    public void ProcessConditions(IAffectedByConditions parent, double delta)
     {
 		foreach (Condition condition in Conditions)
 		{
-			condition.OnProcess(delta, characterController);
+			condition.OnProcess(delta, parent);
 		}
     }
 
-	public void PhysicsProcessConditions(CharacterController characterController, double delta)
+	public void PhysicsProcessConditions(IAffectedByConditions parent, double delta)
 	{
 		foreach (Condition condition in Conditions)
 		{
-			condition.OnPhysicsProcess(delta, characterController);
+			condition.OnPhysicsProcess(delta, parent);
 		}
 	}
 
