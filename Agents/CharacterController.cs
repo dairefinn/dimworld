@@ -4,7 +4,7 @@ using System.Linq;
 using Godot;
 using Godot.Collections;
 
-public partial class CharacterController : CharacterBody2D, IDamageable, ICanBeMoved, IAffectedByConditions, IGoapAgent
+public partial class CharacterController : CharacterBody2D, IDamageable, ICanBeMoved, IAffectedByConditions, IGoapAgent, IHasInventory
 {
 
 	[ExportGroup("Properties")]
@@ -129,7 +129,7 @@ public partial class CharacterController : CharacterBody2D, IDamageable, ICanBeM
 
 	// AGENT MEMORY HANDLING
 
-	// TODO: Might want to move this to a separate class, e.g. AgentMemoryHandler
+	// TODO: Use memory handler for this or check the characters inventory in the procedural conditions
 	public void SetInventoryState()
 	{
 		if (WorldState == null)

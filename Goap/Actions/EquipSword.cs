@@ -1,6 +1,7 @@
 namespace Dimworld;
 
 using System.Linq;
+using Dimworld.MemoryEntries;
 using Godot;
 using Godot.Collections;
 
@@ -70,6 +71,7 @@ public partial class EquipSword : GoapAction
             InventorySlot chestSlot = detectedChest.Inventory.GetFirstSlotWithItem(swordItem);
             agentSlot.SwapWithExisting(chestSlot);
             characterController.SetInventoryState();
+            characterController.MemoryHandler.AddMemory(InventoryContents.FromNode(detectedChest));
             return true;
         }
 

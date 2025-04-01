@@ -1,10 +1,12 @@
 namespace Dimworld;
 
 using System.Linq;
+using Dimworld.MemoryEntries;
 using Godot;
 using Godot.Collections;
 
 
+// TODO: Agent should forget (some) memories over time
 public partial class MemoryHandler : Node2D
 {
 
@@ -28,9 +30,15 @@ public partial class MemoryHandler : Node2D
         {
             AddMemory(memorableNode.GetNodeLocationMemory());
         }
+
+        // Done manually when interacting with the node
+        // if (node is IHasInventory nodeWithInventory)
+        // {
+        //     AddMemory(InventoryContents.FromNode(nodeWithInventory));
+        // }
     }
 
-    private bool AddMemory(MemoryEntry memoryEntry)
+    public bool AddMemory(MemoryEntry memoryEntry)
     {
         if (MemoryEntries.Contains(memoryEntry)) return false; // Memory entry already exists
 

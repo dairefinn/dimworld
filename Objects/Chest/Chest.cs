@@ -1,12 +1,13 @@
 namespace Dimworld;
 
+using System.Linq;
 using Dimworld.MemoryEntries;
 using Godot;
 
-public partial class Chest : StaticBody2D, ICanBeInteractedWith, IMemorableNode
+public partial class Chest : StaticBody2D, ICanBeInteractedWith, IMemorableNode, IHasInventory
 {
 
-    [Export] public Inventory Inventory;
+    [Export] public Inventory Inventory { get; set; }
 
 
     public void InteractWith()
