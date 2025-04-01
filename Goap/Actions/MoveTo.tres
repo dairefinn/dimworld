@@ -5,7 +5,11 @@
 [resource]
 script = ExtResource("1_kuljp")
 Name = "Move to"
-Preconditions = Dictionary[String, Variant]({})
-Effects = null
+Preconditions = Dictionary[String, Variant]({
+"needs_to_move_somewhere": true
+})
+Effects = Dictionary[String, Variant]({
+"needs_to_move_somewhere": false
+})
 Cost = 1000
 metadata/_custom_type_script = "uid://dmhsbr32vw1tk"

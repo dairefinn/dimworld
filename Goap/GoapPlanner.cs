@@ -26,18 +26,13 @@ public class GoapPlanner
     /// <param name="actionSet">The actions the agent can perform</param>
     /// <param name="goalSet">The goals the agent wants to achieve</param>
     /// <returns>A of[]actions the agent should attempt to perform</returns>
-    public static GoapAction[] GetPlan(GoapGoal goal, Dictionary<string, Variant> worldState, GoapAction[] actionSet, IGoapAgent goapAgent)
+    public static GoapAction[] GetPlan(GoapGoal goal, IGoapAgent goapAgent)
     {
         PrintDebug("========== Getting plan for goal " + goal.Name + " ==========");
         if (goal == null) return [];
-        if (actionSet.Length == 0) return [];
+        if (goapAgent.ActionSet.Count == 0) return [];
 
-        // Duplicate desired state of the highest priority goal
-        Dictionary<string, Variant> desiredState = GoapStateUtils.Duplicate(goal.DesiredState);
-        if (desiredState.Count == 0) return [];
-
-
-        GoapPlanNode planTree = GetPossiblePlans(actionSet, desiredState, worldState, goapAgent);
+        GoapPlanNode planTree = GetPossiblePlans(goal, goapAgent);
         PrintDebug("\n" + DrawTree(planTree));
 
         GoapAction[] plan = FindBestPlan(planTree);
@@ -52,7 +47,7 @@ public class GoapPlanner
     /// <param name="desiredState"></param>
     /// <param name="worldState"></param>
     /// <returns>The root node of the plan tree</returns>
-    private static GoapPlanNode GetPossiblePlans(GoapAction[] possibleActions, Dictionary<string, Variant> desiredState, Dictionary<string, Variant> worldState, IGoapAgent goapAgent)
+    private static GoapPlanNode GetPossiblePlans(GoapGoal goal, IGoapAgent goapAgent)
     {
         // Create the root node - we don't use this node directly but it's children are all the possible plans we can use
         GoapPlanNode rootNode = new()
@@ -63,12 +58,12 @@ public class GoapPlanner
         };
 
         // Check each possible action to see if it can be performed to achieve the goal
-        foreach(GoapAction action in possibleActions)
+        foreach(GoapAction action in goapAgent.ActionSet)
         {
-            GoapPlanNode childNode = BuildPlanTree(desiredState, worldState, possibleActions, goapAgent, action, action.Cost);
+            GoapAction actionCopy = action.Duplicate() as GoapAction;
+            GoapPlanNode childNode = BuildPlanTree(goal.DesiredState, goapAgent.WorldState, goapAgent.ActionSet, goapAgent, actionCopy, actionCopy.Cost);
             if (childNode != null)
             {
-
                 rootNode.Children.Add(childNode);
             }
         }
@@ -77,7 +72,7 @@ public class GoapPlanner
         return rootNode;
     }
 
-    private static GoapPlanNode BuildPlanTree(Dictionary<string, Variant> desiredState, Dictionary<string, Variant> worldState, GoapAction[] possibleActions, IGoapAgent goapAgent, GoapAction currentAction, double accumulatedCost, int depth = 0)
+    private static GoapPlanNode BuildPlanTree(Dictionary<string, Variant> desiredState, Dictionary<string, Variant> worldState, Array<GoapAction> possibleActions, IGoapAgent goapAgent, GoapAction currentAction, double accumulatedCost, int depth = 0)
     {
         PrintDebug(GetIndent(depth) + GoapStateUtils.GetAsString(currentAction.Effects, "Action effects"));
 
@@ -121,8 +116,10 @@ public class GoapPlanner
         GoapAction[] remainingActions = possibleActions.Where(action => action != currentAction).ToArray();
         foreach(GoapAction nextAction in remainingActions)
         {
-            PrintDebug(GetIndent(depth) + "Checking if " + nextAction.Name + " can satisfy the preconditions of " + currentAction.Name);
-            GoapPlanNode childNode = BuildPlanTree(desiredStateForAction, worldState, possibleActions[1..], goapAgent, nextAction, accumulatedCost + nextAction.Cost, depth + 1);
+            GoapAction actionCopy = nextAction.Duplicate() as GoapAction;
+
+            PrintDebug(GetIndent(depth) + "Checking if " + actionCopy.Name + " can satisfy the preconditions of " + currentAction.Name);
+            GoapPlanNode childNode = BuildPlanTree(desiredStateForAction, worldState, possibleActions[1..], goapAgent, actionCopy, accumulatedCost + actionCopy.Cost, depth + 1);
             if (childNode != null)
             {
                 currentNode.Cost += childNode.Cost;

@@ -72,16 +72,6 @@ public partial class CharacterController : CharacterBody2D, IDamageable, ICanBeM
 		SetInventoryState();
 	}
 
-	private void OnDetectionHandlerNodeDetected(Node node)
-	{
-		GD.Print($"Node detected: {node.Name}");
-		if (MemoryHandler == null) {
-			GD.Print("MemoryHandler is null");
-			return;
-		}
-		MemoryHandler?.OnNodeDetected(node);
-	}
-
 	public override void _PhysicsProcess(double delta)
 	{
 		base._PhysicsProcess(delta);
@@ -127,7 +117,13 @@ public partial class CharacterController : CharacterBody2D, IDamageable, ICanBeM
 	}
 
 
-	// AGENT MEMORY HANDLING
+	// DETECTION AND MEMORY
+
+	private void OnDetectionHandlerNodeDetected(Node node)
+	{
+		if (!IsPlanningEnabled) return;
+		MemoryHandler?.OnNodeDetected(node);
+	}
 
 	// TODO: Use memory handler for this or check the characters inventory in the procedural conditions
 	public void SetInventoryState()
@@ -143,7 +139,6 @@ public partial class CharacterController : CharacterBody2D, IDamageable, ICanBeM
 		{
 			if (slot.IsEmpty) continue;
 			itemsInInventory.Add(slot.Item.Id);
-			GD.Print("Item in inventory: " + slot.Item.Id);
 		}
 
 		WorldState.Remove("has_items");

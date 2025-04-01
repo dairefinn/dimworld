@@ -405,7 +405,7 @@ position = Vector2(1337, 739)
 
 [node name="Guard" parent="Characters" instance=ExtResource("11_j0mrk")]
 z_index = 1
-position = Vector2(1845, 799)
+position = Vector2(1844, 811)
 Inventory = SubResource("Resource_x4uyb")
 Stats = SubResource("Resource_630ma")
 WorldState = Dictionary[String, Variant]({

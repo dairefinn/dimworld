@@ -1,7 +1,6 @@
 namespace Dimworld;
 
 using System.Linq;
-using Dimworld.MemoryEntries;
 using Godot;
 using Godot.Collections;
 
@@ -25,7 +24,6 @@ public partial class MemoryHandler : Node2D
 
     public void OnNodeDetected(Node node)
     {
-        GD.Print($"Node detected: {node.Name}");
         if (node is IMemorableNode memorableNode)
         {
             AddMemory(memorableNode.GetNodeLocationMemory());
@@ -40,7 +38,15 @@ public partial class MemoryHandler : Node2D
 
     public bool AddMemory(MemoryEntry memoryEntry)
     {
-        if (MemoryEntries.Contains(memoryEntry)) return false; // Memory entry already exists
+        if (memoryEntry == null) return false; // Invalid memory entry
+
+        // Remove the existing memory entry if it matches the new one. This methods keeps the matching logic on the different memory entry types
+        MemoryEntry matchingEntry = memoryEntry.GetMatchingEntryFrom(MemoryEntries);
+        if (matchingEntry != null)
+        {
+            if (matchingEntry.Equals(memoryEntry)) return false; // If they're the same, do nothing
+            MemoryEntries.Remove(matchingEntry);
+        }
 
         MemoryEntries.Add(memoryEntry);
         EmitSignal(SignalName.OnMemoryEntryAdded, memoryEntry);

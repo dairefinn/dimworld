@@ -14,4 +14,28 @@ using Godot.Collections;
 /// </summary>
 public partial class MemoryEntry : Resource
 {
+
+    public virtual bool IsRelatedToNode(Node node)
+    {
+        return false;
+    }
+
+    public virtual MemoryEntry GetMatchingEntryFrom(Array<MemoryEntry> memoryEntries)
+    {
+        foreach (MemoryEntry entry in memoryEntries)
+        {
+            if (entry == this)
+            {
+                return entry;
+            }
+        }
+
+        return null;
+    }
+
+    public virtual bool Equals(MemoryEntry other)
+    {
+        return base.Equals(other);
+    }
+
 }

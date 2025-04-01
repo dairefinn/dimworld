@@ -19,11 +19,6 @@ public partial class GoapAction : Resource
 
 	// EVALUATION
 
-	public virtual void PreCanPerform(IGoapAgent goapAgent)
-	{
-		return;
-	}
-
 	public bool CanPerform(IGoapAgent goapAgent, Dictionary<string, Variant> worldState)
 	{
 		bool staticPreconditionsSatisfied = CheckStaticPreconditions(worldState);

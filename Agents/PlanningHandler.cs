@@ -40,7 +40,7 @@ public partial class PlanningHandler : Node2D
 			if (!goal.IsValid()) continue;
 			if (goal.IsSatisfied(agent.WorldState, agent)) continue;
 
-			GoapAction[] planForGoal = GoapPlanner.GetPlan(goal, agent.WorldState, agent.ActionSet.ToArray(), agent);
+			GoapAction[] planForGoal = GoapPlanner.GetPlan(goal, agent);
 			if (planForGoal.Length == 0) continue;
 
 			// If nothing has changed, don't update the plan
