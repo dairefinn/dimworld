@@ -1,7 +1,5 @@
 namespace Dimworld;
 
-using System;
-using System.Linq;
 using Godot;
 using Godot.Collections;
 
@@ -13,6 +11,8 @@ public partial class PatrolPath : GoapAction
 
 
     private int CurrentPointIndex { get; set; } = 0;
+
+    private bool actionStarted = false;
 
 
     public override bool CheckProceduralPrecondition(CharacterController characterController)
@@ -27,6 +27,12 @@ public partial class PatrolPath : GoapAction
         CurrentPointIndex = GetNextPointOnPath(characterController, patrolPath);
         Vector2 currentPoint = patrolPath[CurrentPointIndex];
         characterController.NavigateTo(currentPoint);
+
+        if (!actionStarted)
+        {
+            characterController.Say("I'm starting my patrol.");
+        }
+        actionStarted = true;
 
         return false; // Always return false so the agent will continue to patrol
     }
@@ -85,7 +91,9 @@ public partial class PatrolPath : GoapAction
         Array<Vector2> points = [];
         for (int i = 0; i < patrolPath.Curve.PointCount; i++)
         {
-            points.Add(patrolPath.Curve.GetPointPosition(i));
+            Vector2 pointLocal = patrolPath.Curve.GetPointPosition(i);
+            Vector2 pointGlobal = patrolPath.GlobalPosition + pointLocal;
+            points.Add(pointGlobal);
         }
         if (points.Count == 0) return null;
 

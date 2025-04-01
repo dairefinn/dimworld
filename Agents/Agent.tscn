@@ -1,18 +1,29 @@
-[gd_scene load_steps=5 format=3 uid="uid://b2rac6jo5ig4k"]
+[gd_scene load_steps=9 format=3 uid="uid://b2rac6jo5ig4k"]
 
 [ext_resource type="Script" uid="uid://bwbmuqkjtx0ns" path="res://Agents/CharacterController.cs" id="1_v5emj"]
 [ext_resource type="Texture2D" uid="uid://cnxgp0db6twhr" path="res://Assets/Cute_Fantasy_Free/Player/PlayerAtlasTexture.tres" id="1_xhfnw"]
+[ext_resource type="Script" uid="uid://cxbp1npv1tukk" path="res://Agents/DetectionHandler.cs" id="3_07efl"]
 [ext_resource type="PackedScene" uid="uid://bb462hku8uk8i" path="res://Agents/UI/AgentStatsUI.tscn" id="3_o26ja"]
+[ext_resource type="PackedScene" uid="uid://v23vcyiu8qgc" path="res://Agents/Dialogue/SpeechBubble.tscn" id="4_ia2xe"]
+[ext_resource type="Script" uid="uid://dphqtgg23pqia" path="res://Agents/EquipmentHandler.cs" id="4_ixneo"]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_ns7eq"]
-radius = 6.0
+radius = 12.0
 
-[node name="CharacterBody2D" type="CharacterBody2D"]
+[sub_resource type="CircleShape2D" id="CircleShape2D_ixneo"]
+radius = 100.0
+
+[node name="CharacterBody2D" type="CharacterBody2D" node_paths=PackedStringArray("NavigationAgent", "DetectionHandler", "EquipmentHandler", "StatsUI", "SpeechBubble")]
 script = ExtResource("1_v5emj")
+Speed = 100.0
+NavigationAgent = NodePath("NavigationAgent2D")
+DetectionHandler = NodePath("DetectionHandler")
+EquipmentHandler = NodePath("EquipmentHandler")
+StatsUI = NodePath("AgentStatsUI")
+SpeechBubble = NodePath("CenterContainer/SpeechBubble")
 
 [node name="Sprite2D" type="Sprite2D" parent="."]
 texture_filter = 1
-scale = Vector2(0.5, 0.5)
 texture = ExtResource("1_xhfnw")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
@@ -26,9 +37,32 @@ radius = 1.0
 debug_use_custom = true
 debug_path_custom_color = Color(0.870387, 1.44392e-06, 1.2514e-06, 1)
 
+[node name="DetectionHandler" type="Area2D" parent="." node_paths=PackedStringArray("DetectedEntities")]
+collision_layer = 0
+collision_mask = 2
+script = ExtResource("3_07efl")
+DetectedEntities = []
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="DetectionHandler"]
+shape = SubResource("CircleShape2D_ixneo")
+debug_color = Color(0, 0.608985, 0.644943, 0.42)
+
+[node name="EquipmentHandler" type="Node2D" parent="."]
+script = ExtResource("4_ixneo")
+
 [node name="AgentStatsUI" parent="." instance=ExtResource("3_o26ja")]
-visible = false
 offset_left = -11.0
-offset_top = 7.0
+offset_top = 10.0
 offset_right = 11.0
-offset_bottom = 12.0
+offset_bottom = 15.0
+
+[node name="CenterContainer" type="CenterContainer" parent="."]
+offset_top = -30.0
+offset_bottom = -30.0
+use_top_left = true
+
+[node name="SpeechBubble" parent="CenterContainer" node_paths=PackedStringArray("HideTimer") instance=ExtResource("4_ia2xe")]
+visible = false
+layout_mode = 2
+Text = ""
+HideTimer = NodePath("HideTimer")

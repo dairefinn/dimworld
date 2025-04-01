@@ -11,7 +11,6 @@ public partial class CharacterController : CharacterBody2D, IDamageable, ICanBeM
 	[Export] public float Speed { get; set; } = 50f;
 	[Export] public float Acceleration { get; set; } = 25f;
 	[Export] public Inventory Inventory { get; set; }
-	[Export] public EquipmentHandler EquipmentHandler { get; set; }
 	[Export] public AgentStats Stats {
 		get => _stats;
 		set => SetStats(value);
@@ -27,11 +26,13 @@ public partial class CharacterController : CharacterBody2D, IDamageable, ICanBeM
 	[ExportGroup("References")]
 	[Export] public NavigationAgent2D NavigationAgent { get; set; }
 	[Export] public DetectionHandler DetectionHandler { get; set; }
+	[Export] public EquipmentHandler EquipmentHandler { get; set; }
 	[Export] public AgentStatsUI StatsUI {
 		get => _statsUI;
 		set => SetStatsUI(value);
 	}
 	private AgentStatsUI _statsUI;
+	[Export] public SpeechBubble SpeechBubble { get; set; }
 
 	// Goal Oriented Action Planning (GOAP) properties
 
@@ -53,23 +54,19 @@ public partial class CharacterController : CharacterBody2D, IDamageable, ICanBeM
 	{
 		base._Ready();
 
+		// Hack to get the AgentStats to be initialized as a separate instance
 		if (Stats != null)
 		{
 			Stats = new AgentStats(Stats);
 		}
-
-
-		if (NavigationAgent == null)
-		{
-			NavigationAgent = GetNode<NavigationAgent2D>("NavigationAgent2D");
-		}
-		NavigationAgent.VelocityComputed += OnSafeVelocityComputed;
 
 		if (StatsUI == null)
 		{
 			StatsUI = GetNode<AgentStatsUI>("AgentStatsUI");
 			StatsUI.Stats = Stats;
 		}
+
+		NavigationAgent.VelocityComputed += OnSafeVelocityComputed;
 
 		SetInventoryState();
 	}
@@ -390,6 +387,11 @@ public partial class CharacterController : CharacterBody2D, IDamageable, ICanBeM
 		{
 			condition.OnPhysicsProcess(delta, this);
 		}
+	}
+
+	public void Say(string text)
+	{
+		SpeechBubble?.Say(text);
 	}
 
 }

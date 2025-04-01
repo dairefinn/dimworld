@@ -22,7 +22,7 @@ normal = Vector2(1, 0)
 normal = Vector2(-1, 0)
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_3by8r"]
-size = Vector2(30, 10)
+size = Vector2(60, 20)
 
 [node name="LevelTesting" type="Node2D" node_paths=PackedStringArray("DefaultSpawnPoint")]
 script = ExtResource("1_scwad")
@@ -32,6 +32,7 @@ DefaultSpawnPoint = NodePath("World/SpawnPointDefault")
 [node name="World" type="Node" parent="."]
 
 [node name="Map" type="NavigationRegion2D" parent="World"]
+scale = Vector2(2, 2)
 navigation_polygon = SubResource("NavigationPolygon_1eql1")
 
 [node name="Ground" type="TileMapLayer" parent="World/Map"]
@@ -54,23 +55,23 @@ navigation_enabled = false
 [node name="WorldBoundary" type="StaticBody2D" parent="World"]
 
 [node name="BoundaryBottom" type="CollisionShape2D" parent="World/WorldBoundary"]
-position = Vector2(683, 768)
+position = Vector2(1366, 1536)
 shape = SubResource("WorldBoundaryShape2D_iw60c")
 
 [node name="BoundaryTop" type="CollisionShape2D" parent="World/WorldBoundary"]
-position = Vector2(683, 0)
+position = Vector2(1366, 0)
 shape = SubResource("WorldBoundaryShape2D_0c1or")
 
 [node name="BoundaryLeft" type="CollisionShape2D" parent="World/WorldBoundary"]
-position = Vector2(0, 384)
+position = Vector2(0, 768)
 shape = SubResource("WorldBoundaryShape2D_hhikq")
 
 [node name="BoundaryRight" type="CollisionShape2D" parent="World/WorldBoundary"]
-position = Vector2(1366, 384)
+position = Vector2(2732, 768)
 shape = SubResource("WorldBoundaryShape2D_5km8r")
 
 [node name="LevelTransitionArea" parent="World" instance=ExtResource("2_eek5e")]
-position = Vector2(576, 23)
+position = Vector2(1152, 46)
 collision_layer = 0
 collision_mask = 15
 monitorable = false
@@ -81,13 +82,13 @@ SpawnPointName = "SpawnPointTest"
 shape = SubResource("RectangleShape2D_3by8r")
 
 [node name="SpawnPointRoadTop" parent="World" instance=ExtResource("3_0xkmx")]
-position = Vector2(575, 39)
+position = Vector2(1155, 95)
 
 [node name="SpawnPointRoadBottom" parent="World" instance=ExtResource("3_0xkmx")]
-position = Vector2(753, 737)
+position = Vector2(1513, 1475)
 
 [node name="SpawnPointDefault" parent="World" instance=ExtResource("3_0xkmx")]
-position = Vector2(536, 357)
+position = Vector2(1484, 726)
 
 [node name="Objects" type="Node" parent="."]
 
