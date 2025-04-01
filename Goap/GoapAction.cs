@@ -19,17 +19,17 @@ public partial class GoapAction : Resource
 
 	// LIFECYCLE EVENTS
 
-	public virtual Dictionary<string, Variant> OnStart(CharacterController characterController, Dictionary<string, Variant> worldState)
+	public virtual Dictionary<string, Variant> OnStart(IGoapAgent goapAgent, Dictionary<string, Variant> worldState)
 	{
 		return worldState;
 	}
 
-	public virtual bool Perform(CharacterController agent, Dictionary<string, Variant> worldState, double delta)
+	public virtual bool Perform(IGoapAgent agent, Dictionary<string, Variant> worldState, double delta)
 	{
 		return false;
 	}
 
-	public virtual Dictionary<string, Variant> OnEnd(CharacterController characterController, Dictionary<string, Variant> worldState)
+	public virtual Dictionary<string, Variant> OnEnd(IGoapAgent goapAgent, Dictionary<string, Variant> worldState)
 	{
 		return worldState;
 	}
@@ -37,10 +37,10 @@ public partial class GoapAction : Resource
 
 	// EXECUTION CHECKS
 
-	public bool CanPerform(CharacterController characterController, Dictionary<string, Variant> worldState)
+	public bool CanPerform(IGoapAgent goapAgent, Dictionary<string, Variant> worldState)
 	{
 		bool staticPreconditionsSatisfied = CheckStaticPreconditions(worldState);
-		bool proceduralPreconditionsSatisfied = CheckProceduralPrecondition(characterController);
+		bool proceduralPreconditionsSatisfied = CheckProceduralPrecondition(goapAgent);
 		return staticPreconditionsSatisfied && proceduralPreconditionsSatisfied;
 	}
 
@@ -49,7 +49,7 @@ public partial class GoapAction : Resource
 		return GoapStateUtils.IsSubsetOf(Preconditions, worldState);
 	}
 
-	public virtual bool CheckProceduralPrecondition(CharacterController characterController)
+	public virtual bool CheckProceduralPrecondition(IGoapAgent goapAgent)
 	{
 		return true;
 	}

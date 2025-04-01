@@ -14,13 +14,15 @@ public partial class EquipSword : GoapAction
     private Chest detectedChest;
     private bool actionStarted = false;
 
-    public override bool CheckProceduralPrecondition(CharacterController characterController)
+    public override bool CheckProceduralPrecondition(IGoapAgent goapAgent)
     {
         // Sword item is required
         if (swordItem == null) {
             GD.PushError("EquipSword action requires a sword item to be set.");
             return false;
         }
+
+        if (goapAgent is not CharacterController characterController) return false;
 
         // Cannot pick up a sword if the agent's inventory is full
         if (characterController.Inventory.IsFull()) return false;
@@ -55,9 +57,10 @@ public partial class EquipSword : GoapAction
         return true;
     }
 
-    public override bool Perform(CharacterController characterController, Dictionary<string, Variant> worldState, double delta)
+    public override bool Perform(IGoapAgent goapAgent, Dictionary<string, Variant> worldState, double delta)
     {
         if (detectedChest == null) return false;
+        if (goapAgent is not CharacterController characterController) return false;
         
         characterController.NavigateTo(detectedChest.GlobalPosition);
 
@@ -79,7 +82,7 @@ public partial class EquipSword : GoapAction
         return false;
     }
 
-    public override Dictionary<string, Variant> OnEnd(CharacterController characterController, Dictionary<string, Variant> worldState)
+    public override Dictionary<string, Variant> OnEnd(IGoapAgent goapAgent, Dictionary<string, Variant> worldState)
     {
         return worldState;
     }

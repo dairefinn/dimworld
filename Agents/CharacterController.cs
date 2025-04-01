@@ -4,7 +4,7 @@ using System.Linq;
 using Godot;
 using Godot.Collections;
 
-public partial class CharacterController : CharacterBody2D, IDamageable, ICanBeMoved, IAffectedByConditions
+public partial class CharacterController : CharacterBody2D, IDamageable, ICanBeMoved, IAffectedByConditions, IGoapAgent
 {
 
 	[ExportGroup("Properties")]

@@ -10,8 +10,10 @@ public partial class TurnOffLights : GoapAction
 
     private LightSwitch detectedLightSwitch = null;
 
-    public override bool CheckProceduralPrecondition(CharacterController characterController)
+    public override bool CheckProceduralPrecondition(IGoapAgent goapAgent)
     {
+        if (goapAgent is not CharacterController characterController) return false;
+
         // Get any lightbulbs in the correct state
         Array<LightBulb> lightBulbs = [..characterController.DetectionHandler.GetDetectedInstancesOf<LightBulb>()
             .Where(lightBulb => lightBulb.IsOn == true)
@@ -39,8 +41,10 @@ public partial class TurnOffLights : GoapAction
         return true;
     }
 
-    public override bool Perform(CharacterController characterController, Dictionary<string, Variant> worldState, double delta)
+    public override bool Perform(IGoapAgent goapAgent, Dictionary<string, Variant> worldState, double delta)
     {
+        if (goapAgent is not CharacterController characterController) return false;
+
         characterController.NavigateTo(detectedLightSwitch.GlobalPosition);
 
         if(characterController.NavigationAgent.IsNavigationFinished())

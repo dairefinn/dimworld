@@ -17,8 +17,8 @@ public partial class PlanningHandler : Node2D
 	private GoapAction CurrentAction { get; set; }
 	private int CurrentPlanStep { get; set; } = 0;
 
-	// TODO: Instead of using CharacterController here, I might want to use a more generic interface e.g. IGoapAgent
-    public void OnProcess(CharacterController agent, double delta)
+
+    public void OnProcess(IGoapAgent agent, double delta)
     {
 		if (framesToNextGoalUpdate == 0)
 		{
@@ -30,7 +30,8 @@ public partial class PlanningHandler : Node2D
 
     }
 
-	private void UpdateCurrentPlan(CharacterController agent)
+
+	private void UpdateCurrentPlan(IGoapAgent agent)
 	{
 		GoapGoal[] goalsInOrder = GoapPlanner.GetGoalsInOrder(agent.GoalSet.ToArray(), agent.WorldState, agent);
 
@@ -58,7 +59,7 @@ public partial class PlanningHandler : Node2D
 	}
 
 
-	private void FollowPlan(CharacterController agent, GoapAction[] plan, double delta)
+	private void FollowPlan(IGoapAgent agent, GoapAction[] plan, double delta)
 	{
 		if (plan == null || plan.Length == 0) return;
 
@@ -71,7 +72,6 @@ public partial class PlanningHandler : Node2D
 			CurrentAction?.OnEnd(agent, agent.WorldState);
 			CurrentAction = actionAtStep;
 			CurrentAction.OnStart(agent, agent.WorldState);
-			agent.SetInventoryState();
 		}
 
 		// Perform the current action step

@@ -15,14 +15,19 @@ public partial class PatrolPath : GoapAction
     private bool actionStarted = false;
 
 
-    public override bool CheckProceduralPrecondition(CharacterController characterController)
+    public override bool CheckProceduralPrecondition(IGoapAgent goapAgent)
     {
+        if (goapAgent is not CharacterController characterController) return false;
+
         Array<Vector2> patrolPath = GetPatrolPath(characterController);
+
         return patrolPath != null;
     }
 
-    public override bool Perform(CharacterController characterController, Dictionary<string, Variant> worldState, double delta)
+    public override bool Perform(IGoapAgent goapAgent, Dictionary<string, Variant> worldState, double delta)
     {
+        if (goapAgent is not CharacterController characterController) return false;
+
         Array<Vector2> patrolPath = GetPatrolPath(characterController);
         CurrentPointIndex = GetNextPointOnPath(characterController, patrolPath);
         Vector2 currentPoint = patrolPath[CurrentPointIndex];
@@ -37,10 +42,10 @@ public partial class PatrolPath : GoapAction
         return false; // Always return false so the agent will continue to patrol
     }
 
-    private int GetNextPointOnPath(CharacterController agent, Array<Vector2> points)
+    private int GetNextPointOnPath(CharacterController characterController, Array<Vector2> points)
     {
-        Vector2 currentPosition = agent.GlobalPosition;
-        Vector2 currentTarget = agent.NavigationAgent.TargetPosition;
+        Vector2 currentPosition = characterController.GlobalPosition;
+        Vector2 currentTarget = characterController.NavigationAgent.TargetPosition;
 
         // If CurrentPoint is not on the path, find the nearest point on the path
         if (!points.Contains(currentTarget))
@@ -62,7 +67,7 @@ public partial class PatrolPath : GoapAction
         }
 
         // If the current point has not been reached, continue to the current point
-        if (!agent.NavigationAgent.IsNavigationFinished())
+        if (!characterController.NavigationAgent.IsNavigationFinished())
         {
             return CurrentPointIndex;
         }
