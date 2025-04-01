@@ -33,6 +33,7 @@ public partial class CharacterController : CharacterBody2D, IDamageable, ICanBeM
 	}
 	private AgentStatsUI _statsUI;
 	[Export] public SpeechBubble SpeechBubble { get; set; }
+	[Export] public ConditionHandler ConditionHandler { get; set; }
 
 	// Goal Oriented Action Planning (GOAP) properties
 
@@ -41,7 +42,6 @@ public partial class CharacterController : CharacterBody2D, IDamageable, ICanBeM
 	private GoapAction[] CurrentPlan { get; set; } = [];
 	private GoapAction CurrentAction { get; set; }
 	private int CurrentPlanStep { get; set; } = 0;
-    public Array<Condition> Conditions { get; set; } = [];
 
     public int lookForGoalsEveryXFrames = 60;
 	private int framesToNextGoalUpdate = 0;
@@ -359,35 +359,36 @@ public partial class CharacterController : CharacterBody2D, IDamageable, ICanBeM
 
 	// CONDITIONS
 
-    public void AddCondition(Condition condition)
+    public bool AddCondition(Condition condition)
     {
-        if (condition == null) return;
-		if (Conditions.Contains(condition)) return;
-		Conditions.Add(condition);
+		if (ConditionHandler == null) return false;
+		return ConditionHandler.AddCondition(condition);
     }
 
-    public void RemoveCondition(Condition condition)
+    public bool RemoveCondition(Condition condition)
     {
-		if (condition == null) return;
-		if (!Conditions.Contains(condition)) return;
-		Conditions.Remove(condition);
+		if (ConditionHandler == null) return false;
+		return ConditionHandler.RemoveCondition(condition);
     }
+
+	public bool HasCondition(Condition condition)
+	{
+		if (ConditionHandler == null) return false;
+		return ConditionHandler.HasCondition(condition);
+	}
 
     public void ProcessConditions(double delta)
     {
-		foreach (Condition condition in Conditions)
-		{
-			condition.OnProcess(delta, this);
-		}
+		ConditionHandler?.ProcessConditions(this, delta);
     }
 
 	public void PhysicsProcessConditions(double delta)
 	{
-		foreach (Condition condition in Conditions)
-		{
-			condition.OnPhysicsProcess(delta, this);
-		}
+		ConditionHandler?.PhysicsProcessConditions(this, delta);
 	}
+
+
+	// SPEECH
 
 	public void Say(string text)
 	{

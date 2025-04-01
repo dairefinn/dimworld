@@ -1,4 +1,4 @@
-[gd_scene load_steps=9 format=3 uid="uid://b2rac6jo5ig4k"]
+[gd_scene load_steps=10 format=3 uid="uid://b2rac6jo5ig4k"]
 
 [ext_resource type="Script" uid="uid://bwbmuqkjtx0ns" path="res://Agents/CharacterController.cs" id="1_v5emj"]
 [ext_resource type="Texture2D" uid="uid://cnxgp0db6twhr" path="res://Assets/Cute_Fantasy_Free/Player/PlayerAtlasTexture.tres" id="1_xhfnw"]
@@ -6,6 +6,7 @@
 [ext_resource type="PackedScene" uid="uid://bb462hku8uk8i" path="res://Agents/UI/AgentStatsUI.tscn" id="3_o26ja"]
 [ext_resource type="PackedScene" uid="uid://v23vcyiu8qgc" path="res://Agents/Dialogue/SpeechBubble.tscn" id="4_ia2xe"]
 [ext_resource type="Script" uid="uid://dphqtgg23pqia" path="res://Agents/EquipmentHandler.cs" id="4_ixneo"]
+[ext_resource type="Script" uid="uid://1lbd4vk8a661" path="res://Agents/ConditionHandler.cs" id="5_85k4q"]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_ns7eq"]
 radius = 12.0
@@ -13,7 +14,7 @@ radius = 12.0
 [sub_resource type="CircleShape2D" id="CircleShape2D_ixneo"]
 radius = 100.0
 
-[node name="CharacterBody2D" type="CharacterBody2D" node_paths=PackedStringArray("NavigationAgent", "DetectionHandler", "EquipmentHandler", "StatsUI", "SpeechBubble")]
+[node name="CharacterBody2D" type="CharacterBody2D" node_paths=PackedStringArray("NavigationAgent", "DetectionHandler", "EquipmentHandler", "StatsUI", "SpeechBubble", "ConditionHandler")]
 script = ExtResource("1_v5emj")
 Speed = 100.0
 NavigationAgent = NodePath("NavigationAgent2D")
@@ -21,6 +22,7 @@ DetectionHandler = NodePath("DetectionHandler")
 EquipmentHandler = NodePath("EquipmentHandler")
 StatsUI = NodePath("AgentStatsUI")
 SpeechBubble = NodePath("CenterContainer/SpeechBubble")
+ConditionHandler = NodePath("ConditionHandler")
 
 [node name="Sprite2D" type="Sprite2D" parent="."]
 texture_filter = 1
@@ -50,6 +52,9 @@ debug_color = Color(0, 0.608985, 0.644943, 0.42)
 [node name="EquipmentHandler" type="Node2D" parent="."]
 script = ExtResource("4_ixneo")
 
+[node name="ConditionHandler" type="Node2D" parent="."]
+script = ExtResource("5_85k4q")
+
 [node name="AgentStatsUI" parent="." instance=ExtResource("3_o26ja")]
 offset_left = -11.0
 offset_top = 10.0
@@ -61,8 +66,7 @@ offset_top = -30.0
 offset_bottom = -30.0
 use_top_left = true
 
-[node name="SpeechBubble" parent="CenterContainer" node_paths=PackedStringArray("HideTimer") instance=ExtResource("4_ia2xe")]
+[node name="SpeechBubble" parent="CenterContainer" instance=ExtResource("4_ia2xe")]
 visible = false
 layout_mode = 2
 Text = ""
-HideTimer = NodePath("HideTimer")

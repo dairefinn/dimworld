@@ -6,24 +6,30 @@ using Godot;
 public partial class SpeedBoost : Condition
 {
 
-    public override void ApplyTo(IAffectedByConditions target)
+    public override bool ApplyTo(IAffectedByConditions target)
     {
-        base.ApplyTo(target);
+        bool addedSuccessfully = base.ApplyTo(target);
+        if (!addedSuccessfully) return false;
         
         if (target is CharacterController characterController)
         {
             characterController.Speed *= 2;
         }
+
+        return true;
     }
 
-    public override void RemoveFrom(IAffectedByConditions target)
+    public override bool RemoveFrom(IAffectedByConditions target)
     {
-        base.RemoveFrom(target);
+        bool removedSuccesfully = base.RemoveFrom(target);
+        if (!removedSuccesfully) return false;
 
         if (target is CharacterController characterController)
         {
             characterController.Speed /= 2;
         }
+
+        return true;
     }
 
     // public override void OnPhysicsProcess(double delta, IAffectedByConditions target)

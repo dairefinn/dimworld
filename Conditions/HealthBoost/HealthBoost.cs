@@ -6,25 +6,31 @@ using Godot;
 public partial class HealthBoost : Condition
 {
 
-    public override void ApplyTo(IAffectedByConditions target)
+    public override bool ApplyTo(IAffectedByConditions target)
     {
-        base.ApplyTo(target);
+        bool addedSuccessfully = base.ApplyTo(target);
+        if (!addedSuccessfully) return false;
         
         if (target is CharacterController characterController)
         {
             characterController.Stats.MaxHealth *= 2;
             characterController.Stats.Heal();
         }
+
+        return true;
     }
 
-    public override void RemoveFrom(IAffectedByConditions target)
+    public override bool RemoveFrom(IAffectedByConditions target)
     {
-        base.RemoveFrom(target);
+        bool removedSuccesfully = base.RemoveFrom(target);
+        if (!removedSuccesfully) return false;
 
         if (target is CharacterController characterController)
         {
             characterController.Stats.MaxHealth /= 2;
         }
+
+        return true;
     }
 
 }

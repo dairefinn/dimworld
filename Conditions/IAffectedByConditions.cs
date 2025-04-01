@@ -6,12 +6,16 @@ namespace Dimworld;
 public interface IAffectedByConditions
 {
 
-    public Array<Condition> Conditions { get; set; }
+    // public Array<Condition> Conditions { get; set; }
 
-    public void AddCondition(Condition condition);
+    public bool AddCondition(Condition condition);
 
-    public void RemoveCondition(Condition condition);
+    public bool RemoveCondition(Condition condition);
+
+    public bool HasCondition(Condition condition);
 
     public void ProcessConditions(double delta);
+
+    public void PhysicsProcessConditions(double delta);
 
 }
