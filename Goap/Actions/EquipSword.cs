@@ -12,6 +12,7 @@ public partial class EquipSword : GoapAction
     [Export] public InventoryItem swordItem;
 
     private Chest detectedChest;
+    private bool actionStarted = false;
 
     public override bool CheckProceduralPrecondition(CharacterController characterController)
     {
@@ -68,6 +69,12 @@ public partial class EquipSword : GoapAction
             characterController.SetInventoryState();
             return true;
         }
+
+        if(!actionStarted)
+        {
+            characterController.Say("I'll grab a sword from this chest.");
+        }
+        actionStarted = true;
 
         return false;
     }

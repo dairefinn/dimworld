@@ -70,4 +70,9 @@ public partial class SpeechBubble : Control
         Hide();
     }
 
+    public void Say(string text)
+    {
+        Text = text;
+    }
+
 }
