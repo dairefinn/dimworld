@@ -34,17 +34,10 @@ public partial class CharacterController : CharacterBody2D, IDamageable, ICanBeM
 	private AgentStatsUI _statsUI;
 	[Export] public SpeechBubble SpeechBubble { get; set; }
 	[Export] public ConditionHandler ConditionHandler { get; set; }
+	[Export] public PlanningHandler PlanningHandler { get; set; }
 
 	// Goal Oriented Action Planning (GOAP) properties
 
-
-	private GoapGoal CurrentGoal { get; set; }
-	private GoapAction[] CurrentPlan { get; set; } = [];
-	private GoapAction CurrentAction { get; set; }
-	private int CurrentPlanStep { get; set; } = 0;
-
-    public int lookForGoalsEveryXFrames = 60;
-	private int framesToNextGoalUpdate = 0;
 	private Vector2 desiredMovementDirection = Vector2.Zero;
 
 
@@ -82,15 +75,12 @@ public partial class CharacterController : CharacterBody2D, IDamageable, ICanBeM
 
 	public override void _Process(double delta)
 	{
-		if (framesToNextGoalUpdate == 0)
-		{
-			UpdateCurrentPlan();
-			framesToNextGoalUpdate = lookForGoalsEveryXFrames + 1;
-		}
-		FollowPlan(CurrentPlan, delta);
-		framesToNextGoalUpdate--;
-
 		Inventory.OnUpdated += () => SetInventoryState();
+
+		if (IsPlanningEnabled)
+		{
+			PlanningHandler?.OnProcess(this, delta);
+		}
 
 		ConditionHandler?.ProcessConditions(this, delta);
 
@@ -128,81 +118,6 @@ public partial class CharacterController : CharacterBody2D, IDamageable, ICanBeM
 		if (StatsUI == null) return;
 		StatsUI.Stats = Stats;
 	}
-
-
-	// GOAP METHODS
-
-	private void UpdateCurrentPlan()
-	{
-		if (!IsPlanningEnabled) return;
-
-		GoapGoal[] goalsInOrder = GoapPlanner.GetGoalsInOrder(GoalSet.ToArray(), WorldState, this);
-
-		foreach (GoapGoal goal in goalsInOrder)
-		{
-			if (!goal.IsValid()) continue;
-			if (goal.IsSatisfied(WorldState, this)) continue;
-
-			GoapAction[] planForGoal = GoapPlanner.GetPlan(goal, WorldState, ActionSet.ToArray(), this);
-			if (planForGoal.Length == 0) continue;
-
-			// If nothing has changed, don't update the plan
-			if (CurrentGoal == goal) return;
-			if (CurrentPlan == planForGoal) return;
-
-			GD.Print("New goal: " + goal.Name);
-			GD.Print("Plan: [" + string.Join(", ", planForGoal.Select(action => action.Name)) + "]");
-			CurrentGoal = goal;
-			CurrentPlan = planForGoal;
-			CurrentAction = null;
-			CurrentPlanStep = 0;
-			return;
-		}
-
-	}
-
-
-	private void FollowPlan(GoapAction[] plan, double delta)
-	{
-		if (plan == null || plan.Length == 0) return;
-
-		GoapAction actionAtStep = plan[CurrentPlanStep];
-
-		// If the agent is starting a new action, run the OnStart lifecycle event
-		if (CurrentAction != actionAtStep)
-		{
-			GD.Print("New action: " + actionAtStep.Name);
-			CurrentAction?.OnEnd(this, WorldState);
-			CurrentAction = actionAtStep;
-			CurrentAction.OnStart(this, WorldState);
-			SetInventoryState();
-		}
-
-		// Perform the current action step
-		bool isStepComplete = CurrentAction.Perform(this, WorldState, delta);
-
-		// If the action is complete:
-		// - Run the OnEnd lifecycle event
-		// - Move to the next step in the plan
-		if (isStepComplete)
-		{
-			// Run the OnEnd lifecycle event
-			CurrentAction.OnEnd(this, WorldState);
-
-			// Move to the next step in the plan
-			if (CurrentPlanStep < plan.Length - 1)
-			{
-				CurrentPlanStep++;
-			}
-			else
-			{
-				CurrentGoal = null;
-				CurrentPlan = [];
-				CurrentPlanStep = 0;
-			}
-		}
-	}
-
 
 	// AGENT MEMORY HANDLING
 
