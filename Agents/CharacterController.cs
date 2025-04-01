@@ -13,7 +13,10 @@ public partial class CharacterController : CharacterBody2D, IDamageable, ICanBeM
 	[Export] public Inventory Inventory { get; set; }
 	[Export] public AgentStats Stats {
 		get => _stats;
-		set => SetStats(value);
+		set {
+			_stats = value;
+			LinkStatsToUI();
+		}
 	}
 	private AgentStats _stats;
 
@@ -29,14 +32,17 @@ public partial class CharacterController : CharacterBody2D, IDamageable, ICanBeM
 	[Export] public EquipmentHandler EquipmentHandler { get; set; }
 	[Export] public AgentStatsUI StatsUI {
 		get => _statsUI;
-		set => SetStatsUI(value);
+		set {
+			_statsUI = value;
+			LinkStatsToUI();
+		}
 	}
 	private AgentStatsUI _statsUI;
 	[Export] public SpeechBubble SpeechBubble { get; set; }
 	[Export] public ConditionHandler ConditionHandler { get; set; }
 	[Export] public PlanningHandler PlanningHandler { get; set; }
+	[Export] public MemoryHandler MemoryHandler { get; set; }
 
-	// Goal Oriented Action Planning (GOAP) properties
 
 	private Vector2 desiredMovementDirection = Vector2.Zero;
 
@@ -61,7 +67,19 @@ public partial class CharacterController : CharacterBody2D, IDamageable, ICanBeM
 
 		NavigationAgent.VelocityComputed += OnSafeVelocityComputed;
 
+		DetectionHandler.OnNodeDetected += OnDetectionHandlerNodeDetected;
+
 		SetInventoryState();
+	}
+
+	private void OnDetectionHandlerNodeDetected(Node node)
+	{
+		GD.Print($"Node detected: {node.Name}");
+		if (MemoryHandler == null) {
+			GD.Print("MemoryHandler is null");
+			return;
+		}
+		MemoryHandler?.OnNodeDetected(node);
 	}
 
 	public override void _PhysicsProcess(double delta)
@@ -99,25 +117,15 @@ public partial class CharacterController : CharacterBody2D, IDamageable, ICanBeM
 		// }
 	}
 
-	// SETTERS
-	
-	public void SetStatsUI(AgentStatsUI statsUI)
-	{
-		_statsUI = statsUI;
-		LinkStatsToUI();
-	}
 
-	public void SetStats(AgentStats stats)
-	{
-		_stats = stats;
-		LinkStatsToUI();
-	}
+	// STATS & STATS UI
 
 	private void LinkStatsToUI()
 	{
 		if (StatsUI == null) return;
 		StatsUI.Stats = Stats;
 	}
+
 
 	// AGENT MEMORY HANDLING
 
@@ -141,9 +149,6 @@ public partial class CharacterController : CharacterBody2D, IDamageable, ICanBeM
 		WorldState.Remove("has_items");
 		WorldState["has_items"] = itemsInInventory;
 	}
-
-
-	// MOVEMENT CONTROLLER
 
 	
 	// NAVIGATION

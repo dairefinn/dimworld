@@ -1,4 +1,4 @@
-[gd_scene load_steps=11 format=3 uid="uid://b2rac6jo5ig4k"]
+[gd_scene load_steps=12 format=3 uid="uid://b2rac6jo5ig4k"]
 
 [ext_resource type="Script" uid="uid://bwbmuqkjtx0ns" path="res://Agents/CharacterController.cs" id="1_v5emj"]
 [ext_resource type="Texture2D" uid="uid://cnxgp0db6twhr" path="res://Assets/Cute_Fantasy_Free/Player/PlayerAtlasTexture.tres" id="1_xhfnw"]
@@ -8,6 +8,7 @@
 [ext_resource type="Script" uid="uid://dphqtgg23pqia" path="res://Agents/EquipmentHandler.cs" id="4_ixneo"]
 [ext_resource type="Script" uid="uid://1lbd4vk8a661" path="res://Agents/ConditionHandler.cs" id="5_85k4q"]
 [ext_resource type="Script" uid="uid://bk54n8opktsdt" path="res://Agents/PlanningHandler.cs" id="6_24e8l"]
+[ext_resource type="Script" uid="uid://bgoi1dk2c120s" path="res://Agents/Memory/MemoryHandler.cs" id="7_4oknj"]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_ns7eq"]
 radius = 12.0
@@ -15,7 +16,7 @@ radius = 12.0
 [sub_resource type="CircleShape2D" id="CircleShape2D_ixneo"]
 radius = 100.0
 
-[node name="CharacterBody2D" type="CharacterBody2D" node_paths=PackedStringArray("NavigationAgent", "DetectionHandler", "EquipmentHandler", "StatsUI", "SpeechBubble", "ConditionHandler", "PlanningHandler")]
+[node name="CharacterBody2D" type="CharacterBody2D" node_paths=PackedStringArray("NavigationAgent", "DetectionHandler", "EquipmentHandler", "StatsUI", "SpeechBubble", "ConditionHandler", "PlanningHandler", "MemoryHandler")]
 script = ExtResource("1_v5emj")
 Speed = 100.0
 NavigationAgent = NodePath("NavigationAgent2D")
@@ -25,6 +26,7 @@ StatsUI = NodePath("AgentStatsUI")
 SpeechBubble = NodePath("CenterContainer/SpeechBubble")
 ConditionHandler = NodePath("ConditionHandler")
 PlanningHandler = NodePath("PlanningHandler")
+MemoryHandler = NodePath("MemoryHandler")
 
 [node name="Sprite2D" type="Sprite2D" parent="."]
 texture_filter = 1
@@ -59,6 +61,9 @@ script = ExtResource("5_85k4q")
 
 [node name="PlanningHandler" type="Node2D" parent="."]
 script = ExtResource("6_24e8l")
+
+[node name="MemoryHandler" type="Node2D" parent="."]
+script = ExtResource("7_4oknj")
 
 [node name="AgentStatsUI" parent="." instance=ExtResource("3_o26ja")]
 offset_left = -11.0

@@ -1,8 +1,9 @@
 namespace Dimworld;
 
+using Dimworld.MemoryEntries;
 using Godot;
 
-public partial class LightBulb : StaticBody2D
+public partial class LightBulb : StaticBody2D, IMemorableNode
 {
 
 	[Export] public Light2D Light { get; set; }
@@ -29,5 +30,14 @@ public partial class LightBulb : StaticBody2D
 	{
 		IsOn = !IsOn;
 	}
+
+    public NodeLocation GetNodeLocationMemory()
+    {
+        return new NodeLocation()
+        {
+            Node = this,
+            Position = GlobalPosition
+        };
+    }
 
 }
