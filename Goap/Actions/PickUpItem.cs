@@ -9,7 +9,6 @@ public partial class PickUpItem : GoapAction
 {
 
     public string ItemId { get; set; }
-    // public IHasInventory TargetContainer { get; set; }
 
 
     public override void PreEvaluate(GoapState worldState, GoapState desiredState)
@@ -52,25 +51,6 @@ public partial class PickUpItem : GoapAction
             {"has_items", itemIds}
         });
     }
-
-    // public override bool CheckProceduralPrecondition(IGoapAgent goapAgent, GoapState worldState)
-    // {
-    //     if (goapAgent is not CharacterController characterController) return false; // Can only be performed by a character controller
-    //     if (characterController.Inventory.IsFull()) return false; // Cannot pick up a sword if the agent's inventory is full
-    //     if (ItemId == null) return false; // Must have a target item set
-
-    //     // Get the target container from the world state
-    //     if (worldState.ContainsKey("target_container"))
-    //     {
-    //         GodotObject containerObject = worldState.GetKey("target_container").AsGodotObject();
-    //         if (containerObject is IHasInventory container) {
-    //             TargetContainer = container;
-    //         }
-    //     }
-    //     if (TargetContainer == null) return false; // Must have a target container set
-
-    //     return true;
-    // }
 
     public override bool Perform(IGoapAgent goapAgent, GoapState worldState, double delta)
     {

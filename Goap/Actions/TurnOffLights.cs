@@ -10,6 +10,13 @@ public partial class TurnOffLights : GoapAction
 
     private LightSwitch detectedLightSwitch = null;
 
+    public override GoapState GetEffects()
+    {
+        return new GoapState(new Dictionary<string, Variant> {
+            {"can_see", false}
+        });
+    }
+
     public override bool CheckProceduralPrecondition(IGoapAgent goapAgent, GoapState worldState)
     {
         if (goapAgent is not CharacterController characterController) return false;
