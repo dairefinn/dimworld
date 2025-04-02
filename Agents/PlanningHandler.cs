@@ -9,7 +9,7 @@ public partial class PlanningHandler : Node2D
 {
 
 
-    [Export] public int lookForGoalsEveryXSeconds = 5;
+    [Export] public int lookForGoalsEveryXSeconds = 2;
 
 
 	private float secondsToNextGoalUpdate = 0;
@@ -23,7 +23,7 @@ public partial class PlanningHandler : Node2D
     {
 		if (secondsToNextGoalUpdate <= 0)
 		{
-			GD.Print("Updating current plan");
+			// GD.Print("Updating current plan");
 			UpdateCurrentPlan(agent);
 			secondsToNextGoalUpdate = lookForGoalsEveryXSeconds;
 		}

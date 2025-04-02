@@ -1,4 +1,4 @@
-[gd_scene load_steps=84 format=4 uid="uid://b3v4ub2lqydho"]
+[gd_scene load_steps=85 format=4 uid="uid://b3v4ub2lqydho"]
 
 [ext_resource type="Script" uid="uid://dvuy36fh5vjfh" path="res://Levels/LevelHandler/GameLevel.cs" id="1_3pabw"]
 [ext_resource type="TileSet" uid="uid://me5j3tknec74" path="res://Tileset.tres" id="1_uaggo"]
@@ -25,6 +25,7 @@
 [ext_resource type="Resource" uid="uid://ckvaxlnjoqs1o" path="res://Goap/Goals/Patrol.tres" id="19_oeo7j"]
 [ext_resource type="Resource" uid="uid://b2plhfobhuj2k" path="res://Goap/Actions/MoveTo.tres" id="20_1cqng"]
 [ext_resource type="Resource" uid="uid://d0jpp418n0xh5" path="res://Goap/Actions/PickUpItem.tres" id="22_oeo7j"]
+[ext_resource type="Resource" uid="uid://dyo8ce1njn67q" path="res://Goap/Goals/EnsureVisibility.tres" id="25_eb50o"]
 [ext_resource type="Resource" uid="uid://c7fy02pjbecvf" path="res://Goap/Goals/Idle.tres" id="26_4fweh"]
 
 [sub_resource type="NavigationPolygon" id="NavigationPolygon_1eql1"]
@@ -393,7 +394,7 @@ position = Vector2(1787, 778)
 Inventory = SubResource("Resource_7iri2")
 
 [node name="LightSwitch" parent="Objects" node_paths=PackedStringArray("AssociatedLights") instance=ExtResource("8_ol4on")]
-position = Vector2(2306, 604)
+position = Vector2(1816, 895)
 AssociatedLights = [NodePath("../LightBulb"), NodePath("../LightBulb2"), NodePath("../LightBulb3"), NodePath("../LightBulb4")]
 
 [node name="LightBulb" parent="Objects" instance=ExtResource("9_0bk61")]
@@ -420,5 +421,5 @@ Inventory = SubResource("Resource_x4uyb")
 Stats = SubResource("Resource_630ma")
 WorldState = SubResource("Resource_01cvm")
 ActionSet = Array[Object]([ExtResource("13_3by8r"), ExtResource("22_oeo7j"), ExtResource("18_eb50o"), ExtResource("17_eb50o"), ExtResource("20_1cqng"), ExtResource("14_3pabw"), ExtResource("15_01cvm"), ExtResource("16_4fweh")])
-GoalSet = Array[Object]([ExtResource("19_oeo7j"), ExtResource("26_4fweh")])
+GoalSet = Array[Object]([ExtResource("25_eb50o"), ExtResource("19_oeo7j"), ExtResource("26_4fweh")])
 DebugChest = NodePath("../../Objects/ItemChest")
