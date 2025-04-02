@@ -1,13 +1,9 @@
-[gd_resource type="Resource" script_class="GoapAction" load_steps=2 format=3 uid="uid://be3ryk2ex3pr1"]
+[gd_resource type="Resource" load_steps=2 format=3 uid="uid://be3ryk2ex3pr1"]
 
-[ext_resource type="Script" uid="uid://dmhsbr32vw1tk" path="res://Goap/GoapAction.cs" id="1_rcn5o"]
+[ext_resource type="Script" uid="uid://c7oqqd4ipgemf" path="res://Goap/Actions/Idle.cs" id="1_rcn5o"]
 
 [resource]
 script = ExtResource("1_rcn5o")
 Name = "Idle"
-Preconditions = null
-Effects = Dictionary[String, Variant]({
-"is_idling": true
-})
 Cost = 1000
 metadata/_custom_type_script = "uid://dmhsbr32vw1tk"

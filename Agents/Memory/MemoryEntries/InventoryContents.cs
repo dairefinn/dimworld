@@ -21,7 +21,10 @@ public partial class InventoryContents : MemoryEntry
     {
         if (Node != null)
         {
-            return $"{Node.GetType()} [{string.Join(", ", InventorySlots.Select(item => $"{item.Item.ItemName} x {item.Quantity}"))}]";
+            return $"{Node.GetType()} [{string.Join(", ", InventorySlots.Select(slot => {
+                if (slot.IsEmpty) return "Empty";
+                return $"{slot.Item.ItemName} x {slot.Quantity}";
+            }))}]";
         }
 
         return base.ToString();

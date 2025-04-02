@@ -1,4 +1,4 @@
-namespace Dimworld;
+namespace Dimworld.GOAP.Actions;
 
 using Godot;
 using Godot.Collections;
@@ -7,46 +7,37 @@ using Godot.Collections;
 public partial class PatrolPath : GoapAction
 {
 
-    [Export] public InventoryItem swordItem;
-
-
-    private int CurrentPointIndex { get; set; } = 0;
-
-    private bool actionStarted = false;
     private Array<Vector2> patrolPath = null;
+    private int CurrentPointIndex { get; set; } = 0;
+    private bool actionStarted = false;
 
-    /// <summary>
-    /// Checks if the agent has a patrol path set in its world state and tries to find the path in the scene.
-    /// Also checks if the agent has a sword in their inventory.
-    /// </summary>
-    /// <param name="goapAgent"></param>
-    /// <returns></returns>
-    public override bool CheckProceduralPrecondition(IGoapAgent goapAgent)
+
+    public override GoapState GetPreconditions()
+    {
+        return new GoapState(new Dictionary<string, Variant> {
+            {"has_items_equipped", new Array<Variant> { "item-sword" }},
+        });
+    }
+
+    public override GoapState GetEffects()
+    {
+        return new GoapState(new Dictionary<string, Variant> {
+            {"current_action", "patrol"}
+        });
+    }
+
+    public override bool CheckProceduralPrecondition(IGoapAgent goapAgent, GoapState worldState)
     {
         if (goapAgent is not CharacterController characterController) return false; // Must be a character
 
-        // Check if the agent has a patrol path set in its world state
+        // Get the full patrol path from the stored node reference
         patrolPath = GetPatrolPath(goapAgent);
-        if (patrolPath == null)
-        {
-            Preconditions.Add("patrol_path", Variant.Operator.Not.Equals(null));
-            return false;
-        }
-
-        // Check if the agent has a sword in their inventory
-        // TODO: This is checked by "has_item" in the agent's world state. If we want to put it here, we need to update the static conditions of this action
-        // if (characterController.Inventory == null) return false;
-        // GD.Print($"Checking if agent has sword: {characterController.Inventory.HasItem(swordItem.Id)}");
-        // if (!characterController.Inventory.HasItem(swordItem.Id))
-        // {
-        //     Preconditions.Add("has_item", "item_sword");
-        //     return false;
-        // }
+        if (patrolPath == null) return false; // Must have a patrol path set
 
         return true;
     }
 
-    public override bool Perform(IGoapAgent goapAgent, Dictionary<string, Variant> worldState, double delta)
+    public override bool Perform(IGoapAgent goapAgent, GoapState worldState, double delta)
     {
         if (goapAgent is not CharacterController characterController) return false;
 
@@ -63,6 +54,12 @@ public partial class PatrolPath : GoapAction
         return false; // Always return false so the agent will continue to patrol
     }
 
+    /// <summary>
+    /// Gets the next point on the patrol path. If the current point has not been reached, it returns the current point index.
+    /// </summary>
+    /// <param name="characterController">The character controller that is patrolling</param>
+    /// <param name="points">The points of the patrol path</param>
+    /// <returns>The index of the next point on the patrol path or the nearest point if not currently patrolling</returns>
     private int GetNextPointOnPath(CharacterController characterController, Array<Vector2> points)
     {
         Vector2 currentPosition = characterController.GlobalPosition;
@@ -107,12 +104,12 @@ public partial class PatrolPath : GoapAction
     /// If the path is found, it returns the points of the path as an array of Vector2s.
     /// If the path is not found, it returns null.
     /// </summary>
-    /// <param name="goapAgent"></param>
+    /// <param name="goapAgent">The agent that is trying to find the path</param>
     /// <returns></returns>
     private static Array<Vector2> GetPatrolPath(IGoapAgent goapAgent)
     {
         // Check if the agent has a set patrol path stored
-        NodePath nodePath = goapAgent.WorldState["patrol_path"].AsNodePath();
+        NodePath nodePath = goapAgent.WorldState.GetKey("patrol_path").AsNodePath();
         if (nodePath == null) return null;
 
         // Check if the noed is a valid Path2D node in the scene

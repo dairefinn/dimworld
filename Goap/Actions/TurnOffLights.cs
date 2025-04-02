@@ -1,4 +1,4 @@
-namespace Dimworld;
+namespace Dimworld.GOAP.Actions;
 
 using System.Linq;
 using Godot;
@@ -10,7 +10,7 @@ public partial class TurnOffLights : GoapAction
 
     private LightSwitch detectedLightSwitch = null;
 
-    public override bool CheckProceduralPrecondition(IGoapAgent goapAgent)
+    public override bool CheckProceduralPrecondition(IGoapAgent goapAgent, GoapState worldState)
     {
         if (goapAgent is not CharacterController characterController) return false;
 
@@ -41,7 +41,7 @@ public partial class TurnOffLights : GoapAction
         return true;
     }
 
-    public override bool Perform(IGoapAgent goapAgent, Dictionary<string, Variant> worldState, double delta)
+    public override bool Perform(IGoapAgent goapAgent, GoapState worldState, double delta)
     {
         if (goapAgent is not CharacterController characterController) return false;
 

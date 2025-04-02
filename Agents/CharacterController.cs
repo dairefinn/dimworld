@@ -1,6 +1,7 @@
 namespace Dimworld;
 
 using System.Linq;
+using Dimworld.GOAP;
 using Godot;
 using Godot.Collections;
 
@@ -22,7 +23,7 @@ public partial class CharacterController : CharacterBody2D, IDamageable, ICanBeM
 
 	[ExportGroup("GOAP properties")]
 	[Export] public bool IsPlanningEnabled { get; set; } = true;
-	[Export] public Dictionary<string, Variant> WorldState { get; set; }
+	[Export] public GoapState WorldState { get; set; }
 	[Export] public Array<GoapAction> ActionSet { get; set; }
 	[Export] public Array<GoapGoal> GoalSet { get; set; }
 
@@ -130,7 +131,7 @@ public partial class CharacterController : CharacterBody2D, IDamageable, ICanBeM
 	{
 		if (WorldState == null)
 		{
-			WorldState = [];
+			WorldState = GoapState.Empty;
 		}
 
 		Array<string> itemsInInventory = [];
@@ -141,8 +142,8 @@ public partial class CharacterController : CharacterBody2D, IDamageable, ICanBeM
 			itemsInInventory.Add(slot.Item.Id);
 		}
 
-		WorldState.Remove("has_items");
-		WorldState["has_items"] = itemsInInventory;
+		WorldState.RemoveKey("has_items");
+		WorldState.Set("has_items", itemsInInventory);
 	}
 
 	

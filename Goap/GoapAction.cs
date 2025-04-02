@@ -1,7 +1,6 @@
-namespace Dimworld;
+namespace Dimworld.GOAP;
 
 using Godot;
-using Godot.Collections;
 
 
 [GlobalClass]
@@ -10,45 +9,86 @@ public partial class GoapAction : Resource
 
 	[Export] public string Name = "GOAP Action";
 
-	[Export] public Dictionary<string, Variant> Preconditions;
-
-	[Export] public Dictionary<string, Variant> Effects;
-
 	[Export] public int Cost = 1000;
+
+
+    public GoapState Preconditions => GetPreconditions();
+	public GoapState Effects => GetEffects();
+
+
+	public GoapAction() {}
+	
+	public GoapAction(GoapAction action)
+	{
+		Name = action.Name;
+		Cost = action.Cost;
+	}
+
+
+    // DYNAMIC PROPERTIES
+
+    public virtual GoapState GetPreconditions()
+	{
+		return GoapState.Empty;
+	}
+
+	public virtual GoapState GetEffects()
+	{
+		return GoapState.Empty;
+	}
 
 
 	// EVALUATION
 
-	public bool CanPerform(IGoapAgent goapAgent, Dictionary<string, Variant> worldState)
+	/// <summary>
+	/// Called before the action is evaluated. This is where you can set up any dynamic properties that are needed for the action.
+	/// For example, the equip action needs a target item to be set before it can be evaluated.
+	/// </summary>
+	/// <param name="worldState"></param>
+	public virtual void PreEvaluate(GoapState worldState, GoapState desiredState)
+	{
+	}
+
+	// TODO: Might need three responses here:
+	// Can perform: Currently valid and can be completed
+	// Not currently: Not valid but might be if another action is taken
+	// Cannot perform: Not valid and cannot be completed, even if another action is taken
+	public bool CanPerform(IGoapAgent goapAgent, GoapState worldState)
 	{
 		bool staticPreconditionsSatisfied = CheckStaticPreconditions(worldState);
-		bool proceduralPreconditionsSatisfied = CheckProceduralPrecondition(goapAgent);
+		bool proceduralPreconditionsSatisfied = CheckProceduralPrecondition(goapAgent, worldState);
 		return staticPreconditionsSatisfied && proceduralPreconditionsSatisfied;
 	}
 
-	public bool CheckStaticPreconditions(Dictionary<string, Variant> worldState)
+	public virtual bool CheckStaticPreconditions(GoapState worldState)
 	{
-		return GoapStateUtils.IsSubsetOf(Preconditions, worldState);
+		return Preconditions.IsSubsetOf(worldState);
 	}
 
-	public virtual bool CheckProceduralPrecondition(IGoapAgent goapAgent)
+	public virtual bool CheckProceduralPrecondition(IGoapAgent goapAgent, GoapState worldState)
 	{
 		return true;
 	}
 
+	public virtual bool CanSatisfy(GoapState desiredState)
+	{
+		return Effects.IsSubsetOf(desiredState);
+	}
+
+
 	// EXECUTION
 
-	public virtual Dictionary<string, Variant> OnStart(IGoapAgent goapAgent, Dictionary<string, Variant> worldState)
+	public virtual GoapState OnStart(IGoapAgent goapAgent, GoapState worldState)
 	{
 		return worldState;
 	}
 
-	public virtual bool Perform(IGoapAgent agent, Dictionary<string, Variant> worldState, double delta)
+	public virtual bool Perform(IGoapAgent agent, GoapState worldState, double delta)
 	{
 		return false;
 	}
 
-	public virtual Dictionary<string, Variant> OnEnd(IGoapAgent goapAgent, Dictionary<string, Variant> worldState)
+	public virtual GoapState OnEnd(IGoapAgent goapAgent, GoapState worldState)
 	{
 		return worldState;
 	}

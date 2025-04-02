@@ -1,8 +1,9 @@
 namespace Dimworld;
 
 using System.Linq;
+using Dimworld.GOAP;
 using Godot;
-
+using Godot.Collections;
 
 public partial class PlanningHandler : Node2D
 {
@@ -33,7 +34,7 @@ public partial class PlanningHandler : Node2D
 
 	private void UpdateCurrentPlan(IGoapAgent agent)
 	{
-		GoapGoal[] goalsInOrder = GoapPlanner.GetGoalsInOrder(agent.GoalSet.ToArray(), agent.WorldState, agent);
+		Array<GoapGoal> goalsInOrder = GoapPlanner.GetGoalsInOrder(agent.GoalSet);
 
 		foreach (GoapGoal goal in goalsInOrder)
 		{
