@@ -51,28 +51,31 @@ public partial class FindItem : GoapAction
         if (goapAgent is not CharacterController characterController) return false; // Can only be performed by a character controller
         if (ItemId == null) return false; // Must have a target item set
 
-        // Get any containers that are in the character's memory with the item
-        foreach(InventoryContents memory in characterController.MemoryHandler.GetMemoriesOfType<InventoryContents>())
-        {
-            if (memory.Node == null) continue; // Skip null nodes
-            if (memory.Inventory == null) continue; // Skip null inventories
-            if (!memory.Inventory.HasItem(ItemId)) continue; // Skip inventories that don't have the item
-            if (containersChecked.Contains(memory.Node)) continue; // Skip containers that have already been checked
-            if (memory.Node is not IHasInventory container) continue; // Must be a container
-            if (container is not Node2D node2D) continue; // Must be a node2D
-            if (!characterController.CanReachPoint(node2D.GlobalPosition)) return false;
-            containersWithItem.Add(container);
-        }
+        NodeLocation[] containerLocations = characterController.MemoryHandler.GetMemoriesOfType<NodeLocation>().Where(node => node.Node is IHasInventory).ToArray();
+        if (containerLocations.Length == 0) return false; // Must have at least one chest location in memory
 
-        // Get any nearby containers that can be reached
-        foreach(Node2D node in characterController.DetectionHandler.GetDetectedInstancesImplementing<IHasInventory>())
+        InventoryContents[] inventoryContents = characterController.MemoryHandler.GetMemoriesOfType<InventoryContents>();
+
+        foreach (NodeLocation location in containerLocations)
         {
-            if (node == null) continue; // Skip null nodes
-            if (node is not IHasInventory container) continue; // Must be a container
-            if (containersChecked.Contains(container)) continue; // Skip containers that have already been checked
+            if (location.Node == null) continue; // Skip null nodes
+            if (location.Node is not IHasInventory container) continue; // Must be a container
             if (container is not Node2D node2D) continue; // Must be a node2D
-            if (!characterController.CanReachPoint(node2D.GlobalPosition)) return false;
-            containersToSearch.Add(container);
+            if (!characterController.CanReachPoint(node2D.GlobalPosition)) return false; // Must be reachable
+            
+            InventoryContents contentsMemory = inventoryContents.FirstOrDefault(memory => memory.Node == container);
+
+            if (contentsMemory != null)
+            {
+                if (contentsMemory.Inventory.HasItem(ItemId))
+                {
+                    containersWithItem.Add(container);
+                }
+            }
+            else
+            {
+                containersToSearch.Add(container);
+            }
         }
 
         if (_containersBacklog.Count == 0) return false; // Must have at least one container to check
@@ -103,8 +106,7 @@ public partial class FindItem : GoapAction
         }
 
         if (closestContainer == null || closestContainer is not Node2D containerNode2D) {
-            GD.Print("No containers found");
-            return false; // No containers found
+            return false; // No containers left to search
         }
 
         characterController.NavigateTo(containerNode2D.GlobalPosition);
@@ -136,9 +138,6 @@ public partial class FindItem : GoapAction
                 return false; // No items found in container
             }
         }
-
-
-        // characterController.MemoryHandler.AddMemory(InventoryContents.FromNode(detectedChest));
 
         return false;
     }

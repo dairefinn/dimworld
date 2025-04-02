@@ -7,11 +7,11 @@ using Godot;
 public partial class GoapGoal : Resource
 {
 
-    [Export] public string Name { get; set; }
+    [Export] public string Name { get; set; } = "GOAP Goal";
 
-    [Export] public int Priority { get; set; }
+    [Export] public int Priority { get; set; } = 0;
 
-    [Export] public GoapState DesiredState { get; set; }
+    [Export] public GoapState DesiredState { get; set; } = new GoapState();
 
     public bool IsValid()
     {
