@@ -55,6 +55,11 @@ public partial class MemoryHandler : Node2D
         return true;
     }
 
+    public T[] GetMemoriesOfType<T>() where T : MemoryEntry
+    {
+        return MemoryEntries.OfType<T>().ToArray();
+    }
+
     private void LogCurrentMemoryEntries()
     {
         // JSON serialization for better readability

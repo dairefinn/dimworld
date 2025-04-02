@@ -388,7 +388,7 @@ position = Vector2(1898, 729)
 Inventory = SubResource("Resource_01e6d")
 
 [node name="ItemChest2" parent="Objects" instance=ExtResource("2_qxeaj")]
-position = Vector2(2625, 760)
+position = Vector2(1907, 811)
 Inventory = SubResource("Resource_7iri2")
 
 [node name="LightSwitch" parent="Objects" node_paths=PackedStringArray("AssociatedLights") instance=ExtResource("8_ol4on")]
@@ -412,7 +412,7 @@ position = Vector2(1337, 739)
 
 [node name="Characters" type="Node" parent="."]
 
-[node name="Guard" parent="Characters" instance=ExtResource("11_j0mrk")]
+[node name="Guard" parent="Characters" node_paths=PackedStringArray("DebugChest") instance=ExtResource("11_j0mrk")]
 z_index = 1
 position = Vector2(1844, 811)
 Inventory = SubResource("Resource_x4uyb")
@@ -420,3 +420,4 @@ Stats = SubResource("Resource_630ma")
 WorldState = SubResource("Resource_01cvm")
 ActionSet = Array[Object]([ExtResource("13_3by8r"), ExtResource("22_oeo7j"), ExtResource("18_eb50o"), ExtResource("17_eb50o"), ExtResource("20_1cqng"), ExtResource("14_3pabw"), ExtResource("15_01cvm"), ExtResource("16_4fweh")])
 GoalSet = Array[Object]([ExtResource("19_oeo7j")])
+DebugChest = NodePath("../../Objects/ItemChest")

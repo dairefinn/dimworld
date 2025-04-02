@@ -8,7 +8,18 @@ public partial class InventoryContents : MemoryEntry
 {
 
     public IHasInventory Node { get; set; } = null;
-    public Array<InventorySlot> InventorySlots { get; set; } = [];
+    public Inventory Inventory { get; set; }
+
+
+    public InventoryContents()
+    {
+    }
+
+    public InventoryContents(IHasInventory nodeWithInventory)
+    {
+        Node = nodeWithInventory;
+        Inventory = new Inventory(nodeWithInventory.Inventory);
+    }
 
 
     public override bool IsRelatedToNode(Node node)
@@ -19,12 +30,13 @@ public partial class InventoryContents : MemoryEntry
 
     public override string ToString()
     {
-        if (Node != null)
+        if (Node != null && Inventory != null)
         {
-            return $"Inventory contents: {Node.GetType()} [{string.Join(", ", InventorySlots.Select(slot => {
-                if (slot.IsEmpty) return "Empty";
-                return $"{slot.Item.ItemName} x {slot.Quantity}";
-            }))}]";
+            return $"Inventory contents: {Node.GetType()} "
+                 + $"[{string.Join(", ", Inventory.Slots
+                        .Where(slot => !slot.IsEmpty)
+                        .Select(slot => $"{slot.Item.ItemName} x {slot.Quantity}"
+                    ))}]";
         }
 
         return base.ToString();
@@ -48,27 +60,16 @@ public partial class InventoryContents : MemoryEntry
 
     public override bool Equals(MemoryEntry other)
     {
-        if (other is InventoryContents otherNodeLocation)
+        if (other is not InventoryContents otherNodeLocation) return false;
+        if (Node == null || otherNodeLocation.Node == null) return false;
+        
+        foreach (InventorySlot slot in Inventory.Slots)
         {
-            return Node == otherNodeLocation.Node && InventorySlots.SequenceEqual(otherNodeLocation.InventorySlots);
+            if (slot.IsEmpty) continue; // Skip empty slots TODO: IS this method needed?
+            
         }
 
         return false;
-    }
-
-
-    public static InventoryContents FromNode(IHasInventory nodeWithInventory)
-    {
-        if (nodeWithInventory == null) return null;
-        if (nodeWithInventory.Inventory == null) return null;
-
-        InventoryContents chestContents = new()
-        {
-            Node = nodeWithInventory,
-            InventorySlots = [..nodeWithInventory.Inventory.Slots.Where(slot => !slot.IsEmpty).ToArray()]
-        };
-
-        return chestContents;
     }
 
 }

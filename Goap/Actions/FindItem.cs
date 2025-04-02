@@ -3,7 +3,6 @@ namespace Dimworld.GOAP.Actions;
 using Dimworld.MemoryEntries;
 using Godot;
 using Godot.Collections;
-using System.Data;
 using System.Linq;
 
 public partial class FindItem : GoapAction
@@ -11,9 +10,13 @@ public partial class FindItem : GoapAction
 
     public string ItemId { get; set; }
 
-    private System.Collections.Generic.List<IHasInventory> containersBacklog = [];
-    private System.Collections.Generic.List<IHasInventory> containersChecked = [];
+    private System.Collections.Generic.HashSet<IHasInventory> containersWithItem = [];
+    private System.Collections.Generic.HashSet<IHasInventory> containersToSearch = [];
+    private System.Collections.Generic.HashSet<IHasInventory> containersChecked = [];
     private bool actionStarted = false;
+
+
+    private System.Collections.Generic.HashSet<IHasInventory> _containersBacklog => [.. containersWithItem, .. containersToSearch];
 
 
     public override void PreEvaluate(GoapState worldState, GoapState desiredState)
@@ -48,19 +51,31 @@ public partial class FindItem : GoapAction
         if (goapAgent is not CharacterController characterController) return false; // Can only be performed by a character controller
         if (ItemId == null) return false; // Must have a target item set
 
+        // Get any containers that are in the character's memory with the item
+        foreach(InventoryContents memory in characterController.MemoryHandler.GetMemoriesOfType<InventoryContents>())
+        {
+            if (memory.Node == null) continue; // Skip null nodes
+            if (memory.Inventory == null) continue; // Skip null inventories
+            if (!memory.Inventory.HasItem(ItemId)) continue; // Skip inventories that don't have the item
+            if (containersChecked.Contains(memory.Node)) continue; // Skip containers that have already been checked
+            if (memory.Node is not IHasInventory container) continue; // Must be a container
+            if (container is not Node2D node2D) continue; // Must be a node2D
+            if (!characterController.CanReachPoint(node2D.GlobalPosition)) return false;
+            containersWithItem.Add(container);
+        }
+
         // Get any nearby containers that can be reached
-        // TODO: Check if contents are known from memory
-        containersBacklog = [..
-            characterController.DetectionHandler.GetDetectedInstancesImplementing<IHasInventory>()
-            .Where(container => {
-                if (container is not Node2D node2D) return false; // Must be a node2D
-                if (!characterController.CanReachPoint(node2D.GlobalPosition)) return false;
-                // if (!container.Inventory.HasItem(ItemId)) return false; // TODO: Check memory
-                return true;
-            })
-            .ToArray()
-        ];
-        if (containersBacklog.Count == 0) return false;
+        foreach(Node2D node in characterController.DetectionHandler.GetDetectedInstancesImplementing<IHasInventory>())
+        {
+            if (node == null) continue; // Skip null nodes
+            if (node is not IHasInventory container) continue; // Must be a container
+            if (containersChecked.Contains(container)) continue; // Skip containers that have already been checked
+            if (container is not Node2D node2D) continue; // Must be a node2D
+            if (!characterController.CanReachPoint(node2D.GlobalPosition)) return false;
+            containersToSearch.Add(container);
+        }
+
+        if (_containersBacklog.Count == 0) return false; // Must have at least one container to check
 
         return true;
     }
@@ -76,7 +91,16 @@ public partial class FindItem : GoapAction
         actionStarted = true;
         
         Vector2 agentPosition = characterController.GlobalPosition;
-        IHasInventory closestContainer = GetClosestContiner(containersBacklog, agentPosition);
+
+        IHasInventory closestContainer = null;
+        if (containersWithItem.Count > 0)
+        {
+            closestContainer = GetClosestContiner(containersWithItem, agentPosition);
+        }
+        else if (containersToSearch.Count > 0)
+        {
+            closestContainer = GetClosestContiner(containersToSearch, agentPosition);
+        }
 
         if (closestContainer == null || closestContainer is not Node2D containerNode2D) {
             GD.Print("No containers found");
@@ -86,7 +110,7 @@ public partial class FindItem : GoapAction
         characterController.NavigateTo(containerNode2D.GlobalPosition);
         if (characterController.NavigationAgent.IsTargetReached())
         {
-            characterController.MemoryHandler.AddMemory(InventoryContents.FromNode(closestContainer));
+            characterController.MemoryHandler.AddMemory(new InventoryContents(closestContainer));
 
             if (closestContainer.Inventory.HasItem(ItemId))
             {
@@ -107,7 +131,8 @@ public partial class FindItem : GoapAction
                 GD.Print("Item not found in container");
                 characterController.Say($"I couldn't find the item: {ItemId}.");
                 containersChecked.Add(closestContainer);
-                containersBacklog.Remove(closestContainer);
+                containersToSearch.Remove(closestContainer);
+                containersWithItem.Remove(closestContainer);
                 return false; // No items found in container
             }
         }
@@ -118,20 +143,21 @@ public partial class FindItem : GoapAction
         return false;
     }
 
-    private IHasInventory GetClosestContiner(System.Collections.Generic.List<IHasInventory> containers, Vector2 agentPosition)
+    private IHasInventory GetClosestContiner(System.Collections.Generic.HashSet<IHasInventory> containers, Vector2 agentPosition)
     {
         if (containers.Count == 0) return null; // No containers found
 
-        IHasInventory closestContainer = containers[0];
-        for(int i = 1; i < containers.Count; i++)
+        IHasInventory closestContainer = null;
+        Vector2 closestContainerPosition = Vector2.Zero;
+        for(int i = 0; i < containers.Count; i++)
         {
-            GD.Print($"Checking container {i}");
-            IHasInventory container = containers[i];
+            IHasInventory container = containers.ElementAt(i);
             if (container == null) continue; // Skip null containers
             if (container is not Node2D node2D) continue; // Must be a node2D
-            if (agentPosition.DistanceTo(node2D.GlobalPosition) < agentPosition.DistanceTo(node2D.GlobalPosition))
+            if (agentPosition.DistanceTo(node2D.GlobalPosition) < agentPosition.DistanceTo(closestContainerPosition))
             {
                 closestContainer = container;
+                closestContainerPosition = node2D.GlobalPosition;
             }
         }
 

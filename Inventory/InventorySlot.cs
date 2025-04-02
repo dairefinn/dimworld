@@ -22,6 +22,17 @@ public partial class InventorySlot : Resource
     public bool IsEmpty => Item == null || Quantity == 0;
     public bool IsFull => Item != null && Item.MaxStackSize == Quantity;
 
+
+    public InventorySlot()
+    {
+    }
+
+    public InventorySlot(InventorySlot inventorySlot)
+    {
+        Item = inventorySlot.Item;
+        Quantity = inventorySlot.Quantity;
+    }
+
     
     /// <summary>
     /// Add an item to the inventory slot.

@@ -2,6 +2,7 @@ namespace Dimworld;
 
 using System.Linq;
 using Dimworld.GOAP;
+using Dimworld.MemoryEntries;
 using Godot;
 using Godot.Collections;
 
@@ -45,6 +46,9 @@ public partial class CharacterController : CharacterBody2D, IDamageable, ICanBeM
 	[Export] public MemoryHandler MemoryHandler { get; set; }
 
 
+	[Export] public Chest DebugChest { get; set; } // TODO: Remove when done testing find item priority
+
+
 	private Vector2 desiredMovementDirection = Vector2.Zero;
 
 
@@ -71,6 +75,11 @@ public partial class CharacterController : CharacterBody2D, IDamageable, ICanBeM
 		DetectionHandler.OnNodeDetected += OnDetectionHandlerNodeDetected;
 
 		SetInventoryState();
+
+		if (DebugChest != null)
+		{
+			MemoryHandler.AddMemory(new InventoryContents(DebugChest));
+		}
 	}
 
 	public override void _PhysicsProcess(double delta)

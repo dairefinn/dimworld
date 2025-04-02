@@ -85,7 +85,7 @@ public partial class PickUpItem : GoapAction
         InventorySlot chestSlot = closestContainerWithItem.Inventory.GetFirstSlotWithItem(ItemId);
         agentSlot.SwapWithExisting(chestSlot);
         characterController.SetInventoryState();
-        characterController.MemoryHandler.AddMemory(InventoryContents.FromNode(closestContainerWithItem));
+        characterController.MemoryHandler.AddMemory(new InventoryContents(closestContainerWithItem));
 
         return true;
     }
