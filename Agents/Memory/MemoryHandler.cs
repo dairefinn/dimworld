@@ -17,6 +17,7 @@ public partial class MemoryHandler : Node2D
     public override void _Ready()
     {
         OnMemoryEntryAdded += (entry) => {
+            GD.Print($"Entry added to agent memory: {Json.Stringify(entry)}");
             LogCurrentMemoryEntries();
         };
     }
@@ -57,8 +58,8 @@ public partial class MemoryHandler : Node2D
     private void LogCurrentMemoryEntries()
     {
         // JSON serialization for better readability
-        string memoryEntriesString = Json.Stringify(MemoryEntries.Select(entry => entry.ToString()).ToArray());
-        GD.Print("Current Memory Entries: "+ memoryEntriesString);
+        // string memoryEntriesString = Json.Stringify(MemoryEntries.Select(entry => entry.ToString()).ToArray());
+        // GD.Print("Current Memory Entries: "+ memoryEntriesString);
     }
 
 }

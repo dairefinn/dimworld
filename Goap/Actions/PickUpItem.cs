@@ -82,7 +82,6 @@ public partial class PickUpItem : GoapAction
 
         IHasInventory closestContainerWithItem = GetClosestContainerWithItem(goapAgent, ItemId);
 
-        GD.Print($"Target container: {closestContainerWithItem}");
         InventorySlot chestSlot = closestContainerWithItem.Inventory.GetFirstSlotWithItem(ItemId);
         agentSlot.SwapWithExisting(chestSlot);
         characterController.SetInventoryState();

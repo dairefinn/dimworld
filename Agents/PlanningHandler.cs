@@ -9,10 +9,10 @@ public partial class PlanningHandler : Node2D
 {
 
 
-    [Export] public int lookForGoalsEveryXFrames = 60;
+    [Export] public int lookForGoalsEveryXSeconds = 10;
 
 
-	private int framesToNextGoalUpdate = 0;
+	private float secondsToNextGoalUpdate = 0;
 	private GoapGoal CurrentGoal { get; set; }
 	private GoapAction[] CurrentPlan { get; set; } = [];
 	private GoapAction CurrentAction { get; set; }
@@ -21,14 +21,14 @@ public partial class PlanningHandler : Node2D
 
     public void OnProcess(IGoapAgent agent, double delta)
     {
-		if (framesToNextGoalUpdate == 0)
+		if (secondsToNextGoalUpdate <= 0)
 		{
+			GD.Print("Updating current plan");
 			UpdateCurrentPlan(agent);
-			framesToNextGoalUpdate = lookForGoalsEveryXFrames + 1;
+			secondsToNextGoalUpdate = lookForGoalsEveryXSeconds;
 		}
 		FollowPlan(agent, CurrentPlan, delta);
-		framesToNextGoalUpdate--;
-
+		secondsToNextGoalUpdate -= (float)delta;
     }
 
 

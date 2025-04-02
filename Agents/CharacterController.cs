@@ -285,6 +285,7 @@ public partial class CharacterController : CharacterBody2D, IDamageable, ICanBeM
 
 	public void Say(string text)
 	{
+		GD.Print($"Guard: \"{text}\"");
 		SpeechBubble?.Say(text);
 	}
 

@@ -73,6 +73,7 @@ public partial class FindItem : GoapAction
         {
             characterController.Say($"I'm looking for: {ItemId}.");
         }
+        actionStarted = true;
         
         Vector2 agentPosition = characterController.GlobalPosition;
         IHasInventory closestContainer = GetClosestContiner(containersBacklog, agentPosition);

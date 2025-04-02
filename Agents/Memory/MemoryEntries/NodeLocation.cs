@@ -13,13 +13,13 @@ public partial class NodeLocation : MemoryEntry
     {
         if (Node != null)
         {
-            return $"{Node.Name} {Node.GlobalPosition}";
+            return $"Node location: {Node.Name} {Node.GlobalPosition}";
         }
 
         return base.ToString();
     }
 
-    public override  MemoryEntry GetMatchingEntryFrom(Array<MemoryEntry> memoryEntries)
+    public override MemoryEntry GetMatchingEntryFrom(Array<MemoryEntry> memoryEntries)
     {
         foreach (MemoryEntry entry in memoryEntries)
         {

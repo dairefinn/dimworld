@@ -21,7 +21,7 @@ public partial class InventoryContents : MemoryEntry
     {
         if (Node != null)
         {
-            return $"{Node.GetType()} [{string.Join(", ", InventorySlots.Select(slot => {
+            return $"Inventory contents: {Node.GetType()} [{string.Join(", ", InventorySlots.Select(slot => {
                 if (slot.IsEmpty) return "Empty";
                 return $"{slot.Item.ItemName} x {slot.Quantity}";
             }))}]";
@@ -30,15 +30,15 @@ public partial class InventoryContents : MemoryEntry
         return base.ToString();
     }
 
-    public override  MemoryEntry GetMatchingEntryFrom(Array<MemoryEntry> memoryEntries)
+    public override MemoryEntry GetMatchingEntryFrom(Array<MemoryEntry> memoryEntries)
     {
         foreach (MemoryEntry entry in memoryEntries)
         {
-            if (entry is NodeLocation nodeLocationEntry)
+            if (entry is InventoryContents inventoryContentsEntry)
             {
-                if (nodeLocationEntry.Node == Node)
+                if (inventoryContentsEntry.Node == Node)
                 {
-                    return nodeLocationEntry;
+                    return inventoryContentsEntry;
                 }
             }
         }
