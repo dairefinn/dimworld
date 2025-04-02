@@ -45,7 +45,7 @@ debug_path_custom_color = Color(0.870387, 1.44392e-06, 1.2514e-06, 1)
 
 [node name="DetectionHandler" type="Area2D" parent="." node_paths=PackedStringArray("DetectedEntities")]
 collision_layer = 0
-collision_mask = 2
+collision_mask = 3
 script = ExtResource("3_07efl")
 DetectedEntities = []
 

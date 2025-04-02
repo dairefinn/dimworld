@@ -6,7 +6,7 @@ using Dimworld.MemoryEntries;
 using Godot;
 using Godot.Collections;
 
-public partial class CharacterController : CharacterBody2D, IDamageable, ICanBeMoved, IAffectedByConditions, IGoapAgent, IHasInventory
+public partial class CharacterController : CharacterBody2D, IDamageable, ICanBeMoved, IAffectedByConditions, IGoapAgent, IHasInventory, IMemorableNode
 {
 
 	[ExportGroup("Properties")]
@@ -134,6 +134,15 @@ public partial class CharacterController : CharacterBody2D, IDamageable, ICanBeM
 		if (!IsPlanningEnabled) return;
 		MemoryHandler?.OnNodeDetected(node);
 	}
+
+    public NodeLocation GetNodeLocationMemory()
+    {
+        return new NodeLocation()
+        {
+            Node = this,
+            Position = GlobalPosition
+        };
+    }
 
 	// TODO: Use memory handler for this or check the characters inventory in the procedural conditions
 	public void SetInventoryState()

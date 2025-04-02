@@ -18,7 +18,7 @@ public partial class MemoryHandler : Node2D
     public override void _Ready()
     {
         OnMemoryEntryAdded += (entry) => {
-            // GD.Print($"Entry added to agent memory: {Json.Stringify(entry)}");
+            GD.Print($"Entry added to agent memory: {Json.Stringify(entry)}");
             LogCurrentMemoryEntries();
         };
         OnMemoryEntryRemoved += (entry) => {
