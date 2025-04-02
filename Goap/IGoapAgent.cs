@@ -1,4 +1,4 @@
-namespace Dimworld;
+namespace Dimworld.GOAP;
 
 using Godot;
 using Godot.Collections;
@@ -6,7 +6,7 @@ using Godot.Collections;
 public interface IGoapAgent
 {
 
-    [Export] public Dictionary<string, Variant> WorldState { get; set; }
+    [Export] public GoapState WorldState { get; set; }
 	[Export] public Array<GoapAction> ActionSet { get; set; }
 	[Export] public Array<GoapGoal> GoalSet { get; set; }
 

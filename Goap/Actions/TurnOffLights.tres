@@ -5,9 +5,5 @@
 [resource]
 script = ExtResource("1_wnst2")
 Name = "Turn off lights"
-Preconditions = null
-Effects = Dictionary[String, Variant]({
-"lights_on": false
-})
 Cost = 1000
 metadata/_custom_type_script = "uid://dmhsbr32vw1tk"

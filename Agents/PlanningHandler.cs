@@ -1,17 +1,18 @@
 namespace Dimworld;
 
 using System.Linq;
+using Dimworld.GOAP;
 using Godot;
-
+using Godot.Collections;
 
 public partial class PlanningHandler : Node2D
 {
 
 
-    [Export] public int lookForGoalsEveryXFrames = 60;
+    [Export] public int lookForGoalsEveryXSeconds = 2;
 
 
-	private int framesToNextGoalUpdate = 0;
+	private float secondsToNextGoalUpdate = 0;
 	private GoapGoal CurrentGoal { get; set; }
 	private GoapAction[] CurrentPlan { get; set; } = [];
 	private GoapAction CurrentAction { get; set; }
@@ -20,27 +21,27 @@ public partial class PlanningHandler : Node2D
 
     public void OnProcess(IGoapAgent agent, double delta)
     {
-		if (framesToNextGoalUpdate == 0)
+		if (secondsToNextGoalUpdate <= 0)
 		{
+			// GD.Print("Updating current plan");
 			UpdateCurrentPlan(agent);
-			framesToNextGoalUpdate = lookForGoalsEveryXFrames + 1;
+			secondsToNextGoalUpdate = lookForGoalsEveryXSeconds;
 		}
 		FollowPlan(agent, CurrentPlan, delta);
-		framesToNextGoalUpdate--;
-
+		secondsToNextGoalUpdate -= (float)delta;
     }
 
 
 	private void UpdateCurrentPlan(IGoapAgent agent)
 	{
-		GoapGoal[] goalsInOrder = GoapPlanner.GetGoalsInOrder(agent.GoalSet.ToArray(), agent.WorldState, agent);
+		Array<GoapGoal> goalsInOrder = GoapPlanner.GetGoalsInOrder(agent.GoalSet);
 
 		foreach (GoapGoal goal in goalsInOrder)
 		{
 			if (!goal.IsValid()) continue;
 			if (goal.IsSatisfied(agent.WorldState, agent)) continue;
 
-			GoapAction[] planForGoal = GoapPlanner.GetPlan(goal, agent.WorldState, agent.ActionSet.ToArray(), agent);
+			GoapAction[] planForGoal = GoapPlanner.GetPlan(goal, agent);
 			if (planForGoal.Length == 0) continue;
 
 			// If nothing has changed, don't update the plan

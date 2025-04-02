@@ -15,6 +15,20 @@ public partial class Inventory : Resource
 	[Signal] public delegate void OnUpdatedEventHandler();
 
 
+	public Inventory()
+	{
+	}
+
+	public Inventory(Inventory inventory)
+	{
+		InventoryName = inventory.InventoryName;
+		foreach (InventorySlot slot in inventory.Slots)
+		{
+			Slots.Add(new InventorySlot(slot));
+		}
+	}
+
+
 	/// <summary>
 	/// Add an item to the inventory.
 	/// </summary>

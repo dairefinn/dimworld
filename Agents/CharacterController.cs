@@ -1,10 +1,12 @@
 namespace Dimworld;
 
 using System.Linq;
+using Dimworld.GOAP;
+using Dimworld.MemoryEntries;
 using Godot;
 using Godot.Collections;
 
-public partial class CharacterController : CharacterBody2D, IDamageable, ICanBeMoved, IAffectedByConditions, IGoapAgent
+public partial class CharacterController : CharacterBody2D, IDamageable, ICanBeMoved, IAffectedByConditions, IGoapAgent, IHasInventory, IMemorableNode
 {
 
 	[ExportGroup("Properties")]
@@ -13,13 +15,16 @@ public partial class CharacterController : CharacterBody2D, IDamageable, ICanBeM
 	[Export] public Inventory Inventory { get; set; }
 	[Export] public AgentStats Stats {
 		get => _stats;
-		set => SetStats(value);
+		set {
+			_stats = value;
+			LinkStatsToUI();
+		}
 	}
 	private AgentStats _stats;
 
 	[ExportGroup("GOAP properties")]
 	[Export] public bool IsPlanningEnabled { get; set; } = true;
-	[Export] public Dictionary<string, Variant> WorldState { get; set; }
+	[Export] public GoapState WorldState { get; set; }
 	[Export] public Array<GoapAction> ActionSet { get; set; }
 	[Export] public Array<GoapGoal> GoalSet { get; set; }
 
@@ -29,14 +34,20 @@ public partial class CharacterController : CharacterBody2D, IDamageable, ICanBeM
 	[Export] public EquipmentHandler EquipmentHandler { get; set; }
 	[Export] public AgentStatsUI StatsUI {
 		get => _statsUI;
-		set => SetStatsUI(value);
+		set {
+			_statsUI = value;
+			LinkStatsToUI();
+		}
 	}
 	private AgentStatsUI _statsUI;
 	[Export] public SpeechBubble SpeechBubble { get; set; }
 	[Export] public ConditionHandler ConditionHandler { get; set; }
 	[Export] public PlanningHandler PlanningHandler { get; set; }
+	[Export] public MemoryHandler MemoryHandler { get; set; }
 
-	// Goal Oriented Action Planning (GOAP) properties
+
+	[Export] public Chest DebugChest { get; set; } // TODO: Remove when done testing find item priority
+
 
 	private Vector2 desiredMovementDirection = Vector2.Zero;
 
@@ -61,7 +72,14 @@ public partial class CharacterController : CharacterBody2D, IDamageable, ICanBeM
 
 		NavigationAgent.VelocityComputed += OnSafeVelocityComputed;
 
+		DetectionHandler.OnNodeDetected += OnDetectionHandlerNodeDetected;
+
 		SetInventoryState();
+
+		if (DebugChest != null)
+		{
+			MemoryHandler.AddMemory(new InventoryContents(DebugChest));
+		}
 	}
 
 	public override void _PhysicsProcess(double delta)
@@ -99,19 +117,8 @@ public partial class CharacterController : CharacterBody2D, IDamageable, ICanBeM
 		// }
 	}
 
-	// SETTERS
-	
-	public void SetStatsUI(AgentStatsUI statsUI)
-	{
-		_statsUI = statsUI;
-		LinkStatsToUI();
-	}
 
-	public void SetStats(AgentStats stats)
-	{
-		_stats = stats;
-		LinkStatsToUI();
-	}
+	// STATS & STATS UI
 
 	private void LinkStatsToUI()
 	{
@@ -119,14 +126,30 @@ public partial class CharacterController : CharacterBody2D, IDamageable, ICanBeM
 		StatsUI.Stats = Stats;
 	}
 
-	// AGENT MEMORY HANDLING
 
-	// TODO: Might want to move this to a separate class, e.g. AgentMemoryHandler
+	// DETECTION AND MEMORY
+
+	private void OnDetectionHandlerNodeDetected(Node node)
+	{
+		if (!IsPlanningEnabled) return;
+		MemoryHandler?.OnNodeDetected(node);
+	}
+
+    public NodeLocation GetNodeLocationMemory()
+    {
+        return new NodeLocation()
+        {
+            Node = this,
+            Position = GlobalPosition
+        };
+    }
+
+	// TODO: Use memory handler for this or check the characters inventory in the procedural conditions
 	public void SetInventoryState()
 	{
 		if (WorldState == null)
 		{
-			WorldState = [];
+			WorldState = GoapState.Empty;
 		}
 
 		Array<string> itemsInInventory = [];
@@ -135,15 +158,11 @@ public partial class CharacterController : CharacterBody2D, IDamageable, ICanBeM
 		{
 			if (slot.IsEmpty) continue;
 			itemsInInventory.Add(slot.Item.Id);
-			GD.Print("Item in inventory: " + slot.Item.Id);
 		}
 
-		WorldState.Remove("has_items");
-		WorldState["has_items"] = itemsInInventory;
+		WorldState.RemoveKey("has_items");
+		WorldState.Set("has_items", itemsInInventory);
 	}
-
-
-	// MOVEMENT CONTROLLER
 
 	
 	// NAVIGATION
@@ -284,6 +303,7 @@ public partial class CharacterController : CharacterBody2D, IDamageable, ICanBeM
 
 	public void Say(string text)
 	{
+		GD.Print($"Guard: \"{text}\"");
 		SpeechBubble?.Say(text);
 	}
 

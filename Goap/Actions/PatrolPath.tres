@@ -7,11 +7,9 @@
 script = ExtResource("1_kfsc8")
 swordItem = ExtResource("2_h4muq")
 Name = "Patrol path"
-Preconditions = Dictionary[String, Variant]({
-"has_items": ["item-sword"]
-})
+Preconditions = Dictionary[String, Variant]({})
 Effects = Dictionary[String, Variant]({
-"is_patrolling": true
+"current_action": "patrol"
 })
 Cost = 1000
 metadata/_custom_type_script = "uid://dmhsbr32vw1tk"

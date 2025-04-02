@@ -1,4 +1,4 @@
-namespace Dimworld;
+namespace Dimworld.GOAP.Actions;
 
 using Godot;
 using Godot.Collections;
@@ -7,28 +7,40 @@ using Godot.Collections;
 public partial class PatrolPath : GoapAction
 {
 
-    [Export] public InventoryItem swordItem;
-
-
+    private Array<Vector2> patrolPath = null;
     private int CurrentPointIndex { get; set; } = 0;
-
     private bool actionStarted = false;
 
 
-    public override bool CheckProceduralPrecondition(IGoapAgent goapAgent)
+    public override GoapState GetPreconditions()
     {
-        if (goapAgent is not CharacterController characterController) return false;
-
-        Array<Vector2> patrolPath = GetPatrolPath(characterController);
-
-        return patrolPath != null;
+        return new GoapState(new Dictionary<string, Variant> {
+            {"has_items_equipped", new Array<Variant> { "item-sword" }},
+        });
     }
 
-    public override bool Perform(IGoapAgent goapAgent, Dictionary<string, Variant> worldState, double delta)
+    public override GoapState GetEffects()
+    {
+        return new GoapState(new Dictionary<string, Variant> {
+            {"current_action", "patrol"}
+        });
+    }
+
+    public override bool CheckProceduralPrecondition(IGoapAgent goapAgent, GoapState worldState)
+    {
+        if (goapAgent is not CharacterController characterController) return false; // Must be a character
+
+        // Get the full patrol path from the stored node reference
+        patrolPath = GetPatrolPath(goapAgent);
+        if (patrolPath == null) return false; // Must have a patrol path set
+
+        return true;
+    }
+
+    public override bool Perform(IGoapAgent goapAgent, GoapState worldState, double delta)
     {
         if (goapAgent is not CharacterController characterController) return false;
 
-        Array<Vector2> patrolPath = GetPatrolPath(characterController);
         CurrentPointIndex = GetNextPointOnPath(characterController, patrolPath);
         Vector2 currentPoint = patrolPath[CurrentPointIndex];
         characterController.NavigateTo(currentPoint);
@@ -42,6 +54,12 @@ public partial class PatrolPath : GoapAction
         return false; // Always return false so the agent will continue to patrol
     }
 
+    /// <summary>
+    /// Gets the next point on the patrol path. If the current point has not been reached, it returns the current point index.
+    /// </summary>
+    /// <param name="characterController">The character controller that is patrolling</param>
+    /// <param name="points">The points of the patrol path</param>
+    /// <returns>The index of the next point on the patrol path or the nearest point if not currently patrolling</returns>
     private int GetNextPointOnPath(CharacterController characterController, Array<Vector2> points)
     {
         Vector2 currentPosition = characterController.GlobalPosition;
@@ -81,18 +99,26 @@ public partial class PatrolPath : GoapAction
         return nextPointIndex;
     }
 
-    private static Array<Vector2> GetPatrolPath(CharacterController characterController)
+    /// <summary>
+    /// Looks for a patrol_path entry in the agent's world state and then tries to find the path in the scene.
+    /// If the path is found, it returns the points of the path as an array of Vector2s.
+    /// If the path is not found, it returns null.
+    /// </summary>
+    /// <param name="goapAgent">The agent that is trying to find the path</param>
+    /// <returns></returns>
+    private static Array<Vector2> GetPatrolPath(IGoapAgent goapAgent)
     {
         // Check if the agent has a set patrol path stored
-        NodePath nodePath = characterController.WorldState["patrol_path"].AsNodePath();
+        NodePath nodePath = goapAgent.WorldState.GetKey("patrol_path").AsNodePath();
         if (nodePath == null) return null;
 
-        Node node = characterController.GetNodeOrNull(nodePath);
-        if (!IsInstanceValid(node)) return null;
-
-        Path2D patrolPath = (Path2D)node;
+        // Check if the noed is a valid Path2D node in the scene
+        if (goapAgent is not Node2D node2D) return null;
+        Path2D patrolPath = node2D.GetNodeOrNull<Path2D>(nodePath);
+        if (!IsInstanceValid(patrolPath)) return null;
         if (patrolPath.Curve.PointCount == 0) return null;
 
+        // Get the points of the path as an array of Vector2s
         Array<Vector2> points = [];
         for (int i = 0; i < patrolPath.Curve.PointCount; i++)
         {
@@ -100,6 +126,8 @@ public partial class PatrolPath : GoapAction
             Vector2 pointGlobal = patrolPath.GlobalPosition + pointLocal;
             points.Add(pointGlobal);
         }
+
+        // Make sure the path has at least one point
         if (points.Count == 0) return null;
 
         return points;

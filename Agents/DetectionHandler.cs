@@ -61,25 +61,30 @@ public partial class DetectionHandler : Area2D
         EmitSignal(SignalName.DebugOutput, "[" + string.Join(", ", DetectedEntities.Select(e => e.Name)) + "]");
     }
 
-    public Array<T> GetDetectedInstancesOf<[MustBeVariant] T>() where T : Node
+    public System.Collections.Generic.List<T> GetDetectedInstancesOf<T>() where T : Node
     {
         return [.. DetectedEntities.OfType<T>().ToArray()];
     }
 
-    public T GetClosestDetectedInstanceOf<[MustBeVariant] T>() where T : Node2D
-    {
-        return GetClosestInstanceOf(GetDetectedInstancesOf<T>());
-    }
+
 
     public T GetClosestDetectedInstanceOf<[MustBeVariant] T>(Array<T> options) where T : Node2D
     {
-        Array<T> optionsDetected = GetDetectedInstancesOf<T>();
+        System.Collections.Generic.List<T> optionsDetected = GetDetectedInstancesOf<T>();
         if (optionsDetected.Count == 0) return null;
 
         Array<T> optionsDetectedAndAvailable = [..optionsDetected.Intersect(options).ToArray()];
         if (optionsDetectedAndAvailable.Count == 0) return null;
 
         return GetClosestInstanceOf(optionsDetectedAndAvailable);
+    }
+    public System.Collections.Generic.List<T> GetDetectedInstancesImplementing<T>() where T : class
+    {
+        return DetectedEntities
+            .OfType<Node>()
+            .Where(node => node is T)
+            .Cast<T>()
+            .ToList();
     }
 
     public T GetClosestInstanceOf<[MustBeVariant] T>(Array<T> options) where T : Node2D

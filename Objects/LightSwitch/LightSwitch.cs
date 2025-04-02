@@ -1,10 +1,11 @@
 namespace Dimworld;
 
+using Dimworld.MemoryEntries;
 using Godot;
 using Godot.Collections;
 
 
-public partial class LightSwitch : StaticBody2D, ICanBeInteractedWith
+public partial class LightSwitch : StaticBody2D, ICanBeInteractedWith, IMemorableNode
 {
 
     [Export] public Array<LightBulb> AssociatedLights { get; set; }
@@ -64,6 +65,15 @@ public partial class LightSwitch : StaticBody2D, ICanBeInteractedWith
     public void InteractWith()
     {
         Toggle();
+    }
+
+    public NodeLocation GetNodeLocationMemory()
+    {
+        return new NodeLocation()
+        {
+            Node = this,
+            Position = GlobalPosition
+        };
     }
 
 }
