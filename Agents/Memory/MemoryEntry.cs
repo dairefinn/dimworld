@@ -15,6 +15,22 @@ using Godot.Collections;
 public partial class MemoryEntry : Resource
 {
 
+    /// <summary>
+    /// The time in seconds until this memory entry expires.
+    /// </summary>
+    public float ExpirationTime { get; set; } = 300f; // 5 minutes
+
+
+    public virtual void OnProcess(double delta)
+    {
+        ExpirationTime -= (float)delta;
+    }
+
+    public virtual bool IsExpired()
+    {
+        return ExpirationTime <= 0f;
+    }
+
     public virtual bool IsRelatedToNode(Node node)
     {
         return false;

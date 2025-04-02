@@ -28,6 +28,23 @@ public partial class MemoryHandler : Node2D
     }
 
 
+    public override void _Process(double delta)
+    {
+        base._Process(delta);
+
+        foreach (MemoryEntry memoryEntry in MemoryEntries)
+        {
+            memoryEntry.OnProcess(delta);
+
+            if (memoryEntry.IsExpired())
+            {
+                GD.Print($"Memory expired: {Json.Stringify(memoryEntry)}");
+                CallDeferred(MethodName.RemoveMemory, memoryEntry);
+            }
+        }
+    }
+
+
     public void OnNodeDetected(Node node)
     {
         if (node is IMemorableNode memorableNode)
