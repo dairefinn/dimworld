@@ -9,7 +9,7 @@ public partial class DeveloperConsole : PanelContainer
 {
     public static DeveloperConsole Instance { get; private set; }
 
-    public static void Print(string text, Color? color = null)
+    public static void Print(string text)
     {
         if (Instance == null)
         {
@@ -17,12 +17,40 @@ public partial class DeveloperConsole : PanelContainer
             return;
         }
 
-        if (color == null)
+        Instance.AddConsoleEntry(text);
+    }
+
+    public static void PrintErr(string text)
+    {
+        if (Instance == null)
         {
-            color = Colors.White;
+            GD.PrintErr("DeveloperConsole: Attempted to add console entry before DeveloperConsole was initialized.");
+            return;
         }
 
-        Instance.AddConsoleEntry(text, color.Value);
+        Instance.AddConsoleEntry($"[color=#ff5555]{text}[/color]");
+    }
+
+    public static void PrintInfo(string text)
+    {
+        if (Instance == null)
+        {
+            GD.PrintErr("DeveloperConsole: Attempted to add console entry before DeveloperConsole was initialized.");
+            return;
+        }
+
+        Instance.AddConsoleEntry($"[color=#7777ff]{text}[/color]");
+    }
+    
+    public static void PrintWarning(string text)
+    {
+        if (Instance == null)
+        {
+            GD.PrintErr("DeveloperConsole: Attempted to add console entry before DeveloperConsole was initialized.");
+            return;
+        }
+
+        Instance.AddConsoleEntry($"[color=#ffff55]{text}[/color]");
     }
 
     public static bool IsFocused => Instance != null && Instance.IsInstanceFocused;
@@ -85,7 +113,7 @@ public partial class DeveloperConsole : PanelContainer
     }
 
 
-    private void AddConsoleEntry(string text, Color color)
+    private void AddConsoleEntry(string text)
     {
         // Print before adding just incase it breaks
         if (PrintToDebugConsole)
@@ -93,18 +121,15 @@ public partial class DeveloperConsole : PanelContainer
             GD.Print(text);
         }
 
-        // NOTE: This has to be a primitive because CallDeferred arguments have to be either primitive types or extensions of Godot.Variant
-        ulong colorPrimitive = color.ToRgba64();
-
         try
         {
             if (consoleEntriesContainer == null)
             {
-                CallDeferred(MethodName.AddEntryToList, [text, colorPrimitive]);
+                CallDeferred(MethodName.AddEntryToList, text);
             }
             else
             {
-                AddEntryToList(text, colorPrimitive);
+                AddEntryToList(text);
             }
         }
         catch (Exception e)
@@ -114,15 +139,13 @@ public partial class DeveloperConsole : PanelContainer
         }
     }
 
-    private void AddEntryToList(string text, ulong colorPrimitive)
+    private void AddEntryToList(string text)
     {
-        Label entry = new()
+        RichTextLabel entry = new()
         {
             Text = text,
-            LabelSettings = new LabelSettings()
-            {
-                FontColor = new(colorPrimitive)
-            }
+            FitContent = true,
+            BbcodeEnabled = true
         };
 
         consoleEntriesContainer.AddChild(entry);
@@ -141,7 +164,7 @@ public partial class DeveloperConsole : PanelContainer
 
     private void OnSubmitConsoleInput(string text)
     {
-        Print(text);
+        Print($"] {text}");
         DeveloperConsoleCommandHandler.HandleCommand(text);
         consoleInput.Clear();
         FocusConsoleInput();

@@ -8,10 +8,16 @@ using Godot;
 public class DeveloperConsoleCommandHandler
 {
 
-    private static readonly Dictionary<string, Action<string[]>> Commands = new()
+    private class CommandInfo(Action<string[]> action, string description)
     {
-        { "timescale", CommandTimeScale },
-        { "help", CommandHelp },
+        public Action<string[]> Action { get; set; } = action;
+        public string Description { get; set; } = description;
+    }
+
+    private static readonly Dictionary<string, CommandInfo> Commands = new()
+    {
+        { "timescale", new CommandInfo(CommandTimeScale, "Arguments: [u]<value>[/u]. Sets the time scale of the game.") },
+        { "help", new CommandInfo(CommandHelp, "Lists all available commands.") },
     };
 
     public static void HandleCommand(string command)
@@ -22,17 +28,17 @@ public class DeveloperConsoleCommandHandler
 
         if (!Commands.ContainsKey(commandName))
         {
-            DeveloperConsole.Print($"Unknown command: {commandName}");
+            DeveloperConsole.PrintErr($"Unknown command: {commandName}");
             return;
         }
 
         try
         {
-            Commands[commandName].Invoke(commandArgs);
+            Commands[commandName].Action.Invoke(commandArgs);
         }
         catch (Exception ex)
         {
-            DeveloperConsole.Print($"Error executing command '{commandName}': {ex.Message}");
+            DeveloperConsole.PrintErr($"Error executing command '{commandName}': {ex.Message}");
         }
     }
 
@@ -42,7 +48,7 @@ public class DeveloperConsoleCommandHandler
         {
             if (timeScale < 0.0f)
             {
-                DeveloperConsole.Print("DeveloperConsole: Time scale cannot be negative.");
+                DeveloperConsole.PrintErr("DeveloperConsole: Time scale cannot be negative.");
                 return;
             }
 
@@ -50,20 +56,16 @@ public class DeveloperConsoleCommandHandler
         }
         else
         {
-            DeveloperConsole.Print("Usage: timescale <value>");
+            DeveloperConsole.PrintInfo("Usage: timescale <value>");
         }
     }
 
     private static void CommandHelp(string[] args)
     {
-        Color commandColour = Colors.Yellow;
-
-        DeveloperConsole.Print("Available commands:", commandColour);
-        foreach (var command in Commands.Keys)
+        DeveloperConsole.PrintInfo("Available commands:");
+        foreach (KeyValuePair<string, CommandInfo> command in Commands)
         {
-            DeveloperConsole.Print($"- {command}", commandColour);
-            // Get the parameters of the command
-            DeveloperConsole.Print($"  Parameters: {string.Join(", ", command)}", commandColour);
+            DeveloperConsole.PrintInfo($"\t⦁\t{command.Key}: {command.Value.Description}");
         }
     }
 
