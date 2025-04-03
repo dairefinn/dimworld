@@ -58,6 +58,7 @@ public partial class DeveloperMenu : Control
         base.Show();
 
         Console?.ClearInput();
+        Console.FocusConsoleInput();
     }
 
 }

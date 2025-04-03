@@ -65,6 +65,17 @@ public partial class DeveloperConsole : PanelContainer
         Instance.AddConsoleEntry(BBCodeHelper.Colors.Red(text));
     }
 
+    public static void Clear()
+    {
+        if (Instance == null)
+        {
+            GD.PrintErr("DeveloperConsole: Attempted to clear console before DeveloperConsole was initialized.");
+            return;
+        }
+
+        Instance.ClearInstance();
+    }
+
     public static bool IsFocused => Instance != null && Instance.IsInstanceFocused;
 
 
@@ -130,12 +141,24 @@ public partial class DeveloperConsole : PanelContainer
         }
         else if (@event is InputEventKey keyEvent && keyEvent.IsPressed())
         {
-            GD.Print("Resetting history index");
             historyIndex = 0; // Reset the history index if any other key is pressed
         }
     }
 
 
+
+    public void ClearInstance()
+    {
+        if (consoleEntriesContainer == null) return;
+
+        foreach (Node child in consoleEntriesContainer.GetChildren())
+        {
+            child.QueueFree();
+        }
+
+        typedCommandHistory.Clear();
+        historyIndex = 0;
+    }
 
     public void ClearInput()
     {
@@ -156,6 +179,13 @@ public partial class DeveloperConsole : PanelContainer
         int index = typedCommandHistory.Count - historyIndex;
         string command = typedCommandHistory[index];
         consoleInput.Text = command;
+    }
+
+    public void FocusConsoleInput()
+    {
+        if (consoleInput == null) return;
+        consoleInput.ReleaseFocus();
+        consoleInput.CallDeferred(LineEdit.MethodName.GrabFocus);
     }
 
 
@@ -216,13 +246,6 @@ public partial class DeveloperConsole : PanelContainer
         consoleInput.Clear();
         FocusConsoleInput();
         historyIndex = 0;
-    }
-
-    private void FocusConsoleInput()
-    {
-        if (consoleInput == null) return;
-        consoleInput.ReleaseFocus();
-        consoleInput.CallDeferred(LineEdit.MethodName.GrabFocus);
     }
 
     private void ScrollToBottom()

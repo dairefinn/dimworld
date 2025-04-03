@@ -36,6 +36,18 @@ public class DeveloperConsoleCommandHandler
             )
         },
         {
+            "clear", new CommandInfo(
+                CommandClearConsole,
+                "Clears the console."
+            )
+        },
+        {
+            "exit", new CommandInfo(
+                CommandExitGame,
+                "Exits the game."
+            )
+        },
+        {
             "help", new CommandInfo(
                 CommandHelp,
                 "Lists all available commands."
@@ -111,6 +123,23 @@ public class DeveloperConsoleCommandHandler
         else
         {
             DeveloperConsole.PrintInfo($"Usage: changelevel {BBCodeHelper.Formatting.Underline("<level_name>")}");
+        }
+    }
+
+    private static void CommandClearConsole(string[] args)
+    {
+        DeveloperConsole.Clear();
+    }
+
+    private static void CommandExitGame(string[] args)
+    {
+        if (Engine.GetMainLoop() is SceneTree tree)
+        {
+            tree.Quit();
+        }
+        else
+        {
+            DeveloperConsole.PrintErr("Unable to access the SceneTree to quit the game.");
         }
     }
 

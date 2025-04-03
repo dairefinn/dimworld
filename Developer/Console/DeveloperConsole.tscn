@@ -8,6 +8,7 @@ corner_radius_top_left = 6
 corner_radius_top_right = 6
 corner_radius_bottom_right = 6
 corner_radius_bottom_left = 6
+anti_aliasing = false
 
 [sub_resource type="LabelSettings" id="LabelSettings_wrl27"]
 font_color = Color(0.666667, 0.666667, 0.666667, 1)
@@ -98,3 +99,4 @@ theme_override_styles/focus = SubResource("StyleBoxFlat_wrnj0")
 theme_override_styles/read_only = SubResource("StyleBoxFlat_i565i")
 theme_override_styles/normal = SubResource("StyleBoxFlat_o5oyl")
 placeholder_text = "Enter a command here"
+caret_blink = true
