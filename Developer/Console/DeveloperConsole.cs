@@ -1,7 +1,7 @@
 namespace Dimworld.Developer;
 
+using Dimworld.Helpers;
 using Godot;
-using Godot.Collections;
 using System;
 
 
@@ -20,7 +20,7 @@ public partial class DeveloperConsole : PanelContainer
         Instance.AddConsoleEntry(text);
     }
 
-    public static void PrintErr(string text)
+    public static void PrintSuccess(string text)
     {
         if (Instance == null)
         {
@@ -28,7 +28,7 @@ public partial class DeveloperConsole : PanelContainer
             return;
         }
 
-        Instance.AddConsoleEntry($"[color=#ff5555]{text}[/color]");
+        Instance.AddConsoleEntry(BBCodeHelper.Colors.Green(text));
     }
 
     public static void PrintInfo(string text)
@@ -39,7 +39,7 @@ public partial class DeveloperConsole : PanelContainer
             return;
         }
 
-        Instance.AddConsoleEntry($"[color=#7777ff]{text}[/color]");
+        Instance.AddConsoleEntry(BBCodeHelper.Colors.Blue(text));
     }
     
     public static void PrintWarning(string text)
@@ -50,7 +50,18 @@ public partial class DeveloperConsole : PanelContainer
             return;
         }
 
-        Instance.AddConsoleEntry($"[color=#ffff55]{text}[/color]");
+        Instance.AddConsoleEntry(BBCodeHelper.Colors.Yellow(text));
+    }
+
+    public static void PrintErr(string text)
+    {
+        if (Instance == null)
+        {
+            GD.PrintErr("DeveloperConsole: Attempted to add console entry before DeveloperConsole was initialized.");
+            return;
+        }
+
+        Instance.AddConsoleEntry(BBCodeHelper.Colors.Red(text));
     }
 
     public static bool IsFocused => Instance != null && Instance.IsInstanceFocused;
