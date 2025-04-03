@@ -115,7 +115,7 @@ public class BBCodeBuilder
     }
 
 
-    // Building the final string
+    // Nested formatting
 
     public BBCodeBuilder NestedFormat(string text, Func<BBCodeBuilder, BBCodeBuilder> format)
     {
@@ -124,6 +124,9 @@ public class BBCodeBuilder
         value.Append(nestedBuilder.Build());
         return this;
     }
+
+
+    // Building the final string
 
     public string Build()
     {
