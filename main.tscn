@@ -1,4 +1,4 @@
-[gd_scene load_steps=31 format=3 uid="uid://ddc8qiig7j3wm"]
+[gd_scene load_steps=32 format=3 uid="uid://ddc8qiig7j3wm"]
 
 [ext_resource type="Script" uid="uid://1f6ukfmh33oo" path="res://DayNightController.cs" id="1_d13ii"]
 [ext_resource type="Script" uid="uid://g354xqg3s44p" path="res://InputHandler.cs" id="2_lquwl"]
@@ -8,6 +8,7 @@
 [ext_resource type="Script" uid="uid://bm0o5ggnfmm6y" path="res://Inventory/InventorySlot.cs" id="6_cegan"]
 [ext_resource type="Script" uid="uid://daxnr47vhajw0" path="res://Levels/LevelHandler/LevelHandler.cs" id="8_ycdy4"]
 [ext_resource type="Script" uid="uid://cru4kq28c8nuw" path="res://Agents/AgentStats.cs" id="9_lswn8"]
+[ext_resource type="PackedScene" uid="uid://qds61vs7bsi1" path="res://Developer/DeveloperMenu.tscn" id="12_dg77c"]
 [ext_resource type="Resource" uid="uid://octn8jxqeqaq" path="res://Items/Sword.tres" id="18_d13ii"]
 [ext_resource type="PackedScene" uid="uid://d21nkwnu7y4od" path="res://Inventory/UI/InventoryViewer.tscn" id="23_d13ii"]
 [ext_resource type="PackedScene" uid="uid://b3v4ub2lqydho" path="res://Levels/LevelTesting.tscn" id="25_a6jrf"]
@@ -161,6 +162,8 @@ theme_override_constants/margin_bottom = 10
 
 [node name="InventoryViewer" parent="UI/MarginContainer" instance=ExtResource("23_d13ii")]
 layout_mode = 2
+
+[node name="DeveloperMenu" parent="UI" instance=ExtResource("12_dg77c")]
 
 [node name="WorldEnvironment" type="WorldEnvironment" parent="."]
 environment = SubResource("Environment_ycdy4")

@@ -1,6 +1,6 @@
 [gd_scene load_steps=2 format=3 uid="uid://diumqxcpymweo"]
 
-[ext_resource type="Script" uid="uid://cc05md76bmnbb" path="res://Developer/DeveloperConsole.cs" id="1_n8nu5"]
+[ext_resource type="Script" uid="uid://cc05md76bmnbb" path="res://Developer/Console/DeveloperConsole.cs" id="1_n8nu5"]
 
 [node name="DeveloperConsole" type="PanelContainer"]
 anchors_preset = 15

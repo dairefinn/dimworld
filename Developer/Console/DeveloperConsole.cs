@@ -7,9 +7,34 @@ using System;
 public partial class DeveloperConsole : PanelContainer
 {
 
+    /// <summary>
+    /// Determines if the console should print to the editor's debug console. For the most part, it should be fine to leave this as false and look at most things through the in-game console but this could be useful if having crashes or other runtime issues.
+    /// </summary>
+    [Export] public bool PrintToDebugConsole = false;
+
+    public static DeveloperConsole Instance { get; private set; }
+
     private VBoxContainer consoleEntriesContainer;
     private LineEdit consoleInput;
     private bool isMouseOver = false;
+
+
+    public bool IsFocused => consoleInput != null && consoleInput.HasFocus();
+
+
+    public DeveloperConsole()
+    {
+        if (Instance == null)
+        {
+            Instance = this;
+        }
+        else
+        {
+            GD.PrintErr("DeveloperConsole: Attempted to create multiple instances of DeveloperConsole.");
+            QueueFree();
+        }
+    }
+
 
     public override void _Ready()
     {
@@ -30,7 +55,11 @@ public partial class DeveloperConsole : PanelContainer
             Text = text
         };
         consoleEntriesContainer.AddChild(entry);
-        GD.Print(text);
+
+        if (PrintToDebugConsole)
+        {
+            GD.Print(text);
+        }
     }
 
     public override void _GuiInput(InputEvent @event)

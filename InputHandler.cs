@@ -45,15 +45,18 @@ public partial class InputHandler : Node2D
     {
         base._Process(delta);
 
-        bool canMove = !InventoryViewer.IsViewing;
+        bool canUseInputs = !DeveloperConsole.Instance.IsFocused;
+
         bool isMovingManually = Input.IsActionPressed("move_up") || Input.IsActionPressed("move_down") || Input.IsActionPressed("move_left") || Input.IsActionPressed("move_right");
         bool isMovingClick = Input.IsActionJustPressed("lmb");
+        bool isTogglingDeveloperMenu = Input.IsActionJustPressed("toggle_developer_menu");
 
-        bool canAbortMove = Input.IsActionJustPressed("rmb");
-        bool canToggleTimescale = Input.IsActionJustPressed("toggle_timescale");
-        bool canInteract = Input.IsActionJustPressed("interact") && !InventoryViewer.IsViewing;
-        bool canOpenInventory = Input.IsActionJustPressed("toggle_inventory") && !InventoryViewer.IsViewing;
-        bool canCloseInventory = (Input.IsActionJustPressed("toggle_inventory") || Input.IsActionJustPressed("interact") || Input.IsActionJustPressed("ui_cancel")) && InventoryViewer.IsViewing;
+        bool canMove = canUseInputs && !InventoryViewer.IsViewing;
+        bool canAbortMove = canUseInputs && Input.IsActionJustPressed("rmb");
+        bool canToggleTimescale = canUseInputs && Input.IsActionJustPressed("toggle_timescale");
+        bool canInteract = canUseInputs && Input.IsActionJustPressed("interact") && !InventoryViewer.IsViewing;
+        bool canOpenInventory = canUseInputs && Input.IsActionJustPressed("toggle_inventory") && !InventoryViewer.IsViewing;
+        bool canCloseInventory = canUseInputs && (Input.IsActionJustPressed("toggle_inventory") || Input.IsActionJustPressed("interact") || Input.IsActionJustPressed("ui_cancel")) && InventoryViewer.IsViewing;
 
         if (canMove)
         {
@@ -100,13 +103,28 @@ public partial class InputHandler : Node2D
             if (Engine.TimeScale == 1.0)
             {
                 Engine.TimeScale = 0.1f;
-                // DeveloperMenu.GetInstance().AddConsoleEntry("Time scale set to 0.1");
+                DeveloperConsole.Instance.AddConsoleEntry("Time scale set to 0.1");
             }
             else
             {
                 Engine.TimeScale = 1.0f;
-                // DeveloperMenu.GetInstance().AddConsoleEntry("Time scale set to 1.0");
+                DeveloperConsole.Instance.AddConsoleEntry("Time scale set to 1.0");
             }
+        }
+
+        if (isTogglingDeveloperMenu)
+        {
+            // TODO: Implement developer menu toggle
+            // DeveloperMenu developerMenu = DeveloperMenu.GetInstance();
+            // if (developerMenu != null)
+            // {
+            //     developerMenu.Visible = !developerMenu.Visible;
+            //     developerMenu.SetProcess(developerMenu.Visible);
+            // }
+            // else
+            // {
+            //     GD.PrintErr("InputHandler: Developer menu instance is null.");
+            // }
         }
     }
 
