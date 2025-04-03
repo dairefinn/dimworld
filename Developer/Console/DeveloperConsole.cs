@@ -1,6 +1,6 @@
 namespace Dimworld.Developer;
 
-using Dimworld.Helpers;
+using Dimworld.Helpers.BBCode;
 using Godot;
 using System;
 
@@ -111,7 +111,6 @@ public partial class DeveloperConsole : PanelContainer
 		if (!isMouseOver) return;
         if (@event.IsActionPressed("lmb"))
         {
-            GD.Print("Left mouse button pressed on console.");
             FocusConsoleInput();
         }
 	}

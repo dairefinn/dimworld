@@ -1,12 +1,12 @@
-namespace Dimworld.Helpers;
+namespace Dimworld.Helpers.BBCode;
 
 using Godot;
 
-
-public class BBCodeHelper
+public static class BBCodeHelper
 {
 
-    public class Colors
+
+    public static class Colors
     {
 
         // PRIMARY COLORS
@@ -50,6 +50,43 @@ public class BBCodeHelper
             string colorHex = color.ToHtml();
             GD.Print($"Color: {colorHex}");
             return $"[color=#{colorHex}]{text}[/color]";
+        }
+
+        public static string From(string text, string colorHex)
+        {
+            return $"[color=#{colorHex}]{text}[/color]";
+        }
+
+    }
+
+    // FORMATTING
+
+    public static class Formatting
+    {
+
+        public static string Bold(string text)
+        {
+            return $"[b]{text}[/b]";
+        }
+
+        public static string Italic(string text)
+        {
+            return $"[i]{text}[/i]";
+        }
+
+        public static string Underline(string text)
+        {
+            return $"[u]{text}[/u]";
+        }
+
+        public static string Strikethrough(string text)
+        {
+            return $"[s]{text}[/s]";
+        }
+
+        public static string NewLine()
+        {
+            return "\n";
         }
 
     }

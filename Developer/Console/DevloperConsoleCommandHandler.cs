@@ -2,6 +2,7 @@ namespace Dimworld.Developer;
 
 using System;
 using System.Collections.Generic;
+using Dimworld.Helpers.BBCode;
 using Godot;
 
 
@@ -16,9 +17,22 @@ public class DeveloperConsoleCommandHandler
 
     private static readonly Dictionary<string, CommandInfo> Commands = new()
     {
-        { "timescale", new CommandInfo(CommandTimeScale, "Arguments: [u]<value>[/u]. Sets the time scale of the game.") },
-        { "help", new CommandInfo(CommandHelp, "Lists all available commands.") },
+        {
+            "timescale",
+            new CommandInfo(
+                CommandTimeScale,
+                new BBCodeBuilder().Text("Arguments: ").UnderLine("<value>").Text(". Sets the time scale of the game.").Build()
+            )
+        },
+        {
+            "help",
+            new CommandInfo(
+                CommandHelp,
+                new BBCodeBuilder().Text("Lists all available commands.").Build()
+            )
+        }
     };
+
 
     public static void HandleCommand(string command)
     {
