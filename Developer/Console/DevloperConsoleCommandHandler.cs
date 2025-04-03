@@ -21,14 +21,14 @@ public class DeveloperConsoleCommandHandler
             "timescale",
             new CommandInfo(
                 CommandTimeScale,
-                new BBCodeBuilder().Text("Arguments: ").UnderLine("<value>").Text(". Sets the time scale of the game.").Build()
+                $"Arguments: {BBCodeHelper.Formatting.Underline("<value>")}. Sets the time scale of the game."
             )
         },
         {
             "help",
             new CommandInfo(
                 CommandHelp,
-                new BBCodeBuilder().Text("Lists all available commands.").Build()
+                "Lists all available commands."
             )
         }
     };
