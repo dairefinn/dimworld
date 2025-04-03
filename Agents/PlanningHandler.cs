@@ -3,6 +3,7 @@ namespace Dimworld;
 using System.Linq;
 using Dimworld.Developer;
 using Dimworld.GOAP;
+using Dimworld.Helpers.BBCode;
 using Godot;
 using Godot.Collections;
 
@@ -49,8 +50,8 @@ public partial class PlanningHandler : Node2D
 			if (CurrentGoal == goal) return;
 			if (CurrentPlan == planForGoal) return;
 
-			DeveloperConsole.Print("New goal: " + goal.Name);
-			DeveloperConsole.Print("Plan: [" + string.Join(", ", planForGoal.Select(action => action.Name)) + "]");
+			DeveloperConsole.Print($"New goal: {BBCodeHelper.Colors.Yellow(goal.Name)}");
+			DeveloperConsole.Print($"Plan: [{string.Join(", ", planForGoal.Select(action => BBCodeHelper.Colors.Yellow(action.Name)))}]");
 			CurrentGoal = goal;
 			CurrentPlan = planForGoal;
 			CurrentAction = null;
@@ -70,7 +71,7 @@ public partial class PlanningHandler : Node2D
 		// If the agent is starting a new action, run the OnStart lifecycle event
 		if (CurrentAction != actionAtStep)
 		{
-			DeveloperConsole.Print("New action: " + actionAtStep.Name);
+			DeveloperConsole.Print($"New action: {BBCodeHelper.Colors.Yellow(actionAtStep.Name)}");
 			CurrentAction?.OnEnd(agent, agent.WorldState);
 			CurrentAction = actionAtStep;
 			CurrentAction.OnStart(agent, agent.WorldState);

@@ -3,6 +3,7 @@ namespace Dimworld;
 using System.Linq;
 using Dimworld.Developer;
 using Dimworld.GOAP;
+using Dimworld.Helpers.BBCode;
 using Dimworld.MemoryEntries;
 using Godot;
 using Godot.Collections;
@@ -305,7 +306,8 @@ public partial class CharacterController : CharacterBody2D, IDamageable, ICanBeM
 
 	public void Say(string text)
 	{
-		DeveloperConsole.Print($"Guard: \"{text}\"");
+		string formattedText = $"{BBCodeHelper.Colors.Cyan(text)}";
+		DeveloperConsole.Print($"Guard: \"{formattedText}\"");
 		SpeechBubble?.Say(text);
 	}
 

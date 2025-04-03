@@ -2,6 +2,7 @@ namespace Dimworld;
 
 using System.Linq;
 using Dimworld.Developer;
+using Dimworld.Helpers.BBCode;
 using Godot;
 using Godot.Collections;
 
@@ -18,11 +19,11 @@ public partial class MemoryHandler : Node2D
     public override void _Ready()
     {
         OnMemoryEntryAdded += (entry) => {
-            DeveloperConsole.Print($"Entry added to agent memory: {Json.Stringify(entry)}");
+            DeveloperConsole.Print($"Entry added to agent memory: {BBCodeHelper.Colors.Yellow(Json.Stringify(entry))}");
             LogCurrentMemoryEntries();
         };
         OnMemoryEntryRemoved += (entry) => {
-            DeveloperConsole.Print($"Entry removed from agent memory: {Json.Stringify(entry)}");
+            DeveloperConsole.Print($"Entry removed from agent memory: {BBCodeHelper.Colors.Yellow(Json.Stringify(entry))}");
             LogCurrentMemoryEntries();
         };
     }
