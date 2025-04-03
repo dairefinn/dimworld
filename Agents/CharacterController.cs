@@ -44,12 +44,12 @@ public partial class CharacterController : CharacterBody2D, IDamageable, ICanBeM
 	[Export] public ConditionHandler ConditionHandler { get; set; }
 	[Export] public PlanningHandler PlanningHandler { get; set; }
 	[Export] public MemoryHandler MemoryHandler { get; set; }
+    [Export] public bool CanTakeFromInventory { get; set; } = false;
 
 
 	[Export] public Chest DebugChest { get; set; } // TODO: Remove when done testing find item priority
 
-
-	private Vector2 desiredMovementDirection = Vector2.Zero;
+    private Vector2 desiredMovementDirection = Vector2.Zero;
 
 
 	// LIFECYCLE EVENTS
@@ -78,6 +78,7 @@ public partial class CharacterController : CharacterBody2D, IDamageable, ICanBeM
 
 		if (DebugChest != null)
 		{
+			MemoryHandler.AddMemory(DebugChest.GetNodeLocationMemory());
 			MemoryHandler.AddMemory(new InventoryContents(DebugChest));
 		}
 	}

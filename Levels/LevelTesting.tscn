@@ -386,7 +386,7 @@ position = Vector2(2320, 624)
 [node name="Objects" type="Node" parent="."]
 
 [node name="ItemChest" parent="Objects" instance=ExtResource("2_qxeaj")]
-position = Vector2(1898, 729)
+position = Vector2(2234, 838)
 Inventory = SubResource("Resource_01e6d")
 
 [node name="ItemChest2" parent="Objects" instance=ExtResource("2_qxeaj")]

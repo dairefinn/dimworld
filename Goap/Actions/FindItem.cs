@@ -51,8 +51,10 @@ public partial class FindItem : GoapAction
         if (goapAgent is not CharacterController characterController) return false; // Can only be performed by a character controller
         if (ItemId == null) return false; // Must have a target item set
 
-        NodeLocation[] containerLocations = characterController.MemoryHandler.GetMemoriesOfType<NodeLocation>().Where(node => node.Node is IHasInventory).ToArray();
+        NodeLocation[] containerLocations = characterController.MemoryHandler.GetMemoriesOfType<NodeLocation>().Where(node => node.Node is IHasInventory hasInventory && hasInventory.CanTakeFromInventory).ToArray();
         if (containerLocations.Length == 0) return false; // Must have at least one chest location in memory
+
+        GD.Print($"Found {containerLocations.Length} container locations in memory.");
 
         InventoryContents[] inventoryContents = characterController.MemoryHandler.GetMemoriesOfType<InventoryContents>();
 

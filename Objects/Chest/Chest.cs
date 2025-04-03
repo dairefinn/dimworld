@@ -8,6 +8,7 @@ public partial class Chest : StaticBody2D, ICanBeInteractedWith, IMemorableNode,
 {
 
     [Export] public Inventory Inventory { get; set; }
+    [Export] public bool CanTakeFromInventory { get; set; } = true;
 
 
     public void InteractWith()
