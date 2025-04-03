@@ -1,6 +1,7 @@
 namespace Dimworld.GOAP.Actions;
 
 using System.Linq;
+using Dimworld.Developer;
 using Dimworld.MemoryEntries;
 using Godot;
 using Godot.Collections;
@@ -67,7 +68,7 @@ public partial class TurnOffLights : GoapAction
         }
 
         if (lightSwitches.Count == 0) return false; // No light switches found, cannot perform action
-        GD.Print("Light switch found, checking if agent can reach it");
+        DeveloperConsole.Print("Light switch found, checking if agent can reach it");
 
         detectedLightSwitch = characterController.DetectionHandler.GetClosestInstanceOf(lightSwitches);
         if (detectedLightSwitch == null) return false;

@@ -1,5 +1,6 @@
 namespace Dimworld;
 
+using Dimworld.Developer;
 using Godot;
 
 
@@ -44,15 +45,18 @@ public partial class InputHandler : Node2D
     {
         base._Process(delta);
 
-        bool canMove = !InventoryViewer.IsViewing;
+        bool canUseInputs = !DeveloperMenu.IsOpen && !DeveloperConsole.IsFocused;
+
         bool isMovingManually = Input.IsActionPressed("move_up") || Input.IsActionPressed("move_down") || Input.IsActionPressed("move_left") || Input.IsActionPressed("move_right");
         bool isMovingClick = Input.IsActionJustPressed("lmb");
+        bool isTogglingDeveloperMenu = Input.IsActionJustPressed("toggle_developer_menu");
 
-        bool canAbortMove = Input.IsActionJustPressed("rmb");
-        bool canToggleTimescale = Input.IsActionJustPressed("toggle_timescale");
-        bool canInteract = Input.IsActionJustPressed("interact") && !InventoryViewer.IsViewing;
-        bool canOpenInventory = Input.IsActionJustPressed("toggle_inventory") && !InventoryViewer.IsViewing;
-        bool canCloseInventory = (Input.IsActionJustPressed("toggle_inventory") || Input.IsActionJustPressed("interact") || Input.IsActionJustPressed("ui_cancel")) && InventoryViewer.IsViewing;
+        bool canMove = canUseInputs && !InventoryViewer.IsViewing;
+        bool canAbortMove = canUseInputs && Input.IsActionJustPressed("rmb");
+        bool canInteract = canUseInputs && Input.IsActionJustPressed("interact") && !InventoryViewer.IsViewing;
+        bool canOpenInventory = canUseInputs && Input.IsActionJustPressed("toggle_inventory") && !InventoryViewer.IsViewing;
+        bool canCloseInventory = canUseInputs && (Input.IsActionJustPressed("toggle_inventory") || Input.IsActionJustPressed("interact") || Input.IsActionJustPressed("ui_cancel")) && InventoryViewer.IsViewing;
+        bool canCloseConsole = Input.IsActionJustPressed("ui_cancel") && DeveloperConsole.IsFocused;
 
         if (canMove)
         {
@@ -92,18 +96,15 @@ public partial class InputHandler : Node2D
         {
             InventoryViewer.SetBothInventoriesVisibility(false);
         }
-        
-        // TODO: Lock behind debug menu
-        if (canToggleTimescale)
+
+        if (isTogglingDeveloperMenu)
         {
-            if (Engine.TimeScale == 1.0)
-            {
-                Engine.TimeScale = 0.1f;
-            }
-            else
-            {
-                Engine.TimeScale = 1.0f;
-            }
+            DeveloperMenu.Instance?.ToggleVisibility();
+        }
+
+        if (canCloseConsole)
+        {
+            DeveloperMenu.Instance?.Hide();
         }
     }
 

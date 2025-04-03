@@ -1,5 +1,6 @@
 namespace Dimworld;
 
+using Dimworld.Developer;
 using Godot;
 
 
@@ -105,7 +106,7 @@ public partial class AgentStats : Resource
             amount = MaxHealth - Health;
         }
 
-        GD.Print($"Healing {amount} health");
+        DeveloperConsole.Print($"Healing {amount} health");
         SetHealth(Health + amount);
     }
 

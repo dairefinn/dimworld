@@ -1,5 +1,6 @@
 namespace Dimworld;
 
+using Dimworld.Developer;
 using Godot;
 
 
@@ -13,14 +14,14 @@ public partial class Condition : Resource
 
     public virtual bool ApplyTo(IAffectedByConditions target)
     {
-        GD.Print($"Trying to apply condition {Name} to {target}");
+        DeveloperConsole.Print($"Trying to apply condition {Name} to {target}");
 
         IConditionHandler conditionHandler = target.GetConditionHandler();
         if (conditionHandler == null) return false;
 
         if (!Stacks && conditionHandler.HasCondition(this))
         {
-            GD.Print($"Condition {Name} already exists on {target}");
+            DeveloperConsole.Print($"Condition {Name} already exists on {target}");
             return false;
         }
 
@@ -33,7 +34,7 @@ public partial class Condition : Resource
         IConditionHandler conditionHandler = target.GetConditionHandler();
         if (conditionHandler == null) return false;
 
-        GD.Print($"Removing condition {Name} from {target}");
+        DeveloperConsole.Print($"Removing condition {Name} from {target}");
         return conditionHandler.RemoveCondition(this);
     }
 

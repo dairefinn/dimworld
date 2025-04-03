@@ -1,6 +1,7 @@
 namespace Dimworld.GOAP.Actions;
 
 using System.Linq;
+using Dimworld.Developer;
 using Dimworld.MemoryEntries;
 using Godot;
 using Godot.Collections;
@@ -48,7 +49,7 @@ public partial class TurnOnLights : GoapAction
         // If the agent cannot see the light switch that controls the light, check their memory
         if (lightSwitches.Count == 0)
         {
-            GD.Print("Light bulb is off but agent cannot see the light switch, checking memory");
+            DeveloperConsole.Print("Light bulb is off but agent cannot see the light switch, checking memory");
             LightSwitch[] lightSwitchesInMemory = characterController.MemoryHandler.GetMemoriesOfType<NodeLocation>()
                 .Where(memory => memory.Node is LightSwitch)
                 .Select(memory => (LightSwitch)memory.Node)
@@ -68,7 +69,7 @@ public partial class TurnOnLights : GoapAction
         }
 
         if (lightSwitches.Count == 0) return false; // No light switches found, cannot perform action
-        GD.Print("Light switch found, checking if agent can reach it");
+        DeveloperConsole.Print("Light switch found, checking if agent can reach it");
 
         detectedLightSwitch = characterController.DetectionHandler.GetClosestInstanceOf(lightSwitches);
         if (detectedLightSwitch == null) return false;
@@ -90,7 +91,7 @@ public partial class TurnOnLights : GoapAction
 
         if(characterController.NavigationAgent.IsNavigationFinished())
         {
-            GD.Print("Reached light switch, toggling it");
+            DeveloperConsole.Print("Reached light switch, toggling it");
             detectedLightSwitch.Toggle();
             DeleteMemoryOfAssociatedLights(characterController, detectedLightSwitch);
         }
@@ -108,7 +109,7 @@ public partial class TurnOnLights : GoapAction
             NodeLocation memoryEntry = memorableNode.GetNodeLocationMemory();
             MemoryEntry memoryEntryExisting = memoryEntry.GetMatchingEntryFrom(characterController.MemoryHandler.MemoryEntries);
             if (memoryEntryExisting == null) continue; // Only update memory for known lightbulbs
-            GD.Print($"Deleting memory of lightbulb {lightBulb.Name}");
+            DeveloperConsole.Print($"Deleting memory of lightbulb {lightBulb.Name}");
             characterController.MemoryHandler.AddMemory(memoryEntry);
         }
     }

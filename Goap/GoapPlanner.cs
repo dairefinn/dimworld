@@ -1,7 +1,7 @@
 namespace Dimworld.GOAP;
 
 using System.Linq;
-using Godot;
+using Dimworld.Developer;
 using Godot.Collections;
 
 
@@ -24,8 +24,8 @@ public class GoapPlanner
     private static void PrintDebug(string message)
     {
         if (!PrintDebugLogs) return;
-        // GD.Print("[GoapPlanner] " + message);
-        GD.Print(message);
+        // DeveloperConsole.Print("[GoapPlanner] " + message);
+        DeveloperConsole.Print(message);
     }
 
 
