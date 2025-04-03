@@ -1,5 +1,6 @@
 namespace Dimworld;
 
+using Dimworld.Developer;
 using Godot;
 
 
@@ -99,10 +100,12 @@ public partial class InputHandler : Node2D
             if (Engine.TimeScale == 1.0)
             {
                 Engine.TimeScale = 0.1f;
+                // DeveloperMenu.GetInstance().AddConsoleEntry("Time scale set to 0.1");
             }
             else
             {
                 Engine.TimeScale = 1.0f;
+                // DeveloperMenu.GetInstance().AddConsoleEntry("Time scale set to 1.0");
             }
         }
     }
