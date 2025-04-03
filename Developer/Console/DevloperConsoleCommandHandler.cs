@@ -1,10 +1,18 @@
 namespace Dimworld.Developer;
 
+using System;
+using System.Collections.Generic;
 using Godot;
 
 
 public class DeveloperConsoleCommandHandler
 {
+
+    private static readonly Dictionary<string, Action<string[]>> Commands = new()
+    {
+        { "timescale", CommandTimeScale },
+        { "help", CommandHelp },
+    };
 
     public static void HandleCommand(string command)
     {
@@ -12,14 +20,19 @@ public class DeveloperConsoleCommandHandler
         string commandName = commandParts[0].ToLower();
         string[] commandArgs = commandParts.Length > 1 ? commandParts[1..] : [];
 
-        switch (commandName)
+        if (!Commands.ContainsKey(commandName))
         {
-            case "timescale":
-                CommandTimeScale(commandArgs);
-                break;
-            default:
-                DeveloperConsole.Print($"Unknown command: {commandName}");
-                break;
+            DeveloperConsole.Print($"Unknown command: {commandName}");
+            return;
+        }
+
+        try
+        {
+            Commands[commandName].Invoke(commandArgs);
+        }
+        catch (Exception ex)
+        {
+            DeveloperConsole.Print($"Error executing command '{commandName}': {ex.Message}");
         }
     }
 
@@ -41,5 +54,17 @@ public class DeveloperConsoleCommandHandler
         }
     }
 
+    private static void CommandHelp(string[] args)
+    {
+        Color commandColour = Colors.Yellow;
+
+        DeveloperConsole.Print("Available commands:", commandColour);
+        foreach (var command in Commands.Keys)
+        {
+            DeveloperConsole.Print($"- {command}", commandColour);
+            // Get the parameters of the command
+            DeveloperConsole.Print($"  Parameters: {string.Join(", ", command)}", commandColour);
+        }
+    }
+
 }
-        

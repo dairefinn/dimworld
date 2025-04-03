@@ -1,6 +1,7 @@
 namespace Dimworld.Developer;
 
 using Godot;
+using Godot.Collections;
 using System;
 
 
@@ -8,7 +9,7 @@ public partial class DeveloperConsole : PanelContainer
 {
     public static DeveloperConsole Instance { get; private set; }
 
-    public static void Print(string text)
+    public static void Print(string text, Color? color = null)
     {
         if (Instance == null)
         {
@@ -16,24 +17,28 @@ public partial class DeveloperConsole : PanelContainer
             return;
         }
 
-        Instance.AddConsoleEntry(text);
+        if (color == null)
+        {
+            color = Colors.White;
+        }
+
+        Instance.AddConsoleEntry(text, color.Value);
     }
 
     public static bool IsFocused => Instance != null && Instance.IsInstanceFocused;
+
 
     /// <summary>
     /// Determines if the console should print to the editor's debug console. For the most part, it should be fine to leave this as false and look at most things through the in-game console but this could be useful if having crashes or other runtime issues.
     /// </summary>
     [Export] public bool PrintToDebugConsole = false;
+    public bool IsInstanceFocused => consoleInput != null && consoleInput.HasFocus();
 
 
     private ScrollContainer consoleScrollContainer;
     private VBoxContainer consoleEntriesContainer;
     private LineEdit consoleInput;
     private bool isMouseOver = false;
-
-
-    public bool IsInstanceFocused => consoleInput != null && consoleInput.HasFocus();
 
 
     public DeveloperConsole()
@@ -62,43 +67,6 @@ public partial class DeveloperConsole : PanelContainer
         consoleInput.TextSubmitted += OnSubmitConsoleInput;
     }
 
-
-    private void AddConsoleEntry(string text)
-    {
-        // Print before adding just incase it breaks
-        if (PrintToDebugConsole)
-        {
-            GD.Print(text);
-        }
-
-        try
-        {
-            if (consoleEntriesContainer == null)
-            {
-                CallDeferred(MethodName.AddEntryToList, text);
-            }
-            else
-            {
-                AddEntryToList(text);
-            }
-        }
-        catch (Exception e)
-        {
-            GD.PrintErr("DeveloperConsole: Failed to add console entry: " + e);
-            throw e;
-        }
-    }
-
-    private void AddEntryToList(string text)
-    {
-        Label entry = new()
-        {
-            Text = text
-        };
-        consoleEntriesContainer.AddChild(entry);
-        CallDeferred(MethodName.ScrollToBottom);
-    }
-
     public override void _GuiInput(InputEvent @event)
 	{
 		if (!isMouseOver) return;
@@ -108,6 +76,58 @@ public partial class DeveloperConsole : PanelContainer
             FocusConsoleInput();
         }
 	}
+
+
+    public void ClearInput()
+    {
+        if (consoleInput == null) return;
+        consoleInput.Clear();
+    }
+
+
+    private void AddConsoleEntry(string text, Color color)
+    {
+        // Print before adding just incase it breaks
+        if (PrintToDebugConsole)
+        {
+            GD.Print(text);
+        }
+
+        // NOTE: This has to be a primitive because CallDeferred arguments have to be either primitive types or extensions of Godot.Variant
+        ulong colorPrimitive = color.ToRgba64();
+
+        try
+        {
+            if (consoleEntriesContainer == null)
+            {
+                CallDeferred(MethodName.AddEntryToList, [text, colorPrimitive]);
+            }
+            else
+            {
+                AddEntryToList(text, colorPrimitive);
+            }
+        }
+        catch (Exception e)
+        {
+            GD.PrintErr("DeveloperConsole: Failed to add console entry: " + e);
+            throw;
+        }
+    }
+
+    private void AddEntryToList(string text, ulong colorPrimitive)
+    {
+        Label entry = new()
+        {
+            Text = text,
+            LabelSettings = new LabelSettings()
+            {
+                FontColor = new(colorPrimitive)
+            }
+        };
+
+        consoleEntriesContainer.AddChild(entry);
+        CallDeferred(MethodName.ScrollToBottom);
+    }
 
     private void OnMouseEntered()
     {
@@ -142,12 +162,6 @@ public partial class DeveloperConsole : PanelContainer
         GetTree().CreateTimer(0.01f).Timeout += () => {
             consoleScrollContainer.ScrollVertical = (int)consoleScrollContainer.GetVScrollBar().MaxValue;
         };
-    }
-
-    public void ClearInput()
-    {
-        if (consoleInput == null) return;
-        consoleInput.Clear();
     }
 
 }
