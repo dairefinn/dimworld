@@ -24,7 +24,7 @@ public class GoapPlanner
     private static void PrintDebug(string message)
     {
         if (!PrintDebugLogs) return;
-        // DeveloperConsole.AddConsoleEntry("[GoapPlanner] " + message);
+        // DeveloperConsole.Print("[GoapPlanner] " + message);
         DeveloperConsole.Print(message);
     }
 

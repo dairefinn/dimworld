@@ -9,6 +9,13 @@ public partial class DeveloperMenu : Control
     public static DeveloperMenu Instance { get; private set; }
 
 
+    public static bool IsOpen => Instance != null && Instance.Visible;
+
+
+    private Button ButtonClose;
+    private DeveloperConsole Console;
+
+
     public DeveloperMenu()
     {
         if (Instance == null)
@@ -22,6 +29,17 @@ public partial class DeveloperMenu : Control
         }
     }
 
+
+    public override void _Ready()
+    {
+        base._Ready();
+
+        ButtonClose = GetNode<Button>("%ButtonClose");
+        ButtonClose.Pressed += ToggleVisibility;
+
+        Console = GetNode<DeveloperConsole>("%DeveloperConsole");
+    }
+
     
     public void ToggleVisibility()
     {
@@ -33,6 +51,13 @@ public partial class DeveloperMenu : Control
         {
             Show();
         }
+    }
+
+    private new void Show()
+    {
+        base.Show();
+
+        Console?.ClearInput();
     }
 
 }

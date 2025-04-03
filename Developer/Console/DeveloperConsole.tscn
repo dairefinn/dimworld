@@ -1,6 +1,9 @@
-[gd_scene load_steps=2 format=3 uid="uid://diumqxcpymweo"]
+[gd_scene load_steps=3 format=3 uid="uid://diumqxcpymweo"]
 
 [ext_resource type="Script" uid="uid://cc05md76bmnbb" path="res://Developer/Console/DeveloperConsole.cs" id="1_n8nu5"]
+
+[sub_resource type="LabelSettings" id="LabelSettings_wrl27"]
+font_color = Color(0.666667, 0.666667, 0.666667, 1)
 
 [node name="DeveloperConsole" type="PanelContainer"]
 anchors_preset = 15
@@ -17,18 +20,35 @@ theme_override_constants/margin_top = 6
 theme_override_constants/margin_right = 6
 theme_override_constants/margin_bottom = 6
 
-[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer"]
+[node name="VBoxContainer2" type="VBoxContainer" parent="MarginContainer"]
 layout_mode = 2
-size_flags_vertical = 8
 theme_override_constants/separation = 6
 
-[node name="ConsoleEntries" type="VBoxContainer" parent="MarginContainer/VBoxContainer"]
+[node name="Label" type="Label" parent="MarginContainer/VBoxContainer2"]
+layout_mode = 2
+size_flags_vertical = 0
+text = "Console"
+label_settings = SubResource("LabelSettings_wrl27")
+horizontal_alignment = 1
+
+[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer/VBoxContainer2"]
+layout_mode = 2
+size_flags_vertical = 3
+theme_override_constants/separation = 6
+
+[node name="ConsoleScrollContainer" type="ScrollContainer" parent="MarginContainer/VBoxContainer2/VBoxContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_vertical = 3
+follow_focus = true
+horizontal_scroll_mode = 0
+
+[node name="ConsoleEntries" type="VBoxContainer" parent="MarginContainer/VBoxContainer2/VBoxContainer/ConsoleScrollContainer"]
 unique_name_in_owner = true
 clip_contents = true
 layout_mode = 2
 theme_override_constants/separation = 3
-alignment = 2
 
-[node name="ConsoleInput" type="LineEdit" parent="MarginContainer/VBoxContainer"]
+[node name="ConsoleInput" type="LineEdit" parent="MarginContainer/VBoxContainer2/VBoxContainer"]
 unique_name_in_owner = true
 layout_mode = 2

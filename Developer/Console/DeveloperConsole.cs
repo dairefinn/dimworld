@@ -19,18 +19,21 @@ public partial class DeveloperConsole : PanelContainer
         Instance.AddConsoleEntry(text);
     }
 
+    public static bool IsFocused => Instance != null && Instance.IsInstanceFocused;
+
     /// <summary>
     /// Determines if the console should print to the editor's debug console. For the most part, it should be fine to leave this as false and look at most things through the in-game console but this could be useful if having crashes or other runtime issues.
     /// </summary>
     [Export] public bool PrintToDebugConsole = false;
 
 
+    private ScrollContainer consoleScrollContainer;
     private VBoxContainer consoleEntriesContainer;
     private LineEdit consoleInput;
     private bool isMouseOver = false;
 
 
-    public bool IsFocused => consoleInput != null && consoleInput.HasFocus();
+    public bool IsInstanceFocused => consoleInput != null && consoleInput.HasFocus();
 
 
     public DeveloperConsole()
@@ -49,6 +52,7 @@ public partial class DeveloperConsole : PanelContainer
 
     public override void _Ready()
     {
+        consoleScrollContainer = GetNode<ScrollContainer>("%ConsoleScrollContainer");
         consoleEntriesContainer = GetNode<VBoxContainer>("%ConsoleEntries");
         consoleInput = GetNode<LineEdit>("%ConsoleInput");
 
@@ -71,7 +75,7 @@ public partial class DeveloperConsole : PanelContainer
         {
             if (consoleEntriesContainer == null)
             {
-                CallDeferred(MethodName.AddConsoleEntry, text);
+                CallDeferred(MethodName.AddEntryToList, text);
             }
             else
             {
@@ -92,6 +96,7 @@ public partial class DeveloperConsole : PanelContainer
             Text = text
         };
         consoleEntriesContainer.AddChild(entry);
+        CallDeferred(MethodName.ScrollToBottom);
     }
 
     public override void _GuiInput(InputEvent @event)
@@ -126,6 +131,22 @@ public partial class DeveloperConsole : PanelContainer
         if (consoleInput == null) return;
         consoleInput.ReleaseFocus();
         consoleInput.CallDeferred(LineEdit.MethodName.GrabFocus);        
+    }
+
+    private void ScrollToBottom()
+    {
+        if (consoleScrollContainer == null) return;
+
+        // This timer is a bit of a hack but it was necessary becasue CallDeferred wasn't keeping up with the UI updates.
+        GetTree().CreateTimer(0.01f).Timeout += () => {
+            consoleScrollContainer.ScrollVertical = (int)consoleScrollContainer.GetVScrollBar().MaxValue;
+        };
+    }
+
+    public void ClearInput()
+    {
+        if (consoleInput == null) return;
+        consoleInput.Clear();
     }
 
 }

@@ -115,7 +115,7 @@ public partial class CharacterController : CharacterBody2D, IDamageable, ICanBeM
 		//         contentsStrings.Add(slot.Item.ItemName + " (" + slot.Quantity + ")");
 		//     }
 		//     inventoryString += string.Join(", ", contentsStrings);
-		//     DeveloperConsole.AddConsoleEntry(inventoryString);
+		//     DeveloperConsole.Print(inventoryString);
 		// }
 	}
 

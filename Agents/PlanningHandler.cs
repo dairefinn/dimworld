@@ -24,7 +24,7 @@ public partial class PlanningHandler : Node2D
     {
 		if (secondsToNextGoalUpdate <= 0)
 		{
-			// DeveloperConsole.AddConsoleEntry("Updating current plan");
+			// DeveloperConsole.Print("Updating current plan");
 			UpdateCurrentPlan(agent);
 			secondsToNextGoalUpdate = lookForGoalsEveryXSeconds;
 		}

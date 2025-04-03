@@ -6,7 +6,6 @@ using Godot;
 using Godot.Collections;
 
 
-// TODO: Agent should forget (some) memories over time
 public partial class MemoryHandler : Node2D
 {
 
@@ -23,7 +22,7 @@ public partial class MemoryHandler : Node2D
             LogCurrentMemoryEntries();
         };
         OnMemoryEntryRemoved += (entry) => {
-            // DeveloperConsole.AddConsoleEntry($"Entry removed from agent memory: {Json.Stringify(entry)}");
+            DeveloperConsole.Print($"Entry removed from agent memory: {Json.Stringify(entry)}");
             LogCurrentMemoryEntries();
         };
     }
@@ -96,7 +95,7 @@ public partial class MemoryHandler : Node2D
     {
         // JSON serialization for better readability
         // string memoryEntriesString = Json.Stringify(MemoryEntries.Select(entry => entry.ToString()).ToArray());
-        // DeveloperConsole.AddConsoleEntry("Current Memory Entries: "+ memoryEntriesString);
+        // DeveloperConsole.Print("Current Memory Entries: "+ memoryEntriesString);
     }
 
 }

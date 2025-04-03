@@ -45,7 +45,7 @@ public partial class InputHandler : Node2D
     {
         base._Process(delta);
 
-        bool canUseInputs = !DeveloperConsole.Instance.IsFocused;
+        bool canUseInputs = !DeveloperMenu.IsOpen && !DeveloperConsole.IsFocused;
 
         bool isMovingManually = Input.IsActionPressed("move_up") || Input.IsActionPressed("move_down") || Input.IsActionPressed("move_left") || Input.IsActionPressed("move_right");
         bool isMovingClick = Input.IsActionJustPressed("lmb");
