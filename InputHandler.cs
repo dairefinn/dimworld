@@ -53,7 +53,6 @@ public partial class InputHandler : Node2D
 
         bool canMove = canUseInputs && !InventoryViewer.IsViewing;
         bool canAbortMove = canUseInputs && Input.IsActionJustPressed("rmb");
-        bool canToggleTimescale = canUseInputs && Input.IsActionJustPressed("toggle_timescale");
         bool canInteract = canUseInputs && Input.IsActionJustPressed("interact") && !InventoryViewer.IsViewing;
         bool canOpenInventory = canUseInputs && Input.IsActionJustPressed("toggle_inventory") && !InventoryViewer.IsViewing;
         bool canCloseInventory = canUseInputs && (Input.IsActionJustPressed("toggle_inventory") || Input.IsActionJustPressed("interact") || Input.IsActionJustPressed("ui_cancel")) && InventoryViewer.IsViewing;
@@ -95,21 +94,6 @@ public partial class InputHandler : Node2D
         if (canCloseInventory)
         {
             InventoryViewer.SetBothInventoriesVisibility(false);
-        }
-        
-        // TODO: Lock behind debug menu
-        if (canToggleTimescale)
-        {
-            if (Engine.TimeScale == 1.0)
-            {
-                Engine.TimeScale = 0.1f;
-                DeveloperConsole.Print("Time scale set to 0.1");
-            }
-            else
-            {
-                Engine.TimeScale = 1.0f;
-                DeveloperConsole.Print("Time scale set to 1.0");
-            }
         }
 
         if (isTogglingDeveloperMenu)

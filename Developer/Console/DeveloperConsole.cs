@@ -122,6 +122,7 @@ public partial class DeveloperConsole : PanelContainer
     private void OnSubmitConsoleInput(string text)
     {
         Print(text);
+        DeveloperConsoleCommandHandler.HandleCommand(text);
         consoleInput.Clear();
         FocusConsoleInput();
     }
@@ -130,7 +131,7 @@ public partial class DeveloperConsole : PanelContainer
     {
         if (consoleInput == null) return;
         consoleInput.ReleaseFocus();
-        consoleInput.CallDeferred(LineEdit.MethodName.GrabFocus);        
+        consoleInput.CallDeferred(LineEdit.MethodName.GrabFocus);
     }
 
     private void ScrollToBottom()
