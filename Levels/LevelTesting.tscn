@@ -394,7 +394,7 @@ position = Vector2(1787, 778)
 Inventory = SubResource("Resource_7iri2")
 
 [node name="LightSwitch" parent="Objects" node_paths=PackedStringArray("AssociatedLights") instance=ExtResource("8_ol4on")]
-position = Vector2(2204, 847)
+position = Vector2(2266, 623)
 AssociatedLights = [NodePath("../LightBulb"), NodePath("../LightBulb2")]
 
 [node name="LightBulb" parent="Objects" instance=ExtResource("9_0bk61")]

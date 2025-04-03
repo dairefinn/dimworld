@@ -14,6 +14,8 @@ public partial class FindItem : GoapAction
     private System.Collections.Generic.HashSet<IHasInventory> containersToSearch = [];
     private System.Collections.Generic.HashSet<IHasInventory> containersChecked = [];
     private bool actionStarted = false;
+    private bool knowsWhereItemIs = false;
+    private IHasInventory currentTarget = null;
 
 
     private System.Collections.Generic.HashSet<IHasInventory> _containersBacklog => [.. containersWithItem, .. containersToSearch];
@@ -54,8 +56,6 @@ public partial class FindItem : GoapAction
         NodeLocation[] containerLocations = characterController.MemoryHandler.GetMemoriesOfType<NodeLocation>().Where(node => node.Node is IHasInventory hasInventory && hasInventory.CanTakeFromInventory).ToArray();
         if (containerLocations.Length == 0) return false; // Must have at least one chest location in memory
 
-        GD.Print($"Found {containerLocations.Length} container locations in memory.");
-
         InventoryContents[] inventoryContents = characterController.MemoryHandler.GetMemoriesOfType<InventoryContents>();
 
         foreach (NodeLocation location in containerLocations)
@@ -72,6 +72,7 @@ public partial class FindItem : GoapAction
                 if (contentsMemory.Inventory.HasItem(ItemId))
                 {
                     containersWithItem.Add(container);
+                    knowsWhereItemIs = true;
                 }
             }
             else
@@ -91,32 +92,49 @@ public partial class FindItem : GoapAction
 
         if (!actionStarted)
         {
-            characterController.Say($"I'm looking for: {ItemId}.");
+            if (knowsWhereItemIs)
+            {
+                characterController.Say($"I know where the item is: {ItemId}.");
+            }
+            else
+            {
+                characterController.Say($"I'm looking for: {ItemId}.");
+            }
         }
         actionStarted = true;
         
         Vector2 agentPosition = characterController.GlobalPosition;
 
-        IHasInventory closestContainer = null;
-        if (containersWithItem.Count > 0)
+        // Get the next container to search
+        if (currentTarget == null)
         {
-            closestContainer = GetClosestContiner(containersWithItem, agentPosition);
-        }
-        else if (containersToSearch.Count > 0)
-        {
-            closestContainer = GetClosestContiner(containersToSearch, agentPosition);
+            if (_containersBacklog.Count == 0) return false; // No containers left to search
+
+            if (containersWithItem.Count > 0)
+            {
+                GD.Print("Searching for item in containers with known items");
+                currentTarget = GetClosestContiner(containersWithItem, agentPosition);
+            }
+            else if (containersToSearch.Count > 0)
+            {
+                GD.Print("Searching for item in containers to search");
+                currentTarget = GetClosestContiner(containersToSearch, agentPosition);
+            }
+
         }
 
-        if (closestContainer == null || closestContainer is not Node2D containerNode2D) {
+        if (currentTarget is not Node2D containerNode2D)
+        {
+            RemoveContainerFromBacklog(currentTarget);
             return false; // No containers left to search
         }
 
         characterController.NavigateTo(containerNode2D.GlobalPosition);
         if (characterController.NavigationAgent.IsTargetReached())
         {
-            characterController.MemoryHandler.AddMemory(new InventoryContents(closestContainer));
+            characterController.MemoryHandler.AddMemory(new InventoryContents(currentTarget));
 
-            if (closestContainer.Inventory.HasItem(ItemId))
+            if (currentTarget.Inventory.HasItem(ItemId))
             {
                 characterController.Say($"I found the item: {ItemId}.");
                 Array itemsArray = [];
@@ -134,14 +152,26 @@ public partial class FindItem : GoapAction
             {
                 GD.Print("Item not found in container");
                 characterController.Say($"I couldn't find the item: {ItemId}.");
-                containersChecked.Add(closestContainer);
-                containersToSearch.Remove(closestContainer);
-                containersWithItem.Remove(closestContainer);
+                containersChecked.Add(currentTarget);
+                RemoveContainerFromBacklog(currentTarget);
+                currentTarget = null;
                 return false; // No items found in container
             }
         }
 
         return false;
+    }
+
+    private void RemoveContainerFromBacklog(IHasInventory container)
+    {
+        if (containersWithItem.Contains(container))
+        {
+            containersWithItem.Remove(container);
+        }
+        else if (containersToSearch.Contains(container))
+        {
+            containersToSearch.Remove(container);
+        }
     }
 
     private IHasInventory GetClosestContiner(System.Collections.Generic.HashSet<IHasInventory> containers, Vector2 agentPosition)

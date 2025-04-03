@@ -48,7 +48,6 @@ public partial class TurnOffLights : GoapAction
         // If the agent cannot see the light switch that controls the light, check their memory
         if (lightSwitches.Count == 0)
         {
-            GD.Print("Light bulb is off but agent cannot see the light switch, checking memory");
             LightSwitch[] lightSwitchesInMemory = characterController.MemoryHandler.GetMemoriesOfType<NodeLocation>()
                 .Where(memory => memory.Node is LightSwitch)
                 .Select(memory => (LightSwitch)memory.Node)
