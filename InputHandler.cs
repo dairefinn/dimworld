@@ -56,6 +56,7 @@ public partial class InputHandler : Node2D
         bool canInteract = canUseInputs && Input.IsActionJustPressed("interact") && !InventoryViewer.IsViewing;
         bool canOpenInventory = canUseInputs && Input.IsActionJustPressed("toggle_inventory") && !InventoryViewer.IsViewing;
         bool canCloseInventory = canUseInputs && (Input.IsActionJustPressed("toggle_inventory") || Input.IsActionJustPressed("interact") || Input.IsActionJustPressed("ui_cancel")) && InventoryViewer.IsViewing;
+        bool canCloseConsole = Input.IsActionJustPressed("ui_cancel") && DeveloperConsole.IsFocused;
 
         if (canMove)
         {
@@ -98,10 +99,12 @@ public partial class InputHandler : Node2D
 
         if (isTogglingDeveloperMenu)
         {
-            if (DeveloperMenu.Instance != null)
-            {
-                DeveloperMenu.Instance.ToggleVisibility();
-            }
+            DeveloperMenu.Instance?.ToggleVisibility();
+        }
+
+        if (canCloseConsole)
+        {
+            DeveloperMenu.Instance?.Hide();
         }
     }
 

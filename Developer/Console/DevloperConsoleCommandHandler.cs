@@ -18,15 +18,25 @@ public class DeveloperConsoleCommandHandler
     private static readonly Dictionary<string, CommandInfo> Commands = new()
     {
         {
-            "timescale",
-            new CommandInfo(
+            "timescale", new CommandInfo(
                 CommandTimeScale,
                 $"Arguments: {BBCodeHelper.Formatting.Underline("<value>")}. Sets the time scale of the game."
             )
         },
         {
-            "help",
-            new CommandInfo(
+            "teleport", new CommandInfo(
+                CommandTeleport,
+                $"Arguments: {BBCodeHelper.Formatting.Underline("<x> <y>")}. Teleports the player to the specified coordinates."
+            )
+        },
+        {
+            "changelevel", new CommandInfo(
+                CommandChangeLevel,
+                $"Arguments: {BBCodeHelper.Formatting.Underline("<level_name>")}. Changes the current level to the specified one."
+            )
+        },
+        {
+            "help", new CommandInfo(
                 CommandHelp,
                 "Lists all available commands."
             )
@@ -56,6 +66,9 @@ public class DeveloperConsoleCommandHandler
         }
     }
 
+
+    // COMMAND HANDLERS
+
     private static void CommandTimeScale(string[] args)
     {
         if (args.Length == 1 && float.TryParse(args[0], out float timeScale))
@@ -71,6 +84,33 @@ public class DeveloperConsoleCommandHandler
         else
         {
             DeveloperConsole.PrintInfo("Usage: timescale <value>");
+        }
+    }
+
+    private static void CommandTeleport(string[] args)
+    {
+        if (args.Length == 2 && float.TryParse(args[0], out float x) && float.TryParse(args[1], out float y))
+        {
+            CharacterController player = InputHandler.Instance.PlayerAgent;
+            player.GlobalPosition = new Vector2(x, y);
+        }
+        else
+        {
+            DeveloperConsole.PrintInfo($"Usage: teleport {BBCodeHelper.Formatting.Underline("<x>")} {BBCodeHelper.Formatting.Underline("<y>")}");
+        }
+    }
+
+    private static void CommandChangeLevel(string[] args)
+    {
+        if (args.Length == 1)
+        {
+            string levelName = args[0];
+            string fullLevelPath = $"res://Levels/{levelName}.tscn";
+            LevelHandler.Instance.ChangeLevel(fullLevelPath);
+        }
+        else
+        {
+            DeveloperConsole.PrintInfo($"Usage: changelevel {BBCodeHelper.Formatting.Underline("<level_name>")}");
         }
     }
 

@@ -2,6 +2,7 @@ namespace Dimworld.Developer;
 
 using Dimworld.Helpers.BBCode;
 using Godot;
+using Godot.Collections;
 using System;
 
 
@@ -80,6 +81,10 @@ public partial class DeveloperConsole : PanelContainer
     private bool isMouseOver = false;
 
 
+    private Array<string> typedCommandHistory = [];
+    private int historyIndex = 0; // This is in reverse order and 0 means you're not looking at any history so 1 is the most recent command.
+
+
     public DeveloperConsole()
     {
         if (Instance == null)
@@ -108,18 +113,49 @@ public partial class DeveloperConsole : PanelContainer
 
     public override void _GuiInput(InputEvent @event)
 	{
-		if (!isMouseOver) return;
-        if (@event.IsActionPressed("lmb"))
+        if (isMouseOver && @event.IsActionPressed("lmb"))
         {
             FocusConsoleInput();
         }
 	}
+
+    public override void _Input(InputEvent @event)
+    {
+        base._Input(@event);
+        
+        // If the up arrow is pressed, show the previous command
+        if (IsFocused && @event.IsActionPressed("ui_up"))
+        {
+            ShowPreviousCommand();
+        }
+        else if (@event is InputEventKey keyEvent && keyEvent.IsPressed())
+        {
+            GD.Print("Resetting history index");
+            historyIndex = 0; // Reset the history index if any other key is pressed
+        }
+    }
+
 
 
     public void ClearInput()
     {
         if (consoleInput == null) return;
         consoleInput.Clear();
+    }
+
+    public void ShowPreviousCommand()
+    {
+        if (typedCommandHistory.Count == 0) return;
+
+        historyIndex++;
+        if (historyIndex > typedCommandHistory.Count)
+        {
+            historyIndex = typedCommandHistory.Count;
+        }
+
+        int index = typedCommandHistory.Count - historyIndex;
+        string command = typedCommandHistory[index];
+        consoleInput.Text = command;
     }
 
 
@@ -175,9 +211,11 @@ public partial class DeveloperConsole : PanelContainer
     private void OnSubmitConsoleInput(string text)
     {
         Print($"] {text}");
+        typedCommandHistory.Add(text);
         DeveloperConsoleCommandHandler.HandleCommand(text);
         consoleInput.Clear();
         FocusConsoleInput();
+        historyIndex = 0;
     }
 
     private void FocusConsoleInput()
