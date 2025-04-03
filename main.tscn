@@ -164,6 +164,7 @@ theme_override_constants/margin_bottom = 10
 layout_mode = 2
 
 [node name="DeveloperMenu" parent="UI" instance=ExtResource("12_dg77c")]
+visible = false
 
 [node name="WorldEnvironment" type="WorldEnvironment" parent="."]
 environment = SubResource("Environment_ycdy4")

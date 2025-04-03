@@ -1,5 +1,6 @@
 namespace Dimworld;
 
+using Dimworld.Developer;
 using Godot;
 using Godot.Collections;
 
@@ -39,7 +40,7 @@ public partial class Inventory : Resource
 		InventorySlot slot = GetFirstSlotWithItem(item, true);
 		if (slot == null)
 		{
-			GD.Print("No slot found for item: " + item.ItemName);
+			DeveloperConsole.Print("No slot found for item: " + item.ItemName);
 			slot = GetFirstEmptySlot();
 		}
 		if (slot == null) return false;

@@ -1,5 +1,6 @@
 namespace Dimworld;
 
+using Dimworld.Developer;
 using Godot;
 
 
@@ -59,7 +60,7 @@ public partial class InventoryHandler : Control
     private void SetPrimaryInventory(Inventory inventory)
     {
         if (inventory == null){
-            GD.Print("Primary inventory is null");
+            DeveloperConsole.Print("Primary inventory is null");
         }
 
         _primaryInventory = inventory;
@@ -71,10 +72,10 @@ public partial class InventoryHandler : Control
 
         if (inventory == null)
         {
-            GD.Print("Opening primary inventory: " + inventory.InventoryName);
+            DeveloperConsole.Print("Opening primary inventory: " + inventory.InventoryName);
             foreach (InventorySlot slot in inventory.Slots)
             {
-                GD.Print("Slot: " + (slot.Item != null ? slot.Item.ItemName : "Empty"));
+                DeveloperConsole.Print("Slot: " + (slot.Item != null ? slot.Item.ItemName : "Empty"));
             }
             SetPrimaryInventoryVisibility(false);
         }

@@ -6,13 +6,24 @@ using System;
 
 public partial class DeveloperConsole : PanelContainer
 {
+    public static DeveloperConsole Instance { get; private set; }
+
+    public static void Print(string text)
+    {
+        if (Instance == null)
+        {
+            GD.PrintErr("DeveloperConsole: Attempted to add console entry before DeveloperConsole was initialized.");
+            return;
+        }
+
+        Instance.AddConsoleEntry(text);
+    }
 
     /// <summary>
     /// Determines if the console should print to the editor's debug console. For the most part, it should be fine to leave this as false and look at most things through the in-game console but this could be useful if having crashes or other runtime issues.
     /// </summary>
     [Export] public bool PrintToDebugConsole = false;
 
-    public static DeveloperConsole Instance { get; private set; }
 
     private VBoxContainer consoleEntriesContainer;
     private LineEdit consoleInput;
@@ -48,18 +59,39 @@ public partial class DeveloperConsole : PanelContainer
     }
 
 
-    public void AddConsoleEntry(string text)
+    private void AddConsoleEntry(string text)
+    {
+        // Print before adding just incase it breaks
+        if (PrintToDebugConsole)
+        {
+            GD.Print(text);
+        }
+
+        try
+        {
+            if (consoleEntriesContainer == null)
+            {
+                CallDeferred(MethodName.AddConsoleEntry, text);
+            }
+            else
+            {
+                AddEntryToList(text);
+            }
+        }
+        catch (Exception e)
+        {
+            GD.PrintErr("DeveloperConsole: Failed to add console entry: " + e);
+            throw e;
+        }
+    }
+
+    private void AddEntryToList(string text)
     {
         Label entry = new()
         {
             Text = text
         };
         consoleEntriesContainer.AddChild(entry);
-
-        if (PrintToDebugConsole)
-        {
-            GD.Print(text);
-        }
     }
 
     public override void _GuiInput(InputEvent @event)
@@ -84,7 +116,7 @@ public partial class DeveloperConsole : PanelContainer
 
     private void OnSubmitConsoleInput(string text)
     {
-        AddConsoleEntry(text);
+        Print(text);
         consoleInput.Clear();
         FocusConsoleInput();
     }

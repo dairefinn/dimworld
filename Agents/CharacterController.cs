@@ -1,6 +1,7 @@
 namespace Dimworld;
 
 using System.Linq;
+using Dimworld.Developer;
 using Dimworld.GOAP;
 using Dimworld.MemoryEntries;
 using Godot;
@@ -114,7 +115,7 @@ public partial class CharacterController : CharacterBody2D, IDamageable, ICanBeM
 		//         contentsStrings.Add(slot.Item.ItemName + " (" + slot.Quantity + ")");
 		//     }
 		//     inventoryString += string.Join(", ", contentsStrings);
-		//     GD.Print(inventoryString);
+		//     DeveloperConsole.AddConsoleEntry(inventoryString);
 		// }
 	}
 
@@ -264,11 +265,11 @@ public partial class CharacterController : CharacterBody2D, IDamageable, ICanBeM
 
     public void TakeDamage(int damage)
     {
-		GD.Print($"Taking {damage} damage");
+		DeveloperConsole.Print($"Taking {damage} damage");
 		Stats.Health -= damage;
 		if (Stats.Health <= 0)
 		{
-			GD.Print("Agent is dead");
+			DeveloperConsole.Print("Agent is dead");
 			// QueueFree(); // TODO: Implement death logic
 		}
     }
@@ -304,7 +305,7 @@ public partial class CharacterController : CharacterBody2D, IDamageable, ICanBeM
 
 	public void Say(string text)
 	{
-		GD.Print($"Guard: \"{text}\"");
+		DeveloperConsole.Print($"Guard: \"{text}\"");
 		SpeechBubble?.Say(text);
 	}
 

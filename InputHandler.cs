@@ -103,28 +103,21 @@ public partial class InputHandler : Node2D
             if (Engine.TimeScale == 1.0)
             {
                 Engine.TimeScale = 0.1f;
-                DeveloperConsole.Instance.AddConsoleEntry("Time scale set to 0.1");
+                DeveloperConsole.Print("Time scale set to 0.1");
             }
             else
             {
                 Engine.TimeScale = 1.0f;
-                DeveloperConsole.Instance.AddConsoleEntry("Time scale set to 1.0");
+                DeveloperConsole.Print("Time scale set to 1.0");
             }
         }
 
         if (isTogglingDeveloperMenu)
         {
-            // TODO: Implement developer menu toggle
-            // DeveloperMenu developerMenu = DeveloperMenu.GetInstance();
-            // if (developerMenu != null)
-            // {
-            //     developerMenu.Visible = !developerMenu.Visible;
-            //     developerMenu.SetProcess(developerMenu.Visible);
-            // }
-            // else
-            // {
-            //     GD.PrintErr("InputHandler: Developer menu instance is null.");
-            // }
+            if (DeveloperMenu.Instance != null)
+            {
+                DeveloperMenu.Instance.ToggleVisibility();
+            }
         }
     }
 

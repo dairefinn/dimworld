@@ -1,5 +1,6 @@
 namespace Dimworld.GOAP.Actions;
 
+using Dimworld.Developer;
 using Dimworld.MemoryEntries;
 using Godot;
 using Godot.Collections;
@@ -112,12 +113,12 @@ public partial class FindItem : GoapAction
 
             if (containersWithItem.Count > 0)
             {
-                GD.Print("Searching for item in containers with known items");
+                DeveloperConsole.Print("Searching for item in containers with known items");
                 currentTarget = GetClosestContiner(containersWithItem, agentPosition);
             }
             else if (containersToSearch.Count > 0)
             {
-                GD.Print("Searching for item in containers to search");
+                DeveloperConsole.Print("Searching for item in containers to search");
                 currentTarget = GetClosestContiner(containersToSearch, agentPosition);
             }
 
@@ -150,7 +151,7 @@ public partial class FindItem : GoapAction
             }
             else
             {
-                GD.Print("Item not found in container");
+                DeveloperConsole.Print("Item not found in container");
                 characterController.Say($"I couldn't find the item: {ItemId}.");
                 containersChecked.Add(currentTarget);
                 RemoveContainerFromBacklog(currentTarget);

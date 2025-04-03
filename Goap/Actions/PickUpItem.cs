@@ -4,6 +4,8 @@ using Godot;
 using Godot.Collections;
 using Dimworld.MemoryEntries;
 using System.Linq;
+using Dimworld.Developer;
+
 
 public partial class PickUpItem : GoapAction
 {
@@ -93,7 +95,7 @@ public partial class PickUpItem : GoapAction
         IHasInventory closestContainer = containers[0];
         for(int i = 1; i < containers.Count; i++)
         {
-            GD.Print($"Checking container {i}");
+            DeveloperConsole.Print($"Checking container {i}");
             IHasInventory container = containers[i];
             if (container == null) continue; // Skip null containers
             if (container is not Node2D node2D) continue; // Must be a node2D

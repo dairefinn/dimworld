@@ -1,6 +1,7 @@
 namespace Dimworld;
 
 using System.Linq;
+using Dimworld.Developer;
 using Godot;
 using Godot.Collections;
 
@@ -18,11 +19,11 @@ public partial class MemoryHandler : Node2D
     public override void _Ready()
     {
         OnMemoryEntryAdded += (entry) => {
-            GD.Print($"Entry added to agent memory: {Json.Stringify(entry)}");
+            DeveloperConsole.Print($"Entry added to agent memory: {Json.Stringify(entry)}");
             LogCurrentMemoryEntries();
         };
         OnMemoryEntryRemoved += (entry) => {
-            // GD.Print($"Entry removed from agent memory: {Json.Stringify(entry)}");
+            // DeveloperConsole.AddConsoleEntry($"Entry removed from agent memory: {Json.Stringify(entry)}");
             LogCurrentMemoryEntries();
         };
     }
@@ -38,7 +39,7 @@ public partial class MemoryHandler : Node2D
 
             if (memoryEntry.IsExpired())
             {
-                GD.Print($"Memory expired: {Json.Stringify(memoryEntry)}");
+                DeveloperConsole.Print($"Memory expired: {Json.Stringify(memoryEntry)}");
                 CallDeferred(MethodName.RemoveMemory, memoryEntry);
             }
         }
@@ -95,7 +96,7 @@ public partial class MemoryHandler : Node2D
     {
         // JSON serialization for better readability
         // string memoryEntriesString = Json.Stringify(MemoryEntries.Select(entry => entry.ToString()).ToArray());
-        // GD.Print("Current Memory Entries: "+ memoryEntriesString);
+        // DeveloperConsole.AddConsoleEntry("Current Memory Entries: "+ memoryEntriesString);
     }
 
 }

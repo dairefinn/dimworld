@@ -1,6 +1,7 @@
-[gd_scene load_steps=2 format=3 uid="uid://qds61vs7bsi1"]
+[gd_scene load_steps=3 format=3 uid="uid://qds61vs7bsi1"]
 
-[ext_resource type="PackedScene" uid="uid://diumqxcpymweo" path="res://Developer/Console/DeveloperConsole.tscn" id="1_4jk31"]
+[ext_resource type="Script" uid="uid://b1uqqx4b00801" path="res://Developer/DeveloperMenu.cs" id="1_4jk31"]
+[ext_resource type="PackedScene" uid="uid://diumqxcpymweo" path="res://Developer/Console/DeveloperConsole.tscn" id="2_5m7ao"]
 
 [node name="DeveloperMenu" type="Control"]
 layout_mode = 3
@@ -9,6 +10,7 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
+script = ExtResource("1_4jk31")
 
 [node name="MarginContainer" type="MarginContainer" parent="."]
 layout_mode = 1
@@ -22,5 +24,5 @@ theme_override_constants/margin_top = 24
 theme_override_constants/margin_right = 24
 theme_override_constants/margin_bottom = 24
 
-[node name="DeveloperConsole" parent="MarginContainer" instance=ExtResource("1_4jk31")]
+[node name="DeveloperConsole" parent="MarginContainer" instance=ExtResource("2_5m7ao")]
 layout_mode = 2

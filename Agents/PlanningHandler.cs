@@ -1,6 +1,7 @@
 namespace Dimworld;
 
 using System.Linq;
+using Dimworld.Developer;
 using Dimworld.GOAP;
 using Godot;
 using Godot.Collections;
@@ -23,7 +24,7 @@ public partial class PlanningHandler : Node2D
     {
 		if (secondsToNextGoalUpdate <= 0)
 		{
-			// GD.Print("Updating current plan");
+			// DeveloperConsole.AddConsoleEntry("Updating current plan");
 			UpdateCurrentPlan(agent);
 			secondsToNextGoalUpdate = lookForGoalsEveryXSeconds;
 		}
@@ -48,8 +49,8 @@ public partial class PlanningHandler : Node2D
 			if (CurrentGoal == goal) return;
 			if (CurrentPlan == planForGoal) return;
 
-			GD.Print("New goal: " + goal.Name);
-			GD.Print("Plan: [" + string.Join(", ", planForGoal.Select(action => action.Name)) + "]");
+			DeveloperConsole.Print("New goal: " + goal.Name);
+			DeveloperConsole.Print("Plan: [" + string.Join(", ", planForGoal.Select(action => action.Name)) + "]");
 			CurrentGoal = goal;
 			CurrentPlan = planForGoal;
 			CurrentAction = null;
@@ -69,7 +70,7 @@ public partial class PlanningHandler : Node2D
 		// If the agent is starting a new action, run the OnStart lifecycle event
 		if (CurrentAction != actionAtStep)
 		{
-			GD.Print("New action: " + actionAtStep.Name);
+			DeveloperConsole.Print("New action: " + actionAtStep.Name);
 			CurrentAction?.OnEnd(agent, agent.WorldState);
 			CurrentAction = actionAtStep;
 			CurrentAction.OnStart(agent, agent.WorldState);
