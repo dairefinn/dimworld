@@ -183,9 +183,18 @@ public partial class InventoryHotbar : Control
         {
             if (!IsInstanceValid(child)) continue;
             if (child is not InventorySlotUI slotUI) continue;
-            GD.Print($"Setting slot {slotUI.SlotIndex} selectable to {value}");
             slotUI.CanBeSelected = value;
         }
+    }
+
+    public void SelectSlot(int slotIndex)
+    {
+        if (!IsInstanceValid(this)) return;
+
+        if (slotIndex < 0) return;
+        if (slotIndex > GetInventorySlots().Count) return;
+
+        SelectedSlotIndex = slotIndex;
     }
 
     private InventorySlotUI GetSelectedSlotUI()
@@ -241,7 +250,9 @@ public partial class InventoryHotbar : Control
     {
         if (!IsInstanceValid(this)) return;
 
+        GD.Print($"Selected Slot Index: {SelectedSlotIndex}");
         SelectedSlotUI = GetSelectedSlotUI();
+        GD.Print($"Selected Slot UI: {SelectedSlotUI}");
 
         if (SelectedSlotUI != null)
         {

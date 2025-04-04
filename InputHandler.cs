@@ -80,6 +80,31 @@ public partial class InputHandler : Node2D
             Globals.Instance.InventoryViewer.TryUseSelectedItem();
         }
 
+        if (canUseInputs)
+        {
+            // If 1-5 are pressed, use the corresponding hotbar item
+            if (Input.IsActionJustReleased("hotbar_slot_0"))
+            {
+                Globals.Instance.InventoryViewer.Hotbar.SelectSlot(0);
+            }
+            else if (Input.IsActionJustReleased("hotbar_slot_1"))
+            {
+                Globals.Instance.InventoryViewer.Hotbar.SelectSlot(1);
+            }
+            else if (Input.IsActionJustReleased("hotbar_slot_2"))
+            {
+                Globals.Instance.InventoryViewer.Hotbar.SelectSlot(2);
+            }
+            else if (Input.IsActionJustReleased("hotbar_slot_3"))
+            {
+                Globals.Instance.InventoryViewer.Hotbar.SelectSlot(3);
+            }
+            else if (Input.IsActionJustReleased("hotbar_slot_4"))
+            {
+                Globals.Instance.InventoryViewer.Hotbar.SelectSlot(4);
+            }
+        }
+
     }
 
 
