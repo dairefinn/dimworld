@@ -62,6 +62,21 @@ public partial class InventoryHotbar : Control
         UpdateUI();
     }
 
+    public override void _Input(InputEvent @event)
+    {
+        base._Input(@event);
+
+        if (@event.IsActionPressed("hotbar_slot_prev"))
+        {
+            SelectPreviousSlot();
+        }
+        else if (@event.IsActionPressed("hotbar_slot_next"))
+        {
+            SelectNextSlot();
+        }
+    }
+
+
 
     public void OnUpdateInventory()
     {
@@ -186,6 +201,34 @@ public partial class InventoryHotbar : Control
         }
 
         return null;
+    }
+
+    private void SelectPreviousSlot()
+    {
+        if (!IsInstanceValid(this)) return;
+
+        if (SelectedSlotIndex > 0)
+        {
+            SelectedSlotIndex--;
+        }
+        else
+        {
+            SelectedSlotIndex = GetInventorySlots().Count - 1;
+        }
+    }
+
+    private void SelectNextSlot()
+    {
+        if (!IsInstanceValid(this)) return;
+
+        if (SelectedSlotIndex < GetInventorySlots().Count - 1)
+        {
+            SelectedSlotIndex++;
+        }
+        else
+        {
+            SelectedSlotIndex = 0;
+        }
     }
 
     private void OnUpdateSelectedSlotIndex()
