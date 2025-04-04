@@ -81,8 +81,20 @@ public partial class InventoryHotbar : Control
             InventorySlotUI slotUI = GD.Load<PackedScene>("res://Inventory/UI/Slot/InventorySlotUI.tscn").Instantiate<InventorySlotUI>();
             slotUI.TargetSlot = slot;
             slotUI.SlotIndex = index;
+            slotUI.CanBeSelected = false;
             SlotsContainer.AddChild(slotUI);
             index++;
+        }
+    }
+
+    public void SetSelectable(bool value)
+    {
+        foreach (Node child in SlotsContainer.GetChildren())
+        {
+            if (child is InventorySlotUI slotUI)
+            {
+                slotUI.CanBeSelected = value;
+            }
         }
     }
 

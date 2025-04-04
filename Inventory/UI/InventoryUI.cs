@@ -62,12 +62,11 @@ public partial class InventoryUI : Container
             InventorySlotUI slotUI = SlotUIScene.Instantiate<InventorySlotUI>();
             slotUI.TargetSlot = slot;
             slotUI.ParentInventoryUI = this;
-            SlotsGrid.AddChild(slotUI);
 
             int row = index / SlotsGrid.Columns;
-            if (row >= RowsDisplayed)
+            if (row < RowsDisplayed)
             {
-                slotUI.Hide();
+                SlotsGrid.AddChild(slotUI);
             }
 
             index++;

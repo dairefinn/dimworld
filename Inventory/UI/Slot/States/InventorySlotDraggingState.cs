@@ -11,6 +11,7 @@ public partial class InventorySlotDraggingState : InventorySlotState
 
 	private const float DRAGGING_MINIMUM_THRESHOLD = 0.05f;
 	private bool minimumDragTimeElapsed = false;
+	private StyleBox previousStylebox;
 
     
     public override void Enter()
@@ -21,6 +22,7 @@ public partial class InventorySlotDraggingState : InventorySlotState
 			inventorySlotUI.Reparent(uiLayer);
 		}
 
+		previousStylebox = (StyleBox)inventorySlotUI.Get("theme_override_styles/panel");
 		inventorySlotUI.Set("theme_override_styles/panel", InventorySlotUI.STYLEBOX_SELECTED);
 
 		minimumDragTimeElapsed = false;
@@ -34,6 +36,15 @@ public partial class InventorySlotDraggingState : InventorySlotState
 	public override void Exit()
 	{
 		inventorySlotUI.DragArea.Position = Vector2.Zero;
+
+		if (previousStylebox != null)
+		{
+			inventorySlotUI.Set("theme_override_styles/panel", previousStylebox);
+		}
+		else
+		{
+			inventorySlotUI.Set("theme_override_styles/panel", InventorySlotUI.STYLEBOX_DEFAULT);
+		}
 	}
 
     public override void OnInput(InputEvent @event)
@@ -44,7 +55,7 @@ public partial class InventorySlotDraggingState : InventorySlotState
 
 		if (mouseMotion)
 		{
-		inventorySlotUI.DragArea.GlobalPosition = inventorySlotUI.DragArea.GetGlobalMousePosition() - (inventorySlotUI.DragArea.CollisionShape.Shape as RectangleShape2D).Size;
+			inventorySlotUI.DragArea.GlobalPosition = inventorySlotUI.DragArea.GetGlobalMousePosition() - (inventorySlotUI.DragArea.CollisionShape.Shape as RectangleShape2D).Size;
 		}
 
 		if (cancel)

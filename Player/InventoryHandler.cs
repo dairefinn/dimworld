@@ -218,6 +218,8 @@ public partial class InventoryHandler : Control
         {
             ContextMenu.Hide();
         }
+
+        Hotbar?.SetSelectable(visible);
     }
 
 

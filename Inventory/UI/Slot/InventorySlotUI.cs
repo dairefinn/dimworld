@@ -24,6 +24,7 @@ public partial class InventorySlotUI : Panel
         }
     }
     private int _slotIndex = -1;
+    [Export] public bool CanBeSelected { get; set; } = true;
 
     public InventoryUI ParentInventoryUI { get; set; }
 

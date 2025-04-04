@@ -1,4 +1,4 @@
-[gd_scene load_steps=19 format=3 uid="uid://cbc7lb60qv02d"]
+[gd_scene load_steps=21 format=3 uid="uid://cbc7lb60qv02d"]
 
 [ext_resource type="StyleBox" uid="uid://cuxjk7ngo011o" path="res://Inventory/UI/Slot/Styles/InventorySlotUI_Default.tres" id="1_o4ioh"]
 [ext_resource type="Script" uid="uid://bo1stix1esiy8" path="res://Inventory/UI/Slot/InventorySlotUI.cs" id="2_yi1il"]
@@ -31,14 +31,22 @@ line_spacing = 0.0
 shadow_size = 5
 shadow_color = Color(0, 0, 0, 0.588235)
 
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_f11j2"]
+bg_color = Color(0.284176, 0.587001, 0.246065, 1)
+corner_radius_top_left = 100
+corner_radius_top_right = 100
+corner_radius_bottom_right = 100
+corner_radius_bottom_left = 100
+anti_aliasing = false
+
 [sub_resource type="LabelSettings" id="LabelSettings_4iwih"]
-line_spacing = 0.0
-font_size = 32
-shadow_size = 5
-shadow_color = Color(0, 0, 0, 0.588235)
+font_size = 18
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_5x0sg"]
+bg_color = Color(0, 0, 0, 0)
+anti_aliasing = false
 
 [sub_resource type="LabelSettings" id="LabelSettings_f11j2"]
-line_spacing = 0.0
 font_color = Color(0.588235, 1, 0.333333, 1)
 shadow_size = 5
 shadow_color = Color(0, 0, 0, 0.588235)
@@ -59,9 +67,9 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 theme_override_constants/margin_left = 10
-theme_override_constants/margin_top = 5
+theme_override_constants/margin_top = 10
 theme_override_constants/margin_right = 10
-theme_override_constants/margin_bottom = 5
+theme_override_constants/margin_bottom = 10
 
 [node name="DragArea" type="Area2D" parent="MarginContainer"]
 unique_name_in_owner = true
@@ -93,23 +101,27 @@ label_settings = SubResource("LabelSettings_o4ioh")
 
 [node name="QuantityLabel" type="Label" parent="MarginContainer"]
 unique_name_in_owner = true
+custom_minimum_size = Vector2(30, 30)
 layout_mode = 2
 size_flags_horizontal = 8
 size_flags_vertical = 8
-text = "28"
+theme_override_styles/normal = SubResource("StyleBoxFlat_f11j2")
+text = "5"
 label_settings = SubResource("LabelSettings_4iwih")
-horizontal_alignment = 2
-vertical_alignment = 2
+horizontal_alignment = 1
+vertical_alignment = 1
 
 [node name="IndexLabel" type="Label" parent="MarginContainer"]
 unique_name_in_owner = true
+custom_minimum_size = Vector2(20, 20)
 layout_mode = 2
 size_flags_horizontal = 0
 size_flags_vertical = 0
+theme_override_styles/normal = SubResource("StyleBoxFlat_5x0sg")
 text = "1"
 label_settings = SubResource("LabelSettings_f11j2")
-horizontal_alignment = 2
-vertical_alignment = 2
+horizontal_alignment = 1
+vertical_alignment = 1
 
 [node name="StateMachine" type="Node" parent="." node_paths=PackedStringArray("initialState")]
 unique_name_in_owner = true
