@@ -2,7 +2,7 @@ namespace Dimworld;
 
 using Godot;
 
-[Tool]
+
 [GlobalClass]
 public partial class InventorySlot : Resource
 {

@@ -5,7 +5,7 @@
 [ext_resource type="PackedScene" uid="uid://d1j133js04tk1" path="res://Inventory/UI/Hotbar/InventoryHotbar.tscn" id="3_5gkt5"]
 [ext_resource type="PackedScene" uid="uid://dk54wpv1dffmh" path="res://Inventory/InventoryContextMenuUI.tscn" id="3_wxqvu"]
 
-[node name="InventoryViewer" type="Control"]
+[node name="InventoryViewer" type="Control" node_paths=PackedStringArray("PrimaryInventoryUI", "SecondaryInventoryUI", "Hotbar", "ContextMenu")]
 layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0
@@ -15,6 +15,10 @@ grow_vertical = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
 script = ExtResource("1_tdqb6")
+PrimaryInventoryUI = NodePath("VBoxContainer/CenterContainer/HBoxContainer/PrimaryInventoryUI")
+SecondaryInventoryUI = NodePath("VBoxContainer/CenterContainer/HBoxContainer/SecondaryInventoryUI")
+Hotbar = NodePath("VBoxContainer/Hotbar")
+ContextMenu = NodePath("InventoryContextMenuUI")
 
 [node name="VBoxContainer" type="VBoxContainer" parent="."]
 layout_mode = 1
@@ -49,8 +53,9 @@ layout_mode = 2
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 3
+Inventory = null
+HotbarRow = 0
+SelectedSlotIndex = -1
 
-[node name="ContextMenu" parent="." instance=ExtResource("3_wxqvu")]
-unique_name_in_owner = true
+[node name="InventoryContextMenuUI" parent="." instance=ExtResource("3_wxqvu")]
 visible = false
-layout_mode = 0

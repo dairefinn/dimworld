@@ -3,7 +3,6 @@ namespace Dimworld;
 using Godot;
 
 
-[Tool]
 public partial class InventorySlotState : Node
 {
 

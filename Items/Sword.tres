@@ -3,16 +3,16 @@
 [ext_resource type="Texture2D" uid="uid://cm5fkf4n02ibp" path="res://Assets/BaseSet.png" id="1_5nuw4"]
 [ext_resource type="Script" uid="uid://frg4uic6tym5" path="res://Inventory/InventoryItem.cs" id="1_jm3gf"]
 
-[sub_resource type="AtlasTexture" id="AtlasTexture_0g53v"]
+[sub_resource type="AtlasTexture" id="AtlasTexture_5nuw4"]
 atlas = ExtResource("1_5nuw4")
-region = Rect2(480, 416, 16, 16)
+region = Rect2(64, 352, 32, 32)
 
 [resource]
 script = ExtResource("1_jm3gf")
 Id = "item-sword"
 ItemName = "Sword"
-ItemDescription = "A generic sword"
-Icon = SubResource("AtlasTexture_0g53v")
+ItemDescription = "Item description"
+Icon = SubResource("AtlasTexture_5nuw4")
 MaxStackSize = 1
-CanBeEquipped = true
+CanBeEquipped = false
 metadata/_custom_type_script = "uid://frg4uic6tym5"

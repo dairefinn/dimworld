@@ -4,7 +4,7 @@ using System;
 using Godot;
 
 
-public partial class InventoryContextMenuUI : PanelContainer
+public partial class InventoryContextMenuUI : Control
 {
 
     [Signal] public delegate void OnOptionSelectedEventHandler();
@@ -23,9 +23,12 @@ public partial class InventoryContextMenuUI : PanelContainer
 
     private void RemoveAllOptions()
     {
+        if (!IsInstanceValid(MenuOptionsContainer)) return;
+
         // Remove all testing menu options
         foreach (Node child in MenuOptionsContainer.GetChildren())
         {
+            if (!IsInstanceValid(child)) continue;
             child.QueueFree();
         }
     }

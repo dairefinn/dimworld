@@ -1,11 +1,11 @@
 namespace Dimworld;
 
+using System;
 using Dimworld.Developer;
 using Godot;
 using Godot.Collections;
 
 
-[Tool]
 [GlobalClass]
 public partial class Inventory : Resource
 {
@@ -37,17 +37,25 @@ public partial class Inventory : Resource
 
 	private void SetSlots(Array<InventorySlot> slots)
 	{
-		for(int i = 0; i < slots.Count; i++)
-		{
-			if (slots[i] == null)
-			{
-				slots[i] = new InventorySlot();
-			}
-			slots[i].OnUpdated += OnUpdate;
-		}
-
 		_slots = slots;
+		PopulateAllSlots();
 		CallDeferred(MethodName.OnUpdate);
+	}
+
+	public void PopulateAllSlots()
+	{
+		for(int i = 0; i < Slots.Count; i++)
+		{
+			if (Slots[i] == null)
+			{
+				Slots[i] = new InventorySlot();
+			}
+
+			if (!Slots[i].IsConnected(SignalName.OnUpdated, Callable.From(OnUpdate)))
+			{
+				Slots[i].OnUpdated += OnUpdate;
+			}
+		}
 	}
 
 
