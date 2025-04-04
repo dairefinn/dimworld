@@ -103,7 +103,7 @@ public class DeveloperConsoleCommandHandler
     {
         if (args.Length == 2 && float.TryParse(args[0], out float x) && float.TryParse(args[1], out float y))
         {
-            CharacterController player = InputHandler.Instance.PlayerAgent;
+            CharacterController player = Globals.Instance.Player;
             player.GlobalPosition = new Vector2(x, y);
         }
         else

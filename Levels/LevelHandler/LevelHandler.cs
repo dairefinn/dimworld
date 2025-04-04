@@ -60,7 +60,7 @@ public partial class LevelHandler : Node
 
         if(spawnPoint != null)
         {
-            CharacterController player = InputHandler.Instance.PlayerAgent;
+            CharacterController player = Globals.Instance.Player;
             if (player != null)
             {
                 player.GlobalPosition = spawnPoint.GlobalPosition;

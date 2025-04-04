@@ -10,6 +10,10 @@ public partial class InventoryHotbar : Control
 
     public static readonly PackedScene SCENE_INVENTORY_SLOT_UI = GD.Load<PackedScene>("res://Inventory/UI/Slot/InventorySlotUI.tscn");
 
+
+    [Signal] public delegate void OnSlotSelectedEventHandler(InventorySlotUI selectedSlotUI);
+
+
     [Export] public Inventory Inventory {
         get => _inventory;
         set {
@@ -68,11 +72,11 @@ public partial class InventoryHotbar : Control
 
         if (@event.IsActionPressed("hotbar_slot_prev"))
         {
-            SelectPreviousSlot();
+            SelectNextSlot();
         }
         else if (@event.IsActionPressed("hotbar_slot_next"))
         {
-            SelectNextSlot();
+            SelectPreviousSlot();
         }
     }
 
@@ -236,6 +240,11 @@ public partial class InventoryHotbar : Control
         if (!IsInstanceValid(this)) return;
 
         SelectedSlotUI = GetSelectedSlotUI();
+
+        if (SelectedSlotUI != null)
+        {
+            EmitSignal(SignalName.OnSlotSelected, SelectedSlotUI);
+        }
     }
 
 }

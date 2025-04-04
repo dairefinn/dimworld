@@ -31,7 +31,7 @@ public partial class InventoryViewer : Control
     }
     private InventoryUI _secondaryInventoryUI;
 
-    private InventoryHotbar Hotbar {
+    public InventoryHotbar Hotbar {
         get => _hotbar;
         set => SetHotbar(value);
     }
@@ -239,8 +239,8 @@ public partial class InventoryViewer : Control
 
         if (isChangingInventories)
         {
-            InputHandler.Instance.PlayerAgent.EquipmentHandler.Unequip(sourceSlot.TargetSlot.Item);
-            InputHandler.Instance.PlayerAgent.EquipmentHandler.Unequip(targetSlot.TargetSlot.Item);
+            Globals.Instance.Player.EquipmentHandler.Unequip(sourceSlot.TargetSlot.Item);
+            Globals.Instance.Player.EquipmentHandler.Unequip(targetSlot.TargetSlot.Item);
         }
 
         sourceSlot.UpdateUI();
@@ -266,7 +266,7 @@ public partial class InventoryViewer : Control
 
         bool itemIsInParentInventory = inventorySlotUI.ParentInventoryUI == primaryInventoryUI;
 
-        InventoryContextMenuUI.ContextMenuOption[] options = inventorySlotUI.TargetSlot.Item.GetContextMenuOptions(ContextMenu, InputHandler.Instance.PlayerAgent.EquipmentHandler, itemIsInParentInventory);
+        InventoryContextMenuUI.ContextMenuOption[] options = inventorySlotUI.TargetSlot.Item.GetContextMenuOptions(ContextMenu, Globals.Instance.Player.EquipmentHandler, itemIsInParentInventory);
         if (options == null || options.Length == 0) return; // If an item doesn't provide any context menu options, don't show the context menu
 
         ContextMenu.OnOptionSelected += () => OnContextMenuOptionSelected(inventorySlotUI);
@@ -279,6 +279,22 @@ public partial class InventoryViewer : Control
 
         ContextMenu.Hide();
         slotUI.UpdateUI();
+    }
+
+    public void TryUseSelectedItem()
+    {
+        if (Hotbar == null) return;
+        if (Hotbar.SelectedSlotUI == null) return;
+        if (Hotbar.SelectedSlotUI.TargetSlot.IsEmpty) return;
+
+        InventoryItem item = Hotbar.SelectedSlotUI.TargetSlot.Item;
+
+        if (item != null)
+        {
+            GD.Print("Using item: " + item.ItemName);
+            // TODO: Implement using items. Might want to use the EquipmentHandler for this.
+            // item.Use();
+        }
     }
 
 }
