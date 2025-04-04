@@ -2,6 +2,7 @@ namespace Dimworld;
 
 using Godot;
 
+[Tool]
 [GlobalClass]
 public partial class InventorySlot : Resource
 {
@@ -10,12 +11,18 @@ public partial class InventorySlot : Resource
 
     [Export] public InventoryItem Item {
         get => _item;
-        set => SetItem(value);
+        set {
+            _item = value;
+            OnUpdate();
+        }
     }
-    private InventoryItem _item;
+    private InventoryItem _item = null;
     [Export] public int Quantity {
         get => _quantity;
-        set => SetQuantity(value);
+        set {
+            _quantity = value;
+            OnUpdate();
+        }
     }
     private int _quantity = 0;
 
@@ -43,15 +50,16 @@ public partial class InventorySlot : Resource
     {
         if (IsFull) return false;
 
+        Item = item;
+
         if (IsEmpty)
         {
-            Item = item;
-            Quantity = 0;
+            Quantity = 1;
         }
-
-        Quantity++;
-
-        EmitSignal(SignalName.OnUpdated);
+        else
+        {
+            Quantity++;
+        }
 
         return true;
     }
@@ -71,38 +79,18 @@ public partial class InventorySlot : Resource
             Item = null;
         }
 
-        EmitSignal(SignalName.OnUpdated);
-
         return true;
     }
 
-    private void SetItem(InventoryItem value)
-    {
-        _item = value;
-
-        if (_item == null)
-        {
-            _quantity = 0;
-        }
-
-        EmitSignal(SignalName.OnUpdated);
-    }
-
-    private void SetQuantity(int value)
+    private void OnUpdate()
     {
         if (Item == null)
         {
             _quantity = 0;
-            return;
         }
         else
         {
-            _quantity = Mathf.Clamp(value, 0, Item.MaxStackSize);
-        }
-
-        if (_quantity == 0)
-        {
-            _item = null;
+            _quantity = Mathf.Clamp(_quantity, 0, Item.MaxStackSize);
         }
 
         EmitSignal(SignalName.OnUpdated);
@@ -131,9 +119,7 @@ public partial class InventorySlot : Resource
     public void ClearSlot()
     {
         _item = null;
-        _quantity = 0;
-
-        EmitSignal(SignalName.OnUpdated);
+        OnUpdate();
     }
 
 

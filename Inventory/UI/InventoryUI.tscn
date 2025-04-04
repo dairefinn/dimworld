@@ -1,12 +1,99 @@
-[gd_scene load_steps=4 format=3 uid="uid://bypfigpr23v58"]
+[gd_scene load_steps=26 format=3 uid="uid://bypfigpr23v58"]
 
 [ext_resource type="Script" uid="uid://ycsgnu3vc3d" path="res://Inventory/UI/InventoryUI.cs" id="1_dhcfh"]
-[ext_resource type="PackedScene" uid="uid://cbc7lb60qv02d" path="res://Inventory/UI/Slot/InventorySlotUI.tscn" id="2_eslls"]
+[ext_resource type="Script" uid="uid://bm0o5ggnfmm6y" path="res://Inventory/InventorySlot.cs" id="2_cwfrb"]
+[ext_resource type="Script" uid="uid://dph74un0q20el" path="res://Inventory/Inventory.cs" id="3_3r077"]
+
+[sub_resource type="Resource" id="Resource_cwfrb"]
+script = ExtResource("2_cwfrb")
+Quantity = 0
+
+[sub_resource type="Resource" id="Resource_3r077"]
+script = ExtResource("2_cwfrb")
+Quantity = 0
+
+[sub_resource type="Resource" id="Resource_m7t25"]
+script = ExtResource("2_cwfrb")
+Quantity = 0
+
+[sub_resource type="Resource" id="Resource_30l07"]
+script = ExtResource("2_cwfrb")
+Quantity = 0
+
+[sub_resource type="Resource" id="Resource_l60qy"]
+script = ExtResource("2_cwfrb")
+Quantity = 0
+
+[sub_resource type="Resource" id="Resource_qe51o"]
+script = ExtResource("2_cwfrb")
+Quantity = 0
+
+[sub_resource type="Resource" id="Resource_x1ocs"]
+script = ExtResource("2_cwfrb")
+Quantity = 0
+
+[sub_resource type="Resource" id="Resource_dhxay"]
+script = ExtResource("2_cwfrb")
+Quantity = 0
+
+[sub_resource type="Resource" id="Resource_n0oty"]
+script = ExtResource("2_cwfrb")
+Quantity = 0
+
+[sub_resource type="Resource" id="Resource_wxdai"]
+script = ExtResource("2_cwfrb")
+Quantity = 0
+
+[sub_resource type="Resource" id="Resource_w0882"]
+script = ExtResource("2_cwfrb")
+Quantity = 0
+
+[sub_resource type="Resource" id="Resource_r8j0o"]
+script = ExtResource("2_cwfrb")
+Quantity = 0
+
+[sub_resource type="Resource" id="Resource_xk2hf"]
+script = ExtResource("2_cwfrb")
+Quantity = 0
+
+[sub_resource type="Resource" id="Resource_eog21"]
+script = ExtResource("2_cwfrb")
+Quantity = 0
+
+[sub_resource type="Resource" id="Resource_nlmfx"]
+script = ExtResource("2_cwfrb")
+Quantity = 0
+
+[sub_resource type="Resource" id="Resource_g5mcj"]
+script = ExtResource("2_cwfrb")
+Quantity = 0
+
+[sub_resource type="Resource" id="Resource_jhfa5"]
+script = ExtResource("2_cwfrb")
+Quantity = 0
+
+[sub_resource type="Resource" id="Resource_2tm1m"]
+script = ExtResource("2_cwfrb")
+Quantity = 0
+
+[sub_resource type="Resource" id="Resource_3nb7h"]
+script = ExtResource("2_cwfrb")
+Quantity = 0
+
+[sub_resource type="Resource" id="Resource_ff3hr"]
+script = ExtResource("2_cwfrb")
+Quantity = 0
+
+[sub_resource type="Resource" id="Resource_lknwu"]
+script = ExtResource("3_3r077")
+InventoryName = "Test Inventory"
+Slots = Array[ExtResource("2_cwfrb")]([SubResource("Resource_cwfrb"), SubResource("Resource_3r077"), SubResource("Resource_m7t25"), SubResource("Resource_30l07"), SubResource("Resource_l60qy"), SubResource("Resource_qe51o"), SubResource("Resource_x1ocs"), SubResource("Resource_dhxay"), SubResource("Resource_n0oty"), SubResource("Resource_wxdai"), SubResource("Resource_w0882"), SubResource("Resource_r8j0o"), SubResource("Resource_xk2hf"), SubResource("Resource_eog21"), SubResource("Resource_nlmfx"), SubResource("Resource_g5mcj"), SubResource("Resource_jhfa5"), SubResource("Resource_2tm1m"), SubResource("Resource_3nb7h"), SubResource("Resource_ff3hr")])
+metadata/_custom_type_script = "uid://dph74un0q20el"
 
 [sub_resource type="LabelSettings" id="LabelSettings_eslls"]
 font_size = 24
 
-[node name="InventoryUI" type="MarginContainer"]
+[node name="InventoryUI" type="MarginContainer" node_paths=PackedStringArray("SlotsGrid", "InventoryTitle")]
 offset_right = 550.0
 offset_bottom = 357.0
 theme_override_constants/margin_left = 5
@@ -14,6 +101,9 @@ theme_override_constants/margin_top = 5
 theme_override_constants/margin_right = 5
 theme_override_constants/margin_bottom = 5
 script = ExtResource("1_dhcfh")
+TargetInventory = SubResource("Resource_lknwu")
+SlotsGrid = NodePath("VBoxContainer/SlotsGrid")
+InventoryTitle = NodePath("VBoxContainer/InventoryTitle")
 
 [node name="VBoxContainer" type="VBoxContainer" parent="."]
 layout_mode = 2
@@ -21,7 +111,7 @@ layout_mode = 2
 [node name="InventoryTitle" type="Label" parent="VBoxContainer"]
 unique_name_in_owner = true
 layout_mode = 2
-text = "Inventory name"
+text = "Test Inventory"
 label_settings = SubResource("LabelSettings_eslls")
 
 [node name="SlotsGrid" type="GridContainer" parent="VBoxContainer"]
@@ -30,48 +120,3 @@ layout_mode = 2
 theme_override_constants/h_separation = 10
 theme_override_constants/v_separation = 10
 columns = 5
-
-[node name="InventorySlotUI" parent="VBoxContainer/SlotsGrid" instance=ExtResource("2_eslls")]
-layout_mode = 2
-
-[node name="InventorySlotUI2" parent="VBoxContainer/SlotsGrid" instance=ExtResource("2_eslls")]
-layout_mode = 2
-
-[node name="InventorySlotUI3" parent="VBoxContainer/SlotsGrid" instance=ExtResource("2_eslls")]
-layout_mode = 2
-
-[node name="InventorySlotUI4" parent="VBoxContainer/SlotsGrid" instance=ExtResource("2_eslls")]
-layout_mode = 2
-
-[node name="InventorySlotUI5" parent="VBoxContainer/SlotsGrid" instance=ExtResource("2_eslls")]
-layout_mode = 2
-
-[node name="InventorySlotUI6" parent="VBoxContainer/SlotsGrid" instance=ExtResource("2_eslls")]
-layout_mode = 2
-
-[node name="InventorySlotUI7" parent="VBoxContainer/SlotsGrid" instance=ExtResource("2_eslls")]
-layout_mode = 2
-
-[node name="InventorySlotUI8" parent="VBoxContainer/SlotsGrid" instance=ExtResource("2_eslls")]
-layout_mode = 2
-
-[node name="InventorySlotUI9" parent="VBoxContainer/SlotsGrid" instance=ExtResource("2_eslls")]
-layout_mode = 2
-
-[node name="InventorySlotUI10" parent="VBoxContainer/SlotsGrid" instance=ExtResource("2_eslls")]
-layout_mode = 2
-
-[node name="InventorySlotUI11" parent="VBoxContainer/SlotsGrid" instance=ExtResource("2_eslls")]
-layout_mode = 2
-
-[node name="InventorySlotUI12" parent="VBoxContainer/SlotsGrid" instance=ExtResource("2_eslls")]
-layout_mode = 2
-
-[node name="InventorySlotUI13" parent="VBoxContainer/SlotsGrid" instance=ExtResource("2_eslls")]
-layout_mode = 2
-
-[node name="InventorySlotUI14" parent="VBoxContainer/SlotsGrid" instance=ExtResource("2_eslls")]
-layout_mode = 2
-
-[node name="InventorySlotUI15" parent="VBoxContainer/SlotsGrid" instance=ExtResource("2_eslls")]
-layout_mode = 2

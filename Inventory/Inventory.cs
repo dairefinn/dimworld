@@ -5,15 +5,20 @@ using Godot;
 using Godot.Collections;
 
 
+[Tool]
 [GlobalClass]
 public partial class Inventory : Resource
 {
 
-	[Export] public string InventoryName = "Inventory";
-	[Export] public Array<InventorySlot> Slots = [];
-
-
 	[Signal] public delegate void OnUpdatedEventHandler();
+
+
+	[Export] public string InventoryName = "Inventory";
+	[Export] public Array<InventorySlot> Slots {
+		get => _slots;
+		set => SetSlots(value);
+	}
+	private Array<InventorySlot> _slots = [];
 
 
 	public Inventory()
@@ -27,6 +32,22 @@ public partial class Inventory : Resource
 		{
 			Slots.Add(new InventorySlot(slot));
 		}
+	}
+
+
+	private void SetSlots(Array<InventorySlot> slots)
+	{
+		for(int i = 0; i < slots.Count; i++)
+		{
+			if (slots[i] == null)
+			{
+				slots[i] = new InventorySlot();
+			}
+			slots[i].OnUpdated += OnUpdate;
+		}
+
+		_slots = slots;
+		CallDeferred(MethodName.OnUpdate);
 	}
 
 
@@ -66,6 +87,11 @@ public partial class Inventory : Resource
 		}
 
 		return false;
+	}
+
+	private void OnUpdate()
+	{
+		EmitSignal(SignalName.OnUpdated);
 	}
 
 	/// <summary>

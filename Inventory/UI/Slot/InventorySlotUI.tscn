@@ -1,10 +1,7 @@
-[gd_scene load_steps=21 format=3 uid="uid://cbc7lb60qv02d"]
+[gd_scene load_steps=16 format=3 uid="uid://cbc7lb60qv02d"]
 
 [ext_resource type="StyleBox" uid="uid://cuxjk7ngo011o" path="res://Inventory/UI/Slot/Styles/InventorySlotUI_Default.tres" id="1_o4ioh"]
 [ext_resource type="Script" uid="uid://bo1stix1esiy8" path="res://Inventory/UI/Slot/InventorySlotUI.cs" id="2_yi1il"]
-[ext_resource type="Resource" uid="uid://octn8jxqeqaq" path="res://Items/Sword.tres" id="3_160kp"]
-[ext_resource type="Script" uid="uid://bm0o5ggnfmm6y" path="res://Inventory/InventorySlot.cs" id="4_yjg2m"]
-[ext_resource type="Texture2D" uid="uid://ca5rsfsk6oyg0" path="res://Assets/Cute_Fantasy_Free/Enemies/Skeleton.png" id="5_2v54i"]
 [ext_resource type="Script" uid="uid://1waxwqudtxwe" path="res://Inventory/UI/Slot/InventorySlotStateMachine.cs" id="5_160kp"]
 [ext_resource type="Script" uid="uid://dyce8rtklida4" path="res://Inventory/UI/Slot/InventorySlotDragArea.cs" id="5_f11j2"]
 [ext_resource type="Script" uid="uid://dctmd2sl8wn1j" path="res://Inventory/UI/Slot/States/InventorySlotBaseState.cs" id="6_yjg2m"]
@@ -12,16 +9,6 @@
 [ext_resource type="Script" uid="uid://dhotkpi4inknx" path="res://Inventory/UI/Slot/States/InventorySlotDraggingState.cs" id="8_nqjmp"]
 [ext_resource type="Script" uid="uid://dr6rusanwjadf" path="res://Inventory/UI/Slot/States/InventorySlotReleasedState.cs" id="9_h2m36"]
 [ext_resource type="StyleBox" uid="uid://bcjpx3k1qej8l" path="res://Inventory/UI/Slot/Styles/InventorySlotUI_Hover.tres" id="12_f11j2"]
-
-[sub_resource type="Resource" id="Resource_x15h5"]
-script = ExtResource("4_yjg2m")
-Item = ExtResource("3_160kp")
-Quantity = 1
-metadata/_custom_type_script = "uid://bm0o5ggnfmm6y"
-
-[sub_resource type="AtlasTexture" id="AtlasTexture_f11j2"]
-atlas = ExtResource("5_2v54i")
-region = Rect2(0, 0, 32, 32)
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_2v54i"]
 size = Vector2(50, 50)
@@ -51,13 +38,17 @@ font_color = Color(0.588235, 1, 0.333333, 1)
 shadow_size = 5
 shadow_color = Color(0, 0, 0, 0.588235)
 
-[node name="InventorySlotUI" type="Panel"]
+[node name="InventorySlotUI" type="Panel" node_paths=PackedStringArray("ItemIcon", "QuantityLabel", "ItemLabel", "IndexLabel", "HoverOverlay")]
 custom_minimum_size = Vector2(100, 100)
 offset_right = 100.0
 offset_bottom = 100.0
 theme_override_styles/panel = ExtResource("1_o4ioh")
 script = ExtResource("2_yi1il")
-TargetSlot = SubResource("Resource_x15h5")
+ItemIcon = NodePath("MarginContainer/DragArea/ItemIcon")
+QuantityLabel = NodePath("MarginContainer/QuantityLabel")
+ItemLabel = NodePath("MarginContainer/ItemLabel")
+IndexLabel = NodePath("MarginContainer/IndexLabel")
+HoverOverlay = NodePath("HoverOverlay")
 
 [node name="MarginContainer" type="MarginContainer" parent="."]
 layout_mode = 1
@@ -84,7 +75,6 @@ offset_left = 20.0
 offset_top = 10.0
 offset_right = 80.0
 offset_bottom = 90.0
-texture = SubResource("AtlasTexture_f11j2")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="MarginContainer/DragArea"]
 position = Vector2(50, 50)
@@ -96,37 +86,44 @@ visible = false
 layout_mode = 2
 size_flags_horizontal = 0
 size_flags_vertical = 0
-text = "Item1"
 label_settings = SubResource("LabelSettings_o4ioh")
 
 [node name="QuantityLabel" type="Label" parent="MarginContainer"]
 unique_name_in_owner = true
+visible = false
 custom_minimum_size = Vector2(30, 30)
 layout_mode = 2
 size_flags_horizontal = 8
 size_flags_vertical = 8
 theme_override_styles/normal = SubResource("StyleBoxFlat_f11j2")
-text = "5"
+text = "0"
 label_settings = SubResource("LabelSettings_4iwih")
 horizontal_alignment = 1
 vertical_alignment = 1
 
 [node name="IndexLabel" type="Label" parent="MarginContainer"]
 unique_name_in_owner = true
+visible = false
 custom_minimum_size = Vector2(20, 20)
 layout_mode = 2
 size_flags_horizontal = 0
 size_flags_vertical = 0
 theme_override_styles/normal = SubResource("StyleBoxFlat_5x0sg")
-text = "1"
+text = "-1"
 label_settings = SubResource("LabelSettings_f11j2")
 horizontal_alignment = 1
 vertical_alignment = 1
 
-[node name="StateMachine" type="Node" parent="." node_paths=PackedStringArray("initialState")]
+[node name="StateMachine" type="Node" parent="." node_paths=PackedStringArray("initialState", "states")]
 unique_name_in_owner = true
 script = ExtResource("5_160kp")
 initialState = NodePath("StateBase")
+states = {
+0: NodePath("StateBase"),
+1: NodePath("StateClicked"),
+2: NodePath("StateDragging"),
+3: NodePath("StateReleased")
+}
 
 [node name="StateBase" type="Node" parent="StateMachine"]
 script = ExtResource("6_yjg2m")

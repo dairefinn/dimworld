@@ -2,6 +2,7 @@ namespace Dimworld;
 
 using Godot;
 
+[Tool]
 [GlobalClass]
 public partial class InventoryItem : Resource, ICanBeEquipped, IHasContextMenu // TODO: Every item has ICanBeEquipped for now but it might be better to add it per item type so we can determine if it's equippable or not
 {
