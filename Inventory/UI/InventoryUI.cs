@@ -1,7 +1,6 @@
 namespace Dimworld;
 
 using System;
-using System.Linq;
 using Godot;
 using Godot.Collections;
 
@@ -58,11 +57,20 @@ public partial class InventoryUI : Container
 
     public void UpdateUI()
     {
-        if (_targetInventory == null) return;
+        if (!IsInstanceValid(this)) return;
+
+        string inventoryName = "Inventory";
+        Array<InventorySlot> inventorySlots = [];
+
+        if (_targetInventory != null)
+        {
+            inventoryName = _targetInventory.InventoryName;
+            inventorySlots = _targetInventory.Slots;
+        }
 
         if (IsInstanceValid(InventoryTitle))
         {
-            InventoryTitle.Text = _targetInventory.InventoryName;
+            InventoryTitle.Text = inventoryName;
         }
 
         if (IsInstanceValid(SlotsGrid))
@@ -70,33 +78,33 @@ public partial class InventoryUI : Container
             SlotsGrid.Columns = Columns;
         }
 
-        if (SlotsGrid == null) return;
-
         // FIXME: We're re-creating every slot every UI update and this could probably be more efficient if we didn't do that.
-
-        // Clear all previous slot UIs
-        foreach (Node child in SlotsGrid.GetChildren())
+        if (IsInstanceValid(SlotsGrid))
         {
-            if (child is InventorySlotUI slotUI)
+            // Clear all previous slot UIs
+            foreach (Node child in SlotsGrid.GetChildren())
             {
-                if (IsInstanceValid(slotUI))
+                if (!IsInstanceValid(child)) continue;
+
+                if (child is InventorySlotUI slotUI)
                 {
                     slotUI.QueueFree();
                 }
             }
+
+            // Create new slot UIs
+            for(int i = 0; i < inventorySlots.Count; i++)
+            {
+                InventorySlot currentSlot = inventorySlots[i];
+                int row = i / SlotsGrid.Columns;
+                if (row >= RowsDisplayed) return;
+                InventorySlotUI slotUI = SCENE_SLOT_UI.Instantiate<InventorySlotUI>();
+                slotUI.TargetSlot = currentSlot;
+                slotUI.ParentInventoryUI = this;
+                SlotsGrid?.AddChild(slotUI);
+            }
         }
 
-        // Create new slot UIs
-        for(int i = 0; i < _targetInventory.Slots.Count; i++)
-        {
-            InventorySlot currentSlot = _targetInventory.Slots[i];
-            int row = i / SlotsGrid.Columns;
-            if (row >= RowsDisplayed) return;
-            InventorySlotUI slotUI = SCENE_SLOT_UI.Instantiate<InventorySlotUI>();
-            slotUI.TargetSlot = currentSlot;
-            slotUI.ParentInventoryUI = this;
-            SlotsGrid.AddChild(slotUI);
-        }
     }
 
     public void SetVisibility(bool isVisible)

@@ -4,6 +4,7 @@ using Godot;
 using Godot.Collections;
 
 
+[Tool]
 public partial class InventoryHotbar : Control
 {
 
@@ -11,7 +12,7 @@ public partial class InventoryHotbar : Control
         get => _inventory;
         set {
             _inventory = value;
-            UpdateUI();
+            OnUpdateInventory();
         }
     }
     private Inventory _inventory;
@@ -34,15 +35,26 @@ public partial class InventoryHotbar : Control
     }
     private int _hotbarRow = 0;
 
+    [Export] private HBoxContainer SlotsContainer;
 
-    private HBoxContainer SlotsContainer;
 
     public override void _Ready()
     {
         SlotsContainer = GetNode<HBoxContainer>("%SlotsContainer");
+
         UpdateUI();
     }
 
+
+    public void OnUpdateInventory()
+    {
+        if (Inventory != null)
+        {
+            Inventory.OnUpdated += UpdateUI;
+        }
+
+        UpdateUI();
+    }
 
     private Array<InventorySlot> GetInventorySlots()
     {
@@ -62,37 +74,49 @@ public partial class InventoryHotbar : Control
     
     private void UpdateUI()
     {
-        if (Inventory == null) return;
-        if (SlotsContainer == null) return;
+        if (!IsInstanceValid(this)) return;
 
-        // Remove existing children
-        foreach (Node child in SlotsContainer.GetChildren())
+        Array<InventorySlot> slots = GetInventorySlots();
+
+        if (IsInstanceValid(SlotsContainer))
         {
-            if (child is InventorySlotUI slotUI)
+            // Remove existing children
+            foreach (Node child in SlotsContainer.GetChildren())
             {
-                slotUI.QueueFree();
+                if (!IsInstanceValid(child)) continue;
+
+                if (child is InventorySlotUI slotUI)
+                {
+                    slotUI.QueueFree();
+                }
             }
-        }
 
-
-        int index = 1;
-        foreach (InventorySlot slot in GetInventorySlots())
-        {
-            InventorySlotUI slotUI = GD.Load<PackedScene>("res://Inventory/UI/Slot/InventorySlotUI.tscn").Instantiate<InventorySlotUI>();
-            slotUI.TargetSlot = slot;
-            slotUI.SlotIndex = index;
-            slotUI.CanBeSelected = false;
-            SlotsContainer.AddChild(slotUI);
-            index++;
+            // Add new slots
+            int index = 1;
+            foreach (InventorySlot slot in slots)
+            {
+                InventorySlotUI slotUI = GD.Load<PackedScene>("res://Inventory/UI/Slot/InventorySlotUI.tscn").Instantiate<InventorySlotUI>();
+                slotUI.TargetSlot = slot;
+                slotUI.SlotIndex = index;
+                slotUI.CanBeSelected = false;
+                SlotsContainer?.AddChild(slotUI);
+                index++;
+            }
         }
     }
 
     public void SetSelectable(bool value)
     {
+        if (!IsInstanceValid(this)) return;
+        if (!IsInstanceValid(SlotsContainer)) return;
+
         foreach (Node child in SlotsContainer.GetChildren())
         {
+            if (!IsInstanceValid(child)) continue;
+
             if (child is InventorySlotUI slotUI)
             {
+                if (!IsInstanceValid(slotUI)) continue;
                 slotUI.CanBeSelected = value;
             }
         }

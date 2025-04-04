@@ -63,26 +63,44 @@ public partial class InventorySlotUI : Panel
  
     public override void _Input(InputEvent @event)
     {
-		StateMachine?.OnInput(@event);
+		if (IsInstanceValid(StateMachine))
+        {
+            StateMachine.OnInput(@event);
+        }
     }
 
     public override void _GuiInput(InputEvent @event)
     {
-        StateMachine?.OnGuiInput(@event);
+		if (IsInstanceValid(StateMachine))
+        {
+            StateMachine.OnGuiInput(@event);
+        }
     }
 
     // SIGNAL HANDLERS
 
 	public void OnMouseEntered()
 	{
-		HoverOverlay.Show();
-		StateMachine?.OnMouseEntered();
+		if (IsInstanceValid(HoverOverlay))
+        {
+            HoverOverlay.Show();
+        }
+		if (IsInstanceValid(StateMachine))
+        {
+            StateMachine.OnMouseEntered();
+        }
 	}
 
 	public void OnMouseExited()
 	{
-        HoverOverlay.Hide();
-		StateMachine?.OnMouseExited();
+        if (IsInstanceValid(HoverOverlay))
+        {
+            HoverOverlay.Hide();
+        }
+        if (IsInstanceValid(StateMachine))
+        {
+            StateMachine.OnMouseExited();
+        }
 	}
 
 

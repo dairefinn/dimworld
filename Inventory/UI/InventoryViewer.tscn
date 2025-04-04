@@ -1,6 +1,6 @@
 [gd_scene load_steps=5 format=3 uid="uid://d21nkwnu7y4od"]
 
-[ext_resource type="Script" uid="uid://dnfjwmt5hy17g" path="res://Player/InventoryHandler.cs" id="1_tdqb6"]
+[ext_resource type="Script" uid="uid://dnfjwmt5hy17g" path="res://Inventory/UI/InventoryViewer.cs" id="1_tdqb6"]
 [ext_resource type="PackedScene" uid="uid://bypfigpr23v58" path="res://Inventory/UI/InventoryUI.tscn" id="2_wxqvu"]
 [ext_resource type="PackedScene" uid="uid://d1j133js04tk1" path="res://Inventory/UI/Hotbar/InventoryHotbar.tscn" id="3_5gkt5"]
 [ext_resource type="PackedScene" uid="uid://dk54wpv1dffmh" path="res://Inventory/InventoryContextMenuUI.tscn" id="3_wxqvu"]

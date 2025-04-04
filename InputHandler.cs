@@ -18,11 +18,11 @@ public partial class InputHandler : Node2D
     }
     private CharacterController _playerAgent;
 
-    [Export] public InventoryHandler InventoryViewer {
+    [Export] public InventoryViewer InventoryViewer {
         get => _inventoryViewer;
         set => SetInventoryViewer(value);
     }
-    private InventoryHandler _inventoryViewer;
+    private InventoryViewer _inventoryViewer;
 
     [Export] public CursorFollower CursorFollower { get; set; }
 
@@ -121,7 +121,7 @@ public partial class InputHandler : Node2D
         }
     }
 
-    public void SetInventoryViewer(InventoryHandler inventoryHandler)
+    public void SetInventoryViewer(InventoryViewer inventoryHandler)
     {
         _inventoryViewer = inventoryHandler;
 

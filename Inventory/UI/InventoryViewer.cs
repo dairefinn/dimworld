@@ -4,7 +4,7 @@ using Dimworld.Developer;
 using Godot;
 
 
-public partial class InventoryHandler : Control
+public partial class InventoryViewer : Control
 {
 
     [Export] public Inventory PrimaryInventory {

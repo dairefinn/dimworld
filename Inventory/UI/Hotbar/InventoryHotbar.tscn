@@ -1,6 +1,5 @@
-[gd_scene load_steps=22 format=3 uid="uid://d1j133js04tk1"]
+[gd_scene load_steps=26 format=3 uid="uid://d1j133js04tk1"]
 
-[ext_resource type="PackedScene" uid="uid://cbc7lb60qv02d" path="res://Inventory/UI/Slot/InventorySlotUI.tscn" id="1_ks3kw"]
 [ext_resource type="Script" uid="uid://468nlu6vntdw" path="res://Inventory/UI/Hotbar/InventoryHotbar.cs" id="1_u76wg"]
 [ext_resource type="Script" uid="uid://bm0o5ggnfmm6y" path="res://Inventory/InventorySlot.cs" id="2_pb6ef"]
 [ext_resource type="Resource" uid="uid://octn8jxqeqaq" path="res://Items/Sword.tres" id="3_e12ea"]
@@ -9,12 +8,6 @@
 [sub_resource type="Resource" id="Resource_e12ea"]
 script = ExtResource("2_pb6ef")
 Quantity = 0
-metadata/_custom_type_script = "uid://bm0o5ggnfmm6y"
-
-[sub_resource type="Resource" id="Resource_w6mtk"]
-script = ExtResource("2_pb6ef")
-Item = ExtResource("3_e12ea")
-Quantity = 1
 metadata/_custom_type_script = "uid://bm0o5ggnfmm6y"
 
 [sub_resource type="Resource" id="Resource_fwvs1"]
@@ -82,10 +75,36 @@ script = ExtResource("2_pb6ef")
 Quantity = 0
 metadata/_custom_type_script = "uid://bm0o5ggnfmm6y"
 
+[sub_resource type="Resource" id="Resource_pb6ef"]
+script = ExtResource("2_pb6ef")
+Quantity = 0
+
+[sub_resource type="Resource" id="Resource_nrxmu"]
+script = ExtResource("2_pb6ef")
+Quantity = 0
+
+[sub_resource type="Resource" id="Resource_upa33"]
+script = ExtResource("2_pb6ef")
+Quantity = 0
+
+[sub_resource type="Resource" id="Resource_pi8i5"]
+script = ExtResource("2_pb6ef")
+Quantity = 0
+
+[sub_resource type="Resource" id="Resource_w6mtk"]
+script = ExtResource("2_pb6ef")
+Item = ExtResource("3_e12ea")
+Quantity = 1
+metadata/_custom_type_script = "uid://bm0o5ggnfmm6y"
+
+[sub_resource type="Resource" id="Resource_ux4cd"]
+script = ExtResource("2_pb6ef")
+Quantity = 0
+
 [sub_resource type="Resource" id="Resource_8iiy3"]
 script = ExtResource("3_nrxmu")
 InventoryName = "Inventory"
-Slots = Array[ExtResource("2_pb6ef")]([SubResource("Resource_e12ea"), SubResource("Resource_w6mtk"), SubResource("Resource_fwvs1"), SubResource("Resource_0wrsh"), SubResource("Resource_4ksrl"), SubResource("Resource_wad3g"), SubResource("Resource_6whb4"), SubResource("Resource_5p6g8"), SubResource("Resource_now42"), SubResource("Resource_cw1hl"), SubResource("Resource_xwkma"), SubResource("Resource_j2iwo"), SubResource("Resource_ftds0"), SubResource("Resource_abm1x"), SubResource("Resource_q8e3v")])
+Slots = Array[ExtResource("2_pb6ef")]([SubResource("Resource_e12ea"), SubResource("Resource_fwvs1"), SubResource("Resource_0wrsh"), SubResource("Resource_4ksrl"), SubResource("Resource_wad3g"), SubResource("Resource_6whb4"), SubResource("Resource_5p6g8"), SubResource("Resource_now42"), SubResource("Resource_cw1hl"), SubResource("Resource_xwkma"), SubResource("Resource_j2iwo"), SubResource("Resource_ftds0"), SubResource("Resource_abm1x"), SubResource("Resource_q8e3v"), SubResource("Resource_pb6ef"), SubResource("Resource_nrxmu"), SubResource("Resource_upa33"), SubResource("Resource_pi8i5"), SubResource("Resource_w6mtk"), SubResource("Resource_ux4cd")])
 metadata/_custom_type_script = "uid://dph74un0q20el"
 
 [node name="InventoryHotbar" type="CenterContainer"]
@@ -96,23 +115,9 @@ grow_horizontal = 2
 grow_vertical = 2
 script = ExtResource("1_u76wg")
 Inventory = SubResource("Resource_8iiy3")
+HotbarRow = 3
 
 [node name="SlotsContainer" type="HBoxContainer" parent="."]
 unique_name_in_owner = true
 layout_mode = 2
 theme_override_constants/separation = 10
-
-[node name="InventorySlotUI" parent="SlotsContainer" instance=ExtResource("1_ks3kw")]
-layout_mode = 2
-
-[node name="InventorySlotUI2" parent="SlotsContainer" instance=ExtResource("1_ks3kw")]
-layout_mode = 2
-
-[node name="InventorySlotUI3" parent="SlotsContainer" instance=ExtResource("1_ks3kw")]
-layout_mode = 2
-
-[node name="InventorySlotUI4" parent="SlotsContainer" instance=ExtResource("1_ks3kw")]
-layout_mode = 2
-
-[node name="InventorySlotUI5" parent="SlotsContainer" instance=ExtResource("1_ks3kw")]
-layout_mode = 2
