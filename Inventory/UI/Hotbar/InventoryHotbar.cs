@@ -8,6 +8,8 @@ using Godot.Collections;
 public partial class InventoryHotbar : Control
 {
 
+    public static readonly PackedScene SCENE_INVENTORY_SLOT_UI = GD.Load<PackedScene>("res://Inventory/UI/Slot/InventorySlotUI.tscn");
+
     [Export] public Inventory Inventory {
         get => _inventory;
         set {
@@ -34,14 +36,29 @@ public partial class InventoryHotbar : Control
         }
     }
     private int _hotbarRow = 0;
+    [Export] public int SelectedSlotIndex {
+        get => _selectedSlotIndex;
+        set {
+            _selectedSlotIndex = value;
+            OnUpdateSelectedSlotIndex();
+            UpdateUI();
+        }
+    }
+    private int _selectedSlotIndex = -1;
 
-    [Export] private HBoxContainer SlotsContainer;
+    [ExportGroup("References")]
+    [Export] public HBoxContainer SlotsContainer { get; set; }
+    [Export] public PanelContainer SelectedBorder { get; set; }
+
+
+    public InventorySlotUI SelectedSlotUI { get; set; }
+
+    
+    private Tween tweenSelectedBorder;
 
 
     public override void _Ready()
     {
-        SlotsContainer = GetNode<HBoxContainer>("%SlotsContainer");
-
         UpdateUI();
     }
 
@@ -76,32 +93,60 @@ public partial class InventoryHotbar : Control
     {
         if (!IsInstanceValid(this)) return;
 
-        Array<InventorySlot> slots = GetInventorySlots();
+        CallDeferred(MethodName.UpdateSlotUIs);
+        CallDeferred(MethodName.UpdateSelectedBorderUI);
+    }
 
-        if (IsInstanceValid(SlotsContainer))
+    private void UpdateSlotUIs()
+    {
+        if (!IsInstanceValid(SlotsContainer)) return;
+
+        // Remove existing children
+        foreach (Node child in SlotsContainer.GetChildren())
         {
-            // Remove existing children
-            foreach (Node child in SlotsContainer.GetChildren())
-            {
-                if (!IsInstanceValid(child)) continue;
+            if (!IsInstanceValid(child)) continue;
 
-                if (child is InventorySlotUI slotUI)
-                {
-                    slotUI.QueueFree();
-                }
-            }
-
-            // Add new slots
-            int index = 1;
-            foreach (InventorySlot slot in slots)
+            if (child is InventorySlotUI slotUI)
             {
-                InventorySlotUI slotUI = GD.Load<PackedScene>("res://Inventory/UI/Slot/InventorySlotUI.tscn").Instantiate<InventorySlotUI>();
-                slotUI.TargetSlot = slot;
-                slotUI.SlotIndex = index;
-                slotUI.CanBeSelected = false;
-                SlotsContainer?.AddChild(slotUI);
-                index++;
+                slotUI.QueueFree();
             }
+        }
+
+        // Add new slots
+        int index = 1;
+        Array<InventorySlot> slots = GetInventorySlots();
+        foreach (InventorySlot slot in slots)
+        {
+            InventorySlotUI slotUI = SCENE_INVENTORY_SLOT_UI.Instantiate<InventorySlotUI>();
+            slotUI.TargetSlot = slot;
+            slotUI.SlotIndex = index;
+            slotUI.CanBeSelected = false;
+            SlotsContainer?.AddChild(slotUI);
+            index++;
+        }
+    }
+
+    private void UpdateSelectedBorderUI()
+    {
+        if (!IsInstanceValid(SelectedBorder)) return;
+
+        Array<InventorySlot> slots = GetInventorySlots();
+        if (SelectedSlotIndex > -1 && SelectedSlotIndex < slots.Count)
+        {
+            SelectedBorder.Show();
+
+            int slotWidth = 100;
+            int slotGap = 10;
+            int offsetX = (slotWidth + slotGap) * SelectedSlotIndex;
+
+            tweenSelectedBorder?.Kill();
+            tweenSelectedBorder = GetTree().CreateTween();
+            tweenSelectedBorder.TweenProperty(SelectedBorder, "position", new Vector2(offsetX, SelectedBorder.Position.Y), 0.1f);
+        }
+        else
+        {
+            SelectedBorder.Hide();
+            SelectedBorder.Position = new Vector2(0, SelectedBorder.Position.Y);
         }
     }
 
@@ -120,6 +165,34 @@ public partial class InventoryHotbar : Control
                 slotUI.CanBeSelected = value;
             }
         }
+    }
+
+    private InventorySlotUI GetSelectedSlotUI()
+    {
+        if (!IsInstanceValid(this)) return null;
+        if (!IsInstanceValid(SlotsContainer)) return null;
+
+        foreach (Node child in SlotsContainer.GetChildren())
+        {
+            if (!IsInstanceValid(child)) continue;
+
+            if (child is InventorySlotUI slotUI)
+            {
+                if (slotUI.SlotIndex == (SelectedSlotIndex + 1))
+                {
+                    return slotUI;
+                }
+            }
+        }
+
+        return null;
+    }
+
+    private void OnUpdateSelectedSlotIndex()
+    {
+        if (!IsInstanceValid(this)) return;
+
+        SelectedSlotUI = GetSelectedSlotUI();
     }
 
 }

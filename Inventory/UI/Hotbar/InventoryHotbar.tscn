@@ -1,4 +1,4 @@
-[gd_scene load_steps=26 format=3 uid="uid://d1j133js04tk1"]
+[gd_scene load_steps=28 format=3 uid="uid://d1j133js04tk1"]
 
 [ext_resource type="Script" uid="uid://468nlu6vntdw" path="res://Inventory/UI/Hotbar/InventoryHotbar.cs" id="1_u76wg"]
 [ext_resource type="Script" uid="uid://bm0o5ggnfmm6y" path="res://Inventory/InventorySlot.cs" id="2_pb6ef"]
@@ -107,7 +107,24 @@ InventoryName = "Inventory"
 Slots = Array[ExtResource("2_pb6ef")]([SubResource("Resource_e12ea"), SubResource("Resource_fwvs1"), SubResource("Resource_0wrsh"), SubResource("Resource_4ksrl"), SubResource("Resource_wad3g"), SubResource("Resource_6whb4"), SubResource("Resource_5p6g8"), SubResource("Resource_now42"), SubResource("Resource_cw1hl"), SubResource("Resource_xwkma"), SubResource("Resource_j2iwo"), SubResource("Resource_ftds0"), SubResource("Resource_abm1x"), SubResource("Resource_q8e3v"), SubResource("Resource_pb6ef"), SubResource("Resource_nrxmu"), SubResource("Resource_upa33"), SubResource("Resource_pi8i5"), SubResource("Resource_w6mtk"), SubResource("Resource_ux4cd")])
 metadata/_custom_type_script = "uid://dph74un0q20el"
 
-[node name="InventoryHotbar" type="CenterContainer"]
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_nrxmu"]
+draw_center = false
+anti_aliasing = false
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_pb6ef"]
+bg_color = Color(0.6, 0.6, 0.6, 0)
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color(0.588235, 0.588235, 0.196078, 1)
+corner_radius_top_left = 20
+corner_radius_top_right = 20
+corner_radius_bottom_right = 20
+corner_radius_bottom_left = 20
+anti_aliasing = false
+
+[node name="InventoryHotbar" type="CenterContainer" node_paths=PackedStringArray("SlotsContainer", "SelectedBorder")]
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
@@ -116,8 +133,29 @@ grow_vertical = 2
 script = ExtResource("1_u76wg")
 Inventory = SubResource("Resource_8iiy3")
 HotbarRow = 3
+SelectedSlotIndex = 2
+SlotsContainer = NodePath("Control/SlotsContainer")
+SelectedBorder = NodePath("Control/ContainerSelectionSquare/SelectedBorder")
 
-[node name="SlotsContainer" type="HBoxContainer" parent="."]
+[node name="Control" type="PanelContainer" parent="."]
+layout_mode = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_nrxmu")
+
+[node name="SlotsContainer" type="HBoxContainer" parent="Control"]
 unique_name_in_owner = true
 layout_mode = 2
 theme_override_constants/separation = 10
+
+[node name="ContainerSelectionSquare" type="Control" parent="Control"]
+layout_mode = 2
+mouse_filter = 2
+
+[node name="SelectedBorder" type="PanelContainer" parent="Control/ContainerSelectionSquare"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(100, 100)
+layout_mode = 1
+offset_left = 220.0
+offset_right = 320.0
+offset_bottom = 100.0
+size_flags_horizontal = 0
+theme_override_styles/panel = SubResource("StyleBoxFlat_pb6ef")

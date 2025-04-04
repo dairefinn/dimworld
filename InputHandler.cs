@@ -121,13 +121,13 @@ public partial class InputHandler : Node2D
         }
     }
 
-    public void SetInventoryViewer(InventoryViewer inventoryHandler)
+    public void SetInventoryViewer(InventoryViewer inventoryViewer)
     {
-        _inventoryViewer = inventoryHandler;
+        _inventoryViewer = inventoryViewer;
 
-        if (PlayerAgent != null && inventoryHandler != null)
+        if (PlayerAgent != null && IsInstanceValid(inventoryViewer))
         {
-            inventoryHandler.PrimaryInventory = PlayerAgent.Inventory;
+            inventoryViewer.PrimaryInventory = PlayerAgent.Inventory;
         }
     }
 
