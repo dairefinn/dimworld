@@ -119,6 +119,8 @@ public partial class InventoryHotbar : Control
     {
         if (!IsInstanceValid(SlotsContainer)) return;
 
+        bool canAnySlotsBeSelected = false;
+
         // Remove existing children
         foreach (Node child in SlotsContainer.GetChildren())
         {
@@ -126,6 +128,10 @@ public partial class InventoryHotbar : Control
 
             if (child is InventorySlotUI slotUI)
             {
+                if (slotUI.CanBeSelected)
+                {
+                    canAnySlotsBeSelected = true;
+                }
                 slotUI.QueueFree();
             }
         }
@@ -138,7 +144,7 @@ public partial class InventoryHotbar : Control
             InventorySlotUI slotUI = SCENE_INVENTORY_SLOT_UI.Instantiate<InventorySlotUI>();
             slotUI.TargetSlot = slot;
             slotUI.SlotIndex = index;
-            slotUI.CanBeSelected = false;
+            slotUI.CanBeSelected = canAnySlotsBeSelected;
             SlotsContainer?.AddChild(slotUI);
             index++;
         }
@@ -176,12 +182,9 @@ public partial class InventoryHotbar : Control
         foreach (Node child in SlotsContainer.GetChildren())
         {
             if (!IsInstanceValid(child)) continue;
-
-            if (child is InventorySlotUI slotUI)
-            {
-                if (!IsInstanceValid(slotUI)) continue;
-                slotUI.CanBeSelected = value;
-            }
+            if (child is not InventorySlotUI slotUI) continue;
+            GD.Print($"Setting slot {slotUI.SlotIndex} selectable to {value}");
+            slotUI.CanBeSelected = value;
         }
     }
 

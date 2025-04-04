@@ -224,7 +224,15 @@ public partial class InventoryViewer : Control
         float slotWidth = inventorySlotUI.GetRect().Size.X;
         Vector2 contextMenuPosition = inventorySlotUI.GlobalPosition + new Vector2(slotWidth, 10);
 
-        if (ContextMenu.GlobalPosition == contextMenuPosition && ContextMenu.Visible)
+        // If the context menu is already open and the position is the same, hide it
+        if ((ContextMenu.GlobalPosition == contextMenuPosition && ContextMenu.Visible))
+        {
+            ContextMenu.Hide();
+            return;
+        }
+
+        // If the target slot is empty or doesn't have a context menu, hide the context menu
+        if (inventorySlotUI.TargetSlot.IsEmpty || inventorySlotUI.TargetSlot.Item is not IHasContextMenu)
         {
             ContextMenu.Hide();
             return;
