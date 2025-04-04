@@ -1,7 +1,7 @@
 namespace Dimworld;
 
 using Godot;
-using Godot.Collections;
+
 
 public partial class InventorySlotUI : Panel
 {
@@ -92,6 +92,7 @@ public partial class InventorySlotUI : Panel
     public void UpdateUI()
     {
         if (_targetSlot == null) return;
+        if (!IsInstanceValid(this)) return;
 
         string itemName = "";
         int itemQuantity = 0;
