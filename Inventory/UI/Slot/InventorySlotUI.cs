@@ -16,12 +16,21 @@ public partial class InventorySlotUI : Panel
         set => SetTargetSlot(value);
     }
     private InventorySlot _targetSlot;
+    [Export] public int SlotIndex {
+        get => _slotIndex;
+        set {
+            _slotIndex = value;
+            UpdateUI();
+        }
+    }
+    private int _slotIndex = -1;
 
     public InventoryUI ParentInventoryUI { get; set; }
 
     public TextureRect ItemIcon;
     public Label QuantityLabel;
     public Label ItemLabel;
+    public Label IndexLabel;
     public InventorySlotDragArea DragArea;
     public Panel HoverOverlay;
 
@@ -36,6 +45,7 @@ public partial class InventorySlotUI : Panel
         QuantityLabel = GetNode<Label>("%QuantityLabel");
         ItemLabel = GetNode<Label>("%ItemLabel");
         ItemIcon = GetNode<TextureRect>("%ItemIcon");
+        IndexLabel = GetNode<Label>("%IndexLabel");
         StateMachine = GetNode<InventorySlotStateMachine>("%StateMachine");
         HoverOverlay = GetNode<Panel>("%HoverOverlay");
         DragArea = GetNode<InventorySlotDragArea>("%DragArea");
@@ -113,11 +123,18 @@ public partial class InventorySlotUI : Panel
         if (IsInstanceValid(QuantityLabel))
         {
             QuantityLabel.Text = itemQuantity.ToString();
+            QuantityLabel.Visible = itemQuantity > 0;
         }
 
         if (IsInstanceValid(ItemIcon))
         {
             ItemIcon.Texture = itemIcon;
+        }
+
+        if (IsInstanceValid(IndexLabel))
+        {
+            IndexLabel.Text = _slotIndex.ToString();
+            IndexLabel.Visible = SlotIndex >= 0;
         }
         
         if(TargetSlot.Item != null && TargetSlot.Item.IsEquipped)

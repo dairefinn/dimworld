@@ -75,11 +75,14 @@ public partial class InventoryHotbar : Control
         }
 
 
+        int index = 1;
         foreach (InventorySlot slot in GetInventorySlots())
         {
             InventorySlotUI slotUI = GD.Load<PackedScene>("res://Inventory/UI/Slot/InventorySlotUI.tscn").Instantiate<InventorySlotUI>();
             slotUI.TargetSlot = slot;
+            slotUI.SlotIndex = index;
             SlotsContainer.AddChild(slotUI);
+            index++;
         }
     }
 

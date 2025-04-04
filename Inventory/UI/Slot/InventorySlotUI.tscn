@@ -1,4 +1,4 @@
-[gd_scene load_steps=18 format=3 uid="uid://cbc7lb60qv02d"]
+[gd_scene load_steps=19 format=3 uid="uid://cbc7lb60qv02d"]
 
 [ext_resource type="StyleBox" uid="uid://cuxjk7ngo011o" path="res://Inventory/UI/Slot/Styles/InventorySlotUI_Default.tres" id="1_o4ioh"]
 [ext_resource type="Script" uid="uid://bo1stix1esiy8" path="res://Inventory/UI/Slot/InventorySlotUI.cs" id="2_yi1il"]
@@ -37,6 +37,12 @@ font_size = 32
 shadow_size = 5
 shadow_color = Color(0, 0, 0, 0.588235)
 
+[sub_resource type="LabelSettings" id="LabelSettings_f11j2"]
+line_spacing = 0.0
+font_color = Color(0.588235, 1, 0.333333, 1)
+shadow_size = 5
+shadow_color = Color(0, 0, 0, 0.588235)
+
 [node name="InventorySlotUI" type="Panel"]
 custom_minimum_size = Vector2(100, 100)
 offset_right = 100.0
@@ -52,10 +58,10 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
-theme_override_constants/margin_left = 20
-theme_override_constants/margin_top = 10
-theme_override_constants/margin_right = 20
-theme_override_constants/margin_bottom = 10
+theme_override_constants/margin_left = 10
+theme_override_constants/margin_top = 5
+theme_override_constants/margin_right = 10
+theme_override_constants/margin_bottom = 5
 
 [node name="DragArea" type="Area2D" parent="MarginContainer"]
 unique_name_in_owner = true
@@ -78,6 +84,7 @@ shape = SubResource("RectangleShape2D_2v54i")
 
 [node name="ItemLabel" type="Label" parent="MarginContainer"]
 unique_name_in_owner = true
+visible = false
 layout_mode = 2
 size_flags_horizontal = 0
 size_flags_vertical = 0
@@ -91,6 +98,16 @@ size_flags_horizontal = 8
 size_flags_vertical = 8
 text = "28"
 label_settings = SubResource("LabelSettings_4iwih")
+horizontal_alignment = 2
+vertical_alignment = 2
+
+[node name="IndexLabel" type="Label" parent="MarginContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 0
+size_flags_vertical = 0
+text = "1"
+label_settings = SubResource("LabelSettings_f11j2")
 horizontal_alignment = 2
 vertical_alignment = 2
 
