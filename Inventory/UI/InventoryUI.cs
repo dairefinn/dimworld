@@ -17,8 +17,10 @@ public partial class InventoryUI : Container
     [Export] public PackedScene SlotUIScene = GD.Load<PackedScene>("res://Inventory/UI/Slot/InventorySlotUI.tscn");
 
 
+    public GridContainer SlotsGrid;
+
+
     private Label InventoryTitle;
-    private GridContainer SlotsGrid;
 
 
     public override void _Ready()

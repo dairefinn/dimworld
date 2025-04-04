@@ -16,8 +16,23 @@ public partial class InventoryHotbar : Control
     }
     private Inventory _inventory;
 
-    [Export] public int ColumnCount { get; set; } = 5;
-    [Export] public int HotbarRow { get; set; } = 0;
+
+    [Export] public int ColumnCount {
+        get => _columnCount;
+        set {
+            _columnCount = value;
+            UpdateUI();
+        }
+    }
+    private int _columnCount = 5;
+    [Export] public int HotbarRow {
+        get => _hotbarRow;
+        set {
+            _hotbarRow = value;
+            UpdateUI();
+        }
+    }
+    private int _hotbarRow = 0;
 
 
     private HBoxContainer SlotsContainer;
@@ -62,7 +77,6 @@ public partial class InventoryHotbar : Control
 
         foreach (InventorySlot slot in GetInventorySlots())
         {
-            GD.Print($"Adding slot {slot}");
             InventorySlotUI slotUI = GD.Load<PackedScene>("res://Inventory/UI/Slot/InventorySlotUI.tscn").Instantiate<InventorySlotUI>();
             slotUI.TargetSlot = slot;
             SlotsContainer.AddChild(slotUI);

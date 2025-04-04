@@ -31,6 +31,12 @@ public partial class InventoryHandler : Control
     }
     private InventoryUI _secondaryInventoryUI;
 
+    private InventoryHotbar Hotbar {
+        get => _hotbar;
+        set => SetHotbar(value);
+    }
+    private InventoryHotbar _hotbar;
+
 
     private InventoryContextMenuUI ContextMenu;
 
@@ -45,6 +51,7 @@ public partial class InventoryHandler : Control
         primaryInventoryUI = GetNode<InventoryUI>("%PrimaryInventoryUI");
         secondaryInventoryUI = GetNode<InventoryUI>("%SecondaryInventoryUI");
         ContextMenu = GetNode<InventoryContextMenuUI>("%ContextMenu");
+        Hotbar = GetNode<InventoryHotbar>("%Hotbar");
 
         ContextMenu.Visible = false;
     }
@@ -135,6 +142,29 @@ public partial class InventoryHandler : Control
             _secondaryInventoryUI.OnVisibilityChanged += OnSecondaryVisibilityChanged;
         }
     }
+
+    private void SetHotbar(InventoryHotbar value)
+    {
+        // Unregister old inventory
+        if (_hotbar != null)
+        {
+            _hotbar.Inventory = null;
+            _hotbar.ColumnCount = 5;
+            _hotbar.HotbarRow = 0;
+        }
+
+        // Update value
+        _hotbar = value;
+
+        // Register new inventory
+        if (value != null)
+        {
+            _hotbar.Inventory = PrimaryInventory;
+            _hotbar.ColumnCount = primaryInventoryUI.SlotsGrid.Columns;
+            _hotbar.HotbarRow = (PrimaryInventory.Slots.Count / primaryInventoryUI.SlotsGrid.Columns) - 1; // Hotbar is the last row
+        }
+    }
+
 
     // INVENTORY VISIBILITY
 
