@@ -2,6 +2,8 @@ namespace Dimworld;
 
 using Godot;
 
+
+[Tool]
 public partial class InventorySlotBaseState : InventorySlotState
 {
 

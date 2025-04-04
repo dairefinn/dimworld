@@ -3,6 +3,7 @@ namespace Dimworld;
 using Godot;
 
 
+[Tool]
 public partial class InventorySlotDraggingState : InventorySlotState
 {
 

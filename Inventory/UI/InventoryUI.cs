@@ -79,7 +79,10 @@ public partial class InventoryUI : Container
         {
             if (child is InventorySlotUI slotUI)
             {
-                slotUI.QueueFree();
+                if (IsInstanceValid(slotUI))
+                {
+                    slotUI.QueueFree();
+                }
             }
         }
 
