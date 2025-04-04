@@ -1,4 +1,4 @@
-[gd_scene load_steps=32 format=3 uid="uid://ddc8qiig7j3wm"]
+[gd_scene load_steps=37 format=3 uid="uid://ddc8qiig7j3wm"]
 
 [ext_resource type="Script" uid="uid://1f6ukfmh33oo" path="res://DayNightController.cs" id="1_d13ii"]
 [ext_resource type="Script" uid="uid://g354xqg3s44p" path="res://InputHandler.cs" id="2_lquwl"]
@@ -89,10 +89,35 @@ script = ExtResource("6_cegan")
 Quantity = 0
 metadata/_custom_type_script = "uid://bm0o5ggnfmm6y"
 
+[sub_resource type="Resource" id="Resource_dg77c"]
+script = ExtResource("6_cegan")
+Quantity = 0
+metadata/_custom_type_script = "uid://bm0o5ggnfmm6y"
+
+[sub_resource type="Resource" id="Resource_ycdy4"]
+script = ExtResource("6_cegan")
+Quantity = 0
+metadata/_custom_type_script = "uid://bm0o5ggnfmm6y"
+
+[sub_resource type="Resource" id="Resource_w48qg"]
+script = ExtResource("6_cegan")
+Quantity = 0
+metadata/_custom_type_script = "uid://bm0o5ggnfmm6y"
+
+[sub_resource type="Resource" id="Resource_vivmo"]
+script = ExtResource("6_cegan")
+Quantity = 0
+metadata/_custom_type_script = "uid://bm0o5ggnfmm6y"
+
+[sub_resource type="Resource" id="Resource_2cqfq"]
+script = ExtResource("6_cegan")
+Quantity = 0
+metadata/_custom_type_script = "uid://bm0o5ggnfmm6y"
+
 [sub_resource type="Resource" id="Resource_0dhbp"]
 script = ExtResource("5_yaehf")
 InventoryName = "Player inventory"
-Slots = Array[ExtResource("6_cegan")]([SubResource("Resource_1u8w0"), SubResource("Resource_0odxb"), SubResource("Resource_lswn8"), SubResource("Resource_a6jrf"), SubResource("Resource_xuqvo"), SubResource("Resource_qsp4k"), SubResource("Resource_kq58d"), SubResource("Resource_seu75"), SubResource("Resource_htxhm"), SubResource("Resource_jq2sk"), SubResource("Resource_4k2k6"), SubResource("Resource_0rl1p"), SubResource("Resource_ok6jj"), SubResource("Resource_facbu"), SubResource("Resource_cyx1q")])
+Slots = Array[ExtResource("6_cegan")]([SubResource("Resource_1u8w0"), SubResource("Resource_0odxb"), SubResource("Resource_lswn8"), SubResource("Resource_a6jrf"), SubResource("Resource_xuqvo"), SubResource("Resource_qsp4k"), SubResource("Resource_kq58d"), SubResource("Resource_seu75"), SubResource("Resource_htxhm"), SubResource("Resource_jq2sk"), SubResource("Resource_4k2k6"), SubResource("Resource_0rl1p"), SubResource("Resource_ok6jj"), SubResource("Resource_facbu"), SubResource("Resource_cyx1q"), SubResource("Resource_dg77c"), SubResource("Resource_ycdy4"), SubResource("Resource_w48qg"), SubResource("Resource_vivmo"), SubResource("Resource_2cqfq")])
 metadata/_custom_type_script = "uid://dph74un0q20el"
 
 [sub_resource type="Resource" id="Resource_jx0wj"]

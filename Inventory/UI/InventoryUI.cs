@@ -16,6 +16,18 @@ public partial class InventoryUI : Container
     private Inventory _targetInventory;
     [Export] public PackedScene SlotUIScene = GD.Load<PackedScene>("res://Inventory/UI/Slot/InventorySlotUI.tscn");
 
+    /// <summary>
+    /// The number of rows to display. If the inventory has more than this, they will be hidden. This is used to hide the hotbar row from the full inventory view while keeping a single source of truth for the contents.
+    /// </summary>
+    [Export] public int RowsDisplayed {
+        get => _rowsDisplayed;
+        set {
+            _rowsDisplayed = value;
+            UpdateUI();
+        }
+    }
+    private int _rowsDisplayed = 3;
+
 
     public GridContainer SlotsGrid;
 
@@ -44,12 +56,21 @@ public partial class InventoryUI : Container
             child.QueueFree();
         }
 
+        int index = 0;
         foreach (InventorySlot slot in _targetInventory.Slots)
         {
             InventorySlotUI slotUI = SlotUIScene.Instantiate<InventorySlotUI>();
             slotUI.TargetSlot = slot;
             slotUI.ParentInventoryUI = this;
             SlotsGrid.AddChild(slotUI);
+
+            int row = index / SlotsGrid.Columns;
+            if (row >= RowsDisplayed)
+            {
+                slotUI.Hide();
+            }
+
+            index++;
         }
     }
 

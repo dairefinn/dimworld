@@ -161,7 +161,7 @@ public partial class InventoryHandler : Control
         {
             _hotbar.Inventory = PrimaryInventory;
             _hotbar.ColumnCount = primaryInventoryUI.SlotsGrid.Columns;
-            _hotbar.HotbarRow = (PrimaryInventory.Slots.Count / primaryInventoryUI.SlotsGrid.Columns) - 1; // Hotbar is the last row
+            _hotbar.HotbarRow = primaryInventoryUI.RowsDisplayed; // Hotbar is the last row
         }
     }
 
