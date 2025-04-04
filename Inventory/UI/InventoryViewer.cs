@@ -198,8 +198,15 @@ public partial class InventoryViewer : Control
 
         if (isChangingInventories)
         {
-            Globals.Instance.Player.EquipmentHandler.Unequip(sourceSlot.TargetSlot.Item);
-            Globals.Instance.Player.EquipmentHandler.Unequip(targetSlot.TargetSlot.Item);
+            if (sourceSlot.TargetSlot.Item is ICanBeEquipped sourceItemCanBeEquipped)
+            {
+                Globals.Instance.Player.EquipmentHandler.Unequip(sourceItemCanBeEquipped);
+            }
+
+            if (targetSlot.TargetSlot.Item is ICanBeEquipped targetItemCanBeEquipped)
+            {
+                Globals.Instance.Player.EquipmentHandler.Unequip(targetItemCanBeEquipped);
+            }
         }
 
         sourceSlot.UpdateUI();
@@ -213,7 +220,6 @@ public partial class InventoryViewer : Control
     {
         if (!IsInstanceValid(inventorySlotUI)) return;
         if (!IsInstanceValid(ContextMenu)) return;
-        if (inventorySlotUI.TargetSlot.IsEmpty) return;
 
         float slotWidth = inventorySlotUI.GetRect().Size.X;
         Vector2 contextMenuPosition = inventorySlotUI.GlobalPosition + new Vector2(slotWidth, 10);
@@ -224,9 +230,12 @@ public partial class InventoryViewer : Control
             return;
         }
 
+        if (inventorySlotUI.TargetSlot.IsEmpty) return;
+        if (inventorySlotUI.TargetSlot.Item is not IHasContextMenu itemWithContextMenu) return;
+
         bool itemIsInParentInventory = inventorySlotUI.ParentInventoryUI == PrimaryInventoryUI;
 
-        InventoryContextMenuUI.ContextMenuOption[] options = inventorySlotUI.TargetSlot.Item.GetContextMenuOptions(ContextMenu, Globals.Instance.Player.EquipmentHandler, itemIsInParentInventory);
+        InventoryContextMenuUI.ContextMenuOption[] options = itemWithContextMenu.GetContextMenuOptions(ContextMenu, Globals.Instance.Player.EquipmentHandler, itemIsInParentInventory);
         if (options == null || options.Length == 0) return; // If an item doesn't provide any context menu options, don't show the context menu
 
         ContextMenu.OnOptionSelected += () => OnContextMenuOptionSelected(inventorySlotUI);

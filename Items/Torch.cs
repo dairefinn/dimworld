@@ -3,7 +3,7 @@ namespace Dimworld.Items;
 using Godot;
 
 
-public partial class Torch : InventoryItem
+public partial class Torch : InventoryItem, IHasContextMenu, ICanBeEquipped
 {
 
     private PointLight2D lightSource = new()
@@ -13,24 +13,38 @@ public partial class Torch : InventoryItem
     };
 
 
-    public override bool OnEquip(EquipmentHandler handler)
+    public bool OnEquip(EquipmentHandler handler)
     {
-        bool wasSuccessful = base.OnEquip(handler);
-        if (!wasSuccessful) return false;
+        if (!CanBeEquipped) return false;
 
-        // We override this so we can add the light source to the equipment handler of the character using the torch
+        // TODO: Equipment should go in slots
+        // TODO: Move this to the equipment handler
+        if (!handler.Equipment.Contains(this))
+        {
+            handler.Equipment.Add(this);
+        }
+
         if (!handler.GetChildren().Contains(lightSource))
         {
             handler.AddChild(lightSource);
         }
 
+        IsEquipped = true;
+        EmitSignal(SignalName.ItemEquipped, IsEquipped);
+
         return true;
     }
 
-    public override bool OnUnequip(EquipmentHandler handler)
+    public bool OnUnequip(EquipmentHandler handler)
     {
-        bool wasSuccessful = base.OnUnequip(handler);
-        if (!wasSuccessful) return false;
+        if (!CanBeEquipped) return false;
+        
+        // TODO: Equipment should go in slots
+        // TODO: Move this to the equipment handler
+        if (handler.Equipment.Contains(this))
+        {
+            handler.Equipment.Remove(this);
+        }
 
         // We override this so we can remove the light source from the equipment handler of the character using the torch
         if (handler.GetChildren().Contains(lightSource))
@@ -38,11 +52,14 @@ public partial class Torch : InventoryItem
             handler.RemoveChild(lightSource);
         }
 
+        IsEquipped = false;
+        EmitSignal(SignalName.ItemEquipped, IsEquipped);
+
         return true;
     }
 
     // TODO: Might be a cleaner way to do this. Maybe providing a list of options which each have a label, action and condition for displaying.
-    public override InventoryContextMenuUI.ContextMenuOption[] GetContextMenuOptions(InventoryContextMenuUI contextMenuUI, EquipmentHandler equipmentHandler, bool itemIsInParentInventory)
+    public InventoryContextMenuUI.ContextMenuOption[] GetContextMenuOptions(InventoryContextMenuUI contextMenuUI, EquipmentHandler equipmentHandler, bool itemIsInParentInventory)
     {
         InventoryContextMenuUI.ContextMenuOption[] options = [];
 
