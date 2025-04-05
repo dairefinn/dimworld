@@ -60,7 +60,7 @@ public partial class Torch : InventoryItem, IHasContextMenu, ICanBeEquipped, ICa
     }
 
     // TODO: Might be a cleaner way to do this. Maybe providing a list of options which each have a label, action and condition for displaying.
-    public InventoryContextMenuUI.ContextMenuOption[] GetContextMenuOptions(InventoryContextMenuUI contextMenuUI, bool itemIsInParentInventory)
+    public InventoryContextMenuUI.ContextMenuOption[] GetContextMenuOptions(InventoryContextMenuUI contextMenuUI, EquipmentHandler equipmentHandler, bool itemIsInParentInventory)
     {
         InventoryContextMenuUI.ContextMenuOption[] options = [];
 
@@ -68,40 +68,40 @@ public partial class Torch : InventoryItem, IHasContextMenu, ICanBeEquipped, ICa
         {
             if (IsEquipped)
             {
-                options = [..options, new InventoryContextMenuUI.ContextMenuOption("Unequip", () => ContextOptionUnequipTorch(contextMenuUI))];
+                options = [..options, new InventoryContextMenuUI.ContextMenuOption("Unequip", () => ContextOptionUnequipTorch(contextMenuUI, equipmentHandler))];
             }
             else
             {
-                options = [..options, new InventoryContextMenuUI.ContextMenuOption("Equip", () => ContextOptionEquipTorch(contextMenuUI))];
+                options = [..options, new InventoryContextMenuUI.ContextMenuOption("Equip", () => ContextOptionEquipTorch(contextMenuUI, equipmentHandler))];
             }
         }
 
         return options;
     }
 
-    private void ContextOptionEquipTorch(InventoryContextMenuUI contextMenuUI)
+    private void ContextOptionEquipTorch(InventoryContextMenuUI contextMenuUI, EquipmentHandler equipmentHandler)
     {
         contextMenuUI.RemoveOption("Equip");
-        Globals.Instance.Player.EquipmentHandler.Equip(this);
-        contextMenuUI.AddOption("Unequip", () => ContextOptionUnequipTorch(contextMenuUI));
+        equipmentHandler.Equip(this);
+        contextMenuUI.AddOption("Unequip", () => ContextOptionUnequipTorch(contextMenuUI, equipmentHandler));
     }
 
-    private void ContextOptionUnequipTorch(InventoryContextMenuUI contextMenuUI)
+    private void ContextOptionUnequipTorch(InventoryContextMenuUI contextMenuUI, EquipmentHandler equipmentHandler)
     {
         contextMenuUI.RemoveOption("Unequip");
-        Globals.Instance.Player.EquipmentHandler.Unequip(this);
-        contextMenuUI.AddOption("Equip", () => ContextOptionEquipTorch(contextMenuUI));
+        equipmentHandler.Unequip(this);
+        contextMenuUI.AddOption("Equip", () => ContextOptionEquipTorch(contextMenuUI, equipmentHandler));
     }
 
-    public bool UseFromHotbar()
+    public bool UseFromHotbar(EquipmentHandler equipmentHandler)
     {
         if (IsEquipped)
         {
-            Globals.Instance.Player.EquipmentHandler.Unequip(this);
+            equipmentHandler.Unequip(this);
         }
         else
         {
-            Globals.Instance.Player.EquipmentHandler.Equip(this);
+            equipmentHandler.Equip(this);
         }
 
         return true;

@@ -6,6 +6,6 @@ using Godot;
 public interface ICanBeUsedFromHotbar
 {
 
-    public bool UseFromHotbar();
+    public bool UseFromHotbar(EquipmentHandler equipmentHandler);
 
 }

@@ -243,7 +243,7 @@ public partial class InventoryViewer : Control
 
         bool itemIsInParentInventory = inventorySlotUI.ParentInventoryUI == PrimaryInventoryUI;
 
-        InventoryContextMenuUI.ContextMenuOption[] options = itemWithContextMenu.GetContextMenuOptions(ContextMenu, itemIsInParentInventory);
+        InventoryContextMenuUI.ContextMenuOption[] options = itemWithContextMenu.GetContextMenuOptions(ContextMenu, Globals.Instance.Player.EquipmentHandler, itemIsInParentInventory);
         if (options == null || options.Length == 0) return; // If an item doesn't provide any context menu options, don't show the context menu
 
         ContextMenu.OnOptionSelected += () => OnContextMenuOptionSelected(inventorySlotUI);
@@ -267,13 +267,10 @@ public partial class InventoryViewer : Control
 
         InventoryItem item = Hotbar.SelectedSlotUI.TargetSlot.Item;
 
-        GD.Print("Using item: " + item.ItemName);
         if (item is ICanBeUsedFromHotbar itemCanBeUsedFromHotbar)
         {
-            itemCanBeUsedFromHotbar.UseFromHotbar();
+            itemCanBeUsedFromHotbar.UseFromHotbar(Globals.Instance.Player.EquipmentHandler);
         }
-        // TODO: Implement using items. Might want to use the EquipmentHandler for this.
-        // item.Use();
 
     }
 
