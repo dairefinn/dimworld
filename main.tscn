@@ -195,12 +195,13 @@ region = Rect2(96, 64, 32, 32)
 
 [node name="Main" type="Node2D"]
 
-[node name="Player" parent="." instance=ExtResource("5_lquwl")]
+[node name="Player" parent="." node_paths=PackedStringArray("ClothingController") instance=ExtResource("5_lquwl")]
 z_index = 1
 position = Vector2(1833, 735)
 Inventory = SubResource("Resource_htxhm")
 Stats = SubResource("Resource_jx0wj")
 IsPlanningEnabled = false
+ClothingController = NodePath("BodySprite")
 
 [node name="Camera2D" type="Camera2D" parent="Player"]
 zoom = Vector2(3, 3)

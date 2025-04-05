@@ -439,7 +439,7 @@ position = Vector2(1337, 739)
 
 [node name="Characters" type="Node" parent="."]
 
-[node name="Guard" parent="Characters" instance=ExtResource("11_j0mrk")]
+[node name="Guard" parent="Characters" node_paths=PackedStringArray("ClothingController") instance=ExtResource("11_j0mrk")]
 z_index = 1
 position = Vector2(1844, 811)
 Inventory = SubResource("Resource_x4uyb")
@@ -447,8 +447,9 @@ Stats = SubResource("Resource_630ma")
 WorldState = SubResource("Resource_01cvm")
 ActionSet = Array[Object]([ExtResource("13_3by8r"), ExtResource("22_oeo7j"), ExtResource("18_eb50o"), ExtResource("17_eb50o"), ExtResource("20_1cqng"), ExtResource("14_3pabw"), ExtResource("15_01cvm"), ExtResource("16_4fweh")])
 GoalSet = Array[Object]([ExtResource("25_eb50o"), ExtResource("19_oeo7j"), ExtResource("26_4fweh")])
+ClothingController = NodePath("BodySprite")
 
-[node name="BodySprite2" type="Sprite2D" parent="Characters/Guard" node_paths=PackedStringArray("HairSprite", "EyesSprite", "TopSprite", "OvertopSprite", "BottomsSprite", "ShoesSprite")]
+[node name="BodySprite" type="Sprite2D" parent="Characters/Guard" node_paths=PackedStringArray("HairSprite", "EyesSprite", "TopSprite", "OvertopSprite", "BottomsSprite", "ShoesSprite")]
 texture = SubResource("AtlasTexture_4svdx")
 script = ExtResource("30_630ma")
 HairSprite = NodePath("Hair")
@@ -458,21 +459,21 @@ OvertopSprite = NodePath("Overtop")
 BottomsSprite = NodePath("Bottom")
 ShoesSprite = NodePath("Shoes")
 
-[node name="Shoes" type="Sprite2D" parent="Characters/Guard/BodySprite2"]
+[node name="Shoes" type="Sprite2D" parent="Characters/Guard/BodySprite"]
 texture = SubResource("AtlasTexture_x4uyb")
 
-[node name="Bottom" type="Sprite2D" parent="Characters/Guard/BodySprite2"]
+[node name="Bottom" type="Sprite2D" parent="Characters/Guard/BodySprite"]
 texture = SubResource("AtlasTexture_630ma")
 
-[node name="Top" type="Sprite2D" parent="Characters/Guard/BodySprite2"]
+[node name="Top" type="Sprite2D" parent="Characters/Guard/BodySprite"]
 texture = SubResource("AtlasTexture_cb2vy")
 
-[node name="Overtop" type="Sprite2D" parent="Characters/Guard/BodySprite2"]
+[node name="Overtop" type="Sprite2D" parent="Characters/Guard/BodySprite"]
 texture = SubResource("AtlasTexture_l3tde")
 
-[node name="Eyes" type="Sprite2D" parent="Characters/Guard/BodySprite2"]
+[node name="Eyes" type="Sprite2D" parent="Characters/Guard/BodySprite"]
 unique_name_in_owner = true
 texture = SubResource("AtlasTexture_2e57i")
 
-[node name="Hair" type="Sprite2D" parent="Characters/Guard/BodySprite2"]
+[node name="Hair" type="Sprite2D" parent="Characters/Guard/BodySprite"]
 texture = SubResource("AtlasTexture_qvs58")

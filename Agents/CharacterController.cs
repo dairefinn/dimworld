@@ -24,6 +24,7 @@ public partial class CharacterController : CharacterBody2D, IDamageable, ICanBeM
 		}
 	}
 	private AgentStats _stats;
+    [Export] public bool CanTakeFromInventory { get; set; } = false;
 
 	[ExportGroup("GOAP properties")]
 	[Export] public bool IsPlanningEnabled { get; set; } = true;
@@ -47,7 +48,7 @@ public partial class CharacterController : CharacterBody2D, IDamageable, ICanBeM
 	[Export] public PlanningHandler PlanningHandler { get; set; }
 	[Export] public MemoryHandler MemoryHandler { get; set; }
 	[Export] public ModifierHandler ModifierHandler { get; set; } = new();
-    [Export] public bool CanTakeFromInventory { get; set; } = false;
+	[Export] public ClothingController ClothingController { get; set; }
 
 
     private Vector2 desiredMovementDirection = Vector2.Zero;
