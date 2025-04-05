@@ -1,5 +1,6 @@
 namespace Dimworld;
 
+using Dimworld.Modifiers;
 using Godot;
 
 
@@ -9,7 +10,7 @@ public partial class Bomb : StaticBody2D, ICanBeInteractedWith
     public static readonly PackedScene EFFECT_EXPLOSION = GD.Load<PackedScene>("res://Effects/DamageInstant/DamageInstant.tscn");
     public static readonly PackedScene EFFECT_DAMAGE_OVER_TIME = GD.Load<PackedScene>("res://Effects/DamageOverTime/DamageOverTime.tscn");
     public static readonly PackedScene EFFECT_PUSH_PULL = GD.Load<PackedScene>("res://Effects/PushPull/PushPull.tscn");
-    public static readonly PackedScene EFFECT_APPLY_CONDITION = GD.Load<PackedScene>("res://Effects/ApplyCondition/ApplyCondition.tscn");
+    public static readonly PackedScene EFFECT_APPLY_MODIFIER = GD.Load<PackedScene>("res://Effects/ApplyModifier/ApplyModifier.tscn");
 
 
     public void InteractWith()
@@ -18,7 +19,7 @@ public partial class Bomb : StaticBody2D, ICanBeInteractedWith
         // TriggerFire();
         // TriggerKnockback();
         // TriggerPull();
-        TriggerApplyCondition();
+        TriggerApplyModifier();
     }
 
     private void TriggerExplosion()
@@ -76,15 +77,16 @@ public partial class Bomb : StaticBody2D, ICanBeInteractedWith
         AddChild(knockback);
     }
 
-    private void TriggerApplyCondition()
+    private void TriggerApplyModifier()
     {
-        ApplyCondition applyCondition = EFFECT_APPLY_CONDITION.Instantiate<ApplyCondition>();
-        // applyCondition.Condition = GD.Load<Slowed>("res://Conditions/Slowed/Slowed.tres");
-        applyCondition.Condition = GD.Load<SpeedBoost>("res://Conditions/SpeedBoost/SpeedBoost.tres");
-        // applyCondition.Condition = GD.Load<HealthBoost>("res://Conditions/HealthBoost/HealthBoost.tres");
-        applyCondition.Radius = 100;
-        applyCondition.Duration = 5;
-        AddChild(applyCondition);
+        ApplyModifier applyModifier = EFFECT_APPLY_MODIFIER.Instantiate<ApplyModifier>();
+        // applyModifier.Condition = GD.Load<Slowed>("res://Conditions/Slowed/Slowed.tres");
+        // applyModifier.Condition = GD.Load<SpeedBoost>("res://Conditions/SpeedBoost/SpeedBoost.tres");
+        // applyModifier.Condition = GD.Load<HealthBoost>("res://Conditions/HealthBoost/HealthBoost.tres");
+        applyModifier.Modifier = new VelocityMultiplyModifier("bomb_speed_boost", 2f).SetDuration(5);
+        applyModifier.Radius = 100;
+        applyModifier.Duration = 5;
+        AddChild(applyModifier);
     }
 
 }

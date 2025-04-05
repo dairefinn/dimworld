@@ -1,12 +1,13 @@
 namespace Dimworld;
 
+using Dimworld.Modifiers;
 using Godot;
 
 
-public partial class ApplyCondition : Area2D
+public partial class ApplyModifier : Area2D
 {
 
-    [Export] public Condition Condition = null;
+    [Export] public Modifier Modifier = null;
     [Export] public float Radius = 100f;
     [Export] public float Duration = 1f;
 
@@ -35,8 +36,8 @@ public partial class ApplyCondition : Area2D
 
     private void OnBodyEntered(Node body)
     {
-        if (body is not IAffectedByConditions target) return;
-        Condition.ApplyTo(target);
+        if (body is not IAffectedByModifiers target) return;
+        target.ModifierHandler?.Add(Modifier);
     }
 
 }

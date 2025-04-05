@@ -250,9 +250,7 @@ public partial class InventoryHotbar : Control
     {
         if (!IsInstanceValid(this)) return;
 
-        GD.Print($"Selected Slot Index: {SelectedSlotIndex}");
         SelectedSlotUI = GetSelectedSlotUI();
-        GD.Print($"Selected Slot UI: {SelectedSlotUI}");
 
         if (SelectedSlotUI != null)
         {
