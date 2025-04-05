@@ -5,7 +5,7 @@
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_y2cbo"]
 atlas = ExtResource("1_jvuip")
-region = Rect2(64, 384, 32, 32)
+region = Rect2(480, 448, 32, 32)
 
 [resource]
 script = ExtResource("1_40wlf")

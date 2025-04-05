@@ -1,7 +1,10 @@
-[gd_resource type="AtlasTexture" load_steps=2 format=3 uid="uid://cnxgp0db6twhr"]
+[gd_resource type="AtlasTexture" load_steps=3 format=3 uid="uid://cnxgp0db6twhr"]
 
-[ext_resource type="Texture2D" uid="uid://bhjkdruopre1o" path="res://Assets/Cute_Fantasy_Free/Player/Player.png" id="1_yrk4r"]
+[ext_resource type="Texture2D" uid="uid://dpxdm8niupad2" path="res://Assets/sprites/characters/Character.png" id="1_0qmf4"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_x3wq5"]
+atlas = ExtResource("1_0qmf4")
 
 [resource]
-atlas = ExtResource("1_yrk4r")
+atlas = SubResource("AtlasTexture_x3wq5")
 region = Rect2(0, 0, 32, 32)

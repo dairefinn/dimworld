@@ -104,10 +104,10 @@ public partial class InventorySlot : Resource
             Quantity = _quantity
         };
 
-        _item = slot.Item;
+        _item = slot.Item?.Duplicate() as InventoryItem;
         _quantity = slot.Quantity;
 
-        slot.Item = slotPrevious.Item;
+        slot.Item = slotPrevious.Item?.Duplicate() as InventoryItem;
         slot.Quantity = slotPrevious.Quantity;
 
         EmitSignal(SignalName.OnUpdated);

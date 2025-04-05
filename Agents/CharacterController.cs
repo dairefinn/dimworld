@@ -24,6 +24,7 @@ public partial class CharacterController : CharacterBody2D, IDamageable, ICanBeM
 		}
 	}
 	private AgentStats _stats;
+    [Export] public bool CanTakeFromInventory { get; set; } = false;
 
 	[ExportGroup("GOAP properties")]
 	[Export] public bool IsPlanningEnabled { get; set; } = true;
@@ -47,10 +48,8 @@ public partial class CharacterController : CharacterBody2D, IDamageable, ICanBeM
 	[Export] public PlanningHandler PlanningHandler { get; set; }
 	[Export] public MemoryHandler MemoryHandler { get; set; }
 	[Export] public ModifierHandler ModifierHandler { get; set; } = new();
-    [Export] public bool CanTakeFromInventory { get; set; } = false;
+	[Export] public ClothingController ClothingController { get; set; }
 
-
-	[Export] public Chest DebugChest { get; set; } // TODO: Remove when done testing find item priority
 
     private Vector2 desiredMovementDirection = Vector2.Zero;
 
@@ -78,12 +77,6 @@ public partial class CharacterController : CharacterBody2D, IDamageable, ICanBeM
 		DetectionHandler.OnNodeDetected += OnDetectionHandlerNodeDetected;
 
 		SetInventoryState();
-
-		if (DebugChest != null)
-		{
-			MemoryHandler.AddMemory(DebugChest.GetNodeLocationMemory());
-			MemoryHandler.AddMemory(new InventoryContents(DebugChest));
-		}
 	}
 
 	public override void _PhysicsProcess(double delta)

@@ -71,6 +71,7 @@ script = ExtResource("5_f11j2")
 
 [node name="ItemIcon" type="TextureRect" parent="MarginContainer/DragArea"]
 unique_name_in_owner = true
+texture_filter = 1
 offset_left = 20.0
 offset_top = 10.0
 offset_right = 80.0

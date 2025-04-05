@@ -4,7 +4,6 @@ using Godot;
 using Godot.Collections;
 using Dimworld.MemoryEntries;
 using System.Linq;
-using Dimworld.Developer;
 
 
 public partial class PickUpItem : GoapAction
@@ -83,6 +82,7 @@ public partial class PickUpItem : GoapAction
             characterController.DetectionHandler.GetDetectedInstancesImplementing<IHasInventory>()
             .Where(container => {
                 if (container is not Node2D node2D) return false; // Must be a node2D
+                // if (container is CharacterController) return false; // Must not be a character
                 if (!characterController.CanReachPoint(node2D.GlobalPosition)) return false;
                 if (!container.Inventory.HasItem(ItemId)) return false;
                 return true;
@@ -92,14 +92,21 @@ public partial class PickUpItem : GoapAction
 
         if (containers.Count == 0) return null; // No containers found
 
-        IHasInventory closestContainer = containers[0];
-        for(int i = 1; i < containers.Count; i++)
+        IHasInventory closestContainer = null;
+        Vector2 closestContainerPosition = Vector2.Zero;
+
+        foreach (IHasInventory container in containers)
         {
-            DeveloperConsole.Print($"Checking container {i}");
-            IHasInventory container = containers[i];
             if (container == null) continue; // Skip null containers
             if (container is not Node2D node2D) continue; // Must be a node2D
-            if (agentPosition.DistanceTo(node2D.GlobalPosition) < agentPosition.DistanceTo(node2D.GlobalPosition))
+
+            if (closestContainer == null)
+            {
+                closestContainer = container;
+                continue;
+            }
+
+            if (agentPosition.DistanceTo(node2D.GlobalPosition) < agentPosition.DistanceTo(closestContainerPosition))
             {
                 closestContainer = container;
             }
