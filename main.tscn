@@ -1,4 +1,4 @@
-[gd_scene load_steps=39 format=3 uid="uid://ddc8qiig7j3wm"]
+[gd_scene load_steps=51 format=3 uid="uid://ddc8qiig7j3wm"]
 
 [ext_resource type="Script" uid="uid://1f6ukfmh33oo" path="res://DayNightController.cs" id="1_d13ii"]
 [ext_resource type="Script" uid="uid://g354xqg3s44p" path="res://InputHandler.cs" id="2_lquwl"]
@@ -7,8 +7,12 @@
 [ext_resource type="PackedScene" uid="uid://b2rac6jo5ig4k" path="res://Agents/Agent.tscn" id="5_lquwl"]
 [ext_resource type="Script" uid="uid://dph74un0q20el" path="res://Inventory/Inventory.cs" id="5_yaehf"]
 [ext_resource type="Script" uid="uid://bm0o5ggnfmm6y" path="res://Inventory/InventorySlot.cs" id="6_cegan"]
+[ext_resource type="Shader" uid="uid://cg2ysaclvjgfx" path="res://Agents/Outline.gdshader" id="7_074og"]
+[ext_resource type="Texture2D" uid="uid://dpxdm8niupad2" path="res://Assets/sprites/characters/Character.png" id="8_cegan"]
 [ext_resource type="Script" uid="uid://daxnr47vhajw0" path="res://Levels/LevelHandler/LevelHandler.cs" id="8_ycdy4"]
+[ext_resource type="Script" uid="uid://ckdaa4jpv4ysf" path="res://Agents/Visuals/ClothingController.cs" id="9_82xsv"]
 [ext_resource type="Script" uid="uid://cru4kq28c8nuw" path="res://Agents/AgentStats.cs" id="9_lswn8"]
+[ext_resource type="Texture2D" uid="uid://bm5yi454iqlnw" path="res://Agents/Visuals/CharacterSpriteSheet.tres" id="10_getpj"]
 [ext_resource type="PackedScene" uid="uid://qds61vs7bsi1" path="res://Developer/DeveloperMenu.tscn" id="12_dg77c"]
 [ext_resource type="Script" uid="uid://5l72ubbv8qqo" path="res://Globals.cs" id="13_ycdy4"]
 [ext_resource type="Resource" uid="uid://octn8jxqeqaq" path="res://Items/Sword.tres" id="18_d13ii"]
@@ -129,6 +133,42 @@ MaxHealth = 100.0
 MaxStamina = 100.0
 metadata/_custom_type_script = "uid://cru4kq28c8nuw"
 
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_ryguw"]
+shader = ExtResource("7_074og")
+shader_parameter/color = Color(0.212305, 0.212305, 0.212305, 1)
+shader_parameter/width = 0.75
+shader_parameter/pattern = 0
+shader_parameter/inside = false
+shader_parameter/add_margins = true
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_d13ii"]
+atlas = ExtResource("8_cegan")
+region = Rect2(0, 0, 32, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_1u8w0"]
+atlas = ExtResource("10_getpj")
+region = Rect2(32, 0, 32, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_0odxb"]
+atlas = ExtResource("10_getpj")
+region = Rect2(96, 0, 32, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_lswn8"]
+atlas = ExtResource("10_getpj")
+region = Rect2(32, 32, 32, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_a6jrf"]
+atlas = ExtResource("10_getpj")
+region = Rect2(0, 64, 32, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_xuqvo"]
+atlas = ExtResource("10_getpj")
+region = Rect2(32, 64, 32, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_qsp4k"]
+atlas = ExtResource("10_getpj")
+region = Rect2(96, 64, 32, 32)
+
 [sub_resource type="Environment" id="Environment_ycdy4"]
 
 [sub_resource type="CameraAttributesPractical" id="CameraAttributesPractical_w48qg"]
@@ -137,13 +177,45 @@ metadata/_custom_type_script = "uid://cru4kq28c8nuw"
 
 [node name="Player" parent="." instance=ExtResource("5_lquwl")]
 z_index = 1
-position = Vector2(1271, 764)
+position = Vector2(1833, 735)
 Inventory = SubResource("Resource_0dhbp")
 Stats = SubResource("Resource_jx0wj")
 IsPlanningEnabled = false
 
 [node name="Camera2D" type="Camera2D" parent="Player"]
 zoom = Vector2(3, 3)
+
+[node name="BodySprite" type="Sprite2D" parent="Player" node_paths=PackedStringArray("HairSprite", "EyesSprite", "TopSprite", "OvertopSprite", "BottomsSprite", "ShoesSprite")]
+texture_filter = 1
+material = SubResource("ShaderMaterial_ryguw")
+texture = SubResource("AtlasTexture_d13ii")
+script = ExtResource("9_82xsv")
+HairSprite = NodePath("Hair")
+EyesSprite = NodePath("Eyes")
+TopSprite = NodePath("Top")
+OvertopSprite = NodePath("Overtop")
+BottomsSprite = NodePath("Bottom")
+ShoesSprite = NodePath("Shoes")
+
+[node name="Shoes" type="Sprite2D" parent="Player/BodySprite"]
+texture = SubResource("AtlasTexture_1u8w0")
+
+[node name="Bottom" type="Sprite2D" parent="Player/BodySprite"]
+texture = SubResource("AtlasTexture_0odxb")
+
+[node name="Top" type="Sprite2D" parent="Player/BodySprite"]
+texture = SubResource("AtlasTexture_lswn8")
+
+[node name="Overtop" type="Sprite2D" parent="Player/BodySprite"]
+texture = SubResource("AtlasTexture_a6jrf")
+
+[node name="Eyes" type="Sprite2D" parent="Player/BodySprite"]
+unique_name_in_owner = true
+texture = SubResource("AtlasTexture_xuqvo")
+
+[node name="Hair" type="Sprite2D" parent="Player/BodySprite"]
+use_parent_material = true
+texture = SubResource("AtlasTexture_qsp4k")
 
 [node name="LevelHandler" type="Node" parent="."]
 script = ExtResource("8_ycdy4")
