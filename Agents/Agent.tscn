@@ -1,7 +1,7 @@
-[gd_scene load_steps=12 format=3 uid="uid://b2rac6jo5ig4k"]
+[gd_scene load_steps=13 format=3 uid="uid://b2rac6jo5ig4k"]
 
 [ext_resource type="Script" uid="uid://bwbmuqkjtx0ns" path="res://Agents/CharacterController.cs" id="1_v5emj"]
-[ext_resource type="Texture2D" uid="uid://cnxgp0db6twhr" path="res://Assets/Cute_Fantasy_Free/Player/PlayerAtlasTexture.tres" id="1_xhfnw"]
+[ext_resource type="Texture2D" uid="uid://dpxdm8niupad2" path="res://Assets/sprites/characters/Character.png" id="2_4oknj"]
 [ext_resource type="Script" uid="uid://cxbp1npv1tukk" path="res://Agents/DetectionHandler.cs" id="3_07efl"]
 [ext_resource type="PackedScene" uid="uid://bb462hku8uk8i" path="res://Agents/UI/AgentStatsUI.tscn" id="3_o26ja"]
 [ext_resource type="PackedScene" uid="uid://v23vcyiu8qgc" path="res://Agents/Dialogue/SpeechBubble.tscn" id="4_ia2xe"]
@@ -9,6 +9,10 @@
 [ext_resource type="Script" uid="uid://bk54n8opktsdt" path="res://Agents/PlanningHandler.cs" id="6_24e8l"]
 [ext_resource type="Script" uid="uid://bgoi1dk2c120s" path="res://Agents/Memory/MemoryHandler.cs" id="7_4oknj"]
 [ext_resource type="Script" uid="uid://5x3g25chpe2b" path="res://Agents/Modifiers/ModifierHandler.cs" id="7_um2er"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_um2er"]
+atlas = ExtResource("2_4oknj")
+region = Rect2(0, 0, 32, 32)
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_ns7eq"]
 radius = 12.0
@@ -30,7 +34,8 @@ ModifierHandler = NodePath("ModifierHandler")
 
 [node name="Sprite2D" type="Sprite2D" parent="."]
 texture_filter = 1
-texture = ExtResource("1_xhfnw")
+scale = Vector2(0.8, 0.8)
+texture = SubResource("AtlasTexture_um2er")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 shape = SubResource("CircleShape2D_ns7eq")
@@ -67,9 +72,9 @@ script = ExtResource("7_um2er")
 
 [node name="AgentStatsUI" parent="." instance=ExtResource("3_o26ja")]
 offset_left = -11.0
-offset_top = 10.0
+offset_top = 14.0
 offset_right = 11.0
-offset_bottom = 15.0
+offset_bottom = 19.0
 
 [node name="CenterContainer" type="CenterContainer" parent="."]
 offset_top = -30.0
