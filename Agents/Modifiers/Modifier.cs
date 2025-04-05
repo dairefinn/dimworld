@@ -42,6 +42,19 @@ public abstract partial class Modifier : Resource
     }
 
 
+    // LIFECYCLE EVENTS
+
+    public virtual void OnAdded(ModifierHandler handler)
+    {
+
+    }
+
+    public virtual void OnRemoved(ModifierHandler handler)
+    {
+        
+    }
+
+
     // PROCESSING
 
     /// <summary>

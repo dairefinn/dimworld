@@ -80,10 +80,9 @@ public partial class Bomb : StaticBody2D, ICanBeInteractedWith
     private void TriggerApplyModifier()
     {
         ApplyModifier applyModifier = EFFECT_APPLY_MODIFIER.Instantiate<ApplyModifier>();
-        // applyModifier.Condition = GD.Load<Slowed>("res://Conditions/Slowed/Slowed.tres");
-        // applyModifier.Condition = GD.Load<SpeedBoost>("res://Conditions/SpeedBoost/SpeedBoost.tres");
-        // applyModifier.Condition = GD.Load<HealthBoost>("res://Conditions/HealthBoost/HealthBoost.tres");
-        applyModifier.Modifier = new VelocityMultiplyModifier("bomb_speed_boost", 2f).SetDuration(5);
+        // applyModifier.Modifier = new VelocityMultiplyModifier("bomb_speed_boost", 2f).SetDuration(5);
+        // applyModifier.Modifier = new VelocityMultiplyModifier("bomb_slow_down", 0.5f).SetDuration(5);
+        applyModifier.Modifier = new HealthMultiplyModifier("bomb_health_boost", 2f).SetHealOnAdd(true).SetDuration(5);
         applyModifier.Radius = 100;
         applyModifier.Duration = 5;
         AddChild(applyModifier);

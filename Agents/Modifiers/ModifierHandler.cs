@@ -34,7 +34,7 @@ public partial class ModifierHandler : Node2D
 
 				if (!isStillActive)
 				{
-					Modifiers.Remove(modifier);
+					Remove(modifier);
 				}
 			}
 		}
@@ -45,26 +45,25 @@ public partial class ModifierHandler : Node2D
 
 	public void Add(Modifier modifier)
 	{
-		if (Modifiers.Contains(modifier))
+		Modifier existingModifier = GetByKey(modifier.Key);
+		if (existingModifier != null)
 		{
-			GD.PrintErr($"Modifier {modifier.Key} already exists in the handler.");
-			return;
+			Modifiers.Remove(existingModifier);
 		}
 
-		GD.Print($"Adding modifier {modifier.Key} to handler.");
 		Modifiers.Add(modifier);
+		modifier.OnAdded(this);
 	}
 
 	public void Remove(Modifier modifier)
 	{
 		if (!Modifiers.Contains(modifier))
 		{
-			GD.PrintErr($"Modifier {modifier.Key} does not exist in the handler.");
 			return;
 		}
 
-		GD.Print($"Removing modifier {modifier.Key} from handler.");
 		Modifiers.Remove(modifier);
+		modifier.OnRemoved(this);
 	}
 
 	public Modifier GetByKey(string key)
