@@ -52,6 +52,7 @@ public partial class CharacterController : CharacterBody2D, IDamageable, ICanBeM
 	[Export] public Chest DebugChest { get; set; } // TODO: Remove when done testing find item priority
 
     private Vector2 desiredMovementDirection = Vector2.Zero;
+	private float speedMultiplier = 1f;
 
 
 	// LIFECYCLE EVENTS
@@ -104,20 +105,6 @@ public partial class CharacterController : CharacterBody2D, IDamageable, ICanBeM
 		}
 
 		ConditionHandler?.ProcessConditions(this, delta);
-
-		// Print inventory slots w/ item counts
-		// if (Inventory != null)
-		// {
-		//     string inventoryString = "Inventory: ";
-		//     System.Collections.Generic.List<string> contentsStrings = [];
-		//     foreach (InventorySlot slot in Inventory.Slots)
-		//     {
-		//         if (slot.IsEmpty) continue;
-		//         contentsStrings.Add(slot.Item.ItemName + " (" + slot.Quantity + ")");
-		//     }
-		//     inventoryString += string.Join(", ", contentsStrings);
-		//     DeveloperConsole.Print(inventoryString);
-		// }
 	}
 
 
@@ -147,7 +134,7 @@ public partial class CharacterController : CharacterBody2D, IDamageable, ICanBeM
         };
     }
 
-	// TODO: Use memory handler for this or check the characters inventory in the procedural conditions
+	// TODO: Add an interface called IAffectsState that adds data dynamically to the agent's world state under the given key of 'has_items'. Can do the same for equipment with the key 'has_equipped'
 	public void SetInventoryState()
 	{
 		if (WorldState == null)
@@ -213,7 +200,8 @@ public partial class CharacterController : CharacterBody2D, IDamageable, ICanBeM
 
 	private void ProcessNavigationInput(Vector2 desiredMovementDirection, double delta)
 	{
-		Velocity = Velocity.Lerp(desiredMovementDirection * Speed, (float)(Acceleration * delta));
+		Vector2 desiredVelocity = speedMultiplier * desiredMovementDirection * Speed;
+		Velocity = Velocity.Lerp(desiredVelocity, (float)(Acceleration * delta));
 	}
 
 	private void ProcessNavigationPathfinding(double delta)
@@ -247,6 +235,19 @@ public partial class CharacterController : CharacterBody2D, IDamageable, ICanBeM
 		if (direction == Vector2.Zero) return;
 		desiredMovementDirection = direction;
 	}
+
+	public void SetSprinting(bool isSprinting)
+	{
+		if (isSprinting)
+		{
+			speedMultiplier = 2f;
+		}
+		else
+		{
+			speedMultiplier = 1f;
+		}
+	}
+
 
 
 	// INTERACTION

@@ -11,22 +11,19 @@ public partial class InputHandler : Node2D
     {
         base._Process(delta);
 
+        InventoryViewer inventoryViewer = Globals.Instance.InventoryViewer;
+        CharacterController player = Globals.Instance.Player;
+
         bool canUseInputs = !DeveloperMenu.IsOpen && !DeveloperConsole.IsFocused;
 
         bool isMovingManually = Input.IsActionPressed("move_up") || Input.IsActionPressed("move_down") || Input.IsActionPressed("move_left") || Input.IsActionPressed("move_right");
-        bool isMovingClick = Input.IsActionJustPressed("lmb");
-        bool isTogglingDeveloperMenu = Input.IsActionJustPressed("toggle_developer_menu");
-
-        bool canMove = canUseInputs && !Globals.Instance.InventoryViewer.IsViewing;
-        bool canMoveClick = false;
-        bool canAbortMove = canUseInputs && Input.IsActionJustPressed("rmb");
-        bool canInteract = canUseInputs && Input.IsActionJustPressed("interact") && !Globals.Instance.InventoryViewer.IsViewing;
-        bool canOpenInventory = canUseInputs && Input.IsActionJustPressed("toggle_inventory") && !Globals.Instance.InventoryViewer.IsViewing;
-        bool canCloseInventory = canUseInputs && (Input.IsActionJustPressed("toggle_inventory") || Input.IsActionJustPressed("interact") || Input.IsActionJustPressed("ui_cancel")) && Globals.Instance.InventoryViewer.IsViewing;
-        bool canCloseConsole = Input.IsActionJustPressed("ui_cancel") && DeveloperConsole.IsFocused;
-        bool canUseHotbarItems = canUseInputs && !Globals.Instance.InventoryViewer.IsViewing && Input.IsActionJustPressed("lmb");
+        bool isMovingClick = Input.IsActionPressed("lmb");
         
-
+        bool canMove = canUseInputs && !inventoryViewer.IsViewing;
+        bool canMoveClick = false;
+        bool canAbortMove = canUseInputs && Input.IsActionPressed("rmb");
+        bool canSprint = canUseInputs && Input.IsActionPressed("action_sprint") && !inventoryViewer.IsViewing;
+        
         if (canMove)
         {
             if (isMovingManually)
@@ -36,33 +33,63 @@ public partial class InputHandler : Node2D
                     Input.IsActionPressed("move_down") ? 1 : (Input.IsActionPressed("move_up") ? -1 : 0)
                 );
 
-                Globals.Instance.Player.StopNavigating();
-                Globals.Instance.Player.SetMovementDirection(direction);
+                player.StopNavigating();
+                player.SetMovementDirection(direction);
             }
             else if (canMoveClick && isMovingClick)
             {
                 Vector2 mousePosition = GetGlobalMousePosition();
-                Globals.Instance.Player.NavigateTo(mousePosition);
+                player.NavigateTo(mousePosition);
             }
             else if (canAbortMove)
             {
-                Globals.Instance.Player.StopNavigating();
+                player.StopNavigating();
+            }
+
+            if (canSprint)
+            {
+                player.SetSprinting(true);
+            }
+            else
+            {
+                player.SetSprinting(false);
             }
         }
 
+    }
+
+    public override void _Input(InputEvent @event)
+    {
+        base._Input(@event);
+        
+        InventoryViewer inventoryViewer = Globals.Instance.InventoryViewer;
+        CharacterController player = Globals.Instance.Player;
+        CursorFollower cursorFollower = Globals.Instance.CursorFollower;
+
+        bool canUseInputs = !DeveloperMenu.IsOpen && !DeveloperConsole.IsFocused;
+
+        bool isTogglingDeveloperMenu = @event.IsActionPressed("toggle_developer_menu");
+
+        bool canInteract = canUseInputs && @event.IsActionPressed("interact") && !inventoryViewer.IsViewing;
+        bool canOpenInventory = canUseInputs && @event.IsActionPressed("toggle_inventory") && !inventoryViewer.IsViewing;
+        bool canCloseInventory = canUseInputs && (@event.IsActionPressed("toggle_inventory") || @event.IsActionPressed("interact") || @event.IsActionPressed("ui_cancel")) && inventoryViewer.IsViewing;
+        bool canUseHotbarItems = canUseInputs && !inventoryViewer.IsViewing && @event.IsActionPressed("lmb");
+        bool canCloseConsole = @event.IsActionPressed("ui_cancel") && DeveloperConsole.IsFocused;
+        
+
         if (canInteract)
         {
-            TryInteract();
+            TryInteract(player, cursorFollower);
         }
 
         if (canOpenInventory)
         {
-            Globals.Instance.InventoryViewer.SetPrimaryInventoryVisibility(true);
+            inventoryViewer.SetPrimaryInventoryVisibility(true);
         }
 
         if (canCloseInventory)
         {
-            Globals.Instance.InventoryViewer.SetBothInventoriesVisibility(false);
+            inventoryViewer.SetBothInventoriesVisibility(false);
         }
 
         if (isTogglingDeveloperMenu)
@@ -77,46 +104,46 @@ public partial class InputHandler : Node2D
 
         if (canUseHotbarItems)
         {
-            Globals.Instance.InventoryViewer.TryUseSelectedItem();
+            inventoryViewer.TryUseSelectedItem();
         }
 
         if (canUseInputs)
         {
             // If 1-5 are pressed, use the corresponding hotbar item
-            if (Input.IsActionJustReleased("hotbar_slot_0"))
+            if (@event.IsActionPressed("hotbar_slot_0"))
             {
-                Globals.Instance.InventoryViewer.Hotbar.SelectSlot(0);
+                inventoryViewer.Hotbar.SelectSlot(0);
             }
-            else if (Input.IsActionJustReleased("hotbar_slot_1"))
+            else if (@event.IsActionPressed("hotbar_slot_1"))
             {
-                Globals.Instance.InventoryViewer.Hotbar.SelectSlot(1);
+                inventoryViewer.Hotbar.SelectSlot(1);
             }
-            else if (Input.IsActionJustReleased("hotbar_slot_2"))
+            else if (@event.IsActionPressed("hotbar_slot_2"))
             {
-                Globals.Instance.InventoryViewer.Hotbar.SelectSlot(2);
+                inventoryViewer.Hotbar.SelectSlot(2);
             }
-            else if (Input.IsActionJustReleased("hotbar_slot_3"))
+            else if (@event.IsActionPressed("hotbar_slot_3"))
             {
-                Globals.Instance.InventoryViewer.Hotbar.SelectSlot(3);
+                inventoryViewer.Hotbar.SelectSlot(3);
             }
-            else if (Input.IsActionJustReleased("hotbar_slot_4"))
+            else if (@event.IsActionPressed("hotbar_slot_4"))
             {
-                Globals.Instance.InventoryViewer.Hotbar.SelectSlot(4);
+                inventoryViewer.Hotbar.SelectSlot(4);
             }
         }
-
     }
+
 
 
     // INTERACTIONS
 
-    public void TryInteract()
+    public void TryInteract(CharacterController player, CursorFollower cursorFollower)
     {
-        if (!IsInstanceValid(Globals.Instance.CursorFollower)) return;
+        if (!IsInstanceValid(cursorFollower)) return;
 
-        ICanBeInteractedWith interactableObject = Globals.Instance.CursorFollower.InteractableObject;
+        ICanBeInteractedWith interactableObject = cursorFollower.InteractableObject;
         if (interactableObject == null) return;
 
-        Globals.Instance.Player.TryInteractWith(interactableObject);
+        player.TryInteractWith(interactableObject);
     }
 }
