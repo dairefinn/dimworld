@@ -55,6 +55,7 @@ public partial class InventorySlotStateMachine : Node
 
 	public void OnTransitionRequested(InventorySlotState from, InventorySlotState.State to)
 	{
+		if (Engine.IsEditorHint()) return; // Ignore transitions in the editor
 		if (from != currentState) return; // Cannot transition from a state that is not the current state
 
 		InventorySlotState newState = states[to];

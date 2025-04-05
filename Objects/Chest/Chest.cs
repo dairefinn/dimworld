@@ -13,7 +13,7 @@ public partial class Chest : StaticBody2D, ICanBeInteractedWith, IMemorableNode,
 
     public void InteractWith()
     {
-        InputHandler.Instance.InventoryViewer.OpenSecondaryInventory(Inventory);
+        Globals.Instance.InventoryViewer.OpenSecondaryInventory(Inventory);
     }
 
     public bool ContainsItem(InventoryItem item)

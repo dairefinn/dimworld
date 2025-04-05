@@ -7,40 +7,6 @@ using Godot;
 public partial class InputHandler : Node2D
 {
 
-    public static InputHandler Instance { get; private set; }
-
-
-    [ExportGroup("References")]
-
-    [Export] public CharacterController PlayerAgent {
-        get => _playerAgent;
-        set => SetPlayerAgent(value);
-    }
-    private CharacterController _playerAgent;
-
-    [Export] public InventoryHandler InventoryViewer {
-        get => _inventoryViewer;
-        set => SetInventoryViewer(value);
-    }
-    private InventoryHandler _inventoryViewer;
-
-    [Export] public CursorFollower CursorFollower { get; set; }
-
-
-    public InputHandler()
-    {
-        if (Instance == null)
-        {
-            Instance = this;
-        }
-        else
-        {
-            GD.PrintErr("InputHandler: Attempted to create multiple instances of InputHandler.");
-            QueueFree();
-        }
-    }
-
-
     public override void _Process(double delta)
     {
         base._Process(delta);
@@ -51,12 +17,15 @@ public partial class InputHandler : Node2D
         bool isMovingClick = Input.IsActionJustPressed("lmb");
         bool isTogglingDeveloperMenu = Input.IsActionJustPressed("toggle_developer_menu");
 
-        bool canMove = canUseInputs && !InventoryViewer.IsViewing;
+        bool canMove = canUseInputs && !Globals.Instance.InventoryViewer.IsViewing;
+        bool canMoveClick = false;
         bool canAbortMove = canUseInputs && Input.IsActionJustPressed("rmb");
-        bool canInteract = canUseInputs && Input.IsActionJustPressed("interact") && !InventoryViewer.IsViewing;
-        bool canOpenInventory = canUseInputs && Input.IsActionJustPressed("toggle_inventory") && !InventoryViewer.IsViewing;
-        bool canCloseInventory = canUseInputs && (Input.IsActionJustPressed("toggle_inventory") || Input.IsActionJustPressed("interact") || Input.IsActionJustPressed("ui_cancel")) && InventoryViewer.IsViewing;
+        bool canInteract = canUseInputs && Input.IsActionJustPressed("interact") && !Globals.Instance.InventoryViewer.IsViewing;
+        bool canOpenInventory = canUseInputs && Input.IsActionJustPressed("toggle_inventory") && !Globals.Instance.InventoryViewer.IsViewing;
+        bool canCloseInventory = canUseInputs && (Input.IsActionJustPressed("toggle_inventory") || Input.IsActionJustPressed("interact") || Input.IsActionJustPressed("ui_cancel")) && Globals.Instance.InventoryViewer.IsViewing;
         bool canCloseConsole = Input.IsActionJustPressed("ui_cancel") && DeveloperConsole.IsFocused;
+        bool canUseHotbarItems = canUseInputs && !Globals.Instance.InventoryViewer.IsViewing && Input.IsActionJustPressed("lmb");
+        
 
         if (canMove)
         {
@@ -67,20 +36,19 @@ public partial class InputHandler : Node2D
                     Input.IsActionPressed("move_down") ? 1 : (Input.IsActionPressed("move_up") ? -1 : 0)
                 );
 
-                PlayerAgent.StopNavigating();
-                PlayerAgent.SetMovementDirection(direction);
+                Globals.Instance.Player.StopNavigating();
+                Globals.Instance.Player.SetMovementDirection(direction);
             }
-            else if (isMovingClick)
+            else if (canMoveClick && isMovingClick)
             {
                 Vector2 mousePosition = GetGlobalMousePosition();
-                PlayerAgent.NavigateTo(mousePosition);
+                Globals.Instance.Player.NavigateTo(mousePosition);
             }
             else if (canAbortMove)
             {
-                PlayerAgent.StopNavigating();
+                Globals.Instance.Player.StopNavigating();
             }
         }
-
 
         if (canInteract)
         {
@@ -89,12 +57,12 @@ public partial class InputHandler : Node2D
 
         if (canOpenInventory)
         {
-            InventoryViewer.SetPrimaryInventoryVisibility(true);
+            Globals.Instance.InventoryViewer.SetPrimaryInventoryVisibility(true);
         }
 
         if (canCloseInventory)
         {
-            InventoryViewer.SetBothInventoriesVisibility(false);
+            Globals.Instance.InventoryViewer.SetBothInventoriesVisibility(false);
         }
 
         if (isTogglingDeveloperMenu)
@@ -106,29 +74,37 @@ public partial class InputHandler : Node2D
         {
             DeveloperMenu.Instance?.Hide();
         }
-    }
 
-
-    // SETTERS
-
-    public void SetPlayerAgent(CharacterController agent)
-    {
-        _playerAgent = agent;
-
-        if (agent != null && InventoryViewer != null)
+        if (canUseHotbarItems)
         {
-            InventoryViewer.PrimaryInventory = agent.Inventory;
+            Globals.Instance.InventoryViewer.TryUseSelectedItem();
         }
-    }
 
-    public void SetInventoryViewer(InventoryHandler inventoryHandler)
-    {
-        _inventoryViewer = inventoryHandler;
-
-        if (PlayerAgent != null && inventoryHandler != null)
+        if (canUseInputs)
         {
-            inventoryHandler.PrimaryInventory = PlayerAgent.Inventory;
+            // If 1-5 are pressed, use the corresponding hotbar item
+            if (Input.IsActionJustReleased("hotbar_slot_0"))
+            {
+                Globals.Instance.InventoryViewer.Hotbar.SelectSlot(0);
+            }
+            else if (Input.IsActionJustReleased("hotbar_slot_1"))
+            {
+                Globals.Instance.InventoryViewer.Hotbar.SelectSlot(1);
+            }
+            else if (Input.IsActionJustReleased("hotbar_slot_2"))
+            {
+                Globals.Instance.InventoryViewer.Hotbar.SelectSlot(2);
+            }
+            else if (Input.IsActionJustReleased("hotbar_slot_3"))
+            {
+                Globals.Instance.InventoryViewer.Hotbar.SelectSlot(3);
+            }
+            else if (Input.IsActionJustReleased("hotbar_slot_4"))
+            {
+                Globals.Instance.InventoryViewer.Hotbar.SelectSlot(4);
+            }
         }
+
     }
 
 
@@ -136,11 +112,11 @@ public partial class InputHandler : Node2D
 
     public void TryInteract()
     {
-        if (CursorFollower == null) return;
+        if (!IsInstanceValid(Globals.Instance.CursorFollower)) return;
 
-        ICanBeInteractedWith interactableObject = CursorFollower.InteractableObject;
+        ICanBeInteractedWith interactableObject = Globals.Instance.CursorFollower.InteractableObject;
         if (interactableObject == null) return;
 
-        PlayerAgent.TryInteractWith(interactableObject);
+        Globals.Instance.Player.TryInteractWith(interactableObject);
     }
 }

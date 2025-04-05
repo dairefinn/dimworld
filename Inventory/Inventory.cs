@@ -1,5 +1,6 @@
 namespace Dimworld;
 
+using System;
 using Dimworld.Developer;
 using Godot;
 using Godot.Collections;
@@ -9,11 +10,15 @@ using Godot.Collections;
 public partial class Inventory : Resource
 {
 
-	[Export] public string InventoryName = "Inventory";
-	[Export] public Array<InventorySlot> Slots = [];
-
-
 	[Signal] public delegate void OnUpdatedEventHandler();
+
+
+	[Export] public string InventoryName = "Inventory";
+	[Export] public Array<InventorySlot> Slots {
+		get => _slots;
+		set => SetSlots(value);
+	}
+	private Array<InventorySlot> _slots = [];
 
 
 	public Inventory()
@@ -26,6 +31,30 @@ public partial class Inventory : Resource
 		foreach (InventorySlot slot in inventory.Slots)
 		{
 			Slots.Add(new InventorySlot(slot));
+		}
+	}
+
+
+	private void SetSlots(Array<InventorySlot> slots)
+	{
+		_slots = slots;
+		PopulateAllSlots();
+		CallDeferred(MethodName.OnUpdate);
+	}
+
+	public void PopulateAllSlots()
+	{
+		for(int i = 0; i < Slots.Count; i++)
+		{
+			if (Slots[i] == null)
+			{
+				Slots[i] = new InventorySlot();
+			}
+
+			if (!Slots[i].IsConnected(SignalName.OnUpdated, Callable.From(OnUpdate)))
+			{
+				Slots[i].OnUpdated += OnUpdate;
+			}
 		}
 	}
 
@@ -66,6 +95,11 @@ public partial class Inventory : Resource
 		}
 
 		return false;
+	}
+
+	private void OnUpdate()
+	{
+		EmitSignal(SignalName.OnUpdated);
 	}
 
 	/// <summary>

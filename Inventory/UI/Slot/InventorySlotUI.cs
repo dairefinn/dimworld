@@ -1,7 +1,7 @@
 namespace Dimworld;
 
 using Godot;
-using Godot.Collections;
+
 
 public partial class InventorySlotUI : Panel
 {
@@ -13,17 +13,32 @@ public partial class InventorySlotUI : Panel
 
     [Export] public InventorySlot TargetSlot {
         get => _targetSlot;
-        set => SetTargetSlot(value);
+        set {
+            _targetSlot = value;
+            OnUpdateTargetSlot();
+        }
     }
     private InventorySlot _targetSlot;
+    [Export] public int SlotIndex {
+        get => _slotIndex;
+        set {
+            _slotIndex = value;
+            UpdateUI();
+        }
+    }
+    private int _slotIndex = -1;
+    [Export] public bool CanBeSelected { get; set; } = true;
 
     public InventoryUI ParentInventoryUI { get; set; }
 
-    public TextureRect ItemIcon;
-    public Label QuantityLabel;
-    public Label ItemLabel;
+    [Export] public TextureRect ItemIcon;
+    [Export] public Label QuantityLabel;
+    [Export] public Label ItemLabel;
+    [Export] public Label IndexLabel;
+    [Export] public Panel HoverOverlay;
+
+
     public InventorySlotDragArea DragArea;
-    public Panel HoverOverlay;
 
 
     private InventorySlotStateMachine StateMachine;
@@ -33,75 +48,86 @@ public partial class InventorySlotUI : Panel
     
     public override void _Ready()
     {
-        QuantityLabel = GetNode<Label>("%QuantityLabel");
-        ItemLabel = GetNode<Label>("%ItemLabel");
-        ItemIcon = GetNode<TextureRect>("%ItemIcon");
         StateMachine = GetNode<InventorySlotStateMachine>("%StateMachine");
-        HoverOverlay = GetNode<Panel>("%HoverOverlay");
         DragArea = GetNode<InventorySlotDragArea>("%DragArea");
         DragArea.ParentSlot = this;
 
-        ItemLabel.Text = "";
-        QuantityLabel.Text = "0";
-        ItemIcon.Texture = null;
-
-        UpdateUI();
-        StateMachine.Init(this);
+        StateMachine?.Init(this);
 
         MouseEntered += OnMouseEntered;
         MouseExited += OnMouseExited;
+
+        UpdateUI();
     }
  
     public override void _Input(InputEvent @event)
     {
-		StateMachine.OnInput(@event);
+		if (IsInstanceValid(StateMachine))
+        {
+            StateMachine.OnInput(@event);
+        }
     }
 
     public override void _GuiInput(InputEvent @event)
     {
-        StateMachine.OnGuiInput(@event);
+		if (IsInstanceValid(StateMachine))
+        {
+            StateMachine.OnGuiInput(@event);
+        }
     }
 
     // SIGNAL HANDLERS
 
 	public void OnMouseEntered()
 	{
-		HoverOverlay.Show();
-		StateMachine.OnMouseEntered();
+		if (IsInstanceValid(HoverOverlay))
+        {
+            HoverOverlay.Show();
+        }
+		if (IsInstanceValid(StateMachine))
+        {
+            StateMachine.OnMouseEntered();
+        }
 	}
 
 	public void OnMouseExited()
 	{
-        HoverOverlay.Hide();
-		StateMachine.OnMouseExited();
+        if (IsInstanceValid(HoverOverlay))
+        {
+            HoverOverlay.Hide();
+        }
+        if (IsInstanceValid(StateMachine))
+        {
+            StateMachine.OnMouseExited();
+        }
 	}
 
 
     // SETTERS
 
-    public void SetTargetSlot(InventorySlot slot)
+    public void OnUpdateTargetSlot()
     {
-        _targetSlot = slot;
         UpdateUI();
 
         if (_targetSlot == null) return;
-
         _targetSlot.OnUpdated += UpdateUI;
     }
 
     public void UpdateUI()
     {
-        if (_targetSlot == null) return;
+        if (!IsInstanceValid(this)) return;
 
         string itemName = "";
         int itemQuantity = 0;
         Texture2D itemIcon = null;
+        bool IsEquipped = false;
 
-        if (_targetSlot.Item != null)
+        if (_targetSlot != null && _targetSlot.Item != null)
         {
             itemName = _targetSlot.Item.ItemName;
             itemQuantity = _targetSlot.Quantity;
             itemIcon = _targetSlot.Item.Icon;
+            IsEquipped = _targetSlot.Item.IsEquipped;
         }
 
         if (IsInstanceValid(ItemLabel))
@@ -112,14 +138,21 @@ public partial class InventorySlotUI : Panel
         if (IsInstanceValid(QuantityLabel))
         {
             QuantityLabel.Text = itemQuantity.ToString();
+            QuantityLabel.Visible = itemQuantity > 0;
         }
 
         if (IsInstanceValid(ItemIcon))
         {
             ItemIcon.Texture = itemIcon;
         }
+
+        if (IsInstanceValid(IndexLabel))
+        {
+            IndexLabel.Text = _slotIndex.ToString();
+            IndexLabel.Visible = SlotIndex >= 0;
+        }
         
-        if(TargetSlot.Item != null && TargetSlot.Item.IsEquipped)
+        if(IsEquipped)
 		{
 			Set("theme_override_styles/panel", STYLEBOX_ACTIVE);
 		}

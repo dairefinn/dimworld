@@ -1,22 +1,85 @@
-[gd_scene load_steps=32 format=3 uid="uid://ddc8qiig7j3wm"]
+[gd_scene load_steps=39 format=3 uid="uid://ddc8qiig7j3wm"]
 
 [ext_resource type="Script" uid="uid://1f6ukfmh33oo" path="res://DayNightController.cs" id="1_d13ii"]
 [ext_resource type="Script" uid="uid://g354xqg3s44p" path="res://InputHandler.cs" id="2_lquwl"]
 [ext_resource type="PackedScene" uid="uid://duk1q562jys3q" path="res://Player/CursorFollower.tscn" id="3_ryguw"]
+[ext_resource type="Resource" uid="uid://bfbm4tftgemqa" path="res://Items/Torch.tres" id="4_w48qg"]
 [ext_resource type="PackedScene" uid="uid://b2rac6jo5ig4k" path="res://Agents/Agent.tscn" id="5_lquwl"]
 [ext_resource type="Script" uid="uid://dph74un0q20el" path="res://Inventory/Inventory.cs" id="5_yaehf"]
 [ext_resource type="Script" uid="uid://bm0o5ggnfmm6y" path="res://Inventory/InventorySlot.cs" id="6_cegan"]
 [ext_resource type="Script" uid="uid://daxnr47vhajw0" path="res://Levels/LevelHandler/LevelHandler.cs" id="8_ycdy4"]
 [ext_resource type="Script" uid="uid://cru4kq28c8nuw" path="res://Agents/AgentStats.cs" id="9_lswn8"]
 [ext_resource type="PackedScene" uid="uid://qds61vs7bsi1" path="res://Developer/DeveloperMenu.tscn" id="12_dg77c"]
+[ext_resource type="Script" uid="uid://5l72ubbv8qqo" path="res://Globals.cs" id="13_ycdy4"]
 [ext_resource type="Resource" uid="uid://octn8jxqeqaq" path="res://Items/Sword.tres" id="18_d13ii"]
 [ext_resource type="PackedScene" uid="uid://d21nkwnu7y4od" path="res://Inventory/UI/InventoryViewer.tscn" id="23_d13ii"]
 [ext_resource type="PackedScene" uid="uid://b3v4ub2lqydho" path="res://Levels/LevelTesting.tscn" id="25_a6jrf"]
 
-[sub_resource type="Resource" id="Resource_1u8w0"]
+[sub_resource type="Resource" id="Resource_dg77c"]
 script = ExtResource("6_cegan")
 Item = ExtResource("18_d13ii")
 Quantity = 1
+metadata/_custom_type_script = "uid://bm0o5ggnfmm6y"
+
+[sub_resource type="Resource" id="Resource_ycdy4"]
+script = ExtResource("6_cegan")
+Item = ExtResource("4_w48qg")
+Quantity = 1
+metadata/_custom_type_script = "uid://bm0o5ggnfmm6y"
+
+[sub_resource type="Resource" id="Resource_w48qg"]
+script = ExtResource("6_cegan")
+Quantity = 0
+metadata/_custom_type_script = "uid://bm0o5ggnfmm6y"
+
+[sub_resource type="Resource" id="Resource_vivmo"]
+script = ExtResource("6_cegan")
+Quantity = 0
+metadata/_custom_type_script = "uid://bm0o5ggnfmm6y"
+
+[sub_resource type="Resource" id="Resource_2cqfq"]
+script = ExtResource("6_cegan")
+Quantity = 0
+metadata/_custom_type_script = "uid://bm0o5ggnfmm6y"
+
+[sub_resource type="Resource" id="Resource_yaehf"]
+script = ExtResource("6_cegan")
+Quantity = 0
+metadata/_custom_type_script = "uid://bm0o5ggnfmm6y"
+
+[sub_resource type="Resource" id="Resource_074og"]
+script = ExtResource("6_cegan")
+Quantity = 0
+metadata/_custom_type_script = "uid://bm0o5ggnfmm6y"
+
+[sub_resource type="Resource" id="Resource_cegan"]
+script = ExtResource("6_cegan")
+Quantity = 0
+metadata/_custom_type_script = "uid://bm0o5ggnfmm6y"
+
+[sub_resource type="Resource" id="Resource_82xsv"]
+script = ExtResource("6_cegan")
+Quantity = 0
+metadata/_custom_type_script = "uid://bm0o5ggnfmm6y"
+
+[sub_resource type="Resource" id="Resource_getpj"]
+script = ExtResource("6_cegan")
+Quantity = 0
+metadata/_custom_type_script = "uid://bm0o5ggnfmm6y"
+
+[sub_resource type="Resource" id="Resource_ryguw"]
+script = ExtResource("6_cegan")
+Quantity = 0
+metadata/_custom_type_script = "uid://bm0o5ggnfmm6y"
+
+[sub_resource type="Resource" id="Resource_d13ii"]
+script = ExtResource("6_cegan")
+Quantity = 0
+metadata/_custom_type_script = "uid://bm0o5ggnfmm6y"
+
+[sub_resource type="Resource" id="Resource_1u8w0"]
+script = ExtResource("6_cegan")
+Quantity = 0
 metadata/_custom_type_script = "uid://bm0o5ggnfmm6y"
 
 [sub_resource type="Resource" id="Resource_0odxb"]
@@ -54,45 +117,10 @@ script = ExtResource("6_cegan")
 Quantity = 0
 metadata/_custom_type_script = "uid://bm0o5ggnfmm6y"
 
-[sub_resource type="Resource" id="Resource_htxhm"]
-script = ExtResource("6_cegan")
-Quantity = 0
-metadata/_custom_type_script = "uid://bm0o5ggnfmm6y"
-
-[sub_resource type="Resource" id="Resource_jq2sk"]
-script = ExtResource("6_cegan")
-Quantity = 0
-metadata/_custom_type_script = "uid://bm0o5ggnfmm6y"
-
-[sub_resource type="Resource" id="Resource_4k2k6"]
-script = ExtResource("6_cegan")
-Quantity = 0
-metadata/_custom_type_script = "uid://bm0o5ggnfmm6y"
-
-[sub_resource type="Resource" id="Resource_0rl1p"]
-script = ExtResource("6_cegan")
-Quantity = 0
-metadata/_custom_type_script = "uid://bm0o5ggnfmm6y"
-
-[sub_resource type="Resource" id="Resource_ok6jj"]
-script = ExtResource("6_cegan")
-Quantity = 0
-metadata/_custom_type_script = "uid://bm0o5ggnfmm6y"
-
-[sub_resource type="Resource" id="Resource_facbu"]
-script = ExtResource("6_cegan")
-Quantity = 0
-metadata/_custom_type_script = "uid://bm0o5ggnfmm6y"
-
-[sub_resource type="Resource" id="Resource_cyx1q"]
-script = ExtResource("6_cegan")
-Quantity = 0
-metadata/_custom_type_script = "uid://bm0o5ggnfmm6y"
-
 [sub_resource type="Resource" id="Resource_0dhbp"]
 script = ExtResource("5_yaehf")
-InventoryName = "Player inventory"
-Slots = Array[ExtResource("6_cegan")]([SubResource("Resource_1u8w0"), SubResource("Resource_0odxb"), SubResource("Resource_lswn8"), SubResource("Resource_a6jrf"), SubResource("Resource_xuqvo"), SubResource("Resource_qsp4k"), SubResource("Resource_kq58d"), SubResource("Resource_seu75"), SubResource("Resource_htxhm"), SubResource("Resource_jq2sk"), SubResource("Resource_4k2k6"), SubResource("Resource_0rl1p"), SubResource("Resource_ok6jj"), SubResource("Resource_facbu"), SubResource("Resource_cyx1q")])
+InventoryName = "Inventory"
+Slots = Array[ExtResource("6_cegan")]([SubResource("Resource_dg77c"), SubResource("Resource_ycdy4"), SubResource("Resource_w48qg"), SubResource("Resource_vivmo"), SubResource("Resource_2cqfq"), SubResource("Resource_yaehf"), SubResource("Resource_074og"), SubResource("Resource_cegan"), SubResource("Resource_82xsv"), SubResource("Resource_getpj"), SubResource("Resource_ryguw"), SubResource("Resource_d13ii"), SubResource("Resource_1u8w0"), SubResource("Resource_0odxb"), SubResource("Resource_lswn8"), SubResource("Resource_a6jrf"), SubResource("Resource_xuqvo"), SubResource("Resource_qsp4k"), SubResource("Resource_kq58d"), SubResource("Resource_seu75")])
 metadata/_custom_type_script = "uid://dph74un0q20el"
 
 [sub_resource type="Resource" id="Resource_jx0wj"]
@@ -124,11 +152,8 @@ script = ExtResource("8_ycdy4")
 
 [node name="Logic" type="Node" parent="."]
 
-[node name="InputHandler" type="Node2D" parent="Logic" node_paths=PackedStringArray("PlayerAgent", "InventoryViewer", "CursorFollower")]
+[node name="InputHandler" type="Node2D" parent="Logic"]
 script = ExtResource("2_lquwl")
-PlayerAgent = NodePath("../../Player")
-InventoryViewer = NodePath("../../UI/MarginContainer/InventoryViewer")
-CursorFollower = NodePath("../CursorFollower")
 
 [node name="DayNightController" type="DirectionalLight2D" parent="Logic"]
 visible = false
@@ -144,17 +169,13 @@ PercentageOfDay = 100.0
 [node name="UI" type="CanvasLayer" parent="."]
 
 [node name="MarginContainer" type="MarginContainer" parent="UI"]
-anchors_preset = 8
-anchor_left = 0.5
-anchor_top = 0.5
-anchor_right = 0.5
-anchor_bottom = 0.5
-offset_left = -575.0
-offset_top = -170.0
-offset_right = 575.0
-offset_bottom = 170.0
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
 theme_override_constants/margin_left = 10
 theme_override_constants/margin_top = 10
 theme_override_constants/margin_right = 10
@@ -169,3 +190,9 @@ visible = false
 [node name="WorldEnvironment" type="WorldEnvironment" parent="."]
 environment = SubResource("Environment_ycdy4")
 camera_attributes = SubResource("CameraAttributesPractical_w48qg")
+
+[node name="Globals" type="Node" parent="." node_paths=PackedStringArray("Player", "InventoryViewer", "CursorFollower")]
+script = ExtResource("13_ycdy4")
+Player = NodePath("../Player")
+InventoryViewer = NodePath("../UI/MarginContainer/InventoryViewer")
+CursorFollower = NodePath("../Logic/CursorFollower")

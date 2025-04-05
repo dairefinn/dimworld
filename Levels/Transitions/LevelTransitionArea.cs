@@ -19,7 +19,7 @@ public partial class LevelTransitionArea : Area2D
 
     private void OnBodyEntered(Node2D body)
     {
-        if (body is CharacterController character && InputHandler.Instance.PlayerAgent == character)
+        if (body is CharacterController character && Globals.Instance.Player == character)
         {
             LevelHandler.Instance.ChangeLevel(TargetLevelPath, SpawnPointName);
         }

@@ -2,6 +2,7 @@ namespace Dimworld;
 
 using Godot;
 
+
 public partial class InventorySlotBaseState : InventorySlotState
 {
 
@@ -24,14 +25,14 @@ public partial class InventorySlotBaseState : InventorySlotState
 	{
 		if (mouseOverInventorySlot)
 		{
-			if (@event.IsActionPressed("lmb"))
+			if (@event.IsActionPressed("lmb") && inventorySlotUI.CanBeSelected && !inventorySlotUI.TargetSlot.IsEmpty)
 			{
 				inventorySlotUI.DragArea.GlobalPosition = inventorySlotUI.DragArea.GetGlobalMousePosition();
 				EmitSignal(InventorySlotState.SignalName.TransitionRequested, this, (int)State.CLICKED);
 			}
 			else if (@event.IsActionPressed("rmb"))
 			{
-				InputHandler.Instance.InventoryViewer.RequestContextMenu(inventorySlotUI);
+				Globals.Instance.InventoryViewer.RequestContextMenu(inventorySlotUI);
 			}
 
 		}

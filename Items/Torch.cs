@@ -1,36 +1,51 @@
-namespace Dimworld;
+namespace Dimworld.Items;
 
 using Godot;
 
 
-public partial class Torch : InventoryItem
+public partial class Torch : InventoryItem, IHasContextMenu, ICanBeEquipped, ICanBeUsedFromHotbar
 {
 
     private PointLight2D lightSource = new()
     {
         Name = "Torch Light",
-        Texture = GD.Load<Texture2D>("res://LightTexture.tres")
+        Texture = GD.Load<Texture2D>("res://LightTexture.tres"),
+        ZIndex = -1
     };
 
 
-    public override bool OnEquip(EquipmentHandler handler)
+    public bool OnEquip(EquipmentHandler handler)
     {
-        bool wasSuccessful = base.OnEquip(handler);
-        if (!wasSuccessful) return false;
+        if (!CanBeEquipped) return false;
 
-        // We override this so we can add the light source to the equipment handler of the character using the torch
+        // TODO: Equipment should go in slots
+        // TODO: Move this to the equipment handler
+        if (!handler.Equipment.Contains(this))
+        {
+            handler.Equipment.Add(this);
+        }
+
         if (!handler.GetChildren().Contains(lightSource))
         {
             handler.AddChild(lightSource);
         }
 
+        IsEquipped = true;
+        EmitSignal(SignalName.ItemEquipped, IsEquipped);
+
         return true;
     }
 
-    public override bool OnUnequip(EquipmentHandler handler)
+    public bool OnUnequip(EquipmentHandler handler)
     {
-        bool wasSuccessful = base.OnUnequip(handler);
-        if (!wasSuccessful) return false;
+        if (!CanBeEquipped) return false;
+        
+        // TODO: Equipment should go in slots
+        // TODO: Move this to the equipment handler
+        if (handler.Equipment.Contains(this))
+        {
+            handler.Equipment.Remove(this);
+        }
 
         // We override this so we can remove the light source from the equipment handler of the character using the torch
         if (handler.GetChildren().Contains(lightSource))
@@ -38,11 +53,14 @@ public partial class Torch : InventoryItem
             handler.RemoveChild(lightSource);
         }
 
+        IsEquipped = false;
+        EmitSignal(SignalName.ItemEquipped, IsEquipped);
+
         return true;
     }
 
     // TODO: Might be a cleaner way to do this. Maybe providing a list of options which each have a label, action and condition for displaying.
-    public override InventoryContextMenuUI.ContextMenuOption[] GetContextMenuOptions(InventoryContextMenuUI contextMenuUI, EquipmentHandler equipmentHandler, bool itemIsInParentInventory)
+    public InventoryContextMenuUI.ContextMenuOption[] GetContextMenuOptions(InventoryContextMenuUI contextMenuUI, bool itemIsInParentInventory)
     {
         InventoryContextMenuUI.ContextMenuOption[] options = [];
 
@@ -50,29 +68,43 @@ public partial class Torch : InventoryItem
         {
             if (IsEquipped)
             {
-                options = [..options, new InventoryContextMenuUI.ContextMenuOption("Unequip", () => ContextOptionUnequipTorch(contextMenuUI, equipmentHandler))];
+                options = [..options, new InventoryContextMenuUI.ContextMenuOption("Unequip", () => ContextOptionUnequipTorch(contextMenuUI))];
             }
             else
             {
-                options = [..options, new InventoryContextMenuUI.ContextMenuOption("Equip", () => ContextOptionEquipTorch(contextMenuUI, equipmentHandler))];
+                options = [..options, new InventoryContextMenuUI.ContextMenuOption("Equip", () => ContextOptionEquipTorch(contextMenuUI))];
             }
         }
 
         return options;
     }
 
-    private void ContextOptionEquipTorch(InventoryContextMenuUI contextMenuUI, EquipmentHandler equipmentHandler)
+    private void ContextOptionEquipTorch(InventoryContextMenuUI contextMenuUI)
     {
         contextMenuUI.RemoveOption("Equip");
-        equipmentHandler.Equip(this);
-        contextMenuUI.AddOption("Unequip", () => ContextOptionUnequipTorch(contextMenuUI, equipmentHandler));
+        Globals.Instance.Player.EquipmentHandler.Equip(this);
+        contextMenuUI.AddOption("Unequip", () => ContextOptionUnequipTorch(contextMenuUI));
     }
 
-    private void ContextOptionUnequipTorch(InventoryContextMenuUI contextMenuUI, EquipmentHandler equipmentHandler)
+    private void ContextOptionUnequipTorch(InventoryContextMenuUI contextMenuUI)
     {
         contextMenuUI.RemoveOption("Unequip");
-        equipmentHandler.Unequip(this);
-        contextMenuUI.AddOption("Equip", () => ContextOptionEquipTorch(contextMenuUI, equipmentHandler));
+        Globals.Instance.Player.EquipmentHandler.Unequip(this);
+        contextMenuUI.AddOption("Equip", () => ContextOptionEquipTorch(contextMenuUI));
+    }
+
+    public bool UseFromHotbar()
+    {
+        if (IsEquipped)
+        {
+            Globals.Instance.Player.EquipmentHandler.Unequip(this);
+        }
+        else
+        {
+            Globals.Instance.Player.EquipmentHandler.Equip(this);
+        }
+
+        return true;
     }
 
 }

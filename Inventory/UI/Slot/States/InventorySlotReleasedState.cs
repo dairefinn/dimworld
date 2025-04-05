@@ -12,9 +12,9 @@ public partial class InventorySlotReleasedState : InventorySlotState
     public override void Enter()
     {
         InventorySlotDragArea firstTarget = inventorySlotUI.DragArea.Targets.Count > 0 ? inventorySlotUI.DragArea.Targets[0] : null;
-        if(firstTarget != null)
+        if(firstTarget != null && inventorySlotUI != firstTarget.ParentSlot)
         {
-            InputHandler.Instance.InventoryViewer.MoveItemFromSlotToSlot(inventorySlotUI, firstTarget.ParentSlot);
+            Globals.Instance.InventoryViewer.MoveItemFromSlotToSlot(inventorySlotUI, firstTarget.ParentSlot);
         }
     }
 

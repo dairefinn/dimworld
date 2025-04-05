@@ -3,6 +3,7 @@ namespace Dimworld;
 using Godot;
 using Godot.Collections;
 
+
 public partial class InventorySlotDragArea : Area2D
 {
 
