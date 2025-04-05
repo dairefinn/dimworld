@@ -1,4 +1,4 @@
-[gd_scene load_steps=13 format=3 uid="uid://b2rac6jo5ig4k"]
+[gd_scene load_steps=14 format=3 uid="uid://b2rac6jo5ig4k"]
 
 [ext_resource type="Script" uid="uid://bwbmuqkjtx0ns" path="res://Agents/CharacterController.cs" id="1_v5emj"]
 [ext_resource type="Texture2D" uid="uid://dpxdm8niupad2" path="res://Assets/sprites/characters/Character.png" id="2_4oknj"]
@@ -14,8 +14,11 @@
 atlas = ExtResource("2_4oknj")
 region = Rect2(0, 0, 32, 32)
 
-[sub_resource type="CircleShape2D" id="CircleShape2D_ns7eq"]
-radius = 12.0
+[sub_resource type="AtlasTexture" id="AtlasTexture_4oknj"]
+atlas = ExtResource("2_4oknj")
+region = Rect2(64, 32, 32, 32)
+
+[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_4oknj"]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_ixneo"]
 radius = 100.0
@@ -34,11 +37,13 @@ ModifierHandler = NodePath("ModifierHandler")
 
 [node name="Sprite2D" type="Sprite2D" parent="."]
 texture_filter = 1
-scale = Vector2(0.8, 0.8)
 texture = SubResource("AtlasTexture_um2er")
 
+[node name="Eyes" type="Sprite2D" parent="Sprite2D"]
+texture = SubResource("AtlasTexture_4oknj")
+
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
-shape = SubResource("CircleShape2D_ns7eq")
+shape = SubResource("CapsuleShape2D_4oknj")
 
 [node name="NavigationAgent2D" type="NavigationAgent2D" parent="."]
 path_desired_distance = 5.0
@@ -72,9 +77,9 @@ script = ExtResource("7_um2er")
 
 [node name="AgentStatsUI" parent="." instance=ExtResource("3_o26ja")]
 offset_left = -11.0
-offset_top = 14.0
+offset_top = 15.0
 offset_right = 11.0
-offset_bottom = 19.0
+offset_bottom = 20.0
 
 [node name="CenterContainer" type="CenterContainer" parent="."]
 offset_top = -30.0
