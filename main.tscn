@@ -1,9 +1,11 @@
-[gd_scene load_steps=49 format=3 uid="uid://ddc8qiig7j3wm"]
+[gd_scene load_steps=54 format=3 uid="uid://ddc8qiig7j3wm"]
 
 [ext_resource type="Script" uid="uid://1f6ukfmh33oo" path="res://DayNightController.cs" id="1_d13ii"]
 [ext_resource type="Script" uid="uid://g354xqg3s44p" path="res://InputHandler.cs" id="2_lquwl"]
+[ext_resource type="Texture2D" uid="uid://xid32hy6vbe" path="res://Items/ItemsSpriteSheet.tres" id="3_074og"]
 [ext_resource type="PackedScene" uid="uid://duk1q562jys3q" path="res://Player/CursorFollower.tscn" id="3_ryguw"]
-[ext_resource type="Resource" uid="uid://bfbm4tftgemqa" path="res://Items/Torch.tres" id="4_w48qg"]
+[ext_resource type="Script" uid="uid://bmnps7kubp2qq" path="res://Items/Sword.cs" id="4_cegan"]
+[ext_resource type="Script" uid="uid://cpxj4g8jbfg2x" path="res://Items/Torch.cs" id="5_074og"]
 [ext_resource type="PackedScene" uid="uid://b2rac6jo5ig4k" path="res://Agents/Agent.tscn" id="5_lquwl"]
 [ext_resource type="Script" uid="uid://dph74un0q20el" path="res://Inventory/Inventory.cs" id="5_yaehf"]
 [ext_resource type="Script" uid="uid://bm0o5ggnfmm6y" path="res://Inventory/InventorySlot.cs" id="6_cegan"]
@@ -14,28 +16,55 @@
 [ext_resource type="Texture2D" uid="uid://bm5yi454iqlnw" path="res://Agents/Visuals/CharacterSpriteSheet.tres" id="10_getpj"]
 [ext_resource type="PackedScene" uid="uid://qds61vs7bsi1" path="res://Developer/DeveloperMenu.tscn" id="12_dg77c"]
 [ext_resource type="Script" uid="uid://5l72ubbv8qqo" path="res://Globals.cs" id="13_ycdy4"]
-[ext_resource type="Resource" uid="uid://octn8jxqeqaq" path="res://Items/Sword.tres" id="18_d13ii"]
 [ext_resource type="PackedScene" uid="uid://d21nkwnu7y4od" path="res://Inventory/UI/InventoryViewer.tscn" id="23_d13ii"]
 [ext_resource type="PackedScene" uid="uid://b3v4ub2lqydho" path="res://Levels/LevelTesting.tscn" id="25_a6jrf"]
 
-[sub_resource type="Resource" id="Resource_dg77c"]
+[sub_resource type="AtlasTexture" id="AtlasTexture_0g53v"]
+atlas = ExtResource("3_074og")
+region = Rect2(0, 0, 32, 32)
+
+[sub_resource type="Resource" id="Resource_facbu"]
+script = ExtResource("4_cegan")
+Id = "item-sword"
+ItemName = "Sword"
+ItemDescription = "Item description"
+Icon = SubResource("AtlasTexture_0g53v")
+MaxStackSize = 1
+CanBeEquipped = false
+metadata/_custom_type_script = "uid://frg4uic6tym5"
+
+[sub_resource type="Resource" id="Resource_jq2sk"]
 script = ExtResource("6_cegan")
-Item = ExtResource("18_d13ii")
+Item = SubResource("Resource_facbu")
 Quantity = 1
 metadata/_custom_type_script = "uid://bm0o5ggnfmm6y"
 
-[sub_resource type="Resource" id="Resource_ycdy4"]
+[sub_resource type="AtlasTexture" id="AtlasTexture_mjj0s"]
+atlas = ExtResource("3_074og")
+region = Rect2(64, 0, 32, 32)
+
+[sub_resource type="Resource" id="Resource_b1qrp"]
+script = ExtResource("5_074og")
+Id = "item-torch"
+ItemName = "Torch"
+ItemDescription = "Item description"
+Icon = SubResource("AtlasTexture_mjj0s")
+MaxStackSize = 1
+CanBeEquipped = true
+metadata/_custom_type_script = "uid://frg4uic6tym5"
+
+[sub_resource type="Resource" id="Resource_4k2k6"]
 script = ExtResource("6_cegan")
-Item = ExtResource("4_w48qg")
+Item = SubResource("Resource_b1qrp")
 Quantity = 1
 metadata/_custom_type_script = "uid://bm0o5ggnfmm6y"
 
-[sub_resource type="Resource" id="Resource_w48qg"]
+[sub_resource type="Resource" id="Resource_0rl1p"]
 script = ExtResource("6_cegan")
 Quantity = 0
 metadata/_custom_type_script = "uid://bm0o5ggnfmm6y"
 
-[sub_resource type="Resource" id="Resource_vivmo"]
+[sub_resource type="Resource" id="Resource_ok6jj"]
 script = ExtResource("6_cegan")
 Quantity = 0
 metadata/_custom_type_script = "uid://bm0o5ggnfmm6y"
@@ -120,10 +149,10 @@ script = ExtResource("6_cegan")
 Quantity = 0
 metadata/_custom_type_script = "uid://bm0o5ggnfmm6y"
 
-[sub_resource type="Resource" id="Resource_0dhbp"]
+[sub_resource type="Resource" id="Resource_htxhm"]
 script = ExtResource("5_yaehf")
 InventoryName = "Inventory"
-Slots = Array[ExtResource("6_cegan")]([SubResource("Resource_dg77c"), SubResource("Resource_ycdy4"), SubResource("Resource_w48qg"), SubResource("Resource_vivmo"), SubResource("Resource_2cqfq"), SubResource("Resource_yaehf"), SubResource("Resource_074og"), SubResource("Resource_cegan"), SubResource("Resource_82xsv"), SubResource("Resource_getpj"), SubResource("Resource_ryguw"), SubResource("Resource_d13ii"), SubResource("Resource_1u8w0"), SubResource("Resource_0odxb"), SubResource("Resource_lswn8"), SubResource("Resource_a6jrf"), SubResource("Resource_xuqvo"), SubResource("Resource_qsp4k"), SubResource("Resource_kq58d"), SubResource("Resource_seu75")])
+Slots = Array[ExtResource("6_cegan")]([SubResource("Resource_jq2sk"), SubResource("Resource_4k2k6"), SubResource("Resource_0rl1p"), SubResource("Resource_ok6jj"), SubResource("Resource_2cqfq"), SubResource("Resource_yaehf"), SubResource("Resource_074og"), SubResource("Resource_cegan"), SubResource("Resource_82xsv"), SubResource("Resource_getpj"), SubResource("Resource_ryguw"), SubResource("Resource_d13ii"), SubResource("Resource_1u8w0"), SubResource("Resource_0odxb"), SubResource("Resource_lswn8"), SubResource("Resource_a6jrf"), SubResource("Resource_xuqvo"), SubResource("Resource_qsp4k"), SubResource("Resource_kq58d"), SubResource("Resource_seu75")])
 metadata/_custom_type_script = "uid://dph74un0q20el"
 
 [sub_resource type="Resource" id="Resource_jx0wj"]
@@ -169,7 +198,7 @@ region = Rect2(96, 64, 32, 32)
 [node name="Player" parent="." instance=ExtResource("5_lquwl")]
 z_index = 1
 position = Vector2(1833, 735)
-Inventory = SubResource("Resource_0dhbp")
+Inventory = SubResource("Resource_htxhm")
 Stats = SubResource("Resource_jx0wj")
 IsPlanningEnabled = false
 

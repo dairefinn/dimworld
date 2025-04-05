@@ -134,7 +134,7 @@ script = ExtResource("3_66iod")
 Quantity = 0
 metadata/_custom_type_script = "uid://bm0o5ggnfmm6y"
 
-[sub_resource type="Resource" id="Resource_01e6d"]
+[sub_resource type="Resource" id="Resource_s1qpw"]
 script = ExtResource("6_6ylaq")
 InventoryName = "Chest contents"
 Slots = Array[ExtResource("3_66iod")]([SubResource("Resource_b1qrp"), SubResource("Resource_come4"), SubResource("Resource_h8e4i"), SubResource("Resource_4lmeg"), SubResource("Resource_0cp0l"), SubResource("Resource_d2t1y"), SubResource("Resource_gngh3"), SubResource("Resource_0n3wm"), SubResource("Resource_qnost"), SubResource("Resource_wnkbs"), SubResource("Resource_f6a44"), SubResource("Resource_0cbny"), SubResource("Resource_hrvbo"), SubResource("Resource_uypp3"), SubResource("Resource_blkrb")])
@@ -216,7 +216,7 @@ script = ExtResource("3_66iod")
 Quantity = 0
 metadata/_custom_type_script = "uid://bm0o5ggnfmm6y"
 
-[sub_resource type="Resource" id="Resource_7iri2"]
+[sub_resource type="Resource" id="Resource_4svdx"]
 script = ExtResource("6_6ylaq")
 InventoryName = "Chest 2 contents"
 Slots = Array[ExtResource("3_66iod")]([SubResource("Resource_6iyjs"), SubResource("Resource_4w656"), SubResource("Resource_e71vb"), SubResource("Resource_rnkwl"), SubResource("Resource_vke2r"), SubResource("Resource_uit24"), SubResource("Resource_ruth0"), SubResource("Resource_rm4vd"), SubResource("Resource_pjyto"), SubResource("Resource_sm6fg"), SubResource("Resource_b17eg"), SubResource("Resource_ntx8l"), SubResource("Resource_uatky"), SubResource("Resource_rqtf5"), SubResource("Resource_1vm84")])
@@ -418,11 +418,11 @@ position = Vector2(2320, 624)
 
 [node name="ItemChest" parent="Objects" instance=ExtResource("2_qxeaj")]
 position = Vector2(1906, 755)
-Inventory = SubResource("Resource_01e6d")
+Inventory = SubResource("Resource_s1qpw")
 
 [node name="ItemChest2" parent="Objects" instance=ExtResource("2_qxeaj")]
 position = Vector2(1787, 778)
-Inventory = SubResource("Resource_7iri2")
+Inventory = SubResource("Resource_4svdx")
 
 [node name="LightSwitch" parent="Objects" node_paths=PackedStringArray("AssociatedLights") instance=ExtResource("8_ol4on")]
 position = Vector2(2266, 623)
