@@ -137,7 +137,7 @@ metadata/_custom_type_script = "uid://cru4kq28c8nuw"
 
 [node name="Player" parent="." instance=ExtResource("5_lquwl")]
 z_index = 1
-position = Vector2(2188, 834)
+position = Vector2(1271, 764)
 Inventory = SubResource("Resource_0dhbp")
 Stats = SubResource("Resource_jx0wj")
 IsPlanningEnabled = false

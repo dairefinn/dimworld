@@ -1,14 +1,15 @@
 namespace Dimworld;
 
-using System.Linq;
 using Dimworld.Developer;
 using Dimworld.GOAP;
 using Dimworld.Helpers.BBCode;
 using Dimworld.MemoryEntries;
+using Dimworld.Modifiers;
 using Godot;
 using Godot.Collections;
 
-public partial class CharacterController : CharacterBody2D, IDamageable, ICanBeMoved, IAffectedByConditions, IGoapAgent, IHasInventory, IMemorableNode
+
+public partial class CharacterController : CharacterBody2D, IDamageable, ICanBeMoved, IGoapAgent, IHasInventory, IMemorableNode, IAffectedByModifiers
 {
 
 	[ExportGroup("Properties")]
@@ -43,16 +44,15 @@ public partial class CharacterController : CharacterBody2D, IDamageable, ICanBeM
 	}
 	private AgentStatsUI _statsUI;
 	[Export] public SpeechBubble SpeechBubble { get; set; }
-	[Export] public ConditionHandler ConditionHandler { get; set; }
 	[Export] public PlanningHandler PlanningHandler { get; set; }
 	[Export] public MemoryHandler MemoryHandler { get; set; }
+	[Export] public ModifierHandler ModifierHandler { get; set; } = new();
     [Export] public bool CanTakeFromInventory { get; set; } = false;
 
 
 	[Export] public Chest DebugChest { get; set; } // TODO: Remove when done testing find item priority
 
     private Vector2 desiredMovementDirection = Vector2.Zero;
-	private float speedMultiplier = 1f;
 
 
 	// LIFECYCLE EVENTS
@@ -92,7 +92,7 @@ public partial class CharacterController : CharacterBody2D, IDamageable, ICanBeM
 
 		ProcessNavigation(delta);
 
-		ConditionHandler?.PhysicsProcessConditions(this, delta);
+		ModifierHandler?.PhysicsProcessConditions(delta);
 	}
 
 	public override void _Process(double delta)
@@ -104,7 +104,7 @@ public partial class CharacterController : CharacterBody2D, IDamageable, ICanBeM
 			PlanningHandler?.OnProcess(this, delta);
 		}
 
-		ConditionHandler?.ProcessConditions(this, delta);
+		ModifierHandler?.ProcessConditions(delta);
 	}
 
 
@@ -200,7 +200,15 @@ public partial class CharacterController : CharacterBody2D, IDamageable, ICanBeM
 
 	private void ProcessNavigationInput(Vector2 desiredMovementDirection, double delta)
 	{
-		Vector2 desiredVelocity = speedMultiplier * desiredMovementDirection * Speed;
+		Vector2 desiredVelocity = desiredMovementDirection * Speed;
+
+		// Apply velocity modifiers
+		Array<VelocityModifier> velocityModifiers = ModifierHandler.GetAllByType<VelocityModifier>();
+		foreach (VelocityModifier velocityModifier in velocityModifiers)
+		{
+			desiredVelocity = velocityModifier.ApplyTo(desiredVelocity);
+		}
+
 		Velocity = Velocity.Lerp(desiredVelocity, (float)(Acceleration * delta));
 	}
 
@@ -240,14 +248,13 @@ public partial class CharacterController : CharacterBody2D, IDamageable, ICanBeM
 	{
 		if (isSprinting)
 		{
-			speedMultiplier = 2f;
+			ModifierHandler.Add(new VelocityMultiplyModifier("character_sprint", 2f));
 		}
 		else
 		{
-			speedMultiplier = 1f;
+			ModifierHandler.RemoveByKey("character_sprint");
 		}
 	}
-
 
 
 	// INTERACTION
@@ -293,13 +300,6 @@ public partial class CharacterController : CharacterBody2D, IDamageable, ICanBeM
 	public Vector2 GetMoveableGlobalPosition()
 	{
 		return GlobalPosition;
-	}
-
-	// CONDITIONS
-
-	public IConditionHandler GetConditionHandler()
-	{
-		return ConditionHandler;
 	}
 
 

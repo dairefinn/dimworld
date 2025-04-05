@@ -1,6 +1,6 @@
 [gd_scene load_steps=3 format=3 uid="uid://cy6rstkmiyafv"]
 
-[ext_resource type="Script" uid="uid://dxkxqrqrjeap" path="res://Effects/ApplyCondition/ApplyCondition.cs" id="1_ohd13"]
+[ext_resource type="Script" uid="uid://dxkxqrqrjeap" path="res://Effects/ApplyModifier/ApplyModifier.cs" id="1_ohd13"]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_pdsuf"]
 
