@@ -1,4 +1,4 @@
-[gd_scene load_steps=97 format=4 uid="uid://b3v4ub2lqydho"]
+[gd_scene load_steps=95 format=4 uid="uid://b3v4ub2lqydho"]
 
 [ext_resource type="Script" uid="uid://dvuy36fh5vjfh" path="res://Levels/LevelHandler/GameLevel.cs" id="1_3pabw"]
 [ext_resource type="TileSet" uid="uid://me5j3tknec74" path="res://Tileset.tres" id="1_uaggo"]
@@ -27,7 +27,6 @@
 [ext_resource type="Resource" uid="uid://d0jpp418n0xh5" path="res://Goap/Actions/PickUpItem.tres" id="22_oeo7j"]
 [ext_resource type="Resource" uid="uid://dyo8ce1njn67q" path="res://Goap/Goals/EnsureVisibility.tres" id="25_eb50o"]
 [ext_resource type="Resource" uid="uid://c7fy02pjbecvf" path="res://Goap/Goals/Idle.tres" id="26_4fweh"]
-[ext_resource type="Shader" uid="uid://cg2ysaclvjgfx" path="res://Agents/Outline.gdshader" id="28_4svdx"]
 [ext_resource type="Texture2D" uid="uid://dpxdm8niupad2" path="res://Assets/sprites/characters/Character.png" id="29_x4uyb"]
 [ext_resource type="Script" uid="uid://ckdaa4jpv4ysf" path="res://Agents/Visuals/ClothingController.cs" id="30_630ma"]
 [ext_resource type="Texture2D" uid="uid://bm5yi454iqlnw" path="res://Agents/Visuals/CharacterSpriteSheet.tres" id="31_l3tde"]
@@ -317,14 +316,6 @@ State = Dictionary[String, Variant]({
 })
 metadata/_custom_type_script = "uid://cqsim0vts1sc1"
 
-[sub_resource type="ShaderMaterial" id="ShaderMaterial_cb2vy"]
-shader = ExtResource("28_4svdx")
-shader_parameter/color = Color(0.212305, 0.212305, 0.212305, 1)
-shader_parameter/width = 0.75
-shader_parameter/pattern = 0
-shader_parameter/inside = false
-shader_parameter/add_margins = true
-
 [sub_resource type="AtlasTexture" id="AtlasTexture_4svdx"]
 atlas = ExtResource("29_x4uyb")
 region = Rect2(0, 0, 32, 32)
@@ -458,8 +449,6 @@ ActionSet = Array[Object]([ExtResource("13_3by8r"), ExtResource("22_oeo7j"), Ext
 GoalSet = Array[Object]([ExtResource("25_eb50o"), ExtResource("19_oeo7j"), ExtResource("26_4fweh")])
 
 [node name="BodySprite2" type="Sprite2D" parent="Characters/Guard" node_paths=PackedStringArray("HairSprite", "EyesSprite", "TopSprite", "OvertopSprite", "BottomsSprite", "ShoesSprite")]
-texture_filter = 1
-material = SubResource("ShaderMaterial_cb2vy")
 texture = SubResource("AtlasTexture_4svdx")
 script = ExtResource("30_630ma")
 HairSprite = NodePath("Hair")
@@ -486,5 +475,4 @@ unique_name_in_owner = true
 texture = SubResource("AtlasTexture_2e57i")
 
 [node name="Hair" type="Sprite2D" parent="Characters/Guard/BodySprite2"]
-use_parent_material = true
 texture = SubResource("AtlasTexture_qvs58")
