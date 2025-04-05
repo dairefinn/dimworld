@@ -1,9 +1,11 @@
-[gd_scene load_steps=14 format=3 uid="uid://b2rac6jo5ig4k"]
+[gd_scene load_steps=21 format=3 uid="uid://b2rac6jo5ig4k"]
 
 [ext_resource type="Script" uid="uid://bwbmuqkjtx0ns" path="res://Agents/CharacterController.cs" id="1_v5emj"]
 [ext_resource type="Texture2D" uid="uid://dpxdm8niupad2" path="res://Assets/sprites/characters/Character.png" id="2_4oknj"]
 [ext_resource type="Script" uid="uid://cxbp1npv1tukk" path="res://Agents/DetectionHandler.cs" id="3_07efl"]
+[ext_resource type="Script" uid="uid://ckdaa4jpv4ysf" path="res://Agents/Visuals/ClothingController.cs" id="3_55c5q"]
 [ext_resource type="PackedScene" uid="uid://bb462hku8uk8i" path="res://Agents/UI/AgentStatsUI.tscn" id="3_o26ja"]
+[ext_resource type="Texture2D" uid="uid://bm5yi454iqlnw" path="res://Agents/Visuals/CharacterSpriteSheet.tres" id="3_um2er"]
 [ext_resource type="PackedScene" uid="uid://v23vcyiu8qgc" path="res://Agents/Dialogue/SpeechBubble.tscn" id="4_ia2xe"]
 [ext_resource type="Script" uid="uid://dphqtgg23pqia" path="res://Agents/EquipmentHandler.cs" id="4_ixneo"]
 [ext_resource type="Script" uid="uid://bk54n8opktsdt" path="res://Agents/PlanningHandler.cs" id="6_24e8l"]
@@ -14,9 +16,29 @@
 atlas = ExtResource("2_4oknj")
 region = Rect2(0, 0, 32, 32)
 
+[sub_resource type="AtlasTexture" id="AtlasTexture_fymy7"]
+atlas = ExtResource("3_um2er")
+region = Rect2(32, 0, 32, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_pnfg3"]
+atlas = ExtResource("3_um2er")
+region = Rect2(64, 0, 32, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_8lqvm"]
+atlas = ExtResource("3_um2er")
+region = Rect2(0, 32, 32, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_nawka"]
+atlas = ExtResource("3_um2er")
+region = Rect2(32, 32, 32, 32)
+
 [sub_resource type="AtlasTexture" id="AtlasTexture_4oknj"]
-atlas = ExtResource("2_4oknj")
+atlas = ExtResource("3_um2er")
 region = Rect2(64, 32, 32, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_55c5q"]
+atlas = ExtResource("3_um2er")
+region = Rect2(0, 64, 32, 32)
 
 [sub_resource type="CapsuleShape2D" id="CapsuleShape2D_4oknj"]
 
@@ -35,12 +57,35 @@ PlanningHandler = NodePath("PlanningHandler")
 MemoryHandler = NodePath("MemoryHandler")
 ModifierHandler = NodePath("ModifierHandler")
 
-[node name="Sprite2D" type="Sprite2D" parent="."]
+[node name="BodySprite" type="Sprite2D" parent="." node_paths=PackedStringArray("HairSprite", "EyesSprite", "TopSprite", "OvertopSprite", "BottomsSprite", "ShoesSprite")]
 texture_filter = 1
 texture = SubResource("AtlasTexture_um2er")
+script = ExtResource("3_55c5q")
+HairSprite = NodePath("Hair")
+EyesSprite = NodePath("Eyes")
+TopSprite = NodePath("Top")
+OvertopSprite = NodePath("Overtop")
+BottomsSprite = NodePath("Bottom")
+ShoesSprite = NodePath("Shoes")
 
-[node name="Eyes" type="Sprite2D" parent="Sprite2D"]
+[node name="Shoes" type="Sprite2D" parent="BodySprite"]
+texture = SubResource("AtlasTexture_fymy7")
+
+[node name="Bottom" type="Sprite2D" parent="BodySprite"]
+texture = SubResource("AtlasTexture_pnfg3")
+
+[node name="Top" type="Sprite2D" parent="BodySprite"]
+texture = SubResource("AtlasTexture_8lqvm")
+
+[node name="Overtop" type="Sprite2D" parent="BodySprite"]
+texture = SubResource("AtlasTexture_nawka")
+
+[node name="Eyes" type="Sprite2D" parent="BodySprite"]
+unique_name_in_owner = true
 texture = SubResource("AtlasTexture_4oknj")
+
+[node name="Hair" type="Sprite2D" parent="BodySprite"]
+texture = SubResource("AtlasTexture_55c5q")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 shape = SubResource("CapsuleShape2D_4oknj")
@@ -77,9 +122,9 @@ script = ExtResource("7_um2er")
 
 [node name="AgentStatsUI" parent="." instance=ExtResource("3_o26ja")]
 offset_left = -11.0
-offset_top = 15.0
+offset_top = 16.0
 offset_right = 11.0
-offset_bottom = 20.0
+offset_bottom = 21.0
 
 [node name="CenterContainer" type="CenterContainer" parent="."]
 offset_top = -30.0
