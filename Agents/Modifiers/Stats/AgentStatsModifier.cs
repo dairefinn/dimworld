@@ -33,19 +33,19 @@ public abstract partial class AgentStatsModifier : Modifier
 
         Node parent = handler.GetParent();
 
-        if (parent is not CharacterController characterController)
+        if (parent is not IHasAgentStats nodeWithStats)
         {
             GD.PrintErr($"Parent is not a CharacterController: {parent}");
             throw new Exception("Failed to add modifier: parent is not a CharacterController");
         }
 
-        if (characterController.Stats == null)
+        if (nodeWithStats.Stats == null)
         {
             GD.PrintErr($"TargetStats is null for modifier: {this}");
             throw new Exception("Failed to add modifier: TargetStats is null");
         }
 
-        TargetStats = characterController.Stats;
+        TargetStats = nodeWithStats.Stats;
     }
 
 

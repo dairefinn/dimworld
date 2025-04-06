@@ -197,7 +197,7 @@ region = Rect2(96, 64, 32, 32)
 
 [node name="Player" parent="." node_paths=PackedStringArray("ClothingController") instance=ExtResource("5_lquwl")]
 z_index = 1
-position = Vector2(2258, 768)
+position = Vector2(1280, 781)
 Inventory = SubResource("Resource_htxhm")
 Stats = SubResource("Resource_jx0wj")
 IsPlanningEnabled = false
