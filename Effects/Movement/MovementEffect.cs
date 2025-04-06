@@ -15,14 +15,14 @@ public abstract partial class MovementEffect : Effect
     {
         if (body is not ICanBeMoved nodeCanBeMoved) return; // Node must have ICanBeMoved
 
-        AddDetectedNode(body);
+        base.OnBodyEntered(body);
     }
 
     public override void OnBodyExited(Node body)
     {
         if (body is not ICanBeMoved nodeCanBeMoved) return; // Node must have ICanBeMoved
 
-        RemoveDetectedNode(body);
+        base.OnBodyExited(body);
     }
 
 }

@@ -16,14 +16,14 @@ public abstract partial class ModifierEffect : Effect
     {
         if (body is not IAffectedByModifiers nodeHasModifiers) return; // Node must have Modifiers
 
-        AddDetectedNode(body);
+        base.OnBodyEntered(body);
     }
 
     public override void OnBodyExited(Node body)
     {
         if (body is not IAffectedByModifiers nodeHasModifiers) return; // Node must have Modifiers
 
-        RemoveDetectedNode(body);
+        base.OnBodyExited(body);
     }
 
 }

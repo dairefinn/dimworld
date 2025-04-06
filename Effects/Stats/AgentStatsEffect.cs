@@ -16,7 +16,7 @@ public abstract partial class AgentStatsEffect : Effect
         if (body is not IHasAgentStats nodeHasStats) return; // Node must have AgentStats
         if (nodeHasStats.Stats == null) return; // Node must have AgentStats
 
-        AddDetectedNode(body);
+        base.OnBodyEntered(body);
     }
 
     public override void OnBodyExited(Node body)
@@ -24,7 +24,7 @@ public abstract partial class AgentStatsEffect : Effect
         if (body is not IHasAgentStats nodeHasStats) return; // Node must have AgentStats
         if (nodeHasStats.Stats == null) return; // Node must have AgentStats
 
-        RemoveDetectedNode(body);
+        base.OnBodyExited(body);
     }
 
 }

@@ -104,6 +104,11 @@ public partial class Effect : Area2D
         return this;
     }
 
+    /// <summary>
+    /// Sets the duration of the effect. -1 is infinite. 0 is instant.
+    /// </summary>
+    /// <param name="duration"></param>
+    /// <returns></returns>
     public Effect SetDuration(float duration)
     {
         Duration = duration;
@@ -155,6 +160,8 @@ public partial class Effect : Area2D
 
         // This ensures that the collision shape node is only added to the scene AFTER the effect node is
         AddChild(_collisionShape);
+
+        GlobalPosition = StartPosition; // Set the position of the effect to the start position
     }
 
     public override void _Ready()
@@ -194,7 +201,7 @@ public partial class Effect : Area2D
 
     private void UpdateDuration(double delta)
     {
-        if (Duration <= 0f) return; // If the duration is -1, don't do anything
+        if (Duration == -1f) return; // If the duration is -1, don't do anything
 
         Duration -= (float)delta; // Decrease the duration by the delta time
 

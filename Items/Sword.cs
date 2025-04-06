@@ -1,7 +1,8 @@
 namespace Dimworld;
 
+using Dimworld.Effects;
 using Godot;
-
+using Godot.Collections;
 
 public partial class Sword : InventoryItem, ICanBeUsedFromHotbar
 {
@@ -9,41 +10,35 @@ public partial class Sword : InventoryItem, ICanBeUsedFromHotbar
     public bool UseFromHotbar(EquipmentHandler equipmentHandler)
     {
         GD.Print("Sword used from hotbar");
-        // float radius = 25.0f;
-        // float duration = 0.1f;
-        // int damage = 10;
-        // float force = 500.0f;
 
-        // // TODO: Need to add a way to blacklist effects so they don't get added to the player when they attack
-        // Node parent = equipmentHandler.GetParent();
-        // if (parent is not CharacterController characterController) return true;
-        // CollisionShape2D hitbox = characterController.GetChildOrNull<CollisionShape2D>(0);
-        // if (hitbox == null) return true;
-        // CapsuleShape2D capsuleShape = hitbox.Shape as CapsuleShape2D;
-        // if (capsuleShape == null) return true;
-        // float offset = (capsuleShape.Height / 2) + 5;
+        float radius = 20.0f;
+        float damage = -20f;
+        float force = 1000.0f;
+        Node parent = equipmentHandler.GetParent();
         
-        // // Effects will be placed at <radius> units away in the direction of the cursor
-        // Vector2 direction = equipmentHandler.GlobalPosition.DirectionTo(Globals.Instance.CursorFollower.GlobalPosition);
-        // Vector2 effectPosition = equipmentHandler.GlobalPosition + (direction * (radius + offset));
+        if (parent is not CharacterController characterController) return true;
+        CollisionShape2D hitbox = characterController.GetChildOrNull<CollisionShape2D>(0);
+        if (hitbox == null) return true;
+        CapsuleShape2D capsuleShape = hitbox.Shape as CapsuleShape2D;
+        if (capsuleShape == null) return true;
 
-        // DamageInstant damageInstant = Effect.DAMAGE_INSTANT.Instantiate<DamageInstant>();
-        // damageInstant.Duration = duration;
-        // damageInstant.Radius = radius;
-        // damageInstant.Damage = damage;
+        // Effects will be placed at <radius> units away in the direction of the cursor
+        Vector2 direction = equipmentHandler.GlobalPosition.DirectionTo(Globals.Instance.CursorFollower.GlobalPosition);
+        Vector2 effectPosition = equipmentHandler.GlobalPosition + (direction * radius);
 
-        // // PushPull knockback = Effects.PUSH_PULL.Instantiate<PushPull>();
-        // // knockback.Duration = duration;
-        // // knockback.Radius = radius;
-        // // knockback.Force = force;
-        // // knockback.Direction = PushPull.DirectionType.PUSH;
+        CircleShape2D effectArea = new()
+        {
+            Radius = radius
+        };
+        Array<Node> nodeBlacklist = [parent];
 
-        // equipmentHandler.AddChild(damageInstant);
-        // damageInstant.GlobalPosition = effectPosition;
-        // // equipmentHandler.AddChild(knockback);
-        // // knockback.GlobalPosition = effectPosition;
+        Effect damageEffect = new AddHealthEffect(effectArea, [1, 2], damage).SetDuration(1f).SetNodeBlacklist(nodeBlacklist).SetStartPosition(effectPosition);
+        Effect knockbackEffect = new PushPullEffect(effectArea, [1, 2], force).SetDuration(1f).SetNodeBlacklist(nodeBlacklist).SetStartPosition(effectPosition);
 
-        // GD.Print($"Sword used from hotbar, effect position: {effectPosition}");
+        equipmentHandler.AddChild(damageEffect);
+        equipmentHandler.AddChild(knockbackEffect);
+
+        GD.Print($"Sword used from hotbar, effect position: {effectPosition}");
 
         return true;
     }
