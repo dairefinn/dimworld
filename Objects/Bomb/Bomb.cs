@@ -10,12 +10,13 @@ public partial class Bomb : StaticBody2D, ICanBeInteractedWith
 
     public void InteractWith()
     {
-        TriggerExplosion();
-        // TriggerFire();
+        // TriggerExplosion();
+        TriggerFire();
         // TriggerKnockback();
         // TriggerPull();
         // TriggerApplyModifier();
     }
+
 
     private void TriggerExplosion()
     {
@@ -24,21 +25,24 @@ public partial class Bomb : StaticBody2D, ICanBeInteractedWith
             Size = new Vector2(200, 100)
         };
 
-        uint collisionLayers = 0b00000011; // Target layers 1 and 2
-        AddHealthEffect effect = (AddHealthEffect) new AddHealthEffect(effectShape, collisionLayers, -100f)
-            .SetDuration(60f);
-        AddChild(effect);
+        Effect damageEffect = new AddHealthEffect(effectShape, [1, 2], -100f).SetDuration(60f);
+        AddChild(damageEffect);
     }
 
-    // private void TriggerFire()
-    // {
-    //     DamageOverTime fire = Effect.DAMAGE_OVER_TIME.Instantiate<DamageOverTime>();
-    //     fire.Damage = 10;
-    //     fire.Radius = 100;
-    //     fire.Duration = 60;
-    //     fire.DamageInterval = 1f;
-    //     AddChild(fire);
-    // }
+    private void TriggerFire()
+    {
+        CircleShape2D effectShape = new()
+        {
+            Radius = 100
+        };
+
+        Effect damageOverTimeEffect = new AddHealthOverTimeEffect(effectShape, [1, 2], -10f)
+            .SetDuration(60f)
+            .SetInterval(1f)
+            .SetSticky(true)
+            ;
+        AddChild(damageOverTimeEffect);
+    }
 
     // private void TriggerKnockback()
     // {

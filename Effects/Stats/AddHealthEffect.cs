@@ -11,7 +11,7 @@ public partial class AddHealthEffect : AgentStatsEffect
 
     private float _amount = 0f;
 
-    public AddHealthEffect(Shape2D hitboxShape, uint collisionlayer, float amount) : base(hitboxShape, collisionlayer)
+    public AddHealthEffect(Shape2D hitboxShape, int[] collisionlayers, float amount) : base(hitboxShape, collisionlayers)
     {
         _amount = amount;
     }

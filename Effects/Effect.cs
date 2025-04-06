@@ -31,16 +31,28 @@ public partial class Effect : Area2D
     /// </summary>
     private Array<Node> NodeBlacklist = [];
 
+    /// <summary>
+    /// Determines if detected nodes should be removed from the detection list when they exit the area. Useful for effects that should stick to the node, like a fire effect.
+    /// </summary>
+    private bool Sticky = false;
+
+    /// <summary>
+    /// Determines how often the effect will be applied to detected nodes. This is used for effects that need to be applied over time, like damage over time or healing over time.
+    /// </summary>
+    private float ProcessInterval = -1f; // -1 means no interval
+
 
     /// <summary>
     /// The collision shape of the effect. This is the hitbox shape that will be used to detect collisions with other nodes.
     /// </summary>
     private CollisionShape2D _collisionShape = null;
 
+    private SceneTreeTimer _processTimer = null;
+
 
     // CONSTRUCTORS AND BUILDERS
 
-    public Effect(Shape2D hitboxShape, uint collisionlayer) // TODO: uint is too confusing to use here
+    public Effect(Shape2D hitboxShape, int[] collisionLayers) // TODO: uint is too confusing to use here
     {
         Name = GetType().Name;
         _collisionShape = new CollisionShape2D
@@ -50,12 +62,27 @@ public partial class Effect : Area2D
         };
 
         CollisionLayer = 0;
-        CollisionMask = collisionlayer;
+        CollisionMask = ParseCollisionLayers(collisionLayers);
 
         BodyEntered += OnBodyEntered;
         BodyExited += OnBodyExited;
         AreaEntered += OnAreaEntered;
         AreaExited += OnAreaExited;
+    }
+
+    /// <summary>
+    /// Converts the collision layers from an array of integers to a uint. This is used to set the collision mask of the effect.
+    /// </summary>
+    /// <param name="layers"></param>
+    /// <returns></returns>
+    private uint ParseCollisionLayers(params int[] layers)
+    {
+        uint collisionLayers = 0;
+        foreach (int layer in layers)
+        {
+            collisionLayers |= (uint)(1 << (layer - 1));
+        }
+        return collisionLayers;
     }
 
     public Effect SetVelocity(Vector2 velocity)
@@ -94,6 +121,18 @@ public partial class Effect : Area2D
         return this;
     }
 
+    public Effect SetSticky(bool sticky)
+    {
+        Sticky = sticky;
+        return this;
+    }
+
+    public Effect SetInterval(float interval)
+    {
+        ProcessInterval = interval;
+        return this;
+    }
+
 
     // LIFECYCLE EVENTS
     
@@ -103,6 +142,29 @@ public partial class Effect : Area2D
 
         // This ensures that the collision shape node is only added to the scene AFTER the effect node is
         AddChild(_collisionShape);
+    }
+
+    public override void _Ready()
+    {
+        base._Ready();
+
+        AddIntervalTimer();
+    }
+
+
+    // INTERVAL HANDLING
+
+    private void AddIntervalTimer()
+    {
+        if (ProcessInterval <= 0f) return; // No interval, no timer
+
+        _processTimer = GetTree().CreateTimer(ProcessInterval);
+        _processTimer.Timeout += OnInterval;
+    }
+
+    public virtual void OnInterval()
+    {
+        AddIntervalTimer(); // Reset the timer for the next interval
     }
 
 
@@ -146,6 +208,7 @@ public partial class Effect : Area2D
 
     public virtual void RemoveDetectedNode(Node node)
     {
+        if (Sticky) return; // If the effect is sticky, don't remove the node from the detection list
         DetectedNodes.Remove(node);
     }
 
@@ -159,6 +222,7 @@ public partial class Effect : Area2D
 
     public virtual void RemoveDetectedArea(Area2D area)
     {
+        if (Sticky) return; // If the effect is sticky, don't remove the node from the detection list
         DetectedAreas.Remove(area);
     }
 

@@ -8,7 +8,7 @@ public abstract partial class AgentStatsEffect : Effect
 
     // public AgentStats TargetStats = null;
 
-    public AgentStatsEffect(Shape2D hitboxShape, uint collisionlayer) : base(hitboxShape, collisionlayer)
+    public AgentStatsEffect(Shape2D hitboxShape, int[] collisionlayers) : base(hitboxShape, collisionlayers)
     {
     }
 
