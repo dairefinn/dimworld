@@ -205,7 +205,7 @@ public partial class Effect : Area2D
 
         Duration -= (float)delta; // Decrease the duration by the delta time
 
-        if (Duration <= 0f) // If the duration is less than or equal to 0, remove the effect
+        if (_isReadyTimerElapsed && Duration <= 0f) // If the duration is less than or equal to 0, remove the effect
         {
             QueueFree();
         }

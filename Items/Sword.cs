@@ -26,19 +26,20 @@ public partial class Sword : InventoryItem, ICanBeUsedFromHotbar
         Vector2 direction = equipmentHandler.GlobalPosition.DirectionTo(Globals.Instance.CursorFollower.GlobalPosition);
         Vector2 effectPosition = equipmentHandler.GlobalPosition + (direction * radius);
 
-        CircleShape2D effectArea = new()
+        RectangleShape2D effectArea = new()
         {
-            Radius = radius
+            Size = new Vector2(radius, radius * 2),
         };
         Array<Node> nodeBlacklist = [parent];
 
-        Effect damageEffect = new AddHealthEffect(effectArea, [1, 2], damage).SetDuration(1f).SetNodeBlacklist(nodeBlacklist).SetStartPosition(effectPosition);
-        Effect knockbackEffect = new PushPullEffect(effectArea, [1, 2], force).SetDuration(1f).SetNodeBlacklist(nodeBlacklist).SetStartPosition(effectPosition);
+        Effect damageEffect = new AddHealthEffect(effectArea, [1, 2], damage).SetDuration(0f).SetNodeBlacklist(nodeBlacklist).SetStartPosition(effectPosition);
+        Effect knockbackEffect = new PushPullEffect(effectArea, [1, 2], force).SetDuration(0f).SetNodeBlacklist(nodeBlacklist).SetStartPosition(effectPosition);
 
         equipmentHandler.AddChild(damageEffect);
         equipmentHandler.AddChild(knockbackEffect);
 
-        GD.Print($"Sword used from hotbar, effect position: {effectPosition}");
+        damageEffect.GlobalRotation = direction.Angle();
+        knockbackEffect.GlobalRotation = direction.Angle();
 
         return true;
     }
