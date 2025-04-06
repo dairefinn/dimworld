@@ -6,8 +6,6 @@ using Godot;
 public abstract partial class AgentStatsEffect : Effect
 {
 
-    // public AgentStats TargetStats = null;
-
     public AgentStatsEffect(Shape2D hitboxShape, int[] collisionlayers) : base(hitboxShape, collisionlayers)
     {
     }

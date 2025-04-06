@@ -39,7 +39,12 @@ public partial class Effect : Area2D
     /// <summary>
     /// Determines how often the effect will be applied to detected nodes. This is used for effects that need to be applied over time, like damage over time or healing over time.
     /// </summary>
-    private float ProcessInterval = -1f; // -1 means no interval
+    private float ProcessInterval = -1f; // -1 means no interval, 0 is matched to delta
+
+    /// <summary>
+    /// Determines if the effect should be triggered instantly when a node enters the area. This is used for effects that need to be applied immediately, like a knockback effect.
+    /// </summary>
+    private bool TriggerInstantly = true;
 
 
     /// <summary>
@@ -47,12 +52,14 @@ public partial class Effect : Area2D
     /// </summary>
     private CollisionShape2D _collisionShape = null;
 
-    private SceneTreeTimer _processTimer = null;
+    private float _intervalTimerRemaining = 0f;
+    private bool _triggerInstantlyRun = false;
+    private bool _isReadyTimerElapsed = false;
 
 
     // CONSTRUCTORS AND BUILDERS
 
-    public Effect(Shape2D hitboxShape, int[] collisionLayers) // TODO: uint is too confusing to use here
+    public Effect(Shape2D hitboxShape, int[] collisionLayers)
     {
         Name = GetType().Name;
         _collisionShape = new CollisionShape2D
@@ -133,6 +140,12 @@ public partial class Effect : Area2D
         return this;
     }
 
+    public Effect SetTriggerInstantly(bool triggerInstantly)
+    {
+        TriggerInstantly = triggerInstantly;
+        return this;
+    }
+
 
     // LIFECYCLE EVENTS
     
@@ -148,23 +161,67 @@ public partial class Effect : Area2D
     {
         base._Ready();
 
-        AddIntervalTimer();
+        _intervalTimerRemaining = ProcessInterval;
+
+        // TODO: This is a massive hack to ensure the collision detection has had time to run before triggering the effect instantly. The timer is totally arbitrary and is not based on any real logic. There's probably a better way to do this.
+        GetTree().CreateTimer(0.1f).Timeout += () => {
+            _isReadyTimerElapsed = true;
+        };
+    }
+
+    public override void _Process(double delta)
+    {
+        base._Process(delta);
+    }
+
+    public override void _PhysicsProcess(double delta)
+    {
+        base._PhysicsProcess(delta);
+        
+        // Call the OnInterval method immediately if TriggerInstantly is true and the effect is ready to be triggered instantly
+        if (_isReadyTimerElapsed && !_triggerInstantlyRun && TriggerInstantly && _collisionShape.IsNodeReady())
+        {
+            _triggerInstantlyRun = true;
+            TriggerEffect(delta);
+        }
+        
+        UpdateIntervalTimer(delta); // Update the timer for the interval
+        UpdateDuration(delta); // Update the duration of the effect
+    }
+
+
+    // DURATION HANDLING
+
+    private void UpdateDuration(double delta)
+    {
+        if (Duration <= 0f) return; // If the duration is -1, don't do anything
+
+        Duration -= (float)delta; // Decrease the duration by the delta time
+
+        if (Duration <= 0f) // If the duration is less than or equal to 0, remove the effect
+        {
+            QueueFree();
+        }
     }
 
 
     // INTERVAL HANDLING
-
-    private void AddIntervalTimer()
+    
+    private void UpdateIntervalTimer(double delta)
     {
-        if (ProcessInterval <= 0f) return; // No interval, no timer
+        if (ProcessInterval == -1f) return; // If the interval is -1, don't do anything
 
-        _processTimer = GetTree().CreateTimer(ProcessInterval);
-        _processTimer.Timeout += OnInterval;
+        _intervalTimerRemaining -= (float)delta; // Decrease the timer by the delta time
+
+        if (_intervalTimerRemaining <= 0f) // If the timer is less than or equal to 0, call the OnInterval method
+        {
+            TriggerEffect(delta);
+            _intervalTimerRemaining = ProcessInterval; // Reset the timer to the interval
+        }        
     }
 
-    public virtual void OnInterval()
+    public virtual void TriggerEffect(double delta)
     {
-        AddIntervalTimer(); // Reset the timer for the next interval
     }
 
 

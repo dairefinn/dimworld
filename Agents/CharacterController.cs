@@ -9,7 +9,7 @@ using Godot;
 using Godot.Collections;
 
 
-public partial class CharacterController : CharacterBody2D, IHasAgentStats, IDamageable, ICanBeMoved, IGoapAgent, IHasInventory, IMemorableNode, IAffectedByModifiers
+public partial class CharacterController : CharacterBody2D, IHasAgentStats, ICanBeMoved, IGoapAgent, IHasInventory, IMemorableNode, IAffectedByModifiers
 {
 
 	[ExportGroup("Properties")]
@@ -289,11 +289,6 @@ public partial class CharacterController : CharacterBody2D, IHasAgentStats, IDam
 
 		Velocity = oldVelocity;
     }
-
-	public Vector2 GetMoveableGlobalPosition()
-	{
-		return GlobalPosition;
-	}
 
 
 	// SPEECH

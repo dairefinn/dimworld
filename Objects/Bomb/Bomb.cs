@@ -11,9 +11,10 @@ public partial class Bomb : StaticBody2D, ICanBeInteractedWith
     public void InteractWith()
     {
         // TriggerExplosion();
-        TriggerFire();
+        // TriggerFire();
         // TriggerKnockback();
         // TriggerPull();
+        TriggerKnockbackExplosion();
         // TriggerApplyModifier();
     }
 
@@ -25,7 +26,8 @@ public partial class Bomb : StaticBody2D, ICanBeInteractedWith
             Size = new Vector2(200, 100)
         };
 
-        Effect damageEffect = new AddHealthEffect(effectShape, [1, 2], -100f).SetDuration(60f);
+        Effect damageEffect = new AddHealthEffect(effectShape, [1, 2], -100f)
+            .SetDuration(30f);
         AddChild(damageEffect);
     }
 
@@ -36,49 +38,65 @@ public partial class Bomb : StaticBody2D, ICanBeInteractedWith
             Radius = 100
         };
 
-        Effect damageOverTimeEffect = new AddHealthOverTimeEffect(effectShape, [1, 2], -10f)
-            .SetDuration(60f)
-            .SetInterval(1f)
+        Effect damageOverTimeEffect = new AddHealthEffect(effectShape, [1, 2], -10f)
+            .SetDuration(30f)
+            .SetInterval(2f)
             .SetSticky(true)
             ;
         AddChild(damageOverTimeEffect);
     }
 
-    // private void TriggerKnockback()
-    // {
-    //     PushPull knockback = Effect.PUSH_PULL.Instantiate<PushPull>();
-    //     knockback.Radius = 100;
-    //     knockback.Force = 1000;
-    //     knockback.Direction = PushPull.DirectionType.PUSH;
-    //     AddChild(knockback);
-    // }
+    private void TriggerKnockback()
+    {
+        CapsuleShape2D effectShape = new()
+        {
+            Height = 200,
+            Radius = 100
+        };
 
-    // private void TriggerPull()
-    // {
-    //     PushPull pull = Effect.PUSH_PULL.Instantiate<PushPull>();
-    //     pull.Radius = 100;
-    //     pull.Force = 1000;
-    //     pull.Direction = PushPull.DirectionType.PULL;
-    //     AddChild(pull);
-    // }
+        Effect knockbackEffect = new PushPullEffect(effectShape, [1, 2], 1000f)
+            .SetDirection(PushPullEffect.Direction.PUSH)
+            .SetDuration(0.1f)
+            .SetInterval(0f)
+            ;
 
-    // private void TriggerKnockbackExplosion()
-    // {
-    //     float duration = 0.1f;
+        AddChild(knockbackEffect);
+    }
 
-    //     DamageInstant explosion = Effect.DAMAGE_INSTANT.Instantiate<DamageInstant>();
-    //     explosion.Damage = 10;
-    //     explosion.Radius = 200;
-    //     explosion.Duration = duration;
+    private void TriggerPull()
+    {
+        CircleShape2D effectShape = new()
+        {
+            Radius = 100
+        };
 
-    //     PushPull knockback = Effect.PUSH_PULL.Instantiate<PushPull>();
-    //     knockback.Radius = 100;
-    //     knockback.Force = 3000;
-    //     knockback.Direction = PushPull.DirectionType.PUSH;
+        Effect pullEffect = new PushPullEffect(effectShape, [1, 2], 1000f)
+            .SetDirection(PushPullEffect.Direction.PULL)
+            .SetDuration(0.1f)
+            ;
 
-    //     AddChild(explosion);
-    //     AddChild(knockback);
-    // }
+        AddChild(pullEffect);
+    }
+
+    private void TriggerKnockbackExplosion()
+    {
+        float duration = 0.1f;
+
+        CircleShape2D effectShape = new()
+        {
+            Radius = 100
+        };
+
+        Effect knockbackEffect = new PushPullEffect(effectShape, [1, 2], 10000f)
+            .SetDirection(PushPullEffect.Direction.PUSH)
+            .SetDuration(duration)
+            ;
+        Effect damageEffect = new AddHealthEffect(effectShape, [1, 2], -100f)
+            .SetDuration(duration);
+
+        AddChild(knockbackEffect);
+        AddChild(damageEffect);
+    }
 
     // private void TriggerApplyModifier()
     // {

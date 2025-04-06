@@ -11,25 +11,28 @@ public partial class AddHealthEffect : AgentStatsEffect
 
     private float _amount = 0f;
 
+
     public AddHealthEffect(Shape2D hitboxShape, int[] collisionlayers, float amount) : base(hitboxShape, collisionlayers)
     {
         _amount = amount;
     }
 
-    public override void AddDetectedNode(Node node)
+
+    public override void TriggerEffect(double delta)
     {
-        base.AddDetectedNode(node);
-
-        if (node is not IHasAgentStats characterController) return; // Node must have AgentStats
-        if (characterController.Stats == null) return; // Node must have AgentStats
-
-        if (_amount > 0)
+        foreach(Node node in DetectedNodes)
         {
-            characterController.Stats.Heal(_amount); // Add health
-        }
-        else
-        {
-            characterController.Stats.TakeDamage(-_amount); // Remove health
+            if (node is not IHasAgentStats nodeWithStats) return; // Node must have AgentStats
+            if (nodeWithStats.Stats == null) return; // Node must have AgentStats
+
+            if (_amount > 0)
+            {
+                nodeWithStats.Stats.Heal(_amount); // Add health
+            }
+            else
+            {
+                nodeWithStats.Stats.TakeDamage(-_amount); // Remove health
+            }
         }
     }
 
