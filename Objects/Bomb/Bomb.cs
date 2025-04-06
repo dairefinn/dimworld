@@ -14,8 +14,8 @@ public partial class Bomb : StaticBody2D, ICanBeInteractedWith
         // TriggerFire();
         // TriggerKnockback();
         // TriggerPull();
-        TriggerKnockbackExplosion();
-        // TriggerApplyModifier();
+        // TriggerKnockbackExplosion();
+        TriggerApplyModifier();
     }
 
 
@@ -98,15 +98,22 @@ public partial class Bomb : StaticBody2D, ICanBeInteractedWith
         AddChild(damageEffect);
     }
 
-    // private void TriggerApplyModifier()
-    // {
-    //     ApplyModifier applyModifier = Effect.APPLY_MODIFIER.Instantiate<ApplyModifier>();
-    //     // applyModifier.Modifier = new VelocityMultiplyModifier("bomb_speed_boost", 2f).SetDuration(5);
-    //     // applyModifier.Modifier = new VelocityMultiplyModifier("bomb_slow_down", 0.5f).SetDuration(5);
-    //     applyModifier.Modifier = new HealthMultiplyModifier("bomb_health_boost", 2f).SetHealOnAdd(true).SetDuration(5);
-    //     applyModifier.Radius = 100;
-    //     applyModifier.Duration = 5;
-    //     AddChild(applyModifier);
-    // }
+    private void TriggerApplyModifier()
+    {
+        // Modifier modifier = new VelocityMultiplyModifier("bomb_speed_boost", 2f).SetDuration(5);
+        Modifier modifier = new VelocityMultiplyModifier("bomb_slow_down", 0.5f).SetDuration(5);
+        // Modifier modifier = new HealthMultiplyModifier("bomb_health_boost", 2f).SetHealOnAdd(true).SetDuration(5);
+
+        CircleShape2D effectShape = new()
+        {
+            Radius = 100
+        };
+
+        Effect applyModifierEffect = new AddModifierEffect(effectShape, [1, 2], modifier)
+            .SetDuration(0.1f)
+            ;
+
+        AddChild(applyModifierEffect);
+    }
 
 }

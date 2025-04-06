@@ -51,6 +51,7 @@ public partial class ModifierHandler : Node2D
 			Modifiers.Remove(existingModifier);
 		}
 
+		GD.Print($"Adding modifier {modifier} to {this} with key {modifier.Key}");
 		Modifiers.Add(modifier);
 		modifier.OnAdded(this);
 	}

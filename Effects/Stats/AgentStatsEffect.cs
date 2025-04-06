@@ -13,16 +13,16 @@ public abstract partial class AgentStatsEffect : Effect
 
     public override void OnBodyEntered(Node body)
     {
-        if (body is not IHasAgentStats characterController) return; // Node must have AgentStats
-        if (characterController.Stats == null) return; // Node must have AgentStats
+        if (body is not IHasAgentStats nodeHasStats) return; // Node must have AgentStats
+        if (nodeHasStats.Stats == null) return; // Node must have AgentStats
 
         AddDetectedNode(body);
     }
 
     public override void OnBodyExited(Node body)
     {
-        if (body is not IHasAgentStats characterController) return; // Node must have AgentStats
-        if (characterController.Stats == null) return; // Node must have AgentStats
+        if (body is not IHasAgentStats nodeHasStats) return; // Node must have AgentStats
+        if (nodeHasStats.Stats == null) return; // Node must have AgentStats
 
         RemoveDetectedNode(body);
     }
