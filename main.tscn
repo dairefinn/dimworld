@@ -179,7 +179,7 @@ region = Rect2(32, 32, 32, 32)
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_a6jrf"]
 atlas = ExtResource("10_getpj")
-region = Rect2(0, 64, 32, 32)
+region = Rect2(96, 32, 32, 32)
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_xuqvo"]
 atlas = ExtResource("10_getpj")
@@ -197,7 +197,7 @@ region = Rect2(96, 64, 32, 32)
 
 [node name="Player" parent="." node_paths=PackedStringArray("ClothingController") instance=ExtResource("5_lquwl")]
 z_index = 1
-position = Vector2(1833, 735)
+position = Vector2(2258, 768)
 Inventory = SubResource("Resource_htxhm")
 Stats = SubResource("Resource_jx0wj")
 IsPlanningEnabled = false
