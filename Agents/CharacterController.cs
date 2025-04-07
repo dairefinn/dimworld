@@ -6,6 +6,7 @@ using Dimworld.Effects;
 using Dimworld.GOAP;
 using Dimworld.Helpers;
 using Dimworld.Items;
+using Dimworld.Levels;
 using Dimworld.Memory;
 using Dimworld.Memory.MemoryEntries;
 using Dimworld.Modifiers;
@@ -13,7 +14,7 @@ using Godot;
 using Godot.Collections;
 
 
-public partial class CharacterController : CharacterBody2D, IHasAgentStats, ICanBeMoved, IGoapAgent, IHasInventory, IMemorableNode, IAffectedByModifiers, ICanSpeak
+public partial class CharacterController : CharacterBody2D, IHasAgentStats, ICanBeMoved, IGoapAgent, IHasInventory, IMemorableNode, IAffectedByModifiers, ICanSpeak, ICanTriggerLevelTransitions
 {
 
 	[ExportGroup("Properties")]

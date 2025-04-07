@@ -83,7 +83,6 @@ public partial class PickUpItem : GoapAction
             characterController.DetectionHandler.GetDetectedInstancesImplementing<IHasInventory>()
             .Where(container => {
                 if (container is not Node2D node2D) return false; // Must be a node2D
-                // if (container is CharacterController) return false; // Must not be a character
                 if (!characterController.CanReachPoint(node2D.GlobalPosition)) return false;
                 if (!container.Inventory.HasItem(ItemId)) return false;
                 return true;
