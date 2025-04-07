@@ -11,7 +11,7 @@ public partial class InventorySlotDraggingState : InventorySlotState
 
 	private const float DRAGGING_MINIMUM_THRESHOLD = 0.05f;
 	private bool minimumDragTimeElapsed = false;
-	private StyleBox previousStylebox;
+	private InventorySlotUI.StyleType? previousStyleType;
 
     
     public override void Enter()
@@ -22,8 +22,8 @@ public partial class InventorySlotDraggingState : InventorySlotState
 			inventorySlotUI.Reparent(uiLayer);
 		}
 
-		previousStylebox = (StyleBox)inventorySlotUI.Get("theme_override_styles/panel");
-		inventorySlotUI.Set("theme_override_styles/panel", InventorySlotUI.STYLEBOX_SELECTED);
+		previousStyleType = inventorySlotUI.GetStyle();
+		inventorySlotUI.SetStyle(InventorySlotUI.StyleType.Selected);
 
 		minimumDragTimeElapsed = false;
 		SceneTreeTimer thresholdTimer = GetTree().CreateTimer(DRAGGING_MINIMUM_THRESHOLD, false);
@@ -37,13 +37,13 @@ public partial class InventorySlotDraggingState : InventorySlotState
 	{
 		inventorySlotUI.DragArea.Position = Vector2.Zero;
 
-		if (previousStylebox != null)
+		if (previousStyleType != null)
 		{
-			inventorySlotUI.Set("theme_override_styles/panel", previousStylebox);
+			inventorySlotUI.SetStyle(previousStyleType.Value);
 		}
 		else
 		{
-			inventorySlotUI.Set("theme_override_styles/panel", InventorySlotUI.STYLEBOX_DEFAULT);
+			inventorySlotUI.SetStyle(InventorySlotUI.StyleType.Default);
 		}
 	}
 

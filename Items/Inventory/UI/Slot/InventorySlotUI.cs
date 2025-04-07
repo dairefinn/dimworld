@@ -6,9 +6,9 @@ using Godot;
 public partial class InventorySlotUI : Panel
 {
 
-    public static readonly StyleBox STYLEBOX_DEFAULT = GD.Load<StyleBox>("res://Items/Inventory/UI/Slot/Styles/InventorySlotUI_Default.tres");
-    public static readonly StyleBox STYLEBOX_ACTIVE = GD.Load<StyleBox>("res://Items/Inventory/UI/Slot/Styles/InventorySlotUI_Active.tres");
-    public static readonly StyleBox STYLEBOX_SELECTED = GD.Load<StyleBox>("res://Items/Inventory/UI/Slot/Styles/InventorySlotUI_Selected.tres");
+    private static readonly StyleBox STYLEBOX_DEFAULT = GD.Load<StyleBox>("res://Items/Inventory/UI/Slot/Styles/InventorySlotUI_Default.tres");
+    private static readonly StyleBox STYLEBOX_ACTIVE = GD.Load<StyleBox>("res://Items/Inventory/UI/Slot/Styles/InventorySlotUI_Active.tres");
+    private static readonly StyleBox STYLEBOX_SELECTED = GD.Load<StyleBox>("res://Items/Inventory/UI/Slot/Styles/InventorySlotUI_Selected.tres");
 
 
     [Export] public InventorySlot TargetSlot {
@@ -154,12 +154,60 @@ public partial class InventorySlotUI : Panel
         
         if(IsEquipped)
 		{
-			Set("theme_override_styles/panel", STYLEBOX_ACTIVE);
+            SetStyle(StyleType.Active);
 		}
 		else
 		{
-			Set("theme_override_styles/panel", STYLEBOX_DEFAULT);
+            SetStyle(StyleType.Default);
 		}
+    }
+    
+    public void SetStyle(StyleType type)
+    {
+        if (!IsInstanceValid(this)) return;
+
+        switch (type)
+        {
+            case StyleType.Default:
+                Set("theme_override_styles/panel", STYLEBOX_DEFAULT);
+                break;
+            case StyleType.Active:
+                Set("theme_override_styles/panel", STYLEBOX_ACTIVE);
+                break;
+            case StyleType.Selected:
+                Set("theme_override_styles/panel", STYLEBOX_SELECTED);
+                break;
+        }
+    }
+
+    public StyleType GetStyle()
+    {
+        if (!IsInstanceValid(this)) return StyleType.Default;
+        if (Get("theme_override_styles/panel").Equals(null)) return StyleType.Default;
+
+        if (Get("theme_override_styles/panel").Equals(STYLEBOX_DEFAULT))
+        {
+            return StyleType.Default;
+        }
+        
+        if (Get("theme_override_styles/panel").Equals(STYLEBOX_ACTIVE))
+        {
+            return StyleType.Active;
+        }
+        
+        if (Get("theme_override_styles/panel").Equals(STYLEBOX_SELECTED))
+        {
+            return StyleType.Selected;
+        }
+
+        return StyleType.Default;
+    }
+
+    public enum StyleType
+    {
+        Default,
+        Active,
+        Selected
     }
 
 }
