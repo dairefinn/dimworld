@@ -31,7 +31,7 @@ public partial class Sword : InventoryItem, ICanBeUsedFromHotbar
         Array<Node> nodeBlacklist = [parent];
 
         Effect damageEffect = new AddHealthEffect(effectArea, [1, 2], damage).SetDuration(0f).SetNodeBlacklist(nodeBlacklist).SetStartPosition(effectPosition);
-        Effect knockbackEffect = new PushPullEffect(effectArea, [1, 2], force).SetDuration(0f).SetNodeBlacklist(nodeBlacklist).SetStartPosition(effectPosition);
+        Effect knockbackEffect = new PushPullEffect(effectArea, [1, 2], force).SetDirection(PushPullEffect.Direction.PUSH_STRAIGHT).SetDuration(0f).SetNodeBlacklist(nodeBlacklist).SetStartPosition(effectPosition);
 
         equipmentHandler.AddChild(damageEffect);
         equipmentHandler.AddChild(knockbackEffect);
