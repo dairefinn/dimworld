@@ -122,7 +122,7 @@ public partial class PatrolPath : GoapAction
         if (goapAgent is not Node2D node2D) return null;
 
         // Use a thread-safe mechanism to get the patrol path
-        CallDeferred(MethodName.FetchPatrolPath, [node2D, nodePath]); //  (Path2D fetchedPath) => { patrolPath = fetchedPath; }
+        CallDeferred(MethodName.FetchPatrolPath, [node2D, nodePath]);
 
         // Wait for the deferred call to complete
         while (patrolPathNode == null)
@@ -148,11 +148,10 @@ public partial class PatrolPath : GoapAction
         return points;
     }
 
-    private void FetchPatrolPath(Node2D agentNode2D, NodePath nodePath)//, Action<Path2D> callback)
+    private void FetchPatrolPath(Node2D agentNode2D, NodePath nodePath)
     {
         patrolPathNode = agentNode2D.GetNodeOrNull<Path2D>(nodePath);
         patrolPathNodeGlobalPosition = patrolPathNode.GlobalPosition;
-        // callback?.Invoke(patrolPath);
     }
 
 }

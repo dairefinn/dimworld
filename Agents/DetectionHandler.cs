@@ -91,14 +91,12 @@ public partial class DetectionHandler : Area2D
     {
         if (options == null || options.Length == 0) return null;
 
-        // Vector2 agentPosition = GlobalPosition;
         Vector2 agentPosition = source ?? GlobalPosition;
         T closestItem = null;
         float closestDistance = float.MaxValue;
 
         foreach (T item in options)
         {
-            // float distance = agentPosition.DistanceTo(item.GlobalPosition);
             float distance = agentPosition.DistanceTo(item.GlobalPosition);
             if (distance < closestDistance)
             {

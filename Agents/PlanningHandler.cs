@@ -36,8 +36,6 @@ public partial class PlanningHandler : Node2D
 		// Ensure the thread is stopped when the node is removed
 		if (planningThread != null && planningThread.IsAlive)
 		{
-			// DeveloperConsole.Print("Updating current plan");
-			// UpdateCurrentPlan(agent);
 			planningThread.Join();
 		}
 	}

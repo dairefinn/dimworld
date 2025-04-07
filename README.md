@@ -37,6 +37,9 @@ They can use the following actions to achieve these goals:
 
 The agent will generate a plan to achieve these goals using the GOAP system. This results in some interesting emergent behaviour. For example, if the agent is trying to patrol the house, they will come up with a plan that includes equipping the sword first.
 
+I've made sure this all runs on a separate thread so that it doesn't impact performance too much. With it running on a separate thread, the planning system can be run at a higher frequency which makes the agent's decisions feel more responsive. This tickrate can be configured to be faster or slower depending on the performance of the machine it's running on.
+
+
 #### Sensory system
 
 I've also added a sensory system so the agent can "see" things in their surroundings and use this information to determine if actions can be taken. For example, the agent needs to be able to see a sword in order to equip it.
@@ -125,13 +128,6 @@ I want to add a system which allows items to be owned by a specific agent. This 
 ### Factions and faction relations
 
 I want to be able to add characters to factions and have this determine if they are hostile or friendly to each other. The relations system could be dynamic and allow them to become friends or enemies over time.
-
-
-### Multi-threaded GOAP system
-
-The whole planning system currently runs on the main thread and can be quite heavy if there's a lot of processing going on. I've added a way to manually control the tick rate of the planner which keeps it performant for now but ideally it would run on a separate thread.
-
-I've had this partially implemented before but I ran into issues trying to access the main scene tree from a separate thread. I need to do some more research into this and see if it's possible to do it in a safe way.
 
 
 ### Save/Load system
