@@ -1,4 +1,4 @@
-namespace Dimworld.MemoryEntries;
+namespace Dimworld.Memory.MemoryEntries;
 
 using Godot;
 using Godot.Collections;

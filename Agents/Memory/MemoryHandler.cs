@@ -1,8 +1,8 @@
-namespace Dimworld;
+namespace Dimworld.Memory;
 
 using System.Linq;
 using Dimworld.Developer;
-using Dimworld.Helpers.BBCode;
+using Dimworld.Helpers;
 using Godot;
 using Godot.Collections;
 

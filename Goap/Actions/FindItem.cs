@@ -1,10 +1,12 @@
 namespace Dimworld.GOAP.Actions;
 
 using Dimworld.Developer;
-using Dimworld.MemoryEntries;
+using Dimworld.Items;
+using Dimworld.Memory.MemoryEntries;
 using Godot;
 using Godot.Collections;
 using System.Linq;
+
 
 public partial class FindItem : GoapAction
 {

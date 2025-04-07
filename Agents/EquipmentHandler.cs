@@ -1,7 +1,9 @@
 namespace Dimworld;
 
+using Dimworld.Items;
 using Godot;
 using Godot.Collections;
+
 
 // TODO: Probably want to prevent items being equipped sometimes if a conflicting item is already equipped. For example, two helmets.
 public partial class EquipmentHandler : Node2D

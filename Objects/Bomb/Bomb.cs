@@ -1,4 +1,4 @@
-namespace Dimworld;
+namespace Dimworld.Objects;
 
 using Dimworld.Effects;
 using Dimworld.Modifiers;

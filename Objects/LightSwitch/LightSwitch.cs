@@ -1,6 +1,7 @@
-namespace Dimworld;
+namespace Dimworld.Objects;
 
-using Dimworld.MemoryEntries;
+using Dimworld.Memory;
+using Dimworld.Memory.MemoryEntries;
 using Godot;
 using Godot.Collections;
 

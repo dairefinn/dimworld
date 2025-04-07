@@ -1,8 +1,9 @@
 namespace Dimworld.GOAP.Actions;
 
+using Dimworld.Items;
+using Dimworld.Memory.MemoryEntries;
 using Godot;
 using Godot.Collections;
-using Dimworld.MemoryEntries;
 using System.Linq;
 
 

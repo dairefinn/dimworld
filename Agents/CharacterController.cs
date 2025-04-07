@@ -1,9 +1,13 @@
 namespace Dimworld;
 
 using Dimworld.Developer;
+using Dimworld.Dialogue;
+using Dimworld.Effects;
 using Dimworld.GOAP;
-using Dimworld.Helpers.BBCode;
-using Dimworld.MemoryEntries;
+using Dimworld.Helpers;
+using Dimworld.Items;
+using Dimworld.Memory;
+using Dimworld.Memory.MemoryEntries;
 using Dimworld.Modifiers;
 using Godot;
 using Godot.Collections;

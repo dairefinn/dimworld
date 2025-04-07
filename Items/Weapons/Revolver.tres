@@ -1,0 +1,17 @@
+[gd_resource type="Resource" load_steps=4 format=3 uid="uid://bbn4fu5m0emk1"]
+
+[ext_resource type="Script" uid="uid://dewqh81o5g4sj" path="res://Items/Weapons/Revolver.cs" id="1_1sl0i"]
+[ext_resource type="Texture2D" uid="uid://xid32hy6vbe" path="res://Items/ItemsSpriteSheet.tres" id="1_ombdn"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_qchby"]
+atlas = ExtResource("1_ombdn")
+region = Rect2(32, 0, 32, 32)
+
+[resource]
+script = ExtResource("1_1sl0i")
+Id = "item-revolver"
+ItemName = "Revolver"
+ItemDescription = "Item description"
+Icon = SubResource("AtlasTexture_qchby")
+MaxStackSize = 1
+metadata/_custom_type_script = "uid://frg4uic6tym5"

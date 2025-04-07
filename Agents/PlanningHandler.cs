@@ -3,7 +3,7 @@ namespace Dimworld;
 using System.Linq;
 using Dimworld.Developer;
 using Dimworld.GOAP;
-using Dimworld.Helpers.BBCode;
+using Dimworld.Helpers;
 using Godot;
 using Godot.Collections;
 

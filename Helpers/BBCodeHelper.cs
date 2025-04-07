@@ -1,4 +1,4 @@
-namespace Dimworld.Helpers.BBCode;
+namespace Dimworld.Helpers;
 
 using Godot;
 

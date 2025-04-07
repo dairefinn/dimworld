@@ -1,7 +1,9 @@
-namespace Dimworld;
+namespace Dimworld.Objects;
 
-using Dimworld.MemoryEntries;
+using Dimworld.Memory;
+using Dimworld.Memory.MemoryEntries;
 using Godot;
+
 
 public partial class LightBulb : StaticBody2D, IMemorableNode
 {

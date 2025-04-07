@@ -1,4 +1,4 @@
-namespace Dimworld;
+namespace Dimworld.Levels;
 
 using System.Linq;
 using Godot;

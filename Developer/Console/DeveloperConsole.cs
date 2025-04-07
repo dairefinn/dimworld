@@ -1,6 +1,6 @@
 namespace Dimworld.Developer;
 
-using Dimworld.Helpers.BBCode;
+using Dimworld.Helpers;
 using Godot;
 using Godot.Collections;
 using System;

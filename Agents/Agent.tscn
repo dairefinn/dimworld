@@ -3,11 +3,11 @@
 [ext_resource type="Script" uid="uid://bwbmuqkjtx0ns" path="res://Agents/CharacterController.cs" id="1_v5emj"]
 [ext_resource type="Script" uid="uid://cxbp1npv1tukk" path="res://Agents/DetectionHandler.cs" id="3_07efl"]
 [ext_resource type="PackedScene" uid="uid://bb462hku8uk8i" path="res://Agents/UI/AgentStatsUI.tscn" id="3_o26ja"]
-[ext_resource type="PackedScene" uid="uid://v23vcyiu8qgc" path="res://Agents/Dialogue/SpeechBubble.tscn" id="4_ia2xe"]
+[ext_resource type="PackedScene" uid="uid://v23vcyiu8qgc" path="res://Dialogue/SpeechBubble.tscn" id="4_ia2xe"]
 [ext_resource type="Script" uid="uid://dphqtgg23pqia" path="res://Agents/EquipmentHandler.cs" id="4_ixneo"]
 [ext_resource type="Script" uid="uid://bk54n8opktsdt" path="res://Agents/PlanningHandler.cs" id="6_24e8l"]
 [ext_resource type="Script" uid="uid://bgoi1dk2c120s" path="res://Agents/Memory/MemoryHandler.cs" id="7_4oknj"]
-[ext_resource type="Script" uid="uid://5x3g25chpe2b" path="res://Agents/Modifiers/ModifierHandler.cs" id="7_um2er"]
+[ext_resource type="Script" uid="uid://5x3g25chpe2b" path="res://Modifiers/ModifierHandler.cs" id="7_um2er"]
 
 [sub_resource type="CapsuleShape2D" id="CapsuleShape2D_4oknj"]
 

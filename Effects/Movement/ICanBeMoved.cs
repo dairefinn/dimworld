@@ -1,4 +1,4 @@
-namespace Dimworld;
+namespace Dimworld.Effects;
 
 using Godot;
 

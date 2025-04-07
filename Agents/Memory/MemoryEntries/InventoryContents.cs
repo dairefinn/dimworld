@@ -1,6 +1,7 @@
-namespace Dimworld.MemoryEntries;
+namespace Dimworld.Memory.MemoryEntries;
 
 using System.Linq;
+using Dimworld.Items;
 using Godot;
 using Godot.Collections;
 

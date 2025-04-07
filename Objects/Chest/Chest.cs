@@ -1,8 +1,10 @@
-namespace Dimworld;
+namespace Dimworld.Objects;
 
-using System.Linq;
-using Dimworld.MemoryEntries;
+using Dimworld.Items;
+using Dimworld.Memory;
+using Dimworld.Memory.MemoryEntries;
 using Godot;
+
 
 public partial class Chest : StaticBody2D, ICanBeInteractedWith, IMemorableNode, IHasInventory
 {
