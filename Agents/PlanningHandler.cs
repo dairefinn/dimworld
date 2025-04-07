@@ -13,7 +13,7 @@ public partial class PlanningHandler : Node2D
 {
 
 
-    [Export] public int lookForGoalsEveryXSeconds = 2;
+    [Export] public float lookForGoalsEveryXSeconds = 0.5f;
 
 
 	private float secondsToNextGoalUpdate = 0;
