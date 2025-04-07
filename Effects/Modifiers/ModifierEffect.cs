@@ -26,4 +26,16 @@ public abstract partial class ModifierEffect : Effect
         base.OnBodyExited(body);
     }
 
+    public override void TriggerEffectOnNode(Node node, double delta)
+    {
+        if (node is not IAffectedByModifiers nodeWithModifiers) return; // Node must have AgentStats
+        TriggerEffectOnNode(node, nodeWithModifiers, delta);
+    }
+
+    public virtual void TriggerEffectOnNode(Node node, IAffectedByModifiers nodeWithModifiers, double delta)
+    {
+        // This method should be overridden in derived classes to apply specific effects to the node.
+    }
+
+
 }

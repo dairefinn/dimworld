@@ -1,5 +1,6 @@
 namespace Dimworld.Modifiers;
 
+using Dimworld.Developer;
 using Godot;
 using Godot.Collections;
 
@@ -51,7 +52,7 @@ public partial class ModifierHandler : Node2D
 			Modifiers.Remove(existingModifier);
 		}
 
-		GD.Print($"Adding modifier {modifier} to {this} with key {modifier.Key}");
+		DeveloperConsole.Print($"Adding modifier {modifier} to {this} with key {modifier.Key}");
 		Modifiers.Add(modifier);
 		modifier.OnAdded(this);
 	}

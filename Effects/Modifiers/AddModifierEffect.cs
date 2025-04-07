@@ -18,14 +18,9 @@ public partial class AddModifierEffect : ModifierEffect
     }
 
 
-    public override void TriggerEffect(double delta)
+    public override void TriggerEffectOnNode(Node node, IAffectedByModifiers nodeHasModifiers, double delta)
     {
-        foreach(Node node in DetectedNodes)
-        {
-            if (node is not IAffectedByModifiers nodeHasModifiers) return; // Node must have Modifiers
-
-            nodeHasModifiers.ModifierHandler?.Add(_modifier);
-        }
+        nodeHasModifiers.ModifierHandler?.Add(_modifier);
     }
 
 }

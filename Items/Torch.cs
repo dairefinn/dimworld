@@ -16,8 +16,6 @@ public partial class Torch : InventoryItem, IHasContextMenu, ICanBeEquipped, ICa
 
     public bool OnEquip(EquipmentHandler handler)
     {
-        if (!CanBeEquipped) return false;
-
         // TODO: Equipment should go in slots
         // TODO: Move this to the equipment handler
         if (!handler.Equipment.Contains(this))
@@ -37,9 +35,7 @@ public partial class Torch : InventoryItem, IHasContextMenu, ICanBeEquipped, ICa
     }
 
     public bool OnUnequip(EquipmentHandler handler)
-    {
-        if (!CanBeEquipped) return false;
-        
+    {        
         // TODO: Equipment should go in slots
         // TODO: Move this to the equipment handler
         if (handler.Equipment.Contains(this))

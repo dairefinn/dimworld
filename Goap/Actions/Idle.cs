@@ -24,7 +24,6 @@ public partial class Idle : GoapAction
 
     public override bool Perform(IGoapAgent agent, GoapState worldState, double delta)
     {
-        return false;
         if (agent is not CharacterController characterController) return false;
         if (!characterController.NavigationAgent.IsTargetReached()) return false;
 

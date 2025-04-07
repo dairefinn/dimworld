@@ -27,4 +27,15 @@ public abstract partial class AgentStatsEffect : Effect
         base.OnBodyExited(body);
     }
 
+    public override void TriggerEffectOnNode(Node node, double delta)
+    {
+        if (node is not IHasAgentStats nodeWithStats) return; // Node must have AgentStats
+        TriggerEffectOnNode(node, nodeWithStats, delta);
+    }
+
+    public virtual void TriggerEffectOnNode(Node node, IHasAgentStats nodeWithStats, double delta)
+    {
+        // This method should be overridden in derived classes to apply specific effects to the node.
+    }
+
 }

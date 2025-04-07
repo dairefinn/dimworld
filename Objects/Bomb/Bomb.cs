@@ -26,8 +26,8 @@ public partial class Bomb : StaticBody2D, ICanBeInteractedWith
             Size = new Vector2(200, 100)
         };
 
-        Effect damageEffect = new AddHealthEffect(effectShape, [1, 2], -100f)
-            .SetDuration(30f);
+        Effect damageEffect = new AddHealthEffect(effectShape, [1, 2], -80f)
+            .SetDuration(0.1f);
         AddChild(damageEffect);
     }
 
@@ -57,7 +57,6 @@ public partial class Bomb : StaticBody2D, ICanBeInteractedWith
         Effect knockbackEffect = new PushPullEffect(effectShape, [1, 2], 1000f)
             .SetDirection(PushPullEffect.Direction.PUSH)
             .SetDuration(0.1f)
-            .SetInterval(0f)
             ;
 
         AddChild(knockbackEffect);
@@ -87,11 +86,11 @@ public partial class Bomb : StaticBody2D, ICanBeInteractedWith
             Radius = 100
         };
 
-        Effect knockbackEffect = new PushPullEffect(effectShape, [1, 2], 10000f)
+        Effect knockbackEffect = new PushPullEffect(effectShape, [1, 2], 3000f)
             .SetDirection(PushPullEffect.Direction.PUSH)
             .SetDuration(duration)
             ;
-        Effect damageEffect = new AddHealthEffect(effectShape, [1, 2], -100f)
+        Effect damageEffect = new AddHealthEffect(effectShape, [1, 2], -50f)
             .SetDuration(duration);
 
         AddChild(knockbackEffect);

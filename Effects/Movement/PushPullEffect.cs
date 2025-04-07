@@ -33,23 +33,18 @@ public partial class PushPullEffect : MovementEffect
     }
 
 
-    public override void TriggerEffect(double delta)
+    public override void TriggerEffectOnNode(Node node, ICanBeMoved nodeCanBeMoved, double delta)
     {
-        foreach(Node node in DetectedNodes)
+        Vector2 nodePosition = nodeCanBeMoved.GetGlobalPosition();
+        Vector2 direction = GlobalPosition.DirectionTo(nodePosition);
+
+        if (_direction == Direction.PULL)
         {
-            if (node is not ICanBeMoved nodeCanBeMoved) return; // Node must have ICanBeMoved
-
-            Vector2 nodePosition = nodeCanBeMoved.GetGlobalPosition();
-            Vector2 direction = GlobalPosition.DirectionTo(nodePosition);
-
-            if (_direction == Direction.PULL)
-            {
-                direction = direction.Rotated(Mathf.DegToRad(180));
-            }
-
-            Vector2 knockbackVelocity = direction * _force;
-            nodeCanBeMoved.ApplyVelocity(knockbackVelocity, delta);
+            direction = direction.Rotated(Mathf.DegToRad(180));
         }
+
+        Vector2 knockbackVelocity = direction * _force;
+        nodeCanBeMoved.ApplyVelocity(knockbackVelocity, delta);
     }
 
 }

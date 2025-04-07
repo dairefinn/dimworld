@@ -1,5 +1,6 @@
 namespace Dimworld.Effects;
 
+using Dimworld.Developer;
 using Godot;
 using Godot.Collections;
 
@@ -19,7 +20,7 @@ public partial class Effect : Area2D
     /// <summary>
     /// The start position of the effect. This is where the effect will be created.
     /// </summary>
-    private Vector2 StartPosition = Vector2.Zero;
+    private Vector2? StartPosition = null;
 
     /// <summary>
     /// How long the effect will last in seconds. If the duration is -1, it means that the effect will not expire.
@@ -39,22 +40,29 @@ public partial class Effect : Area2D
     /// <summary>
     /// Determines how often the effect will be applied to detected nodes. This is used for effects that need to be applied over time, like damage over time or healing over time.
     /// </summary>
-    private float ProcessInterval = -1f; // -1 means no interval, 0 is matched to delta
+    private float ProcessInterval = 0; // 0 means processing rate is matched to frame rate.
 
     /// <summary>
-    /// Determines if the effect should be triggered instantly when a node enters the area. This is used for effects that need to be applied immediately, like a knockback effect.
+    /// Determines if processing should be done in _Process or _PhysicsProcess. Effects that move objects should use Physics processing while effects that don't need to move should use Frame processing.
     /// </summary>
-    private bool TriggerInstantly = true;
+    private ProcessingType ProcessOn = ProcessingType.Frame;
+
+    /// <summary>
+    /// Determines when the effect will trigger.
+    /// - TriggerType.Enter will cause effects to trigger when a node enters the area.
+    /// - TriggerType.Exit will cause effects to trigger when a node exits the area.
+    /// - TriggerType.Interval will cause effects to trigger at a set interval.
+    /// </summary>
+    private TriggerType TriggerOn = TriggerType.Enter;
 
 
     /// <summary>
     /// The collision shape of the effect. This is the hitbox shape that will be used to detect collisions with other nodes.
     /// </summary>
     private CollisionShape2D _collisionShape = null;
-
     private float _intervalTimerRemaining = 0f;
-    private bool _triggerInstantlyRun = false;
     private bool _isReadyTimerElapsed = false;
+    private bool _firstIntervalRun = false;
 
 
     // CONSTRUCTORS AND BUILDERS
@@ -142,12 +150,19 @@ public partial class Effect : Area2D
     public Effect SetInterval(float interval)
     {
         ProcessInterval = interval;
+        SetTriggerOn(TriggerType.Interval);
         return this;
     }
 
-    public Effect SetTriggerInstantly(bool triggerInstantly)
+    public Effect SetTriggerOn(TriggerType triggerOn)
     {
-        TriggerInstantly = triggerInstantly;
+        TriggerOn = triggerOn;
+        return this;
+    }
+
+    public Effect SetProcessOn(ProcessingType processOn)
+    {
+        ProcessOn = processOn;
         return this;
     }
 
@@ -161,39 +176,69 @@ public partial class Effect : Area2D
         // This ensures that the collision shape node is only added to the scene AFTER the effect node is
         AddChild(_collisionShape);
 
-        GlobalPosition = StartPosition; // Set the position of the effect to the start position
+        if (StartPosition != null)
+        {
+            GlobalPosition = StartPosition.Value;
+        }
     }
 
     public override void _Ready()
     {
         base._Ready();
 
-        _intervalTimerRemaining = ProcessInterval;
-
-        // TODO: This is a massive hack to ensure the collision detection has had time to run before triggering the effect instantly. The timer is totally arbitrary and is not based on any real logic. There's probably a better way to do this.
+        // TODO: This is a massive hack to ensure the collision detection and trigger is run at least once. It makes sure the effect exists for at least 0.1 seconds before it is destroyed.
         GetTree().CreateTimer(0.1f).Timeout += () => {
             _isReadyTimerElapsed = true;
         };
+
+        DeveloperConsole.Print($"Effect {Name} created with duration {Duration} seconds and processing type {ProcessOn}. Effects will be triggered on {TriggerOn}.");
     }
 
     public override void _Process(double delta)
     {
         base._Process(delta);
+
+        if (ProcessOn == ProcessingType.Frame)
+        {
+            ProcessNodes(delta);
+        }
+
+        UpdateDuration(delta);
     }
 
     public override void _PhysicsProcess(double delta)
     {
         base._PhysicsProcess(delta);
-        
-        // Call the OnInterval method immediately if TriggerInstantly is true and the effect is ready to be triggered instantly
-        if (_isReadyTimerElapsed && !_triggerInstantlyRun && TriggerInstantly && _collisionShape.IsNodeReady())
+
+        if (ProcessOn == ProcessingType.Physics)
         {
-            _triggerInstantlyRun = true;
-            TriggerEffect(delta);
+            ProcessNodes(delta);
         }
         
-        UpdateIntervalTimer(delta); // Update the timer for the interval
-        UpdateDuration(delta); // Update the duration of the effect
+        UpdateVelocity(delta);
+    }
+
+    private void ProcessNodes(double delta)
+    {
+        if (TriggerOn != TriggerType.Interval) return; // Only process nodes if the trigger type is interval
+
+        if (_isReadyTimerElapsed && !_firstIntervalRun)
+        {
+            TriggerEffectOnNodes(delta); // Call the effect on all detected nodes immediately
+            _firstIntervalRun = true; // Set the flag to true so it doesn't run again
+        }
+
+        UpdateIntervalTimer(delta);
+    }
+
+
+    // VELOCITY HANDLING
+
+    private void UpdateVelocity(double delta)
+    {
+        if (Velocity == Vector2.Zero) return;
+
+        GlobalPosition += Velocity * (float)delta;
     }
 
 
@@ -203,11 +248,11 @@ public partial class Effect : Area2D
     {
         if (Duration == -1f) return; // If the duration is -1, don't do anything
 
-        Duration -= (float)delta; // Decrease the duration by the delta time
+        Duration -= (float)delta;
 
         if (_isReadyTimerElapsed && Duration <= 0f) // If the duration is less than or equal to 0, remove the effect
         {
-            QueueFree();
+            CallDeferred(MethodName.QueueFree);
         }
     }
 
@@ -216,19 +261,26 @@ public partial class Effect : Area2D
     
     private void UpdateIntervalTimer(double delta)
     {
-        if (ProcessInterval == -1f) return; // If the interval is -1, don't do anything
-
-        _intervalTimerRemaining -= (float)delta; // Decrease the timer by the delta time
+        _intervalTimerRemaining -= (float)delta;
 
         if (_intervalTimerRemaining <= 0f) // If the timer is less than or equal to 0, call the OnInterval method
         {
-            TriggerEffect(delta);
-            _intervalTimerRemaining = ProcessInterval; // Reset the timer to the interval
-        }        
+            TriggerEffectOnNodes(delta);
+            _intervalTimerRemaining = ProcessInterval; // Reset the timer
+        }
     }
 
-    public virtual void TriggerEffect(double delta)
+    public virtual void TriggerEffectOnNodes(double delta)
     {
+        foreach(Node node in DetectedNodes)
+        {
+            TriggerEffectOnNode(node, delta);
+        }
+    }
+
+    public virtual void TriggerEffectOnNode(Node node, double delta)
+    {
+        // This method should be overridden in derived classes to apply specific effects to the node.
     }
 
 
@@ -267,12 +319,23 @@ public partial class Effect : Area2D
 
     public virtual void AddDetectedNode(Node node)
     {
+        if (TriggerOn == TriggerType.Enter)
+        {
+            TriggerEffectOnNode(node, 0);
+        }
+
         DetectedNodes.Add(node);
     }
 
     public virtual void RemoveDetectedNode(Node node)
     {
         if (Sticky) return; // If the effect is sticky, don't remove the node from the detection list
+
+        if (TriggerOn == TriggerType.Exit)
+        {
+            TriggerEffectOnNode(node, 0);
+        }
+
         DetectedNodes.Remove(node);
     }
 
@@ -288,6 +351,21 @@ public partial class Effect : Area2D
     {
         if (Sticky) return; // If the effect is sticky, don't remove the node from the detection list
         DetectedAreas.Remove(area);
+    }
+
+    // INTERNAL TYPES
+
+    public enum ProcessingType
+    {
+        Frame,
+        Physics
+    }
+
+    public enum TriggerType
+    {
+        Enter,
+        Exit,
+        Interval
     }
 
 }

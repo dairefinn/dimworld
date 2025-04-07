@@ -18,21 +18,15 @@ public partial class AddHealthEffect : AgentStatsEffect
     }
 
 
-    public override void TriggerEffect(double delta)
+    public override void TriggerEffectOnNode(Node node, IHasAgentStats nodeWithStats, double delta)
     {
-        foreach(Node node in DetectedNodes)
+        if (_amount > 0)
         {
-            if (node is not IHasAgentStats nodeWithStats) return; // Node must have AgentStats
-            if (nodeWithStats.Stats == null) return; // Node must have AgentStats
-
-            if (_amount > 0)
-            {
-                nodeWithStats.Stats.Heal(_amount); // Add health
-            }
-            else
-            {
-                nodeWithStats.Stats.TakeDamage(-_amount); // Remove health
-            }
+            nodeWithStats.Stats.Heal(_amount); // Add health
+        }
+        else
+        {
+            nodeWithStats.Stats.TakeDamage(-_amount); // Remove health
         }
     }
 

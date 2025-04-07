@@ -48,7 +48,6 @@ public static class BBCodeHelper
         public static string From(string text, Color color)
         {
             string colorHex = color.ToHtml();
-            GD.Print($"Color: {colorHex}");
             return $"[color=#{colorHex}]{text}[/color]";
         }
 
