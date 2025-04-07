@@ -7,16 +7,6 @@ using Godot;
 public partial class LevelHandler : Node
 {
 
-    public static LevelHandler Instance { get; private set; }
-
-    public LevelHandler()
-    {
-        if (Instance == null)
-        {
-            Instance = this;
-        }
-    }
-
     public void ChangeLevel(string newLevelPath, string spawnPoint = "")
     {
         if (newLevelPath == null)

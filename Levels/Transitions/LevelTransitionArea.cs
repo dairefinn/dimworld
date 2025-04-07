@@ -21,7 +21,7 @@ public partial class LevelTransitionArea : Area2D
     {
         if (body is CharacterController character && Globals.Instance.Player == character)
         {
-            LevelHandler.Instance.ChangeLevel(TargetLevelPath, SpawnPointName);
+            Globals.Instance.LevelHandler.ChangeLevel(TargetLevelPath, SpawnPointName);
         }
     }
 

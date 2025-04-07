@@ -119,7 +119,7 @@ public class DeveloperConsoleCommandHandler
         {
             string levelName = args[0];
             string fullLevelPath = $"res://Levels/{levelName}.tscn";
-            LevelHandler.Instance.ChangeLevel(fullLevelPath);
+            Globals.Instance.LevelHandler.ChangeLevel(fullLevelPath);
         }
         else
         {

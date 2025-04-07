@@ -282,8 +282,10 @@ visible = false
 environment = SubResource("Environment_ycdy4")
 camera_attributes = SubResource("CameraAttributesPractical_w48qg")
 
-[node name="Globals" type="Node" parent="." node_paths=PackedStringArray("Player", "InventoryViewer", "CursorFollower")]
+[node name="Globals" type="Node" parent="." node_paths=PackedStringArray("Player", "InventoryViewer", "CursorFollower", "LevelHandler", "DayNightController")]
 script = ExtResource("13_ycdy4")
 Player = NodePath("../Player")
 InventoryViewer = NodePath("../UI/MarginContainer/InventoryViewer")
 CursorFollower = NodePath("../Logic/CursorFollower")
+LevelHandler = NodePath("../LevelHandler")
+DayNightController = NodePath("../Logic/DayNightController")

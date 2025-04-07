@@ -1,6 +1,7 @@
 namespace Dimworld;
 
 using Dimworld.Items.UI;
+using Dimworld.Levels;
 using Godot;
 
 
@@ -40,6 +41,10 @@ public partial class Globals : Node
     private InventoryViewer _inventoryViewer;
 
     [Export] public CursorFollower CursorFollower { get; set; }
+
+    [Export] public LevelHandler LevelHandler { get; set; }
+
+    [Export] public DayNightController DayNightController { get; set; }
 
 
     public void LinkPlayerInventory()

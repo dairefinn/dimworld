@@ -6,9 +6,6 @@ using Godot;
 
 public partial class DayNightController : DirectionalLight2D
 {
-    
-	public static DayNightController Instance { get; private set; }
-
 
 	[Export] public Color NightColor { get; set; } = new Color(0.11f, 0, 0.36f);
 
@@ -28,9 +25,6 @@ public partial class DayNightController : DirectionalLight2D
     }
     private float _percentageOfDay = 0;
 
-	public DayNightController() {
-		Instance = this;
-	}
 
 	public override void _Ready() {
 		SetPercentageOfDay(PercentageOfDay);
