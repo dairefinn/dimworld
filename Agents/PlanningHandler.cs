@@ -70,7 +70,8 @@ public partial class PlanningHandler : Node2D
 			if (planForGoal.Length == 0) continue;
 
 			// If nothing has changed, don't update the plan
-			if (CurrentGoal == goal && CurrentPlan == planForGoal) break;
+			if (CurrentGoal != null && CurrentGoal.Name == goal.Name) break;
+			if(CurrentPlan == planForGoal) break;
 
 			DeveloperConsole.Print("New goal: " + goal.Name);
 			DeveloperConsole.Print("Plan: [" + string.Join(", ", planForGoal.Select(action => action.Name)) + "]");

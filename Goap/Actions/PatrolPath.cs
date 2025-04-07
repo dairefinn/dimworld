@@ -1,6 +1,5 @@
 namespace Dimworld.GOAP.Actions;
 
-using System;
 using System.Threading;
 using Godot;
 using Godot.Collections;
@@ -47,6 +46,7 @@ public partial class PatrolPath : GoapAction
         if (goapAgent is not CharacterController characterController) return false;
 
         CurrentPointIndex = GetNextPointOnPath(characterController, patrolPath);
+
         Vector2 currentPoint = patrolPath[CurrentPointIndex];
         characterController.NavigateTo(currentPoint);
 
@@ -101,6 +101,7 @@ public partial class PatrolPath : GoapAction
         {
             nextPointIndex = 0;
         }
+
         return nextPointIndex;
     }
 

@@ -68,13 +68,13 @@ public partial class DetectionHandler : Area2D
 
 
 
-    public T GetClosestDetectedInstanceOf<[MustBeVariant] T>(Array<T> options) where T : Node2D
+    public T GetClosestDetectedInstanceOf<[MustBeVariant] T>(T[] options) where T : Node2D
     {
         System.Collections.Generic.List<T> optionsDetected = GetDetectedInstancesOf<T>();
         if (optionsDetected.Count == 0) return null;
 
-        Array<T> optionsDetectedAndAvailable = [..optionsDetected.Intersect(options).ToArray()];
-        if (optionsDetectedAndAvailable.Count == 0) return null;
+        T[] optionsDetectedAndAvailable = [.. optionsDetected.Intersect(options)];
+        if (optionsDetectedAndAvailable.Length == 0) return null;
 
         return GetClosestInstanceOf(optionsDetectedAndAvailable);
     }
@@ -87,16 +87,18 @@ public partial class DetectionHandler : Area2D
             .ToList();
     }
 
-    public T GetClosestInstanceOf<[MustBeVariant] T>(Array<T> options) where T : Node2D
+    public T GetClosestInstanceOf<[MustBeVariant] T>(T[] options, Vector2? source = null) where T : Node2D
     {
-        if (options == null || options.Count == 0) return null;
+        if (options == null || options.Length == 0) return null;
 
-        Vector2 agentPosition = GlobalPosition;
+        // Vector2 agentPosition = GlobalPosition;
+        Vector2 agentPosition = source ?? GlobalPosition;
         T closestItem = null;
         float closestDistance = float.MaxValue;
 
         foreach (T item in options)
         {
+            // float distance = agentPosition.DistanceTo(item.GlobalPosition);
             float distance = agentPosition.DistanceTo(item.GlobalPosition);
             if (distance < closestDistance)
             {

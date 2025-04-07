@@ -53,6 +53,9 @@ public partial class CharacterController : CharacterBody2D, IHasAgentStats, ICan
 	[Export] public MemoryHandler MemoryHandler { get; set; }
 	[Export] public ModifierHandler ModifierHandler { get; set; } = new();
 	[Export] public ClothingController ClothingController { get; set; }
+	
+
+	public Vector2 GlobalPositionThreadSafe { get; set; }
 
 
     private Vector2 desiredMovementDirection = Vector2.Zero;
@@ -97,6 +100,8 @@ public partial class CharacterController : CharacterBody2D, IHasAgentStats, ICan
 
 	public override void _Process(double delta)
 	{
+		GlobalPositionThreadSafe = GlobalPosition;
+
 		Inventory.OnUpdated += () => SetInventoryState();
 
 		if (IsPlanningEnabled)
@@ -170,14 +175,6 @@ public partial class CharacterController : CharacterBody2D, IHasAgentStats, ICan
 
 	public bool CanReachPoint(Vector2 targetPoint)
 	{
-		if (navigationRid == null)
-		{
-			DeveloperConsole.PrintErr("NavigationRegion2D Rid is null.");
-			return false;
-		}
-
-		GD.Print($"NavigationRegion2D Rid: {navigationRid}");
-
 		bool isTargetReachable = NavigationServer2D.MapGetClosestPoint(navigationRid, targetPoint).IsEqualApprox(targetPoint);
 		return isTargetReachable;
 	}

@@ -14,6 +14,7 @@ public partial class TurnOffLights : GoapAction
 
     private LightSwitch detectedLightSwitch = null;
     private bool actionStarted = false;
+    private bool targetBulbState = true;
 
     public override GoapState GetEffects()
     {
@@ -27,16 +28,22 @@ public partial class TurnOffLights : GoapAction
         if (goapAgent is not CharacterController characterController) return false;
 
         // Get any lightbulbs in the correct state
-        Array<LightBulb> lightBulbs = [..characterController.MemoryHandler.GetMemoriesOfType<NodeLocation>()
+        System.Collections.Generic.List<LightBulb> lightBulbs = [..characterController.MemoryHandler.GetMemoriesOfType<NodeLocation>()
             .Where(memory => memory.Node is LightBulb)
+            .Where(memory => characterController.CanReachPoint(memory.Position))
             .Select(memory => (LightBulb)memory.Node)
-            .Where(lightBulb => lightBulb.IsOn)
+            .Where(lightBulb => lightBulb.IsOn == targetBulbState)
             .ToArray()
         ];
+
         if (lightBulbs.Count == 0) return false;
 
         // Get any light switches that control the lightbulbs
-        Array<LightSwitch> lightSwitches = [..characterController.DetectionHandler.GetDetectedInstancesOf<LightSwitch>()
+        System.Collections.Generic.List<LightSwitch> lightSwitches = [..characterController.MemoryHandler.GetMemoriesOfType<NodeLocation>()
+            .Where(memory => memory.Node is LightSwitch)
+            .Where(memory => characterController.CanReachPoint(memory.Position))
+            .OrderBy(memory => memory.Position.DistanceTo(goapAgent.GlobalPositionThreadSafe))
+            .Select(memory => (LightSwitch)memory.Node)
             .Where(lightSwitch => {
                 foreach (LightBulb lightBulb in lightBulbs)
                 {
@@ -44,35 +51,13 @@ public partial class TurnOffLights : GoapAction
                 }
                 return false;
             })
-            .Where(lightSwitch => characterController.CanReachPoint(lightSwitch.GlobalPosition))
             .ToArray()
         ];
-
-        // If the agent cannot see the light switch that controls the light, check their memory
-        if (lightSwitches.Count == 0)
-        {
-            LightSwitch[] lightSwitchesInMemory = characterController.MemoryHandler.GetMemoriesOfType<NodeLocation>()
-                .Where(memory => memory.Node is LightSwitch)
-                .Select(memory => (LightSwitch)memory.Node)
-                .ToArray();
-
-            lightSwitches = [..lightSwitchesInMemory
-                .Where(lightSwitch => {
-                    foreach (LightBulb lightBulb in lightBulbs)
-                    {
-                        if (lightSwitch.ControlsLight(lightBulb)) return true;
-                    }
-                    return false;
-                })
-                .Where(lightSwitch => characterController.CanReachPoint(lightSwitch.GlobalPosition))
-                .ToArray()
-            ];
-        }
 
         if (lightSwitches.Count == 0) return false; // No light switches found, cannot perform action
         DeveloperConsole.Print("Light switch found, checking if agent can reach it");
 
-        detectedLightSwitch = characterController.DetectionHandler.GetClosestInstanceOf(lightSwitches);
+        detectedLightSwitch = lightSwitches.First();
         if (detectedLightSwitch == null) return false;
 
         return true;
