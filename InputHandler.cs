@@ -147,4 +147,5 @@ public partial class InputHandler : Node2D
 
         player.TryInteractWith(interactableObject);
     }
+
 }
