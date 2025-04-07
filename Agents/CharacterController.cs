@@ -56,6 +56,7 @@ public partial class CharacterController : CharacterBody2D, IHasAgentStats, ICan
 
 
     private Vector2 desiredMovementDirection = Vector2.Zero;
+	private Rid navigationRid;
 
 
 	// LIFECYCLE EVENTS
@@ -81,6 +82,8 @@ public partial class CharacterController : CharacterBody2D, IHasAgentStats, ICan
 		DetectionHandler.OnNodeDetected += OnDetectionHandlerNodeDetected;
 
 		SetInventoryState();
+
+		navigationRid = NavigationAgent.GetNavigationMap();
 	}
 
 	public override void _PhysicsProcess(double delta)
@@ -167,11 +170,15 @@ public partial class CharacterController : CharacterBody2D, IHasAgentStats, ICan
 
 	public bool CanReachPoint(Vector2 targetPoint)
 	{
-		NavigationAgent2D tempNavigationAgent = new();
-		AddChild(tempNavigationAgent);
-		tempNavigationAgent.TargetPosition = targetPoint;
-		bool isTargetReachable = tempNavigationAgent.IsTargetReachable();
-		tempNavigationAgent.QueueFree();
+		if (navigationRid == null)
+		{
+			DeveloperConsole.PrintErr("NavigationRegion2D Rid is null.");
+			return false;
+		}
+
+		GD.Print($"NavigationRegion2D Rid: {navigationRid}");
+
+		bool isTargetReachable = NavigationServer2D.MapGetClosestPoint(navigationRid, targetPoint).IsEqualApprox(targetPoint);
 		return isTargetReachable;
 	}
 
