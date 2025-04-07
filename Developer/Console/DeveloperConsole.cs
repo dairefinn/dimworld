@@ -199,7 +199,9 @@ public partial class DeveloperConsole : PanelContainer
 
         try
         {
-            if (consoleEntriesContainer == null)
+            bool isOnMainThread = Globals.Instance.MainThreadId == System.Environment.CurrentManagedThreadId;
+
+            if (consoleEntriesContainer == null || !isOnMainThread)
             {
                 CallDeferred(MethodName.AddEntryToList, text);
             }
@@ -225,6 +227,7 @@ public partial class DeveloperConsole : PanelContainer
         };
 
         consoleEntriesContainer.AddChild(entry);
+
         CallDeferred(MethodName.ScrollToBottom);
     }
 

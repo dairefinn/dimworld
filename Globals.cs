@@ -19,6 +19,7 @@ public partial class Globals : Node
         }
 
         Instance = this;
+        MainThreadId = System.Environment.CurrentManagedThreadId;
     }
 
 
@@ -45,6 +46,9 @@ public partial class Globals : Node
     [Export] public LevelHandler LevelHandler { get; set; }
 
     [Export] public DayNightController DayNightController { get; set; }
+
+
+    public int MainThreadId { get; private set; }
 
 
     public void LinkPlayerInventory()
