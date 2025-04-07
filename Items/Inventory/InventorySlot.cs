@@ -36,7 +36,14 @@ public partial class InventorySlot : Resource
 
     public InventorySlot(InventorySlot inventorySlot)
     {
-        Item = inventorySlot.Item;
+        if (inventorySlot.Item != null)
+        {
+            Item = inventorySlot.Item.Duplicate() as InventoryItem;
+        }
+        else
+        {
+            Item = null;
+        }
         Quantity = inventorySlot.Quantity;
     }
 

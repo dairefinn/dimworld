@@ -22,6 +22,10 @@ public partial class Inventory : Resource
 
 	public Inventory()
 	{
+		for(int i = 0; i < _slots.Count; i++)
+		{
+			_slots[i] = new InventorySlot(_slots[i]);
+		}
 	}
 
 	public Inventory(Inventory inventory)
