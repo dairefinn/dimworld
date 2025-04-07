@@ -7,6 +7,17 @@ using Godot;
 public partial class LevelHandler : Node
 {
 
+    public GameLevel CurrentLevel { get; private set; } = null;
+
+
+    public override void _Ready()
+    {
+        base._Ready();
+
+        CurrentLevel = GetChildren().Where(child => child is GameLevel).FirstOrDefault() as GameLevel;
+    }
+
+
     public void ChangeLevel(string newLevelPath, string spawnPoint = "")
     {
         if (newLevelPath == null)
@@ -36,6 +47,7 @@ public partial class LevelHandler : Node
         PackedScene newLevelScene = ResourceLoader.Load<PackedScene>(newLevelPath);
         GameLevel gameLevel = newLevelScene.Instantiate<GameLevel>();
         AddChild(gameLevel);
+        CurrentLevel = gameLevel;
         CallDeferred(MethodName.MovePlayerToSpawnPoint, [gameLevel, spawnPointName]);
     }
 

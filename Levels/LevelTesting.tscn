@@ -344,10 +344,11 @@ region = Rect2(32, 64, 32, 32)
 atlas = ExtResource("31_l3tde")
 region = Rect2(0, 96, 32, 32)
 
-[node name="LevelTesting" type="Node2D" node_paths=PackedStringArray("DefaultSpawnPoint")]
+[node name="LevelTesting" type="Node2D" node_paths=PackedStringArray("DefaultSpawnPoint", "NavigationRegion")]
 script = ExtResource("1_3pabw")
 LevelName = "Testing"
 DefaultSpawnPoint = NodePath("World/SpawnPointCastle")
+NavigationRegion = NodePath("World/Map")
 
 [node name="World" type="Node" parent="."]
 

@@ -32,7 +32,7 @@ public partial class Revolver : InventoryItem, ICanBeUsedFromHotbar
 
         Effect damageEffect = new AddHealthEffect(effectArea, [1, 2], damage).SetDuration(10f).SetNodeBlacklist(nodeBlacklist).SetStartPosition(effectPosition).SetVelocity(direction * speed);
 
-        equipmentHandler.GetTree().Root.AddChild(damageEffect);
+        Globals.Instance.LevelHandler.CurrentLevel.AddChild(damageEffect);
 
         // TODO: Simple way of rendering the bullets visually using primitive meshes. Replace with an actual sprite.
         MeshInstance2D mesh = new()

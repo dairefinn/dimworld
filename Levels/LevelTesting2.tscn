@@ -24,10 +24,11 @@ normal = Vector2(-1, 0)
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_3by8r"]
 size = Vector2(60, 20)
 
-[node name="LevelTesting" type="Node2D" node_paths=PackedStringArray("DefaultSpawnPoint")]
+[node name="LevelTesting" type="Node2D" node_paths=PackedStringArray("DefaultSpawnPoint", "NavigationRegion")]
 script = ExtResource("1_scwad")
 LevelName = "The road"
 DefaultSpawnPoint = NodePath("World/SpawnPointDefault")
+NavigationRegion = NodePath("World/Map")
 
 [node name="World" type="Node" parent="."]
 

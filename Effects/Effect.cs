@@ -18,6 +18,11 @@ public partial class Effect : Area2D
     private Vector2 Velocity = Vector2.Zero;
 
     /// <summary>
+    /// The amount the scale will change over time. This is used for effects that need to grow or shrink over time.
+    /// </summary>
+    private Vector2 ScaleChange = Vector2.One;
+
+    /// <summary>
     /// The start position of the effect. This is where the effect will be created.
     /// </summary>
     private Vector2? StartPosition = null;
@@ -78,6 +83,8 @@ public partial class Effect : Area2D
 
         CollisionLayer = 0;
         CollisionMask = ParseCollisionLayers(collisionLayers);
+
+        ZIndex = 1;
 
         BodyEntered += OnBodyEntered;
         BodyExited += OnBodyExited;
@@ -166,6 +173,12 @@ public partial class Effect : Area2D
         return this;
     }
 
+    public Effect SetScaleChange(Vector2 scaleChange)
+    {
+        ScaleChange = scaleChange;
+        return this;
+    }
+
 
     // LIFECYCLE EVENTS
     
@@ -210,6 +223,8 @@ public partial class Effect : Area2D
     {
         base._PhysicsProcess(delta);
 
+        UpdateScale(delta);
+
         if (ProcessOn == ProcessingType.Physics)
         {
             ProcessNodes(delta);
@@ -229,6 +244,21 @@ public partial class Effect : Area2D
         }
 
         UpdateIntervalTimer(delta);
+    }
+
+
+    // SCALE HANDLING
+
+    private void UpdateScale(double delta)
+    {
+        if (ScaleChange == Vector2.One) return; // If the scale change is 1, don't do anything
+
+        Scale += ScaleChange * (float)delta;
+
+        if (Scale.X <= 0f || Scale.Y <= 0f) // If the scale is less than or equal to 0, remove the effect
+        {
+            CallDeferred(MethodName.QueueFree);
+        }
     }
 
 
