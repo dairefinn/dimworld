@@ -1,11 +1,13 @@
 namespace Dimworld;
 
 using System.Linq;
+using System.Threading;
 using Dimworld.Developer;
 using Dimworld.GOAP;
 using Dimworld.Helpers;
 using Godot;
 using Godot.Collections;
+
 
 public partial class PlanningHandler : Node2D
 {
@@ -20,21 +22,42 @@ public partial class PlanningHandler : Node2D
 	private GoapAction CurrentAction { get; set; }
 	private int CurrentPlanStep { get; set; } = 0;
 
+	private Thread planningThread;
+	private bool isPlanning = false;
 
-    public void OnProcess(IGoapAgent agent, double delta)
-    {
-		if (secondsToNextGoalUpdate <= 0)
+	public override void _Ready()
+	{
+		base._Ready();
+	}
+
+	public override void _ExitTree()
+	{
+		base._ExitTree();
+		// Ensure the thread is stopped when the node is removed
+		if (planningThread != null && planningThread.IsAlive)
 		{
 			// DeveloperConsole.Print("Updating current plan");
-			UpdateCurrentPlan(agent);
+			// UpdateCurrentPlan(agent);
+			planningThread.Join();
+		}
+	}
+
+	public void OnProcess(IGoapAgent agent, double delta)
+	{
+		if (secondsToNextGoalUpdate <= 0 && !isPlanning)
+		{
+			DeveloperConsole.Print("Starting planning thread");
+			isPlanning = true;
+			planningThread = new Thread(() => ThreadedUpdateCurrentPlan(agent));
+			planningThread.Start();
 			secondsToNextGoalUpdate = lookForGoalsEveryXSeconds;
 		}
+
 		FollowPlan(agent, CurrentPlan, delta);
 		secondsToNextGoalUpdate -= (float)delta;
-    }
+	}
 
-
-	private void UpdateCurrentPlan(IGoapAgent agent)
+	private void ThreadedUpdateCurrentPlan(IGoapAgent agent)
 	{
 		Array<GoapGoal> goalsInOrder = GoapPlanner.GetGoalsInOrder(agent.GoalSet);
 
@@ -47,20 +70,27 @@ public partial class PlanningHandler : Node2D
 			if (planForGoal.Length == 0) continue;
 
 			// If nothing has changed, don't update the plan
-			if (CurrentGoal == goal) return;
-			if (CurrentPlan == planForGoal) return;
+			if (CurrentGoal == goal && CurrentPlan == planForGoal) break;
 
-			DeveloperConsole.Print($"New goal: {BBCodeHelper.Colors.Yellow(goal.Name)}");
-			DeveloperConsole.Print($"Plan: [{string.Join(", ", planForGoal.Select(action => BBCodeHelper.Colors.Yellow(action.Name)))}]");
-			CurrentGoal = goal;
-			CurrentPlan = planForGoal;
-			CurrentAction = null;
-			CurrentPlanStep = 0;
-			return;
+			DeveloperConsole.Print("New goal: " + goal.Name);
+			DeveloperConsole.Print("Plan: [" + string.Join(", ", planForGoal.Select(action => action.Name)) + "]");
+
+			// Update shared variables in a thread-safe way
+			CallDeferred(MethodName.UpdatePlan, [goal, planForGoal]);
+			break;
 		}
 
+		isPlanning = false;
 	}
 
+	// Thread-safe method to update the plan
+	private void UpdatePlan(GoapGoal goal, GoapAction[] plan)
+	{
+		CurrentGoal = goal;
+		CurrentPlan = plan;
+		CurrentAction = null;
+		CurrentPlanStep = 0;
+	}
 
 	private void FollowPlan(IGoapAgent agent, GoapAction[] plan, double delta)
 	{
@@ -101,6 +131,5 @@ public partial class PlanningHandler : Node2D
 			}
 		}
 	}
-
 
 }

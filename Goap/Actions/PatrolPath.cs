@@ -1,5 +1,7 @@
 namespace Dimworld.GOAP.Actions;
 
+using System;
+using System.Threading;
 using Godot;
 using Godot.Collections;
 
@@ -10,6 +12,9 @@ public partial class PatrolPath : GoapAction
     private Array<Vector2> patrolPath = null;
     private int CurrentPointIndex { get; set; } = 0;
     private bool actionStarted = false;
+
+    private Path2D patrolPathNode = null;
+    private Vector2 patrolPathNodeGlobalPosition = Vector2.Zero;
 
 
     public override GoapState GetPreconditions()
@@ -106,24 +111,33 @@ public partial class PatrolPath : GoapAction
     /// </summary>
     /// <param name="goapAgent">The agent that is trying to find the path</param>
     /// <returns></returns>
-    private static Array<Vector2> GetPatrolPath(IGoapAgent goapAgent)
+    private Array<Vector2> GetPatrolPath(IGoapAgent goapAgent)
     {
         // Check if the agent has a set patrol path stored
         NodePath nodePath = goapAgent.WorldState.GetKey("patrol_path").AsNodePath();
         if (nodePath == null) return null;
 
-        // Check if the noed is a valid Path2D node in the scene
+        // Check if the agent is a valid Node2D
         if (goapAgent is not Node2D node2D) return null;
-        Path2D patrolPath = node2D.GetNodeOrNull<Path2D>(nodePath);
-        if (!IsInstanceValid(patrolPath)) return null;
-        if (patrolPath.Curve.PointCount == 0) return null;
+
+        // Use a thread-safe mechanism to get the patrol path
+        CallDeferred(MethodName.FetchPatrolPath, [node2D, nodePath]); //  (Path2D fetchedPath) => { patrolPath = fetchedPath; }
+
+        // Wait for the deferred call to complete
+        while (patrolPathNode == null)
+        {
+            Thread.Sleep(10); // Sleep briefly to avoid busy-waiting
+        }
+
+        if (!IsInstanceValid(patrolPathNode)) return null;
+        if (patrolPathNode.Curve.PointCount == 0) return null;
 
         // Get the points of the path as an array of Vector2s
         Array<Vector2> points = [];
-        for (int i = 0; i < patrolPath.Curve.PointCount; i++)
+        for (int i = 0; i < patrolPathNode.Curve.PointCount; i++)
         {
-            Vector2 pointLocal = patrolPath.Curve.GetPointPosition(i);
-            Vector2 pointGlobal = patrolPath.GlobalPosition + pointLocal;
+            Vector2 pointLocal = patrolPathNode.Curve.GetPointPosition(i);
+            Vector2 pointGlobal = patrolPathNodeGlobalPosition + pointLocal;
             points.Add(pointGlobal);
         }
 
@@ -131,6 +145,13 @@ public partial class PatrolPath : GoapAction
         if (points.Count == 0) return null;
 
         return points;
+    }
+
+    private void FetchPatrolPath(Node2D agentNode2D, NodePath nodePath)//, Action<Path2D> callback)
+    {
+        patrolPathNode = agentNode2D.GetNodeOrNull<Path2D>(nodePath);
+        patrolPathNodeGlobalPosition = patrolPathNode.GlobalPosition;
+        // callback?.Invoke(patrolPath);
     }
 
 }

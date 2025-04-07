@@ -65,8 +65,7 @@ public partial class FindItem : GoapAction
         {
             if (location.Node == null) continue; // Skip null nodes
             if (location.Node is not IHasInventory container) continue; // Must be a container
-            if (container is not Node2D node2D) continue; // Must be a node2D
-            if (!characterController.CanReachPoint(node2D.GlobalPosition)) return false; // Must be reachable
+            if (!characterController.CanReachPoint(location.Position)) return false; // Must be reachable
             
             InventoryContents contentsMemory = inventoryContents.FirstOrDefault(memory => memory.Node == container);
 
