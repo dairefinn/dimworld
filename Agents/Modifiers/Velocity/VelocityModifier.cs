@@ -18,7 +18,6 @@ public abstract partial class VelocityModifier : Modifier
     /// <returns>The modified velocity.</returns>
     public virtual Vector2 ApplyTo(Vector2 velocity)
     {
-        GD.Print($"Applying velocity modifier: {Key}");
         return velocity;
     }
 

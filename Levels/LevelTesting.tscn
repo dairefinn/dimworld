@@ -444,6 +444,7 @@ z_index = 1
 position = Vector2(1844, 811)
 Inventory = SubResource("Resource_x4uyb")
 Stats = SubResource("Resource_630ma")
+IsPlanningEnabled = false
 WorldState = SubResource("Resource_01cvm")
 ActionSet = Array[Object]([ExtResource("13_3by8r"), ExtResource("22_oeo7j"), ExtResource("18_eb50o"), ExtResource("17_eb50o"), ExtResource("20_1cqng"), ExtResource("14_3pabw"), ExtResource("15_01cvm"), ExtResource("16_4fweh")])
 GoalSet = Array[Object]([ExtResource("25_eb50o"), ExtResource("19_oeo7j"), ExtResource("26_4fweh")])

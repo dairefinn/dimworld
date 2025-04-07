@@ -6,6 +6,8 @@ using Godot;
 public abstract partial class Modifier : Resource
 {
 
+    // TODO: Might want to add "Tags" to the modifiers to allow for more complex retrieval of modifiers. For example, this would allow for an item that removes all debuffs.
+
     /// <summary>
     /// The key of the modifier. This should be unique for each modifier. This ensures that modifiers don't conflict with each other.
     /// </summary>

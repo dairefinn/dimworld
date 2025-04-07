@@ -76,14 +76,14 @@ public partial class AgentStatsUI : PanelContainer
         if (IsInstanceValid(barHealth))
         {
             tweenHealth?.Kill();
-            tweenHealth = CreateTween().SetTrans(Tween.TransitionType.Sine).SetEase(Tween.EaseType.InOut);
+            tweenHealth = CreateTween().SetTrans(Tween.TransitionType.Linear).SetEase(Tween.EaseType.InOut);
             tweenHealth.TweenProperty(barHealth, "value", Stats.GetHealthPercent(), 0.5f);
         }
 
         if (IsInstanceValid(barStamina))
         {
             tweenStamina?.Kill();
-            tweenStamina = CreateTween().SetTrans(Tween.TransitionType.Sine).SetEase(Tween.EaseType.InOut);
+            tweenStamina = CreateTween().SetTrans(Tween.TransitionType.Linear).SetEase(Tween.EaseType.InOut);
             tweenStamina.TweenProperty(barStamina, "value", Stats.GetStaminaPercent(), 0.5f);
         }
 

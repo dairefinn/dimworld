@@ -100,11 +100,7 @@ public partial class AgentStats : Resource
 
     public void Heal(float amount = 0)
     {
-        if (amount < 0) return;
-        if (amount == 0)
-        {
-            amount = MaxHealth - Health;
-        }
+        if (amount <= 0) return;
 
         DeveloperConsole.Print($"Healing {amount} health");
         SetHealth(Health + amount);
@@ -119,6 +115,25 @@ public partial class AgentStats : Resource
         }
 
         SetStamina(Stamina + amount);
+    }
+
+    public void TakeDamage(float amount = 0)
+    {
+        if (amount <= 0) return;
+
+        DeveloperConsole.Print($"Taking {amount} damage");
+        SetHealth(Health - amount);
+    }
+
+    public void UseStamina(float amount = 0)
+    {
+        if (amount < 0) return;
+        if (amount == 0)
+        {
+            amount = MaxStamina - Stamina;
+        }
+
+        SetStamina(Stamina - amount);
     }
 
 }
