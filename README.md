@@ -90,6 +90,11 @@ The levels in the game can be loaded and unloaded at any time. This is done usin
 This also uses level transition areas and spawn points to create areas that trigger the level transition. For example, if the player enters a level transition area, the new level will be loaded and they will be teleported to the relevant spawn point in the new level.
 
 
+### Weapons
+
+Using the Effects and Inventory systems, I've added a sword and a revolver. These can be used by left clicking with them selected in the hotbar. The sword will damage any character caught in it's area of effect and knock them back a short distance. The revolver will fire a projectile which will damage any character it hits.
+
+
 ## Planned features
 
 ### Communication actions
@@ -100,11 +105,6 @@ I want to add an action which will relay information from one agent to another. 
 ### Group planning
 
 The GOAP system gives an agent a goal and it figures out how to achieve that goal using its available actions. Because of this, it should be possible to have a planner which can control the goals a number of child agents have. For example, if a squad of agents want to attack a building, they could each be given separate goals which help this happen. One might keep watch from a distance, another might cover the back door, and another might go in through the front door.
-
-
-### Weapons
-
-The player can already use items from their inventory and the effects system allows for damage areas to be created in the world so the groundwork for this is already done.
 
 
 ### Vehicles
