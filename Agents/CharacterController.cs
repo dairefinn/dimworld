@@ -13,7 +13,7 @@ using Godot;
 using Godot.Collections;
 
 
-public partial class CharacterController : CharacterBody2D, IHasAgentStats, ICanBeMoved, IGoapAgent, IHasInventory, IMemorableNode, IAffectedByModifiers
+public partial class CharacterController : CharacterBody2D, IHasAgentStats, ICanBeMoved, IGoapAgent, IHasInventory, IMemorableNode, IAffectedByModifiers, ICanSpeak
 {
 
 	[ExportGroup("Properties")]
