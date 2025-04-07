@@ -10,7 +10,7 @@
 [ext_resource type="Script" uid="uid://dph74un0q20el" path="res://Items/Inventory/Inventory.cs" id="5_yaehf"]
 [ext_resource type="Resource" uid="uid://bbn4fu5m0emk1" path="res://Items/Weapons/Revolver.tres" id="6_82xsv"]
 [ext_resource type="Script" uid="uid://bm0o5ggnfmm6y" path="res://Items/Inventory/InventorySlot.cs" id="6_cegan"]
-[ext_resource type="Texture2D" uid="uid://dpxdm8niupad2" path="res://Assets/sprites/characters/Character.png" id="8_cegan"]
+[ext_resource type="Texture2D" uid="uid://dpxdm8niupad2" path="res://Assets/Sprites/Characters/Character.png" id="8_cegan"]
 [ext_resource type="Script" uid="uid://daxnr47vhajw0" path="res://Levels/LevelHandler/LevelHandler.cs" id="8_ycdy4"]
 [ext_resource type="Script" uid="uid://ckdaa4jpv4ysf" path="res://Agents/Visuals/ClothingController.cs" id="9_82xsv"]
 [ext_resource type="Script" uid="uid://cru4kq28c8nuw" path="res://Agents/AgentStats.cs" id="9_lswn8"]

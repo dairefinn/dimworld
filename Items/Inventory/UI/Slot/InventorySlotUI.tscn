@@ -1,7 +1,8 @@
-[gd_scene load_steps=16 format=3 uid="uid://cbc7lb60qv02d"]
+[gd_scene load_steps=18 format=3 uid="uid://cbc7lb60qv02d"]
 
 [ext_resource type="StyleBox" uid="uid://cuxjk7ngo011o" path="res://Items/Inventory/UI/Slot/Styles/InventorySlotUI_Default.tres" id="1_o4ioh"]
 [ext_resource type="Script" uid="uid://bo1stix1esiy8" path="res://Items/Inventory/UI/Slot/InventorySlotUI.cs" id="2_yi1il"]
+[ext_resource type="Shader" uid="uid://cg2ysaclvjgfx" path="res://Assets/Materials/Outline.gdshader" id="4_bqgnw"]
 [ext_resource type="Script" uid="uid://1waxwqudtxwe" path="res://Items/Inventory/UI/Slot/InventorySlotStateMachine.cs" id="5_160kp"]
 [ext_resource type="Script" uid="uid://dyce8rtklida4" path="res://Items/Inventory/UI/Slot/InventorySlotDragArea.cs" id="5_f11j2"]
 [ext_resource type="Script" uid="uid://dctmd2sl8wn1j" path="res://Items/Inventory/UI/Slot/States/InventorySlotBaseState.cs" id="6_yjg2m"]
@@ -9,6 +10,15 @@
 [ext_resource type="Script" uid="uid://dhotkpi4inknx" path="res://Items/Inventory/UI/Slot/States/InventorySlotDraggingState.cs" id="8_nqjmp"]
 [ext_resource type="Script" uid="uid://dr6rusanwjadf" path="res://Items/Inventory/UI/Slot/States/InventorySlotReleasedState.cs" id="9_h2m36"]
 [ext_resource type="StyleBox" uid="uid://bcjpx3k1qej8l" path="res://Items/Inventory/UI/Slot/Styles/InventorySlotUI_Hover.tres" id="12_f11j2"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_bqgnw"]
+shader = ExtResource("4_bqgnw")
+shader_parameter/color = Color(0, 0, 0, 0.498039)
+shader_parameter/width = 1.0
+shader_parameter/pattern = 0
+shader_parameter/inside = false
+shader_parameter/add_margins = true
+shader_parameter/smoothness = 1.0
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_2v54i"]
 size = Vector2(50, 50)
@@ -72,6 +82,7 @@ script = ExtResource("5_f11j2")
 [node name="ItemIcon" type="TextureRect" parent="MarginContainer/DragArea"]
 unique_name_in_owner = true
 texture_filter = 1
+material = SubResource("ShaderMaterial_bqgnw")
 offset_left = 20.0
 offset_top = 10.0
 offset_right = 80.0

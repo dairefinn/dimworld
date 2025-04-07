@@ -59,7 +59,7 @@ public partial class InventorySlotUI : Panel
 
         UpdateUI();
     }
- 
+
     public override void _Input(InputEvent @event)
     {
 		if (IsInstanceValid(StateMachine))

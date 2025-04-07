@@ -1,7 +1,7 @@
 [gd_scene load_steps=13 format=3 uid="uid://b8wxyl1qi2fee"]
 
-[ext_resource type="Shader" uid="uid://cg2ysaclvjgfx" path="res://Agents/Outline.gdshader" id="1_52da7"]
-[ext_resource type="Texture2D" uid="uid://dpxdm8niupad2" path="res://Assets/sprites/characters/Character.png" id="2_fji81"]
+[ext_resource type="Shader" uid="uid://cg2ysaclvjgfx" path="res://Assets/Materials/Outline.gdshader" id="1_52da7"]
+[ext_resource type="Texture2D" uid="uid://dpxdm8niupad2" path="res://Assets/Sprites/Characters/Character.png" id="2_fji81"]
 [ext_resource type="Script" uid="uid://ckdaa4jpv4ysf" path="res://Agents/Visuals/ClothingController.cs" id="3_bfyej"]
 [ext_resource type="Texture2D" uid="uid://bm5yi454iqlnw" path="res://Agents/Visuals/CharacterSpriteSheet.tres" id="4_kh25y"]
 
