@@ -1,5 +1,6 @@
 namespace Dimworld.Items.UI;
 
+using Dimworld.Items.Weapons;
 using Godot;
 
 
@@ -259,18 +260,40 @@ public partial class InventoryViewer : Control
 
     public void TryUseSelectedItem()
     {
-        if (!IsInstanceValid(Hotbar)) return;
-        if (Hotbar.SelectedSlotUI == null) return;
-        if (Hotbar.SelectedSlotUI.TargetSlot == null) return;
-        if (Hotbar.SelectedSlotUI.TargetSlot.IsEmpty) return;
+        InventorySlot selectedSlot = GetSelectedSlotWithItem();
+        if (selectedSlot == null) return;
 
-        InventoryItem item = Hotbar.SelectedSlotUI.TargetSlot.Item;
+        InventoryItem item = selectedSlot.Item;
 
         if (item is ICanBeUsedFromHotbar itemCanBeUsedFromHotbar)
         {
             itemCanBeUsedFromHotbar.UseFromHotbar(Globals.Instance.Player.EquipmentHandler);
+            selectedSlot.EmitSignal(InventorySlot.SignalName.OnUpdated);
         }
+    }
 
+    public void TryReloadSelectedItem()
+    {
+        InventorySlot selectedSlot = GetSelectedSlotWithItem();
+        if (selectedSlot == null) return;
+
+        InventoryItem item = selectedSlot.Item;
+
+        if (item is IUsesAmmo itemUsesAmmo)
+        {
+            itemUsesAmmo.Reload(Globals.Instance.Player.EquipmentHandler);
+            selectedSlot.EmitSignal(InventorySlot.SignalName.OnUpdated);
+        }
+    }
+
+    private InventorySlot GetSelectedSlotWithItem()
+    {   
+        if (!IsInstanceValid(Hotbar)) return null;
+        if (Hotbar.SelectedSlotUI == null) return null;
+        if (Hotbar.SelectedSlotUI.TargetSlot == null) return null;
+        if (Hotbar.SelectedSlotUI.TargetSlot.IsEmpty) return null;
+
+        return Hotbar.SelectedSlotUI.TargetSlot;
     }
 
 }

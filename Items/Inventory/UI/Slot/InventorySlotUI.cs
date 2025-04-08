@@ -1,5 +1,6 @@
 namespace Dimworld.Items.UI;
 
+using Dimworld.Items.Weapons;
 using Godot;
 
 
@@ -117,14 +118,16 @@ public partial class InventorySlotUI : Panel
     {
         if (!IsInstanceValid(this)) return;
 
-        string itemName = "";
+        string itemText = "";
+        bool canHoldMultiple = false;
         int itemQuantity = 0;
         Texture2D itemIcon = null;
         bool IsEquipped = false;
 
         if (_targetSlot != null && _targetSlot.Item != null)
         {
-            itemName = _targetSlot.Item.ItemName;
+            itemText = GetLabelText(_targetSlot.Item);
+            canHoldMultiple = _targetSlot.Item.MaxStackSize > 1;
             itemQuantity = _targetSlot.Quantity;
             itemIcon = _targetSlot.Item.Icon;
             IsEquipped = _targetSlot.Item.IsEquipped;
@@ -132,13 +135,13 @@ public partial class InventorySlotUI : Panel
 
         if (IsInstanceValid(ItemLabel))
         {
-            ItemLabel.Text = itemName;
+            ItemLabel.Text = itemText;
         }
 
         if (IsInstanceValid(QuantityLabel))
         {
             QuantityLabel.Text = itemQuantity.ToString();
-            QuantityLabel.Visible = itemQuantity > 0;
+            QuantityLabel.Visible = canHoldMultiple && itemQuantity > 0;
         }
 
         if (IsInstanceValid(ItemIcon))
@@ -201,6 +204,18 @@ public partial class InventorySlotUI : Panel
         }
 
         return StyleType.Default;
+    }
+
+    private string GetLabelText(InventoryItem item)
+    {
+        if (item == null) return "";
+
+        if (item is IUsesAmmo usesAmmo)
+        {
+            return $"{usesAmmo.AmmoRemaining}/{usesAmmo.AmmoCount}";
+        }
+        
+        return "";
     }
 
     public enum StyleType

@@ -5,39 +5,36 @@ using Dimworld.Effects;
 using Godot;
 using Godot.Collections;
 
-public partial class Revolver : InventoryItem, ICanBeUsedFromHotbar
+
+public partial class Revolver : InventoryItem, ICanBeUsedFromHotbar, IUsesAmmo
 {
 
-    [Export] public float BulletRadius = 2.0f;
-    [Export] public float BulletLength = 10.0f;
-    [Export] public float BulletDamage = -20f;
-    [Export] public float BulletSpeed = 200f;
-    [Export] public int BulletCount { get; set; } = 6;
+    [Export] public float BulletRadius { get; set; } = 2.0f;
+    [Export] public float BulletLength { get; set; } = 10.0f;
+    [Export] public float BulletDamage { get; set; } = -20f;
+    [Export] public float BulletSpeed { get; set; } = 200f;
 
 
-    private int _bulletsRemaining;
+    [Export] public int AmmoCount { get; set; } = 6;
+    public int AmmoRemaining { get; set; } = 6;
+    public float AmmoReloadTime { get; set; } = 1.0f;
 
 
     public Revolver()
     {
-        _bulletsRemaining = BulletCount;
+        AmmoRemaining = AmmoCount;
     }
 
 
     public bool UseFromHotbar(EquipmentHandler equipmentHandler)
     {
-    
-        Node parent = equipmentHandler.GetParent();
-
-        if (_bulletsRemaining <= 0)
+        if (AmmoRemaining <= 0)
         {
-            if (parent is ICanSpeak canSpeak)
-            {
-                canSpeak.SpeechBubble.Say("Out of ammo!");
-            }
+            TriggerDialogue(equipmentHandler, "Out of ammo!");
             return false;
         }
 
+        Node parent = equipmentHandler.GetParent();
         if (parent is not CharacterController characterController) return true;
         CollisionShape2D hitbox = characterController.GetChildOrNull<CollisionShape2D>(0);
         if (hitbox == null) return true;
@@ -72,9 +69,41 @@ public partial class Revolver : InventoryItem, ICanBeUsedFromHotbar
 
         damageEffect.GlobalRotation = direction.Angle();
 
-        _bulletsRemaining--;
+        AmmoRemaining--;
 
         return true;
+    }
+
+    public bool Reload(EquipmentHandler equipmentHandler)
+    {
+        if (AmmoRemaining >= AmmoCount) return false;
+
+        AmmoRemaining++;
+        TriggerDialogue(equipmentHandler, "Reloading...");
+
+        Timer reloadTimer = new()
+        {
+            WaitTime = AmmoReloadTime,
+            OneShot = true
+        };
+        reloadTimer.Timeout += () =>
+        {
+            TriggerDialogue(equipmentHandler, "Reloaded!");
+            reloadTimer.QueueFree();
+        };
+        Globals.Instance.LevelHandler.CurrentLevel.AddChild(reloadTimer);
+        reloadTimer.Start();
+
+        return true;
+    }
+
+    private void TriggerDialogue(EquipmentHandler equipmentHandler, string message)
+    {
+        Node parent = equipmentHandler.GetParent();
+
+        if (parent is not ICanSpeak canSpeak) return;
+
+        canSpeak.SpeechBubble.Say(message);
     }
 
 }

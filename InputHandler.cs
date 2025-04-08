@@ -76,6 +76,7 @@ public partial class InputHandler : Node2D
         bool canCloseInventory = canUseInputs && (@event.IsActionPressed("toggle_inventory") || @event.IsActionPressed("interact") || @event.IsActionPressed("ui_cancel")) && inventoryViewer.IsViewing;
         bool canUseHotbarItems = canUseInputs && !inventoryViewer.IsViewing && @event.IsActionPressed("lmb");
         bool canCloseConsole = @event.IsActionPressed("ui_cancel") && DeveloperConsole.IsFocused;
+        bool canReload = canUseInputs && @event.IsActionPressed("action_reload") && !inventoryViewer.IsViewing;
         
 
         if (canInteract)
@@ -106,6 +107,11 @@ public partial class InputHandler : Node2D
         if (canUseHotbarItems)
         {
             inventoryViewer.TryUseSelectedItem();
+        }
+
+        if (canReload)
+        {
+            inventoryViewer.TryReloadSelectedItem();
         }
 
         if (canUseInputs)

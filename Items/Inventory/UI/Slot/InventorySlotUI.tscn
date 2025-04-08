@@ -1,7 +1,9 @@
-[gd_scene load_steps=16 format=3 uid="uid://cbc7lb60qv02d"]
+[gd_scene load_steps=19 format=3 uid="uid://cbc7lb60qv02d"]
 
 [ext_resource type="StyleBox" uid="uid://cuxjk7ngo011o" path="res://Items/Inventory/UI/Slot/Styles/InventorySlotUI_Default.tres" id="1_o4ioh"]
 [ext_resource type="Script" uid="uid://bo1stix1esiy8" path="res://Items/Inventory/UI/Slot/InventorySlotUI.cs" id="2_yi1il"]
+[ext_resource type="Resource" uid="uid://bbn4fu5m0emk1" path="res://Items/Weapons/Revolver.tres" id="3_3aqtj"]
+[ext_resource type="Script" uid="uid://bm0o5ggnfmm6y" path="res://Items/Inventory/InventorySlot.cs" id="4_bqq6p"]
 [ext_resource type="Script" uid="uid://1waxwqudtxwe" path="res://Items/Inventory/UI/Slot/InventorySlotStateMachine.cs" id="5_160kp"]
 [ext_resource type="Script" uid="uid://dyce8rtklida4" path="res://Items/Inventory/UI/Slot/InventorySlotDragArea.cs" id="5_f11j2"]
 [ext_resource type="Script" uid="uid://dctmd2sl8wn1j" path="res://Items/Inventory/UI/Slot/States/InventorySlotBaseState.cs" id="6_yjg2m"]
@@ -9,6 +11,12 @@
 [ext_resource type="Script" uid="uid://dhotkpi4inknx" path="res://Items/Inventory/UI/Slot/States/InventorySlotDraggingState.cs" id="8_nqjmp"]
 [ext_resource type="Script" uid="uid://dr6rusanwjadf" path="res://Items/Inventory/UI/Slot/States/InventorySlotReleasedState.cs" id="9_h2m36"]
 [ext_resource type="StyleBox" uid="uid://bcjpx3k1qej8l" path="res://Items/Inventory/UI/Slot/Styles/InventorySlotUI_Hover.tres" id="12_f11j2"]
+
+[sub_resource type="Resource" id="Resource_gfr1i"]
+script = ExtResource("4_bqq6p")
+Item = ExtResource("3_3aqtj")
+Quantity = 1
+metadata/_custom_type_script = "uid://bm0o5ggnfmm6y"
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_2v54i"]
 size = Vector2(50, 50)
@@ -44,6 +52,7 @@ offset_right = 100.0
 offset_bottom = 100.0
 theme_override_styles/panel = ExtResource("1_o4ioh")
 script = ExtResource("2_yi1il")
+TargetSlot = SubResource("Resource_gfr1i")
 ItemIcon = NodePath("MarginContainer/DragArea/ItemIcon")
 QuantityLabel = NodePath("MarginContainer/QuantityLabel")
 ItemLabel = NodePath("MarginContainer/ItemLabel")
@@ -85,10 +94,9 @@ size_flags_vertical = 3
 
 [node name="ItemLabel" type="Label" parent="MarginContainer"]
 unique_name_in_owner = true
-visible = false
 layout_mode = 2
-size_flags_horizontal = 0
-size_flags_vertical = 0
+size_flags_horizontal = 8
+size_flags_vertical = 8
 label_settings = SubResource("LabelSettings_o4ioh")
 
 [node name="QuantityLabel" type="Label" parent="MarginContainer"]
@@ -97,7 +105,7 @@ visible = false
 custom_minimum_size = Vector2(30, 30)
 layout_mode = 2
 size_flags_horizontal = 8
-size_flags_vertical = 8
+size_flags_vertical = 0
 theme_override_styles/normal = SubResource("StyleBoxFlat_f11j2")
 text = "0"
 label_settings = SubResource("LabelSettings_4iwih")

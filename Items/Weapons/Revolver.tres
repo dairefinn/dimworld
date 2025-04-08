@@ -9,6 +9,11 @@ region = Rect2(32, 0, 32, 32)
 
 [resource]
 script = ExtResource("1_1sl0i")
+BulletRadius = 2.0
+BulletLength = 10.0
+BulletDamage = -20.0
+BulletSpeed = 200.0
+BulletCount = 6
 Id = "item-revolver"
 ItemName = "Revolver"
 ItemDescription = "Item description"
