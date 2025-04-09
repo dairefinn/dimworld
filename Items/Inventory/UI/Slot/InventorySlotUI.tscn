@@ -2,7 +2,7 @@
 
 [ext_resource type="StyleBox" uid="uid://cuxjk7ngo011o" path="res://Items/Inventory/UI/Slot/Styles/InventorySlotUI_Default.tres" id="1_o4ioh"]
 [ext_resource type="Script" uid="uid://bo1stix1esiy8" path="res://Items/Inventory/UI/Slot/InventorySlotUI.cs" id="2_yi1il"]
-[ext_resource type="Resource" uid="uid://bbn4fu5m0emk1" path="res://Items/Weapons/Revolver.tres" id="3_3aqtj"]
+[ext_resource type="Resource" uid="uid://bbn4fu5m0emk1" path="res://Items/Instances/Weapons/Revolver.tres" id="3_3aqtj"]
 [ext_resource type="Script" uid="uid://bm0o5ggnfmm6y" path="res://Items/Inventory/InventorySlot.cs" id="4_bqq6p"]
 [ext_resource type="Script" uid="uid://1waxwqudtxwe" path="res://Items/Inventory/UI/Slot/InventorySlotStateMachine.cs" id="5_160kp"]
 [ext_resource type="Script" uid="uid://dyce8rtklida4" path="res://Items/Inventory/UI/Slot/InventorySlotDragArea.cs" id="5_f11j2"]

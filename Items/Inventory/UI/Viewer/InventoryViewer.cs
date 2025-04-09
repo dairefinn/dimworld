@@ -31,11 +31,11 @@ public partial class InventoryViewer : Control
     }
     private InventoryUI _secondaryInventoryUI;
 
-    [Export] public InventoryHotbar Hotbar {
+    [Export] public InventoryHotbarUI Hotbar {
         get => _hotbar;
         set => SetHotbar(value);
     }
-    private InventoryHotbar _hotbar;
+    private InventoryHotbarUI _hotbar;
     [Export] public InventoryContextMenuUI ContextMenu { get; set; }
 
 
@@ -111,7 +111,7 @@ public partial class InventoryViewer : Control
         }
     }
 
-    private void SetHotbar(InventoryHotbar value)
+    private void SetHotbar(InventoryHotbarUI value)
     {
         if (_hotbar != null)
         {

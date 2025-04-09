@@ -4,7 +4,7 @@ using Godot;
 using Godot.Collections;
 
 
-public partial class InventoryHotbar : Control
+public partial class InventoryHotbarUI : Control
 {
 
     public static readonly PackedScene SCENE_INVENTORY_SLOT_UI = GD.Load<PackedScene>("res://Items/Inventory/UI/Slot/InventorySlotUI.tscn");

@@ -1,6 +1,6 @@
 [gd_scene load_steps=2 format=3 uid="uid://dk54wpv1dffmh"]
 
-[ext_resource type="Script" uid="uid://bthfyyf7pillw" path="res://Items/Inventory/InventoryContextMenuUI.cs" id="1_i8dvf"]
+[ext_resource type="Script" uid="uid://bthfyyf7pillw" path="res://Items/Inventory/UI/ContextMenu/InventoryContextMenuUI.cs" id="1_i8dvf"]
 
 [node name="InventoryContextMenuUI" type="Control"]
 layout_mode = 3
