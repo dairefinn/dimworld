@@ -1,240 +1,16 @@
-[gd_scene load_steps=55 format=3 uid="uid://ddc8qiig7j3wm"]
+[gd_scene load_steps=10 format=3 uid="uid://ddc8qiig7j3wm"]
 
 [ext_resource type="Script" uid="uid://1f6ukfmh33oo" path="res://DayNightController.cs" id="1_d13ii"]
 [ext_resource type="Script" uid="uid://g354xqg3s44p" path="res://InputHandler.cs" id="2_lquwl"]
-[ext_resource type="Texture2D" uid="uid://xid32hy6vbe" path="res://Items/ItemsSpriteSheet.tres" id="3_074og"]
 [ext_resource type="PackedScene" uid="uid://duk1q562jys3q" path="res://Player/CursorFollower.tscn" id="3_ryguw"]
-[ext_resource type="Script" uid="uid://bmnps7kubp2qq" path="res://Items/Instances/Weapons/Sword.cs" id="4_cegan"]
-[ext_resource type="Script" uid="uid://cpxj4g8jbfg2x" path="res://Items/Instances/Utility/Torch.cs" id="5_074og"]
-[ext_resource type="PackedScene" uid="uid://b2rac6jo5ig4k" path="res://Agents/Agent.tscn" id="5_lquwl"]
-[ext_resource type="Script" uid="uid://dph74un0q20el" path="res://Items/Inventory/Inventory.cs" id="5_yaehf"]
-[ext_resource type="Resource" uid="uid://bbn4fu5m0emk1" path="res://Items/Instances/Weapons/Revolver.tres" id="6_82xsv"]
-[ext_resource type="Script" uid="uid://bm0o5ggnfmm6y" path="res://Items/Inventory/InventorySlot.cs" id="6_cegan"]
-[ext_resource type="Texture2D" uid="uid://dpxdm8niupad2" path="res://Assets/Sprites/Characters/Character.png" id="8_cegan"]
 [ext_resource type="Script" uid="uid://daxnr47vhajw0" path="res://Levels/LevelHandler/LevelHandler.cs" id="8_ycdy4"]
-[ext_resource type="Script" uid="uid://ckdaa4jpv4ysf" path="res://Agents/Visuals/ClothingController.cs" id="9_82xsv"]
-[ext_resource type="Script" uid="uid://cru4kq28c8nuw" path="res://Agents/AgentStats.cs" id="9_lswn8"]
-[ext_resource type="Texture2D" uid="uid://bm5yi454iqlnw" path="res://Agents/Visuals/CharacterSpriteSheet.tres" id="10_getpj"]
+[ext_resource type="PackedScene" uid="uid://dius53mdc51ny" path="res://Agents/Instances/Player.tscn" id="9_kek77"]
 [ext_resource type="PackedScene" uid="uid://qds61vs7bsi1" path="res://Developer/DeveloperMenu.tscn" id="12_dg77c"]
 [ext_resource type="Script" uid="uid://5l72ubbv8qqo" path="res://Globals.cs" id="13_ycdy4"]
 [ext_resource type="PackedScene" uid="uid://d21nkwnu7y4od" path="res://Items/Inventory/UI/Viewer/InventoryViewer.tscn" id="23_d13ii"]
 [ext_resource type="PackedScene" uid="uid://b3v4ub2lqydho" path="res://Levels/LevelTesting.tscn" id="25_a6jrf"]
 
-[sub_resource type="AtlasTexture" id="AtlasTexture_0g53v"]
-atlas = ExtResource("3_074og")
-region = Rect2(0, 0, 32, 32)
-
-[sub_resource type="Resource" id="Resource_facbu"]
-script = ExtResource("4_cegan")
-Id = "item-sword"
-ItemName = "Sword"
-ItemDescription = "Item description"
-Icon = SubResource("AtlasTexture_0g53v")
-MaxStackSize = 1
-metadata/_custom_type_script = "uid://frg4uic6tym5"
-
-[sub_resource type="Resource" id="Resource_jq2sk"]
-script = ExtResource("6_cegan")
-Item = SubResource("Resource_facbu")
-Quantity = 1
-metadata/_custom_type_script = "uid://bm0o5ggnfmm6y"
-
-[sub_resource type="AtlasTexture" id="AtlasTexture_mjj0s"]
-atlas = ExtResource("3_074og")
-region = Rect2(64, 0, 32, 32)
-
-[sub_resource type="Resource" id="Resource_b1qrp"]
-script = ExtResource("5_074og")
-Id = "item-torch"
-ItemName = "Torch"
-ItemDescription = "Item description"
-Icon = SubResource("AtlasTexture_mjj0s")
-MaxStackSize = 1
-metadata/_custom_type_script = "uid://frg4uic6tym5"
-
-[sub_resource type="Resource" id="Resource_4k2k6"]
-script = ExtResource("6_cegan")
-Item = SubResource("Resource_b1qrp")
-Quantity = 1
-metadata/_custom_type_script = "uid://bm0o5ggnfmm6y"
-
-[sub_resource type="Resource" id="Resource_0rl1p"]
-script = ExtResource("6_cegan")
-Item = ExtResource("6_82xsv")
-Quantity = 1
-metadata/_custom_type_script = "uid://bm0o5ggnfmm6y"
-
-[sub_resource type="Resource" id="Resource_ok6jj"]
-script = ExtResource("6_cegan")
-Quantity = 0
-metadata/_custom_type_script = "uid://bm0o5ggnfmm6y"
-
-[sub_resource type="Resource" id="Resource_2cqfq"]
-script = ExtResource("6_cegan")
-Quantity = 0
-metadata/_custom_type_script = "uid://bm0o5ggnfmm6y"
-
-[sub_resource type="Resource" id="Resource_yaehf"]
-script = ExtResource("6_cegan")
-Quantity = 0
-metadata/_custom_type_script = "uid://bm0o5ggnfmm6y"
-
-[sub_resource type="Resource" id="Resource_074og"]
-script = ExtResource("6_cegan")
-Quantity = 0
-metadata/_custom_type_script = "uid://bm0o5ggnfmm6y"
-
-[sub_resource type="Resource" id="Resource_cegan"]
-script = ExtResource("6_cegan")
-Quantity = 0
-metadata/_custom_type_script = "uid://bm0o5ggnfmm6y"
-
-[sub_resource type="Resource" id="Resource_82xsv"]
-script = ExtResource("6_cegan")
-Quantity = 0
-metadata/_custom_type_script = "uid://bm0o5ggnfmm6y"
-
-[sub_resource type="Resource" id="Resource_getpj"]
-script = ExtResource("6_cegan")
-Quantity = 0
-metadata/_custom_type_script = "uid://bm0o5ggnfmm6y"
-
-[sub_resource type="Resource" id="Resource_ryguw"]
-script = ExtResource("6_cegan")
-Quantity = 0
-metadata/_custom_type_script = "uid://bm0o5ggnfmm6y"
-
-[sub_resource type="Resource" id="Resource_d13ii"]
-script = ExtResource("6_cegan")
-Quantity = 0
-metadata/_custom_type_script = "uid://bm0o5ggnfmm6y"
-
-[sub_resource type="Resource" id="Resource_1u8w0"]
-script = ExtResource("6_cegan")
-Quantity = 0
-metadata/_custom_type_script = "uid://bm0o5ggnfmm6y"
-
-[sub_resource type="Resource" id="Resource_0odxb"]
-script = ExtResource("6_cegan")
-Quantity = 0
-metadata/_custom_type_script = "uid://bm0o5ggnfmm6y"
-
-[sub_resource type="Resource" id="Resource_lswn8"]
-script = ExtResource("6_cegan")
-Quantity = 0
-metadata/_custom_type_script = "uid://bm0o5ggnfmm6y"
-
-[sub_resource type="Resource" id="Resource_a6jrf"]
-script = ExtResource("6_cegan")
-Quantity = 0
-metadata/_custom_type_script = "uid://bm0o5ggnfmm6y"
-
-[sub_resource type="Resource" id="Resource_xuqvo"]
-script = ExtResource("6_cegan")
-Quantity = 0
-metadata/_custom_type_script = "uid://bm0o5ggnfmm6y"
-
-[sub_resource type="Resource" id="Resource_qsp4k"]
-script = ExtResource("6_cegan")
-Quantity = 0
-metadata/_custom_type_script = "uid://bm0o5ggnfmm6y"
-
-[sub_resource type="Resource" id="Resource_kq58d"]
-script = ExtResource("6_cegan")
-Quantity = 0
-metadata/_custom_type_script = "uid://bm0o5ggnfmm6y"
-
-[sub_resource type="Resource" id="Resource_seu75"]
-script = ExtResource("6_cegan")
-Quantity = 0
-metadata/_custom_type_script = "uid://bm0o5ggnfmm6y"
-
-[sub_resource type="Resource" id="Resource_htxhm"]
-script = ExtResource("5_yaehf")
-InventoryName = "Inventory"
-Slots = Array[ExtResource("6_cegan")]([SubResource("Resource_jq2sk"), SubResource("Resource_4k2k6"), SubResource("Resource_0rl1p"), SubResource("Resource_ok6jj"), SubResource("Resource_2cqfq"), SubResource("Resource_yaehf"), SubResource("Resource_074og"), SubResource("Resource_cegan"), SubResource("Resource_82xsv"), SubResource("Resource_getpj"), SubResource("Resource_ryguw"), SubResource("Resource_d13ii"), SubResource("Resource_1u8w0"), SubResource("Resource_0odxb"), SubResource("Resource_lswn8"), SubResource("Resource_a6jrf"), SubResource("Resource_xuqvo"), SubResource("Resource_qsp4k"), SubResource("Resource_kq58d"), SubResource("Resource_seu75")])
-metadata/_custom_type_script = "uid://dph74un0q20el"
-
-[sub_resource type="Resource" id="Resource_jx0wj"]
-script = ExtResource("9_lswn8")
-MaxHealth = 100.0
-MaxStamina = 100.0
-metadata/_custom_type_script = "uid://cru4kq28c8nuw"
-
-[sub_resource type="AtlasTexture" id="AtlasTexture_d13ii"]
-atlas = ExtResource("8_cegan")
-region = Rect2(0, 0, 32, 32)
-
-[sub_resource type="AtlasTexture" id="AtlasTexture_1u8w0"]
-atlas = ExtResource("10_getpj")
-region = Rect2(32, 0, 32, 32)
-
-[sub_resource type="AtlasTexture" id="AtlasTexture_0odxb"]
-atlas = ExtResource("10_getpj")
-region = Rect2(96, 0, 32, 32)
-
-[sub_resource type="AtlasTexture" id="AtlasTexture_lswn8"]
-atlas = ExtResource("10_getpj")
-region = Rect2(32, 32, 32, 32)
-
-[sub_resource type="AtlasTexture" id="AtlasTexture_a6jrf"]
-atlas = ExtResource("10_getpj")
-region = Rect2(96, 32, 32, 32)
-
-[sub_resource type="AtlasTexture" id="AtlasTexture_xuqvo"]
-atlas = ExtResource("10_getpj")
-region = Rect2(32, 64, 32, 32)
-
-[sub_resource type="AtlasTexture" id="AtlasTexture_qsp4k"]
-atlas = ExtResource("10_getpj")
-region = Rect2(96, 64, 32, 32)
-
-[sub_resource type="Environment" id="Environment_ycdy4"]
-
-[sub_resource type="CameraAttributesPractical" id="CameraAttributesPractical_w48qg"]
-
 [node name="Main" type="Node2D"]
-
-[node name="Player" parent="." node_paths=PackedStringArray("ClothingController") instance=ExtResource("5_lquwl")]
-z_index = 1
-position = Vector2(1991, 804)
-Inventory = SubResource("Resource_htxhm")
-Stats = SubResource("Resource_jx0wj")
-IsPlanningEnabled = false
-ClothingController = NodePath("BodySprite")
-
-[node name="Camera2D" type="Camera2D" parent="Player"]
-zoom = Vector2(3, 3)
-
-[node name="BodySprite" type="Sprite2D" parent="Player" node_paths=PackedStringArray("HairSprite", "EyesSprite", "TopSprite", "OvertopSprite", "BottomsSprite", "ShoesSprite")]
-texture = SubResource("AtlasTexture_d13ii")
-script = ExtResource("9_82xsv")
-HairSprite = NodePath("Hair")
-EyesSprite = NodePath("Eyes")
-TopSprite = NodePath("Top")
-OvertopSprite = NodePath("Overtop")
-BottomsSprite = NodePath("Bottom")
-ShoesSprite = NodePath("Shoes")
-
-[node name="Shoes" type="Sprite2D" parent="Player/BodySprite"]
-texture = SubResource("AtlasTexture_1u8w0")
-
-[node name="Bottom" type="Sprite2D" parent="Player/BodySprite"]
-texture = SubResource("AtlasTexture_0odxb")
-
-[node name="Top" type="Sprite2D" parent="Player/BodySprite"]
-texture = SubResource("AtlasTexture_lswn8")
-
-[node name="Overtop" type="Sprite2D" parent="Player/BodySprite"]
-texture = SubResource("AtlasTexture_a6jrf")
-
-[node name="Eyes" type="Sprite2D" parent="Player/BodySprite"]
-unique_name_in_owner = true
-texture = SubResource("AtlasTexture_xuqvo")
-
-[node name="Hair" type="Sprite2D" parent="Player/BodySprite"]
-use_parent_material = true
-texture = SubResource("AtlasTexture_qsp4k")
 
 [node name="LevelHandler" type="Node" parent="."]
 script = ExtResource("8_ycdy4")
@@ -278,14 +54,13 @@ layout_mode = 2
 [node name="DeveloperMenu" parent="UI" instance=ExtResource("12_dg77c")]
 visible = false
 
-[node name="WorldEnvironment" type="WorldEnvironment" parent="."]
-environment = SubResource("Environment_ycdy4")
-camera_attributes = SubResource("CameraAttributesPractical_w48qg")
-
-[node name="Globals" type="Node" parent="." node_paths=PackedStringArray("Player", "InventoryViewer", "CursorFollower", "LevelHandler", "DayNightController")]
+[node name="Globals" type="Node" parent="." node_paths=PackedStringArray("InventoryViewer", "CursorFollower", "LevelHandler", "DayNightController")]
 script = ExtResource("13_ycdy4")
-Player = NodePath("../Player")
 InventoryViewer = NodePath("../UI/MarginContainer/InventoryViewer")
 CursorFollower = NodePath("../Logic/CursorFollower")
 LevelHandler = NodePath("../LevelHandler")
 DayNightController = NodePath("../Logic/DayNightController")
+
+[node name="Player" parent="." instance=ExtResource("9_kek77")]
+z_index = 1
+position = Vector2(1898, 808)

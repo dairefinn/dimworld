@@ -1,6 +1,7 @@
 namespace Dimworld.GOAP.Actions;
 
 using System.Threading;
+using Dimworld.Agents;
 using Godot;
 using Godot.Collections;
 
@@ -34,9 +35,8 @@ public partial class PatrolPath : GoapAction
     {
         if (goapAgent is not CharacterController characterController) return false; // Must be a character
 
-        // Get the full patrol path from the stored node reference
         patrolPath = GetPatrolPath(goapAgent);
-        if (patrolPath == null) return false; // Must have a patrol path set
+        if (patrolPath.Count == 0) return false; // Must have at least one point in the patrol path
 
         return true;
     }
@@ -44,6 +44,8 @@ public partial class PatrolPath : GoapAction
     public override bool Perform(IGoapAgent goapAgent, GoapState worldState, double delta)
     {
         if (goapAgent is not CharacterController characterController) return false;
+        if (patrolPath == null) return false; // Must have a patrol path
+        if (patrolPath.Count == 0) return false; // Must have at least one point in the patrol path
 
         CurrentPointIndex = GetNextPointOnPath(characterController, patrolPath);
 
@@ -114,12 +116,16 @@ public partial class PatrolPath : GoapAction
     /// <returns></returns>
     private Array<Vector2> GetPatrolPath(IGoapAgent goapAgent)
     {
+        if (goapAgent == null) return [];
+        if (goapAgent.WorldState == null) return [];
+        if (!goapAgent.WorldState.ContainsKey("patrol_path")) return [];
+
         // Check if the agent has a set patrol path stored
         NodePath nodePath = goapAgent.WorldState.GetKey("patrol_path").AsNodePath();
-        if (nodePath == null) return null;
+        if (nodePath == null) return [];
 
         // Check if the agent is a valid Node2D
-        if (goapAgent is not Node2D node2D) return null;
+        if (goapAgent is not Node2D node2D) return [];
 
         // Use a thread-safe mechanism to get the patrol path
         CallDeferred(MethodName.FetchPatrolPath, [node2D, nodePath]);
@@ -130,8 +136,8 @@ public partial class PatrolPath : GoapAction
             Thread.Sleep(10); // Sleep briefly to avoid busy-waiting
         }
 
-        if (!IsInstanceValid(patrolPathNode)) return null;
-        if (patrolPathNode.Curve.PointCount == 0) return null;
+        if (!IsInstanceValid(patrolPathNode)) return [];
+        if (patrolPathNode.Curve.PointCount == 0) return [];
 
         // Get the points of the path as an array of Vector2s
         Array<Vector2> points = [];
@@ -143,7 +149,7 @@ public partial class PatrolPath : GoapAction
         }
 
         // Make sure the path has at least one point
-        if (points.Count == 0) return null;
+        if (points.Count == 0) return [];
 
         return points;
     }

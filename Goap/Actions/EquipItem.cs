@@ -1,5 +1,6 @@
 namespace Dimworld.GOAP.Actions;
 
+using Dimworld.Agents;
 using Godot;
 using Godot.Collections;
 

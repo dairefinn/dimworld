@@ -1,15 +1,9 @@
-[gd_resource type="Resource" load_steps=3 format=3 uid="uid://c0vymkdfnl7rp"]
+[gd_resource type="Resource" load_steps=2 format=3 uid="uid://c0vymkdfnl7rp"]
 
 [ext_resource type="Script" uid="uid://fanx2vlcdmuw" path="res://Goap/Actions/PatrolPath.cs" id="1_kfsc8"]
-[ext_resource type="Resource" uid="uid://octn8jxqeqaq" path="res://Items/Instances/Weapons/Sword.tres" id="2_h4muq"]
 
 [resource]
 script = ExtResource("1_kfsc8")
-swordItem = ExtResource("2_h4muq")
 Name = "Patrol path"
-Preconditions = Dictionary[String, Variant]({})
-Effects = Dictionary[String, Variant]({
-"current_action": "patrol"
-})
 Cost = 1000
 metadata/_custom_type_script = "uid://dmhsbr32vw1tk"

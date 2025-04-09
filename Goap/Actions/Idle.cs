@@ -1,5 +1,6 @@
 namespace Dimworld.GOAP.Actions;
 
+using Dimworld.Agents;
 using Godot;
 using Godot.Collections;
 
@@ -25,7 +26,6 @@ public partial class Idle : GoapAction
     public override bool Perform(IGoapAgent agent, GoapState worldState, double delta)
     {
         if (agent is not CharacterController characterController) return false;
-        if (!characterController.NavigationAgent.IsTargetReached()) return false;
 
         // Check if the idle time has elapsed
         currentIdleTimeRemaining -= (float)delta;

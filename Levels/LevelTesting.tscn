@@ -1,4 +1,4 @@
-[gd_scene load_steps=95 format=4 uid="uid://b3v4ub2lqydho"]
+[gd_scene load_steps=56 format=4 uid="uid://b3v4ub2lqydho"]
 
 [ext_resource type="Script" uid="uid://dvuy36fh5vjfh" path="res://Levels/LevelHandler/GameLevel.cs" id="1_3pabw"]
 [ext_resource type="TileSet" uid="uid://me5j3tknec74" path="res://Tileset.tres" id="1_uaggo"]
@@ -13,23 +13,8 @@
 [ext_resource type="PackedScene" uid="uid://dsrrvsvuuvj3b" path="res://Objects/LightSwitch/LightSwitch.tscn" id="8_ol4on"]
 [ext_resource type="PackedScene" uid="uid://cq105v4igaxh5" path="res://Objects/LightBulb/LightBulb.tscn" id="9_0bk61"]
 [ext_resource type="PackedScene" uid="uid://h5wikgb34lv4" path="res://Objects/Bomb/Bomb.tscn" id="10_3d3w1"]
-[ext_resource type="PackedScene" uid="uid://b2rac6jo5ig4k" path="res://Agents/Agent.tscn" id="11_j0mrk"]
-[ext_resource type="Script" uid="uid://cru4kq28c8nuw" path="res://Agents/AgentStats.cs" id="12_gq7i2"]
-[ext_resource type="Resource" uid="uid://dny1yv708gqi3" path="res://Goap/Actions/EquipItem.tres" id="13_3by8r"]
-[ext_resource type="Resource" uid="uid://c0vymkdfnl7rp" path="res://Goap/Actions/PatrolPath.tres" id="14_3pabw"]
-[ext_resource type="Resource" uid="uid://d0w3ss4kpt10s" path="res://Goap/Actions/TurnOffLights.tres" id="15_01cvm"]
-[ext_resource type="Script" uid="uid://cqsim0vts1sc1" path="res://Goap/GoapState.cs" id="16_3pabw"]
-[ext_resource type="Resource" uid="uid://cor2aifcdpfoy" path="res://Goap/Actions/TurnOnLights.tres" id="16_4fweh"]
-[ext_resource type="Resource" uid="uid://be3ryk2ex3pr1" path="res://Goap/Actions/Idle.tres" id="17_eb50o"]
-[ext_resource type="Resource" uid="uid://dklafmkxavest" path="res://Goap/Actions/FindItem.tres" id="18_eb50o"]
-[ext_resource type="Resource" uid="uid://ckvaxlnjoqs1o" path="res://Goap/Goals/Patrol.tres" id="19_oeo7j"]
-[ext_resource type="Resource" uid="uid://b2plhfobhuj2k" path="res://Goap/Actions/MoveTo.tres" id="20_1cqng"]
-[ext_resource type="Resource" uid="uid://d0jpp418n0xh5" path="res://Goap/Actions/PickUpItem.tres" id="22_oeo7j"]
-[ext_resource type="Resource" uid="uid://dyo8ce1njn67q" path="res://Goap/Goals/EnsureVisibility.tres" id="25_eb50o"]
-[ext_resource type="Resource" uid="uid://c7fy02pjbecvf" path="res://Goap/Goals/Idle.tres" id="26_4fweh"]
-[ext_resource type="Texture2D" uid="uid://dpxdm8niupad2" path="res://Assets/Sprites/Characters/Character.png" id="29_x4uyb"]
-[ext_resource type="Script" uid="uid://ckdaa4jpv4ysf" path="res://Agents/Visuals/ClothingController.cs" id="30_630ma"]
-[ext_resource type="Texture2D" uid="uid://bm5yi454iqlnw" path="res://Agents/Visuals/CharacterSpriteSheet.tres" id="31_l3tde"]
+[ext_resource type="PackedScene" uid="uid://bqxgobv2wbi30" path="res://Agents/Instances/Guard.tscn" id="14_6ylaq"]
+[ext_resource type="Script" uid="uid://cqsim0vts1sc1" path="res://Goap/GoapState.cs" id="15_p2xfj"]
 
 [sub_resource type="NavigationPolygon" id="NavigationPolygon_1eql1"]
 vertices = PackedVector2Array(938, 442, 938, 458, 922, 458, 902, 454, 902, 410, 1194, 214, 1194, 282, 1190, 278, 1190, 218, 1126, 214, 1130, 218, 1126, 282, 1130, 278, 1158, 282, 1162, 282, 374, 170, 394, 150, 410, 150, 410, 166, 390, 186, 374, 186, 422, 202, 442, 166, 442, 182, 438, 218, 458, 182, 458, 198, 454, 234, 438, 234, 490, 198, 490, 214, 486, 250, 454, 250, 506, 214, 506, 230, 538, 230, 538, 246, 714, 266, 694, 246, 694, 230, 742, 230, 790, 266, 742, 214, 794, 214, 794, 230, 810, 230, 810, 246, 806, 282, 790, 282, 826, 246, 826, 262, 822, 298, 806, 298, 838, 314, 858, 262, 858, 294, 854, 346, 890, 294, 890, 326, 870, 362, 854, 362, 906, 326, 906, 342, 886, 378, 870, 378, 922, 342, 922, 358, 886, 410, 954, 358, 954, 374, 1018, 374, 1018, 390, 1002, 410, 970, 426, 1046, 390, 1046, 374, 1158, 374, 1130, 410, 1158, 314, 1126, 314, 1126, 310, 1158, 310, 1162, 374, 1274, 374, 1274, 390, 1238, 410, 1302, 390, 1302, 374, 1354, 374, 1354, 426, 1238, 426, 1130, 426, 1030, 426, 1030, 410, 1002, 426, 970, 442, 838, 346, 822, 314, 714, 282, 550, 282, 550, 266, 486, 266, 422, 218, 390, 202, 262, 166, 266, 170, 266, 186, 250, 186, 230, 182, 230, 166, 250, 202, 234, 202, 214, 198, 214, 182, 234, 218, 218, 218, 218, 250, 202, 250, 182, 246, 182, 198, 202, 346, 186, 346, 166, 294, 166, 246, 166, 458, 186, 406, 202, 406, 202, 422, 198, 474, 166, 474, 218, 422, 218, 438, 310, 438, 310, 422, 426, 422, 426, 438, 330, 458, 454, 458, 506, 438, 506, 454, 486, 474, 586, 458, 566, 454, 566, 438, 582, 438, 602, 442, 602, 458, 582, 422, 598, 422, 618, 426, 618, 442, 598, 406, 614, 406, 634, 410, 634, 426, 614, 390, 630, 390, 650, 394, 650, 410, 630, 374, 646, 374, 666, 378, 666, 394, 646, 358, 682, 358, 682, 378, 586, 502, 618, 502, 618, 518, 730, 518, 730, 534, 646, 538, 826, 538, 806, 534, 806, 518, 838, 518, 858, 522, 858, 538, 838, 502, 870, 502, 890, 522, 870, 486, 886, 486, 890, 490, 906, 474, 886, 454, 922, 474, 906, 490, 826, 554, 666, 554, 666, 570, 650, 570, 646, 566, 650, 602, 634, 602, 630, 582, 630, 566, 614, 614, 634, 634, 618, 634, 598, 630, 618, 650, 602, 650, 582, 630, 602, 682, 586, 682, 582, 662, 586, 698, 566, 698, 566, 662, 598, 614, 614, 582, 566, 538, 566, 522, 534, 522, 534, 506, 518, 506, 518, 490, 486, 490, 454, 474, 330, 474, 298, 474, 298, 490, 198, 490, 150, 458, 150, 294, 262, 150, 294, 150, 294, 134, 394, 134)
@@ -222,127 +207,12 @@ InventoryName = "Chest 2 contents"
 Slots = Array[ExtResource("3_66iod")]([SubResource("Resource_6iyjs"), SubResource("Resource_4w656"), SubResource("Resource_e71vb"), SubResource("Resource_rnkwl"), SubResource("Resource_vke2r"), SubResource("Resource_uit24"), SubResource("Resource_ruth0"), SubResource("Resource_rm4vd"), SubResource("Resource_pjyto"), SubResource("Resource_sm6fg"), SubResource("Resource_b17eg"), SubResource("Resource_ntx8l"), SubResource("Resource_uatky"), SubResource("Resource_rqtf5"), SubResource("Resource_1vm84")])
 metadata/_custom_type_script = "uid://dph74un0q20el"
 
-[sub_resource type="Resource" id="Resource_pjuso"]
-script = ExtResource("3_66iod")
-Quantity = 0
-metadata/_custom_type_script = "uid://bm0o5ggnfmm6y"
-
-[sub_resource type="Resource" id="Resource_23xmf"]
-script = ExtResource("3_66iod")
-Quantity = 0
-metadata/_custom_type_script = "uid://bm0o5ggnfmm6y"
-
-[sub_resource type="Resource" id="Resource_swlj1"]
-script = ExtResource("3_66iod")
-Quantity = 0
-metadata/_custom_type_script = "uid://bm0o5ggnfmm6y"
-
-[sub_resource type="Resource" id="Resource_yysqy"]
-script = ExtResource("3_66iod")
-Quantity = 0
-metadata/_custom_type_script = "uid://bm0o5ggnfmm6y"
-
-[sub_resource type="Resource" id="Resource_n5t1e"]
-script = ExtResource("3_66iod")
-Quantity = 0
-metadata/_custom_type_script = "uid://bm0o5ggnfmm6y"
-
-[sub_resource type="Resource" id="Resource_h6isl"]
-script = ExtResource("3_66iod")
-Quantity = 0
-metadata/_custom_type_script = "uid://bm0o5ggnfmm6y"
-
-[sub_resource type="Resource" id="Resource_53bls"]
-script = ExtResource("3_66iod")
-Quantity = 0
-metadata/_custom_type_script = "uid://bm0o5ggnfmm6y"
-
-[sub_resource type="Resource" id="Resource_lwnsi"]
-script = ExtResource("3_66iod")
-Quantity = 0
-metadata/_custom_type_script = "uid://bm0o5ggnfmm6y"
-
-[sub_resource type="Resource" id="Resource_41lik"]
-script = ExtResource("3_66iod")
-Quantity = 0
-metadata/_custom_type_script = "uid://bm0o5ggnfmm6y"
-
-[sub_resource type="Resource" id="Resource_jbvwl"]
-script = ExtResource("3_66iod")
-Quantity = 0
-metadata/_custom_type_script = "uid://bm0o5ggnfmm6y"
-
-[sub_resource type="Resource" id="Resource_sn1fb"]
-script = ExtResource("3_66iod")
-Quantity = 0
-metadata/_custom_type_script = "uid://bm0o5ggnfmm6y"
-
-[sub_resource type="Resource" id="Resource_yvsr8"]
-script = ExtResource("3_66iod")
-Quantity = 0
-metadata/_custom_type_script = "uid://bm0o5ggnfmm6y"
-
-[sub_resource type="Resource" id="Resource_vieuh"]
-script = ExtResource("3_66iod")
-Quantity = 0
-metadata/_custom_type_script = "uid://bm0o5ggnfmm6y"
-
-[sub_resource type="Resource" id="Resource_yjja3"]
-script = ExtResource("3_66iod")
-Quantity = 0
-metadata/_custom_type_script = "uid://bm0o5ggnfmm6y"
-
-[sub_resource type="Resource" id="Resource_l0gw7"]
-script = ExtResource("3_66iod")
-Quantity = 0
-metadata/_custom_type_script = "uid://bm0o5ggnfmm6y"
-
-[sub_resource type="Resource" id="Resource_x4uyb"]
-script = ExtResource("6_6ylaq")
-InventoryName = "Guard Inventory"
-Slots = Array[ExtResource("3_66iod")]([SubResource("Resource_pjuso"), SubResource("Resource_23xmf"), SubResource("Resource_swlj1"), SubResource("Resource_yysqy"), SubResource("Resource_n5t1e"), SubResource("Resource_h6isl"), SubResource("Resource_53bls"), SubResource("Resource_lwnsi"), SubResource("Resource_41lik"), SubResource("Resource_jbvwl"), SubResource("Resource_sn1fb"), SubResource("Resource_yvsr8"), SubResource("Resource_vieuh"), SubResource("Resource_yjja3"), SubResource("Resource_l0gw7")])
-metadata/_custom_type_script = "uid://dph74un0q20el"
-
-[sub_resource type="Resource" id="Resource_630ma"]
-script = ExtResource("12_gq7i2")
-MaxHealth = 100.0
-MaxStamina = 100.0
-metadata/_custom_type_script = "uid://cru4kq28c8nuw"
-
-[sub_resource type="Resource" id="Resource_01cvm"]
-script = ExtResource("16_3pabw")
+[sub_resource type="Resource" id="Resource_ol4on"]
+script = ExtResource("15_p2xfj")
 State = Dictionary[String, Variant]({
 "patrol_path": NodePath("../../World/PatrolPathCastle")
 })
 metadata/_custom_type_script = "uid://cqsim0vts1sc1"
-
-[sub_resource type="AtlasTexture" id="AtlasTexture_4svdx"]
-atlas = ExtResource("29_x4uyb")
-region = Rect2(0, 0, 32, 32)
-
-[sub_resource type="AtlasTexture" id="AtlasTexture_x4uyb"]
-atlas = ExtResource("31_l3tde")
-region = Rect2(64, 0, 32, 32)
-
-[sub_resource type="AtlasTexture" id="AtlasTexture_630ma"]
-atlas = ExtResource("31_l3tde")
-region = Rect2(0, 32, 32, 32)
-
-[sub_resource type="AtlasTexture" id="AtlasTexture_cb2vy"]
-atlas = ExtResource("31_l3tde")
-region = Rect2(64, 32, 32, 32)
-
-[sub_resource type="AtlasTexture" id="AtlasTexture_l3tde"]
-atlas = ExtResource("31_l3tde")
-region = Rect2(96, 32, 32, 32)
-
-[sub_resource type="AtlasTexture" id="AtlasTexture_2e57i"]
-atlas = ExtResource("31_l3tde")
-region = Rect2(32, 64, 32, 32)
-
-[sub_resource type="AtlasTexture" id="AtlasTexture_qvs58"]
-atlas = ExtResource("31_l3tde")
-region = Rect2(0, 96, 32, 32)
 
 [node name="LevelTesting" type="Node2D" node_paths=PackedStringArray("DefaultSpawnPoint", "NavigationRegion")]
 script = ExtResource("1_3pabw")
@@ -440,41 +310,6 @@ position = Vector2(1337, 739)
 
 [node name="Characters" type="Node" parent="."]
 
-[node name="Guard" parent="Characters" node_paths=PackedStringArray("ClothingController") instance=ExtResource("11_j0mrk")]
-z_index = 1
-position = Vector2(1844, 811)
-Inventory = SubResource("Resource_x4uyb")
-Stats = SubResource("Resource_630ma")
-WorldState = SubResource("Resource_01cvm")
-ActionSet = Array[Object]([ExtResource("13_3by8r"), ExtResource("22_oeo7j"), ExtResource("18_eb50o"), ExtResource("17_eb50o"), ExtResource("20_1cqng"), ExtResource("14_3pabw"), ExtResource("15_01cvm"), ExtResource("16_4fweh")])
-GoalSet = Array[Object]([ExtResource("25_eb50o"), ExtResource("19_oeo7j"), ExtResource("26_4fweh")])
-ClothingController = NodePath("BodySprite")
-
-[node name="BodySprite" type="Sprite2D" parent="Characters/Guard" node_paths=PackedStringArray("HairSprite", "EyesSprite", "TopSprite", "OvertopSprite", "BottomsSprite", "ShoesSprite")]
-texture = SubResource("AtlasTexture_4svdx")
-script = ExtResource("30_630ma")
-HairSprite = NodePath("Hair")
-EyesSprite = NodePath("Eyes")
-TopSprite = NodePath("Top")
-OvertopSprite = NodePath("Overtop")
-BottomsSprite = NodePath("Bottom")
-ShoesSprite = NodePath("Shoes")
-
-[node name="Shoes" type="Sprite2D" parent="Characters/Guard/BodySprite"]
-texture = SubResource("AtlasTexture_x4uyb")
-
-[node name="Bottom" type="Sprite2D" parent="Characters/Guard/BodySprite"]
-texture = SubResource("AtlasTexture_630ma")
-
-[node name="Top" type="Sprite2D" parent="Characters/Guard/BodySprite"]
-texture = SubResource("AtlasTexture_cb2vy")
-
-[node name="Overtop" type="Sprite2D" parent="Characters/Guard/BodySprite"]
-texture = SubResource("AtlasTexture_l3tde")
-
-[node name="Eyes" type="Sprite2D" parent="Characters/Guard/BodySprite"]
-unique_name_in_owner = true
-texture = SubResource("AtlasTexture_2e57i")
-
-[node name="Hair" type="Sprite2D" parent="Characters/Guard/BodySprite"]
-texture = SubResource("AtlasTexture_qvs58")
+[node name="Guard" parent="Characters" instance=ExtResource("14_6ylaq")]
+position = Vector2(1845, 815)
+WorldState = SubResource("Resource_ol4on")

@@ -2,6 +2,7 @@ namespace Dimworld.GOAP;
 
 using System.Linq;
 using Dimworld.Developer;
+using Godot;
 using Godot.Collections;
 
 
@@ -120,8 +121,18 @@ public class GoapPlanner
         };
 
         // If we can perform the action, then this is a valid plan
-        if (currentActionCopy.CanPerform(goapAgent, worldState))
+		bool staticPreconditionsSatisfied = currentActionCopy.CheckStaticPreconditions(worldState);
+		bool proceduralPreconditionsSatisfied = currentActionCopy.CheckProceduralPrecondition(goapAgent, worldState);
+
+        if (!proceduralPreconditionsSatisfied)
         {
+            PrintDebug(GetIndent(depth, currentActionCopy.Name) + "Action " + currentActionCopy.Name + " CANNOT be performed because procedural preconditions are not satisfied");
+            return null;
+        }
+
+        if (staticPreconditionsSatisfied)
+        {
+            PrintDebug(GetIndent(depth, currentActionCopy.Name) + "Action " + currentActionCopy.Name + " CAN be performed");
             return currentNode;
         }
 
@@ -136,9 +147,10 @@ public class GoapPlanner
         foreach(GoapAction nextAction in remainingActions)
         {
             GoapAction actionCopy = nextAction.Duplicate() as GoapAction;
+            GoapAction[] possibleActionsCopy = remainingActions.Where(action => action != nextAction).ToArray();
 
             PrintDebug(GetIndent(depth + 1, currentActionCopy.Name) + "Checking if " + actionCopy.Name + " can satisfy the preconditions of " + currentActionCopy.Name);
-            GoapPlanNode childNode = BuildPlanTree(desiredStateForAction, worldState, possibleActions[1..], goapAgent, actionCopy, accumulatedCost + actionCopy.Cost, depth + 1);
+            GoapPlanNode childNode = BuildPlanTree(desiredStateForAction, worldState, [..possibleActionsCopy], goapAgent, actionCopy, accumulatedCost + actionCopy.Cost, depth + 1);
             if (childNode != null)
             {
                 currentNode.Cost += childNode.Cost;

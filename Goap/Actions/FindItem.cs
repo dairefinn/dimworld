@@ -1,5 +1,6 @@
 namespace Dimworld.GOAP.Actions;
 
+using Dimworld.Agents;
 using Dimworld.Developer;
 using Dimworld.Items;
 using Dimworld.Memory.MemoryEntries;

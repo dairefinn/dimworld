@@ -8,7 +8,7 @@ using Godot.Collections;
 public partial class ModifierHandler : Node2D
 {
 
-	[Export] public Array<Modifier> Modifiers { get; set; } = [];
+	public Array<Modifier> Modifiers { get; set; } = [];
 
 
 	// PROCESSING

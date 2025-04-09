@@ -49,17 +49,6 @@ public partial class GoapAction : Resource
 	{
 	}
 
-	// TODO: Might need three responses here:
-	// Can perform: Currently valid and can be completed
-	// Not currently: Not valid but might be if another action is taken
-	// Cannot perform: Not valid and cannot be completed, even if another action is taken
-	public bool CanPerform(IGoapAgent goapAgent, GoapState worldState)
-	{
-		bool staticPreconditionsSatisfied = CheckStaticPreconditions(worldState);
-		bool proceduralPreconditionsSatisfied = CheckProceduralPrecondition(goapAgent, worldState);
-		return staticPreconditionsSatisfied && proceduralPreconditionsSatisfied;
-	}
-
 	public virtual bool CheckStaticPreconditions(GoapState worldState)
 	{
 		return Preconditions.IsSubsetOf(worldState);

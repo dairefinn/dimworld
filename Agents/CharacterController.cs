@@ -1,12 +1,10 @@
-namespace Dimworld;
+namespace Dimworld.Agents;
 
 using Dimworld.Developer;
 using Dimworld.Dialogue;
 using Dimworld.Effects;
-using Dimworld.GOAP;
 using Dimworld.Helpers;
 using Dimworld.Items;
-using Dimworld.Levels;
 using Dimworld.Memory;
 using Dimworld.Memory.MemoryEntries;
 using Dimworld.Modifiers;
@@ -14,13 +12,20 @@ using Godot;
 using Godot.Collections;
 
 
-public partial class CharacterController : CharacterBody2D, IHasAgentStats, ICanBeMoved, IGoapAgent, IHasInventory, IMemorableNode, IAffectedByModifiers, ICanSpeak, ICanTriggerLevelTransitions
+// TODO: Might want to make this even more abstract and then have HumanoidController and AnimalController inherit from this (Because an animal might not have a speech bubble or clothing controller)
+public partial class CharacterController : CharacterBody2D, IHasAgentStats, ICanBeMoved, IHasInventory, IMemorableNode, IAffectedByModifiers, ICanSpeak
 {
 
-	[ExportGroup("Properties")]
-	[Export] public float Speed { get; set; } = 50f;
-	[Export] public float Acceleration { get; set; } = 25f;
+	[ExportGroup("Movement")]
+	[Export] public float Speed { get; set; } = 100f;
+	[Export] public float Acceleration { get; set; } = 50f;
+	[Export] public NavigationAgent2D NavigationAgent { get; set; }
+
+	[ExportGroup("Inventory")]
 	[Export] public Inventory Inventory { get; set; }
+    [Export] public bool CanTakeFromInventory { get; set; } = false;
+
+	[ExportGroup("Stats")]
 	[Export] public AgentStats Stats {
 		get => _stats;
 		set {
@@ -29,18 +34,6 @@ public partial class CharacterController : CharacterBody2D, IHasAgentStats, ICan
 		}
 	}
 	private AgentStats _stats;
-    [Export] public bool CanTakeFromInventory { get; set; } = false;
-
-	[ExportGroup("GOAP properties")]
-	[Export] public bool IsPlanningEnabled { get; set; } = true;
-	[Export] public GoapState WorldState { get; set; }
-	[Export] public Array<GoapAction> ActionSet { get; set; }
-	[Export] public Array<GoapGoal> GoalSet { get; set; }
-
-	[ExportGroup("References")]
-	[Export] public NavigationAgent2D NavigationAgent { get; set; }
-	[Export] public DetectionHandler DetectionHandler { get; set; }
-	[Export] public EquipmentHandler EquipmentHandler { get; set; }
 	[Export] public AgentStatsUI StatsUI {
 		get => _statsUI;
 		set {
@@ -49,14 +42,16 @@ public partial class CharacterController : CharacterBody2D, IHasAgentStats, ICan
 		}
 	}
 	private AgentStatsUI _statsUI;
+
+	[ExportGroup("References")]
 	[Export] public SpeechBubble SpeechBubble { get; set; }
-	[Export] public PlanningHandler PlanningHandler { get; set; }
-	[Export] public MemoryHandler MemoryHandler { get; set; }
-	[Export] public ModifierHandler ModifierHandler { get; set; } = new();
 	[Export] public ClothingController ClothingController { get; set; }
+	[Export] public DetectionHandler DetectionHandler { get; set; }
 	
 
-	public Vector2 GlobalPositionThreadSafe { get; set; }
+	public ModifierHandler ModifierHandler { get; set; } = new();
+	public MemoryHandler MemoryHandler { get; set; } = new();
+	public EquipmentHandler EquipmentHandler { get; set; } = new();
 
 
     private Vector2 desiredMovementDirection = Vector2.Zero;
@@ -83,10 +78,6 @@ public partial class CharacterController : CharacterBody2D, IHasAgentStats, ICan
 
 		NavigationAgent.VelocityComputed += OnSafeVelocityComputed;
 
-		DetectionHandler.OnNodeDetected += OnDetectionHandlerNodeDetected;
-
-		SetInventoryState();
-
 		navigationRid = NavigationAgent.GetNavigationMap();
 	}
 
@@ -101,14 +92,7 @@ public partial class CharacterController : CharacterBody2D, IHasAgentStats, ICan
 
 	public override void _Process(double delta)
 	{
-		GlobalPositionThreadSafe = GlobalPosition;
-
-		Inventory.OnUpdated += () => SetInventoryState();
-
-		if (IsPlanningEnabled)
-		{
-			PlanningHandler?.OnProcess(this, delta);
-		}
+		base._Process(delta);
 
 		ModifierHandler?.ProcessConditions(delta);
 	}
@@ -125,12 +109,6 @@ public partial class CharacterController : CharacterBody2D, IHasAgentStats, ICan
 
 	// DETECTION AND MEMORY
 
-	private void OnDetectionHandlerNodeDetected(Node node)
-	{
-		if (!IsPlanningEnabled) return;
-		MemoryHandler?.OnNodeDetected(node);
-	}
-
     public NodeLocation GetNodeLocationMemory()
     {
         return new NodeLocation()
@@ -140,27 +118,6 @@ public partial class CharacterController : CharacterBody2D, IHasAgentStats, ICan
         };
     }
 
-	// TODO: Add an interface called IAffectsState that adds data dynamically to the agent's world state under the given key of 'has_items'. Can do the same for equipment with the key 'has_equipped'
-	public void SetInventoryState()
-	{
-		if (WorldState == null)
-		{
-			WorldState = GoapState.Empty;
-		}
-
-		Array<string> itemsInInventory = [];
-
-		foreach (InventorySlot slot in Inventory.Slots)
-		{
-			if (slot.IsEmpty) continue;
-			itemsInInventory.Add(slot.Item.Id);
-		}
-
-		WorldState.RemoveKey("has_items");
-		WorldState.Set("has_items", itemsInInventory);
-	}
-
-	
 	// NAVIGATION
 
 	public void NavigateTo(Vector2 target)

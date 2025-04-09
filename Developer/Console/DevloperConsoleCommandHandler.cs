@@ -2,8 +2,8 @@ namespace Dimworld.Developer;
 
 using System;
 using System.Collections.Generic;
+using Dimworld.Agents.Instances;
 using Dimworld.Helpers;
-using Dimworld.Levels;
 using Godot;
 
 
@@ -104,7 +104,7 @@ public class DeveloperConsoleCommandHandler
     {
         if (args.Length == 2 && float.TryParse(args[0], out float x) && float.TryParse(args[1], out float y))
         {
-            CharacterController player = Globals.Instance.Player;
+            Player player = Globals.Instance.Player;
             player.GlobalPosition = new Vector2(x, y);
         }
         else

@@ -1,6 +1,7 @@
 namespace Dimworld.Levels;
 
 using System.Linq;
+using Dimworld.Agents.Instances;
 using Godot;
 
 
@@ -62,7 +63,7 @@ public partial class LevelHandler : Node
 
         if(spawnPoint != null)
         {
-            CharacterController player = Globals.Instance.Player;
+            Player player = Globals.Instance.Player;
             if (player != null)
             {
                 player.GlobalPosition = spawnPoint.GlobalPosition;

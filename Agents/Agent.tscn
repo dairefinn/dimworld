@@ -1,32 +1,27 @@
-[gd_scene load_steps=11 format=3 uid="uid://b2rac6jo5ig4k"]
+[gd_scene load_steps=7 format=3 uid="uid://b2rac6jo5ig4k"]
 
 [ext_resource type="Script" uid="uid://bwbmuqkjtx0ns" path="res://Agents/CharacterController.cs" id="1_v5emj"]
 [ext_resource type="Script" uid="uid://cxbp1npv1tukk" path="res://Agents/DetectionHandler.cs" id="3_07efl"]
 [ext_resource type="PackedScene" uid="uid://bb462hku8uk8i" path="res://Agents/UI/AgentStatsUI.tscn" id="3_o26ja"]
 [ext_resource type="PackedScene" uid="uid://v23vcyiu8qgc" path="res://Dialogue/SpeechBubble.tscn" id="4_ia2xe"]
-[ext_resource type="Script" uid="uid://dphqtgg23pqia" path="res://Agents/EquipmentHandler.cs" id="4_ixneo"]
-[ext_resource type="Script" uid="uid://bk54n8opktsdt" path="res://Agents/PlanningHandler.cs" id="6_24e8l"]
-[ext_resource type="Script" uid="uid://bgoi1dk2c120s" path="res://Agents/Memory/MemoryHandler.cs" id="7_4oknj"]
-[ext_resource type="Script" uid="uid://5x3g25chpe2b" path="res://Modifiers/ModifierHandler.cs" id="7_um2er"]
 
 [sub_resource type="CapsuleShape2D" id="CapsuleShape2D_4oknj"]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_ixneo"]
 radius = 100.0
 
-[node name="CharacterBody2D" type="CharacterBody2D" node_paths=PackedStringArray("NavigationAgent", "DetectionHandler", "EquipmentHandler", "StatsUI", "SpeechBubble", "PlanningHandler", "MemoryHandler", "ModifierHandler")]
+[node name="CharacterBody2D" type="CharacterBody2D" node_paths=PackedStringArray("NavigationAgent", "DetectionHandler", "EquipmentHandler", "StatsUI", "SpeechBubble", "PlanningHandler", "MemoryHandler")]
 script = ExtResource("1_v5emj")
 Speed = 100.0
 NavigationAgent = NodePath("NavigationAgent2D")
 DetectionHandler = NodePath("DetectionHandler")
-EquipmentHandler = NodePath("EquipmentHandler")
+EquipmentHandler = NodePath("")
 StatsUI = NodePath("AgentStatsUI")
 SpeechBubble = NodePath("CenterContainer/SpeechBubble")
-PlanningHandler = NodePath("PlanningHandler")
-MemoryHandler = NodePath("MemoryHandler")
-ModifierHandler = NodePath("ModifierHandler")
+PlanningHandler = NodePath("")
+MemoryHandler = NodePath("")
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+[node name="Hitbox" type="CollisionShape2D" parent="."]
 shape = SubResource("CapsuleShape2D_4oknj")
 
 [node name="NavigationAgent2D" type="NavigationAgent2D" parent="."]
@@ -46,18 +41,6 @@ DetectedEntities = []
 [node name="CollisionShape2D" type="CollisionShape2D" parent="DetectionHandler"]
 shape = SubResource("CircleShape2D_ixneo")
 debug_color = Color(0, 0.608985, 0.644943, 0.42)
-
-[node name="EquipmentHandler" type="Node2D" parent="."]
-script = ExtResource("4_ixneo")
-
-[node name="PlanningHandler" type="Node2D" parent="."]
-script = ExtResource("6_24e8l")
-
-[node name="MemoryHandler" type="Node2D" parent="."]
-script = ExtResource("7_4oknj")
-
-[node name="ModifierHandler" type="Node2D" parent="."]
-script = ExtResource("7_um2er")
 
 [node name="AgentStatsUI" parent="." instance=ExtResource("3_o26ja")]
 offset_left = -11.0

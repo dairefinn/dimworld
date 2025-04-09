@@ -13,7 +13,8 @@ public partial class MemoryHandler : Node2D
     [Signal] public delegate void OnMemoryEntryAddedEventHandler(MemoryEntry memoryEntry);
     [Signal] public delegate void OnMemoryEntryRemovedEventHandler(MemoryEntry memoryEntry);
 
-    [Export] public Array<MemoryEntry> MemoryEntries { get; set; } = [];
+
+    public Array<MemoryEntry> MemoryEntries { get; set; } = [];
 
 
     public override void _Ready()

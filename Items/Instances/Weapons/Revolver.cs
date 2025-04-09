@@ -1,5 +1,6 @@
 namespace Dimworld.Items.Weapons;
 
+using Dimworld.Agents;
 using Dimworld.Dialogue;
 using Dimworld.Effects;
 using Godot;

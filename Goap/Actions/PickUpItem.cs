@@ -1,5 +1,6 @@
 namespace Dimworld.GOAP.Actions;
 
+using Dimworld.Agents;
 using Dimworld.Items;
 using Dimworld.Memory.MemoryEntries;
 using Godot;
@@ -56,7 +57,7 @@ public partial class PickUpItem : GoapAction
 
     public override bool Perform(IGoapAgent goapAgent, GoapState worldState, double delta)
     {
-        if (goapAgent is not CharacterController characterController) return false; // Must be a character controller
+        if (goapAgent is not NpcController characterController) return false; // Must be a character controller
 
         characterController.Say("I'm grabbing my sword.");
 

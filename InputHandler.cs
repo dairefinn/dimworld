@@ -1,5 +1,7 @@
 namespace Dimworld;
 
+using Dimworld.Agents;
+using Dimworld.Agents.Instances;
 using Dimworld.Developer;
 using Dimworld.Items.UI;
 using Godot;
@@ -13,7 +15,7 @@ public partial class InputHandler : Node2D
         base._Process(delta);
 
         InventoryViewer inventoryViewer = Globals.Instance.InventoryViewer;
-        CharacterController player = Globals.Instance.Player;
+        Player player = Globals.Instance.Player;
 
         bool canUseInputs = !DeveloperMenu.IsOpen && !DeveloperConsole.IsFocused;
 
@@ -64,7 +66,7 @@ public partial class InputHandler : Node2D
         base._Input(@event);
         
         InventoryViewer inventoryViewer = Globals.Instance.InventoryViewer;
-        CharacterController player = Globals.Instance.Player;
+        Player player = Globals.Instance.Player;
         CursorFollower cursorFollower = Globals.Instance.CursorFollower;
 
         bool canUseInputs = !DeveloperMenu.IsOpen && !DeveloperConsole.IsFocused;

@@ -1,8 +1,10 @@
 namespace Dimworld.Items.Weapons;
 
+using Dimworld.Agents;
 using Dimworld.Effects;
 using Godot;
 using Godot.Collections;
+
 
 public partial class Sword : InventoryItem, ICanBeUsedFromHotbar
 {

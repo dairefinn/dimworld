@@ -1,5 +1,6 @@
 namespace Dimworld;
 
+using Dimworld.Agents.Instances;
 using Dimworld.Items.UI;
 using Dimworld.Levels;
 using Godot;
@@ -23,14 +24,14 @@ public partial class Globals : Node
     }
 
 
-    [Export] public CharacterController Player {
+    [Export] public Player Player {
         get => _player;
         set {
             _player = value;
             LinkPlayerInventory();
         }
     }
-    private CharacterController _player;
+    private Player _player;
 
     [Export] public InventoryViewer InventoryViewer {
         get => _inventoryViewer;
