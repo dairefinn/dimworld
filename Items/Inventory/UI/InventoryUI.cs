@@ -14,12 +14,12 @@ public partial class InventoryUI : Container
     [Signal] public delegate void OnSlotClickedEventHandler(InventorySlotUI slotUI);
 
 
+    /// <summary>
+    /// The inventory this UI is displaying. This is the source of truth for the contents of the inventory.
+    /// </summary>
     [Export] public Inventory TargetInventory {
         get => _targetInventory;
-        set {
-            _targetInventory = value;
-            OnUpdateTargetInventory();
-        }
+        set => SetTargetInventory(value);
     }
     private Inventory _targetInventory;
 
@@ -30,15 +30,19 @@ public partial class InventoryUI : Container
         get => _rowsDisplayed;
         set {
             _rowsDisplayed = value;
-            UpdateUI();
+            UpdateSlotsGrid(TargetInventory.Slots);
         }
     }
     private int _rowsDisplayed = 3;
+
+    /// <summary>
+    /// The number of columns to display. This is entirely for UI purposes and does not affect the inventory itself as the inventory is a 1D array with no concept of rows or columns.
+    /// </summary>
     [Export] public int Columns {
         get => _columns;
         set {
             _columns = value;
-            UpdateUI();
+            UpdateSlotsGridColumns(value);
         }
     }
     private int _columns = 5;
@@ -49,62 +53,57 @@ public partial class InventoryUI : Container
     [Export] public Label InventoryTitle;
 
 
-    public override void _Ready()
+    private void SetTargetInventory(Inventory value)
     {
-        UpdateUI();
-    }
-
-
-    public void UpdateUI()
-    {
-        if (!IsInstanceValid(this)) return;
-
-        string inventoryName = "Inventory";
-        Array<InventorySlot> inventorySlots = [];
+        _targetInventory = value;
 
         if (_targetInventory != null)
         {
-            inventoryName = _targetInventory.InventoryName;
-            inventorySlots = _targetInventory.Slots;
+            UpdateTitleLabel(value.InventoryName);
+            UpdateSlotsGrid(value.Slots);
         }
+    }
 
-        if (IsInstanceValid(InventoryTitle))
-        {
-            InventoryTitle.Text = inventoryName;
-        }
+    private void UpdateTitleLabel(string value)
+    {
+        if (!IsInstanceValid(InventoryTitle)) return;
+        InventoryTitle.Text = value;
+    }
 
-        if (IsInstanceValid(SlotsGrid))
-        {
-            SlotsGrid.Columns = Columns;
-        }
+    private void UpdateSlotsGrid(Array<InventorySlot> slots)
+    {
+        if (!IsInstanceValid(SlotsGrid)) return;
 
-        // FIXME: We're re-creating every slot every UI update and this could probably be more efficient if we didn't do that.
-        if (IsInstanceValid(SlotsGrid))
+        // Clear all previous slot UIs
+        foreach (Node child in SlotsGrid.GetChildren())
         {
-            // Clear all previous slot UIs
-            foreach (Node child in SlotsGrid.GetChildren())
+            if (!IsInstanceValid(child)) continue;
+
+            if (child is InventorySlotUI slotUI)
             {
-                if (!IsInstanceValid(child)) continue;
-
-                if (child is InventorySlotUI slotUI)
-                {
-                    slotUI.QueueFree();
-                }
-            }
-
-            // Create new slot UIs
-            for(int i = 0; i < inventorySlots.Count; i++)
-            {
-                InventorySlot currentSlot = inventorySlots[i];
-                int row = i / SlotsGrid.Columns;
-                if (row >= RowsDisplayed) return;
-                InventorySlotUI slotUI = SCENE_SLOT_UI.Instantiate<InventorySlotUI>();
-                slotUI.TargetSlot = currentSlot;
-                slotUI.ParentInventoryUI = this;
-                slotUI.OnSlotClicked += OnSlotClickedInner;
-                SlotsGrid?.AddChild(slotUI);
+                slotUI.QueueFree();
             }
         }
+
+        // Create new slot UIs
+        for(int i = 0; i < slots.Count; i++)
+        {
+            InventorySlot currentSlot = slots[i];
+            int row = i / SlotsGrid.Columns;
+            if (row >= RowsDisplayed) return;
+            InventorySlotUI slotUI = SCENE_SLOT_UI.Instantiate<InventorySlotUI>();
+            slotUI.TargetSlot = currentSlot;
+            slotUI.ParentInventoryUI = this;
+            slotUI.OnSlotClicked += OnSlotClickedInner;
+            SlotsGrid?.AddChild(slotUI);
+        }
+    }
+
+    private void UpdateSlotsGridColumns(int columns)
+    {
+        if (!IsInstanceValid(SlotsGrid)) return;
+
+        SlotsGrid.Columns = columns;
     }
 
     private void OnSlotClickedInner(InventorySlotUI slotUI)
@@ -112,26 +111,30 @@ public partial class InventoryUI : Container
         EmitSignal(SignalName.OnSlotClicked, slotUI);
     }
 
+
+    /// <summary>
+    /// Sets the visibility of the inventory UI
+    /// </summary>
+    /// <param name="isVisible">True to show the inventory, false to hide it</param>
     public void SetVisibility(bool isVisible)
     {
         Visible = isVisible;
         EmitSignal(SignalName.OnVisibilityChanged, isVisible);
     }
 
+    /// <summary>
+    /// Toggles the visibility of the inventory UI
+    /// </summary>
     public void ToggleVisibility()
     {
         Visible = !Visible;
         EmitSignal(SignalName.OnVisibilityChanged, Visible);
     }
 
-    private void OnUpdateTargetInventory()
-    {
-        UpdateUI();
-
-        if (_targetInventory == null) return;
-        _targetInventory.OnUpdated += UpdateUI;
-    }
-
+    /// <summary>
+    /// Returns the first empty slot in the inventory
+    /// </summary>
+    /// <returns>The first empty slot in the inventory, or null if there are no empty slots</returns>
     public InventorySlotUI GetFirstEmptySlot()
     {
         if (TargetInventory == null) return null;
@@ -145,6 +148,11 @@ public partial class InventoryUI : Container
         return firstEmptySlotUI;
     }
 
+    /// <summary>
+    /// Finds a slot in the UI which is linked to a given inventory slot.
+    /// </summary>
+    /// <param name="slot">The inventory slot to find the UI for</param>
+    /// <returns>The InventorySlotUI linked to the given inventory slot, or null if not found</returns>
     public InventorySlotUI GetSlotUIForSlot(InventorySlot slot)
     {
         if (slot == null) return null;
