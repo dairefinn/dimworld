@@ -9,63 +9,31 @@ public partial class InventoryViewer : Control
 
     [Export] public Inventory PrimaryInventory {
         get => _primaryInventory;
-        set {
-            _primaryInventory = value;
-            OnUpdateReferences();
-        }
+        set => SetPrimaryInventory(value);
     }
     private Inventory _primaryInventory;
 
     [Export] public Inventory SecondaryInventory {
         get => _secondaryInventory;
-        set {
-            _secondaryInventory = value;
-            OnUpdateReferences();
-        }
+        set => SetSecondaryInventory(value);
     }
     private Inventory _secondaryInventory;
 
     [Export] private InventoryUI PrimaryInventoryUI {
         get => _primaryInventoryUI;
-        set {
-            if (_primaryInventoryUI != null)
-            {
-                _primaryInventoryUI.TargetInventory = null;
-                _primaryInventoryUI.OnVisibilityChanged -= OnSecondaryVisibilityChanged;
-            }
-            _primaryInventoryUI = value;
-            OnUpdateReferences();
-        }
+        set => SetPrimaryInventoryUI(value);
     }
     private InventoryUI _primaryInventoryUI;
 
     [Export] private InventoryUI SecondaryInventoryUI {
         get => _secondaryInventoryUI;
-        set {
-            if (_secondaryInventoryUI != null)
-            {
-                _secondaryInventoryUI.TargetInventory = null;
-                _secondaryInventoryUI.OnVisibilityChanged -= OnSecondaryVisibilityChanged;
-            }
-            _secondaryInventoryUI = value;
-            OnUpdateReferences();
-        }
+        set => SetSecondaryInventoryUI(value);
     }
     private InventoryUI _secondaryInventoryUI;
 
     [Export] public InventoryHotbar Hotbar {
         get => _hotbar;
-        set {
-            if (_hotbar != null)
-            {
-                _hotbar.Inventory = null;
-                _hotbar.ColumnCount = 5;
-                _hotbar.HotbarRow = 0;
-            }
-
-            _hotbar = value;
-            OnUpdateReferences();
-        }
+        set => SetHotbar(value);
     }
     private InventoryHotbar _hotbar;
     [Export] public InventoryContextMenuUI ContextMenu { get; set; }
@@ -74,59 +42,99 @@ public partial class InventoryViewer : Control
     public bool IsViewing => GetPrimaryInventoryVisibility() || GetSecondaryInventoryVisibility();
 
 
-    public void OnUpdateReferences()
-    {
-        if (PrimaryInventory != null)
+    private void SetPrimaryInventory(Inventory value) {
+        _primaryInventory = value;
+
+        if (_primaryInventory != null)
         {
-            if (PrimaryInventoryUI != null)
-            {
-                PrimaryInventoryUI.TargetInventory = PrimaryInventory;
-            }
+            PrimaryInventoryUI?.SetTargetInventory(_primaryInventory);
+            Hotbar?.SetInventory(_primaryInventory);
         }
         else
         {
             SetPrimaryInventoryVisibility(false);
         }
+    }
 
-        if (SecondaryInventory != null)
+    private void SetSecondaryInventory(Inventory value) {
+        _secondaryInventory = value;
+
+        if (_secondaryInventory != null)
         {
-            if (SecondaryInventoryUI != null)
-            {
-                SecondaryInventoryUI.TargetInventory = SecondaryInventory;
-            }
+            SecondaryInventoryUI?.SetTargetInventory(_secondaryInventory);
         }
         else
         {
             SetSecondaryInventoryVisibility(false);
         }
+    }
 
-        if (IsInstanceValid(PrimaryInventoryUI))
+    private void SetPrimaryInventoryUI(InventoryUI value)
+    {
+        if (_primaryInventoryUI != null)
         {
-            PrimaryInventoryUI.OnVisibilityChanged -= OnPrimaryVisibilityChanged;
-            PrimaryInventoryUI.OnVisibilityChanged += OnPrimaryVisibilityChanged;
-            PrimaryInventoryUI.OnSlotClicked += OnPrimaryInventorySlotClicked;
+            _primaryInventoryUI.OnVisibilityChanged -= OnPrimaryVisibilityChanged;
+            _primaryInventoryUI.OnSlotClicked -= OnPrimaryInventorySlotClicked;
+            _primaryInventoryUI.OnSlotAlternateClicked -= RequestContextMenu;
         }
 
-        if (IsInstanceValid(SecondaryInventoryUI))
-        {
-            SecondaryInventoryUI.OnVisibilityChanged -= OnSecondaryVisibilityChanged;
-            SecondaryInventoryUI.OnVisibilityChanged += OnSecondaryVisibilityChanged;
-            SecondaryInventoryUI.OnSlotClicked += OnSecondaryInventorySlotClicked;
-        }
-        
-        if (IsInstanceValid(Hotbar))
-        {
-            Hotbar.Inventory = PrimaryInventory;
+        _primaryInventoryUI = value;
 
-            if (IsInstanceValid(PrimaryInventoryUI))
+        if (_primaryInventoryUI != null)
+        {
+            _primaryInventoryUI.OnVisibilityChanged += OnPrimaryVisibilityChanged;
+            _primaryInventoryUI.OnSlotClicked += OnPrimaryInventorySlotClicked;
+            _primaryInventoryUI.OnSlotAlternateClicked += RequestContextMenu;
+            _primaryInventoryUI.TargetInventory = PrimaryInventory;
+            Hotbar?.SetColumnCount(_primaryInventoryUI.SlotsGrid.Columns);
+            Hotbar?.SetHotbarRow(_primaryInventoryUI.RowsDisplayed); // Hotbar is the last row
+        }
+    }
+
+    private void SetSecondaryInventoryUI(InventoryUI value)
+    {
+        if (_secondaryInventoryUI != null)
+        {
+            _secondaryInventoryUI.OnVisibilityChanged -= OnSecondaryVisibilityChanged;
+            _secondaryInventoryUI.OnSlotClicked -= OnSecondaryInventorySlotClicked;
+            _secondaryInventoryUI.OnSlotAlternateClicked -= RequestContextMenu;
+        }
+
+        _secondaryInventoryUI = value;
+
+        if (_secondaryInventoryUI != null)
+        {
+            _secondaryInventoryUI.OnVisibilityChanged += OnSecondaryVisibilityChanged;
+            _secondaryInventoryUI.OnSlotClicked += OnSecondaryInventorySlotClicked;
+            _secondaryInventoryUI.OnSlotAlternateClicked += RequestContextMenu;
+            _secondaryInventoryUI.TargetInventory = SecondaryInventory;
+        }
+    }
+
+    private void SetHotbar(InventoryHotbar value)
+    {
+        if (_hotbar != null)
+        {
+            _hotbar.Inventory = null;
+            _hotbar.ColumnCount = 5;
+            _hotbar.HotbarRow = 0;
+        }
+
+        _hotbar = value;
+
+        if (_hotbar != null)
+        {
+            _hotbar.Inventory = PrimaryInventory;
+
+            if (IsInstanceValid(_primaryInventoryUI))
             {
-                Hotbar.ColumnCount = PrimaryInventoryUI.SlotsGrid.Columns;
-                Hotbar.HotbarRow = PrimaryInventoryUI.RowsDisplayed; // Hotbar is the last row
+                _hotbar.ColumnCount = _primaryInventoryUI.SlotsGrid.Columns;
+                _hotbar.HotbarRow = _primaryInventoryUI.RowsDisplayed; // Hotbar is the last row
             }
         }
     }
 
-    
+
     // QUICK TRANSFERRING
 
     private void OnPrimaryInventorySlotClicked(InventorySlotUI slotUI)
@@ -229,10 +237,6 @@ public partial class InventoryViewer : Control
                 Globals.Instance.Player.EquipmentHandler.Unequip(targetItemCanBeEquipped);
             }
         }
-
-        // TODO: InventorySlot.OnUpdate signal should handle this
-        // sourceSlot.UpdateUI();
-        // destinationSlot.UpdateUI();
     }
 
 
@@ -247,7 +251,7 @@ public partial class InventoryViewer : Control
         Vector2 contextMenuPosition = inventorySlotUI.GlobalPosition + new Vector2(slotWidth, 10);
 
         // If the context menu is already open and the position is the same, hide it
-        if ((ContextMenu.GlobalPosition == contextMenuPosition && ContextMenu.Visible))
+        if (ContextMenu.GlobalPosition == contextMenuPosition && ContextMenu.Visible)
         {
             ContextMenu.Hide();
             return;
@@ -277,7 +281,6 @@ public partial class InventoryViewer : Control
         if (slotUI == null) return;
 
         ContextMenu.Hide();
-        // slotUI.UpdateUI();
     }
 
     public void TryUseSelectedItem()

@@ -21,6 +21,7 @@ public partial class InventorySlotUI : Panel
 
 
     [Signal] public delegate void OnSlotClickedEventHandler(InventorySlotUI slotUI);
+    [Signal] public delegate void OnSlotAlternateClickedEventHandler(InventorySlotUI slotUI);
 
 
     [Export] public InventorySlot TargetSlot {

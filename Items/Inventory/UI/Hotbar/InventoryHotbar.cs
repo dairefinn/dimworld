@@ -15,28 +15,19 @@ public partial class InventoryHotbar : Control
 
     [Export] public Inventory Inventory {
         get => _inventory;
-        set {
-            _inventory = value;
-            OnUpdateInventory();
-        }
+        set => SetInventory(value);
     }
     private Inventory _inventory;
 
 
     [Export] public int ColumnCount {
         get => _columnCount;
-        set {
-            _columnCount = value;
-            UpdateUI();
-        }
+        set => SetColumnCount(value);
     }
     private int _columnCount = 5;
     [Export] public int HotbarRow {
         get => _hotbarRow;
-        set {
-            _hotbarRow = value;
-            UpdateUI();
-        }
+        set => SetHotbarRow(value);
     }
     private int _hotbarRow = 0;
     [Export] public int SelectedSlotIndex {
@@ -60,6 +51,31 @@ public partial class InventoryHotbar : Control
     private Tween tweenSelectedBorder;
 
 
+    public void SetInventory(Inventory value)
+    {
+        _inventory = value;
+
+        if (_inventory != null)
+        {
+            _inventory.OnUpdated += UpdateUI;
+        }
+
+        UpdateUI();
+    }
+
+    public void SetColumnCount(int value)
+    {
+        _columnCount = value;
+        UpdateUI();
+    }
+
+    public void SetHotbarRow(int value)
+    {
+        _hotbarRow = value;
+        UpdateUI();
+    }
+
+
     public override void _Ready()
     {
         UpdateUI();
@@ -79,18 +95,6 @@ public partial class InventoryHotbar : Control
         }
     }
 
-
-
-    public void OnUpdateInventory()
-    {
-        if (Inventory != null)
-        {
-            Inventory.OnUpdated += UpdateUI;
-        }
-
-        UpdateUI();
-    }
-
     private Array<InventorySlot> GetInventorySlots()
     {
         Array<InventorySlot> slots = [];
@@ -107,6 +111,7 @@ public partial class InventoryHotbar : Control
         return slots;
     }
     
+    // TODO: Get rid of this, replacing all the nodes is too heavy
     private void UpdateUI()
     {
         if (!IsInstanceValid(this)) return;

@@ -12,6 +12,7 @@ public partial class InventoryUI : Container
 
     [Signal] public delegate void OnVisibilityChangedEventHandler(bool visible);
     [Signal] public delegate void OnSlotClickedEventHandler(InventorySlotUI slotUI);
+    [Signal] public delegate void OnSlotAlternateClickedEventHandler(InventorySlotUI slotUI);
 
 
     /// <summary>
@@ -53,17 +54,6 @@ public partial class InventoryUI : Container
     [Export] public Label InventoryTitle;
 
 
-    private void SetTargetInventory(Inventory value)
-    {
-        _targetInventory = value;
-
-        if (_targetInventory != null)
-        {
-            UpdateTitleLabel(value.InventoryName);
-            UpdateSlotsGrid(value.Slots);
-        }
-    }
-
     private void UpdateTitleLabel(string value)
     {
         if (!IsInstanceValid(InventoryTitle)) return;
@@ -95,6 +85,7 @@ public partial class InventoryUI : Container
             slotUI.TargetSlot = currentSlot;
             slotUI.ParentInventoryUI = this;
             slotUI.OnSlotClicked += OnSlotClickedInner;
+            slotUI.OnSlotAlternateClicked += OnSlotAlternateClickedInner;
             SlotsGrid?.AddChild(slotUI);
         }
     }
@@ -111,6 +102,26 @@ public partial class InventoryUI : Container
         EmitSignal(SignalName.OnSlotClicked, slotUI);
     }
 
+    private void OnSlotAlternateClickedInner(InventorySlotUI slotUI)
+    {
+        EmitSignal(SignalName.OnSlotAlternateClicked, slotUI);
+    }
+
+    
+    /// <summary>
+    /// Sets the target inventory for this UI. This will update the title label and the slots grid to match the new inventory.
+    /// </summary>
+    /// <param name="value">The inventory to set as the target</param>
+    public void SetTargetInventory(Inventory value)
+    {
+        _targetInventory = value;
+
+        if (_targetInventory != null)
+        {
+            UpdateTitleLabel(value.InventoryName);
+            UpdateSlotsGrid(value.Slots);
+        }
+    }
 
     /// <summary>
     /// Sets the visibility of the inventory UI

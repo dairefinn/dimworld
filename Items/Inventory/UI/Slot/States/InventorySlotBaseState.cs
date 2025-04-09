@@ -10,6 +10,7 @@ public partial class InventorySlotBaseState : InventorySlotState
 
 	public override State StateId { get; set; } = State.BASE;
 
+
     public override async void Enter()
 	{
 		if (!inventorySlotUI.IsNodeReady())
@@ -25,15 +26,15 @@ public partial class InventorySlotBaseState : InventorySlotState
 
 	public override void OnGuiInput(InputEvent @event)
 	{
-		if (mouseOverInventorySlot && inventorySlotUI.CanBeSelected && !inventorySlotUI.TargetSlot.IsEmpty)
+		if (mouseOverInventorySlot && inventorySlotUI.CanBeSelected)
 		{
 			if (@event.IsActionPressed("shift_lmb"))
 			{
 				inventorySlotUI.EmitSignal(InventorySlotUI.SignalName.OnSlotClicked, inventorySlotUI);
 				return;
 			}
-				
-			if (@event.IsActionPressed("lmb"))
+
+			if (@event.IsActionPressed("lmb") && !inventorySlotUI.TargetSlot.IsEmpty)
 			{
 				EmitSignal(InventorySlotState.SignalName.TransitionRequested, this, (int)State.CLICKED);
 				return;
@@ -41,7 +42,7 @@ public partial class InventorySlotBaseState : InventorySlotState
 			
 			if (@event.IsActionPressed("rmb"))
 			{
-				Globals.Instance.InventoryViewer.RequestContextMenu(inventorySlotUI);
+				inventorySlotUI.EmitSignal(InventorySlotUI.SignalName.OnSlotAlternateClicked, inventorySlotUI);
 				return;
 			}
 
