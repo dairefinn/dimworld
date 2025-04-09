@@ -1,4 +1,4 @@
-[gd_scene load_steps=19 format=3 uid="uid://cbc7lb60qv02d"]
+[gd_scene load_steps=18 format=3 uid="uid://cbc7lb60qv02d"]
 
 [ext_resource type="StyleBox" uid="uid://cuxjk7ngo011o" path="res://Items/Inventory/UI/Slot/Styles/InventorySlotUI_Default.tres" id="1_o4ioh"]
 [ext_resource type="Script" uid="uid://bo1stix1esiy8" path="res://Items/Inventory/UI/Slot/InventorySlotUI.cs" id="2_yi1il"]
@@ -9,7 +9,6 @@
 [ext_resource type="Script" uid="uid://dctmd2sl8wn1j" path="res://Items/Inventory/UI/Slot/States/InventorySlotBaseState.cs" id="6_yjg2m"]
 [ext_resource type="Script" uid="uid://bfm3m077sdq4j" path="res://Items/Inventory/UI/Slot/States/InventorySlotClickedState.cs" id="7_x15h5"]
 [ext_resource type="Script" uid="uid://dhotkpi4inknx" path="res://Items/Inventory/UI/Slot/States/InventorySlotDraggingState.cs" id="8_nqjmp"]
-[ext_resource type="Script" uid="uid://dr6rusanwjadf" path="res://Items/Inventory/UI/Slot/States/InventorySlotReleasedState.cs" id="9_h2m36"]
 [ext_resource type="StyleBox" uid="uid://bcjpx3k1qej8l" path="res://Items/Inventory/UI/Slot/Styles/InventorySlotUI_Hover.tres" id="12_f11j2"]
 
 [sub_resource type="Resource" id="Resource_gfr1i"]
@@ -134,8 +133,7 @@ initialState = NodePath("StateBase")
 states = {
 0: NodePath("StateBase"),
 1: NodePath("StateClicked"),
-2: NodePath("StateDragging"),
-3: NodePath("StateReleased")
+2: NodePath("StateDragging")
 }
 
 [node name="StateBase" type="Node" parent="StateMachine"]
@@ -146,9 +144,6 @@ script = ExtResource("7_x15h5")
 
 [node name="StateDragging" type="Node" parent="StateMachine"]
 script = ExtResource("8_nqjmp")
-
-[node name="StateReleased" type="Node" parent="StateMachine"]
-script = ExtResource("9_h2m36")
 
 [node name="HoverOverlay" type="Panel" parent="."]
 unique_name_in_owner = true

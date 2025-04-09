@@ -9,8 +9,7 @@ public partial class InventorySlotDragArea : Area2D
 
     public InventorySlotUI ParentSlot { get; set; }
     public CollisionShape2D CollisionShape { get; set; }
-
-    public Array<InventorySlotDragArea> Targets = [];
+    public InventorySlotDragArea Target = null;
 
 
     public override void _Ready()
@@ -23,17 +22,13 @@ public partial class InventorySlotDragArea : Area2D
 
     private void OnDragAreaEntered(Area2D area)
     {
-        if (area is InventorySlotDragArea dragArea)
-        {
-            Targets.Add(dragArea);
-        }
+        if (area is not InventorySlotDragArea dragArea) return;
+        Target = dragArea;
     }
 
     private void OnDragAreaExited(Area2D area)
     {
-        if (area is InventorySlotDragArea dragArea)
-        {
-            Targets.Remove(dragArea);
-        }
+        if (area != Target) return;
+        Target = null;
     }
 }

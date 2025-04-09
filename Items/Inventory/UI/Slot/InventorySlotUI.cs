@@ -31,10 +31,7 @@ public partial class InventorySlotUI : Panel
     private InventorySlot _targetSlot;
     [Export] public int SlotIndex {
         get => _slotIndex;
-        set {
-            _slotIndex = value;
-            UpdateUI();
-        }
+        set => SetSlotIndex(value);
     }
     private int _slotIndex = -1;
     [Export] public bool CanBeSelected { get; set; } = true;
@@ -66,8 +63,19 @@ public partial class InventorySlotUI : Panel
         {
             _targetSlot.OnUpdated += UpdateUI;
         }
-        
+
         UpdateUI();
+    }
+
+    private void SetSlotIndex(int value)
+    {
+        _slotIndex = value;
+        
+        if (IsInstanceValid(IndexLabel))
+        {
+            IndexLabel.Text = _slotIndex.ToString();
+            IndexLabel.Visible = _slotIndex >= 0;
+        }
     }
 
     private string GetLabelText(InventoryItem item)
@@ -90,7 +98,7 @@ public partial class InventorySlotUI : Panel
         bool canHoldMultiple = false;
         int itemQuantity = 0;
         Texture2D itemIcon = null;
-        bool IsEquipped = false;
+        bool isEquipped = false;
 
         if (_targetSlot != null && _targetSlot.Item != null)
         {
@@ -98,7 +106,7 @@ public partial class InventorySlotUI : Panel
             canHoldMultiple = _targetSlot.Item.MaxStackSize > 1;
             itemQuantity = _targetSlot.Quantity;
             itemIcon = _targetSlot.Item.Icon;
-            IsEquipped = _targetSlot.Item.IsEquipped;
+            isEquipped = _targetSlot.Item.IsEquipped;
         }
 
         if (IsInstanceValid(ItemLabel))
@@ -116,14 +124,8 @@ public partial class InventorySlotUI : Panel
         {
             ItemIcon.Texture = itemIcon;
         }
-
-        if (IsInstanceValid(IndexLabel))
-        {
-            IndexLabel.Text = _slotIndex.ToString();
-            IndexLabel.Visible = SlotIndex >= 0;
-        }
         
-        if(IsEquipped)
+        if(isEquipped)
 		{
             SetStyle(StyleType.Active);
 		}
@@ -187,6 +189,7 @@ public partial class InventorySlotUI : Panel
     public void SetStyle(StyleType type)
     {
         if (!IsInstanceValid(this)) return;
+        if (CurrentStyle == type) return;
 
         switch (type)
         {

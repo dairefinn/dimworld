@@ -6,12 +6,15 @@ using Godot;
 public partial class InventorySlotDraggingState : InventorySlotState
 {
 
+	private static readonly float DRAGGING_MINIMUM_THRESHOLD = 0.05f;
+
+
     public override State StateId { get; set; } = State.DRAGGING;
 
 
-	private const float DRAGGING_MINIMUM_THRESHOLD = 0.05f;
-	private bool minimumDragTimeElapsed = false;
-	private InventorySlotUI.StyleType? previousStyleType;
+	private bool _minimumDragTimeElapsed = false;
+	private InventorySlotUI.StyleType? _previousStyleType;
+	private Vector2 _dragAreaSize = Vector2.Zero;
 
     
     public override void Enter()
@@ -22,22 +25,24 @@ public partial class InventorySlotDraggingState : InventorySlotState
 			inventorySlotUI.Reparent(uiLayer);
 		}
 
-		previousStyleType = inventorySlotUI.CurrentStyle;
+		_previousStyleType = inventorySlotUI.CurrentStyle;
 		inventorySlotUI.SetStyle(InventorySlotUI.StyleType.Selected);
 
-		minimumDragTimeElapsed = false;
+		_minimumDragTimeElapsed = false;
 		SceneTreeTimer thresholdTimer = GetTree().CreateTimer(DRAGGING_MINIMUM_THRESHOLD, false);
-		thresholdTimer.Timeout += () => minimumDragTimeElapsed = true;
+		thresholdTimer.Timeout += () => _minimumDragTimeElapsed = true;
 
 		inventorySlotUI.DragArea.Monitoring = true;
 		inventorySlotUI.DragArea.Monitorable = false;
+
+		_dragAreaSize = (inventorySlotUI.DragArea.CollisionShape.Shape as RectangleShape2D).Size;
     }
 
 	public override void Exit()
 	{
-		if (previousStyleType != null)
+		if (_previousStyleType != null)
 		{
-			inventorySlotUI.SetStyle(previousStyleType.Value);
+			inventorySlotUI.SetStyle(_previousStyleType.Value);
 		}
 		else
 		{
@@ -47,28 +52,34 @@ public partial class InventorySlotDraggingState : InventorySlotState
 
     public override void OnInput(InputEvent @event)
     {
-		bool mouseMotion = @event is InputEventMouseMotion;
-		bool cancel = @event.IsActionPressed("rmb");
-		bool confirm = @event.IsActionPressed("lmb") || @event.IsActionReleased("lmb");
 
-		if (mouseMotion)
+		if (@event is InputEventMouseMotion mouseMotion)
 		{
-			inventorySlotUI.DragArea.GlobalPosition = inventorySlotUI.DragArea.GetGlobalMousePosition() - (inventorySlotUI.DragArea.CollisionShape.Shape as RectangleShape2D).Size;
+			inventorySlotUI.DragArea.GlobalPosition = mouseMotion.GlobalPosition - _dragAreaSize;
 		}
 
-		if (cancel)
+		if (@event.IsActionPressed("rmb"))
 		{
 			EmitSignal(InventorySlotState.SignalName.TransitionRequested, this, (int)State.BASE);
 			return;
 		}
 		
-		if (minimumDragTimeElapsed && confirm)
+		if (@event.IsActionReleased("lmb") && _minimumDragTimeElapsed)
 		{
-			GetViewport().SetInputAsHandled();
-			EmitSignal(InventorySlotState.SignalName.TransitionRequested, this, (int)State.RELEASED);
+			ReleaseDragOn(inventorySlotUI.DragArea.Target);
+			EmitSignal(InventorySlotState.SignalName.TransitionRequested, this, (int)State.BASE);
 			return;
 		}
     }
+
+	private void ReleaseDragOn(InventorySlotDragArea target)
+	{
+		if (target == null) return;
+		if (target.ParentSlot == null) return;
+		if (target.ParentSlot == inventorySlotUI) return;
+		Globals.Instance.InventoryViewer.MoveItemFromSourceToDestination(inventorySlotUI.ParentInventoryUI, target.ParentSlot.ParentInventoryUI, inventorySlotUI, target.ParentSlot);
+		// Globals.Instance.InventoryViewer.CallDeferred(InventoryViewer.MethodName.MoveItemFromSourceToDestination, [inventorySlotUI.ParentInventoryUI, target.ParentSlot.ParentInventoryUI, inventorySlotUI, target.ParentSlot]);
+	}
 
 
 
