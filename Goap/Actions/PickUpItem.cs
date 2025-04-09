@@ -78,41 +78,31 @@ public partial class PickUpItem : GoapAction
 
         Vector2 agentPosition = characterController.GlobalPosition;
 
-        // Get any nearby containers that can be reached and have the item
-        System.Collections.Generic.List<IHasInventory> containers = [..
-            characterController.DetectionHandler.GetDetectedInstancesImplementing<IHasInventory>()
-            .Where(container => {
-                if (container is not Node2D node2D) return false; // Must be a node2D
-                if (!characterController.CanReachPoint(node2D.GlobalPosition)) return false;
-                if (!container.Inventory.HasItem(itemId)) return false;
+        NodeLocation[] containerLocations = characterController.MemoryHandler.GetMemoriesOfType<NodeLocation>().Where(node => node.Node is IHasInventory hasInventory && hasInventory.CanTakeFromInventory).ToArray();
+        if (containerLocations.Length == 0) return null; // Must have at least one chest location in memory
+
+        InventoryContents[] inventoryContents = characterController.MemoryHandler.GetMemoriesOfType<InventoryContents>();
+
+        System.Collections.Generic.List<IHasInventory> containersToSearch = containerLocations
+            .Where(location => {
+                if (location.Node == null) return false; // Skip null nodes
+                if (location.Node is not IHasInventory container) return false; // Must be a container
+                if (!characterController.CanReachPoint(location.Position)) return false; // Must be reachable
+            
+                InventoryContents contentsMemory = inventoryContents.FirstOrDefault(memory => memory.Node == container);
+
+                if (contentsMemory == null) return false;
+                if (!contentsMemory.Inventory.HasItem(itemId)) return false;
+
                 return true;
             })
-            .ToArray()
-        ];
+            .OrderBy(memory => memory.Position.DistanceTo(goapAgent.GlobalPositionThreadSafe))
+            .Select(memory => memory.Node as IHasInventory)
+            .ToList();
 
-        if (containers.Count == 0) return null; // No containers found
+        if (containersToSearch.Count == 0) return null; // Must have at least one container to check
 
-        IHasInventory closestContainer = null;
-        Vector2 closestContainerPosition = Vector2.Zero;
-
-        foreach (IHasInventory container in containers)
-        {
-            if (container == null) continue; // Skip null containers
-            if (container is not Node2D node2D) continue; // Must be a node2D
-
-            if (closestContainer == null)
-            {
-                closestContainer = container;
-                continue;
-            }
-
-            if (agentPosition.DistanceTo(node2D.GlobalPosition) < agentPosition.DistanceTo(closestContainerPosition))
-            {
-                closestContainer = container;
-            }
-        }
-
-        return closestContainer;
+        return containersToSearch.First();
     }
 
 }
