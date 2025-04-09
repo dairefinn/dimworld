@@ -11,11 +11,29 @@ public partial class EquipmentHandler : Node2D
 
     [Export] public Array<InventoryItem> Equipment { get; set; } = [];
 
+    public Node2D Parent { get => _parent; }
+    private Node2D _parent;
+
+
+    public EquipmentHandler(Node2D parent)
+    {
+        _parent = parent;
+        _parent.AddChild(this);
+    }
+
 
     public override void _Ready()
     {
         base._Ready();
     }
+
+    public override void _Process(double delta)
+    {
+        base._Process(delta);
+
+        GlobalPosition = (GetParent() as Node2D).GlobalPosition;
+    }
+
 
     public void Equip(ICanBeEquipped item)
     {

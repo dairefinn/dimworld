@@ -290,11 +290,10 @@ public partial class InventoryViewer : Control
 
         InventoryItem item = selectedSlot.Item;
 
-        if (item is ICanBeUsedFromHotbar itemCanBeUsedFromHotbar)
-        {
-            itemCanBeUsedFromHotbar.UseFromHotbar(Globals.Instance.Player.EquipmentHandler);
-            selectedSlot.EmitSignal(InventorySlot.SignalName.OnUpdated);
-        }
+        if (item is not ICanBeUsedFromHotbar itemCanBeUsedFromHotbar) return;
+
+        itemCanBeUsedFromHotbar.UseFromHotbar(Globals.Instance.Player.EquipmentHandler);
+        selectedSlot.EmitSignal(InventorySlot.SignalName.OnUpdated);
     }
 
     public void TryReloadSelectedItem()

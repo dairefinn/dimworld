@@ -51,7 +51,7 @@ public partial class CharacterController : CharacterBody2D, IHasAgentStats, ICan
 
 	public ModifierHandler ModifierHandler { get; set; } = new();
 	public MemoryHandler MemoryHandler { get; set; } = new();
-	public EquipmentHandler EquipmentHandler { get; set; } = new();
+	public EquipmentHandler EquipmentHandler { get; set; }
 
 
     private Vector2 desiredMovementDirection = Vector2.Zero;
@@ -64,10 +64,13 @@ public partial class CharacterController : CharacterBody2D, IHasAgentStats, ICan
 	{
 		base._Ready();
 
+		EquipmentHandler = new EquipmentHandler(this);
+
 		// Hack to get the AgentStats to be initialized as a separate instance
 		if (Stats != null)
 		{
 			Stats = new AgentStats(Stats);
+			Stats.HealthChanged += OnHealthChanged;
 		}
 
 		if (StatsUI == null)
@@ -231,15 +234,11 @@ public partial class CharacterController : CharacterBody2D, IHasAgentStats, ICan
 
 	// DAMAGE HANDLING
 
-    public void TakeDamage(int damage)
+    public void OnHealthChanged()
     {
-		DeveloperConsole.Print($"Taking {damage} damage");
-		Stats.Health -= damage;
-		if (Stats.Health <= 0)
-		{
-			DeveloperConsole.Print("Agent is dead");
-			// QueueFree(); // TODO: Implement death logic
-		}
+		if (Stats.Health > 0) return;
+		DeveloperConsole.Print("Agent is dead");
+		QueueFree(); // TODO: Implement a state machine and move the character to the dead state instead of deleting it.
     }
 
 
