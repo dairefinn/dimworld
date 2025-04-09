@@ -68,6 +68,11 @@ public class StateMachine<T>
 		currentState?.OnMouseExited();
 	}
 
+	public void TransitionTo(string to)
+	{
+		TransitionTo(currentState, to);
+	}
+
 	public void TransitionTo(State<T> from, string to)
 	{
 		if (Engine.IsEditorHint()) return; // Ignore transitions in the editor

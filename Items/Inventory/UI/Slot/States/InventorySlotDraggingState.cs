@@ -49,14 +49,14 @@ public partial class InventorySlotDraggingState : State<InventorySlotUI>
 
 		if (@event.IsActionPressed("rmb"))
 		{
-			ParentStateMachine.TransitionTo(this, "BASE");
+			ParentStateMachine.TransitionTo(this, InventorySlotUI.States.BASE.ToString());
 			return;
 		}
 		
 		if (@event.IsActionReleased("lmb"))
 		{
 			ReleaseDragOn(Parent.DragArea.Target);
-			ParentStateMachine.TransitionTo(this, "BASE");
+			ParentStateMachine.TransitionTo(this, InventorySlotUI.States.BASE.ToString());
 			return;
 		}
     }

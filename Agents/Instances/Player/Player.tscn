@@ -1,6 +1,6 @@
 [gd_scene load_steps=42 format=3 uid="uid://dius53mdc51ny"]
 
-[ext_resource type="Script" uid="uid://bl231uey5msax" path="res://Agents/Instances/Player.cs" id="1_t81nq"]
+[ext_resource type="Script" uid="uid://bl231uey5msax" path="res://Agents/Instances/Player/Player.cs" id="1_t81nq"]
 [ext_resource type="Texture2D" uid="uid://dpxdm8niupad2" path="res://Assets/Sprites/Characters/Character.png" id="2_ekqt3"]
 [ext_resource type="Script" uid="uid://bm0o5ggnfmm6y" path="res://Items/Inventory/InventorySlot.cs" id="2_i1fwj"]
 [ext_resource type="Script" uid="uid://dph74un0q20el" path="res://Items/Inventory/Inventory.cs" id="3_ilihy"]

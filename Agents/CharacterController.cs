@@ -16,6 +16,17 @@ using Godot.Collections;
 public partial class CharacterController : CharacterBody2D, IHasAgentStats, ICanBeMoved, IHasInventory, IMemorableNode, IAffectedByModifiers, ICanSpeak
 {
 
+	public enum States
+	{
+		Idle,
+		Walking,
+		Running,
+		Attacking,
+		Interacting,
+		Dead
+	}
+
+
 	[ExportGroup("Movement")]
 	[Export] public float Speed { get; set; } = 100f;
 	[Export] public float Acceleration { get; set; } = 50f;
@@ -54,8 +65,8 @@ public partial class CharacterController : CharacterBody2D, IHasAgentStats, ICan
 	public EquipmentHandler EquipmentHandler { get; set; }
 
 
-    private Vector2 desiredMovementDirection = Vector2.Zero;
-	private Rid navigationRid;
+    private Vector2 _desiredMovementDirection = Vector2.Zero;
+	private Rid _navigationRid;
 
 
 	// LIFECYCLE EVENTS
@@ -81,7 +92,7 @@ public partial class CharacterController : CharacterBody2D, IHasAgentStats, ICan
 
 		NavigationAgent.VelocityComputed += OnSafeVelocityComputed;
 
-		navigationRid = NavigationAgent.GetNavigationMap();
+		_navigationRid = NavigationAgent.GetNavigationMap();
 	}
 
 	public override void _PhysicsProcess(double delta)
@@ -136,15 +147,15 @@ public partial class CharacterController : CharacterBody2D, IHasAgentStats, ICan
 
 	public bool CanReachPoint(Vector2 targetPoint)
 	{
-		bool isTargetReachable = NavigationServer2D.MapGetClosestPoint(navigationRid, targetPoint).IsEqualApprox(targetPoint);
+		bool isTargetReachable = NavigationServer2D.MapGetClosestPoint(_navigationRid, targetPoint).IsEqualApprox(targetPoint);
 		return isTargetReachable;
 	}
 
 	private void ProcessNavigation(double delta)
 	{
-		if (desiredMovementDirection != Vector2.Zero)
+		if (_desiredMovementDirection != Vector2.Zero)
 		{
-			ProcessNavigationInput(desiredMovementDirection, delta);
+			ProcessNavigationInput(_desiredMovementDirection, delta);
 		}
 		else if (NavigationAgent.IsTargetReached())
 		{
@@ -157,7 +168,7 @@ public partial class CharacterController : CharacterBody2D, IHasAgentStats, ICan
 
 		MoveAndSlide();
 
-		desiredMovementDirection = Vector2.Zero;
+		_desiredMovementDirection = Vector2.Zero;
 	}
 
 	private void ProcessNavigationInput(Vector2 desiredMovementDirection, double delta)
@@ -203,7 +214,7 @@ public partial class CharacterController : CharacterBody2D, IHasAgentStats, ICan
 	public void SetMovementDirection(Vector2 direction)
 	{
 		if (direction == Vector2.Zero) return;
-		desiredMovementDirection = direction;
+		_desiredMovementDirection = direction;
 	}
 
 	public void SetSprinting(bool isSprinting)
@@ -238,9 +249,13 @@ public partial class CharacterController : CharacterBody2D, IHasAgentStats, ICan
     {
 		if (Stats.Health > 0) return;
 		DeveloperConsole.Print("Agent is dead");
-		QueueFree(); // TODO: Implement a state machine and move the character to the dead state instead of deleting it.
+		OnDeath();
     }
 
+    public virtual void OnDeath()
+    {
+        QueueFree();
+    }
 
 	// FORCE APPLICATION
 

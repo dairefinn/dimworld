@@ -4,7 +4,7 @@
 [ext_resource type="Script" uid="uid://g354xqg3s44p" path="res://InputHandler.cs" id="2_lquwl"]
 [ext_resource type="PackedScene" uid="uid://duk1q562jys3q" path="res://Player/CursorFollower.tscn" id="3_ryguw"]
 [ext_resource type="Script" uid="uid://daxnr47vhajw0" path="res://Levels/LevelHandler/LevelHandler.cs" id="8_ycdy4"]
-[ext_resource type="PackedScene" uid="uid://dius53mdc51ny" path="res://Agents/Instances/Player.tscn" id="9_kek77"]
+[ext_resource type="PackedScene" uid="uid://dius53mdc51ny" path="res://Agents/Instances/Player/Player.tscn" id="9_kek77"]
 [ext_resource type="Resource" uid="uid://octn8jxqeqaq" path="res://Items/Instances/Weapons/Sword.tres" id="10_dg77c"]
 [ext_resource type="Script" uid="uid://bm0o5ggnfmm6y" path="res://Items/Inventory/InventorySlot.cs" id="11_ycdy4"]
 [ext_resource type="PackedScene" uid="uid://qds61vs7bsi1" path="res://Developer/DeveloperMenu.tscn" id="12_dg77c"]
@@ -177,5 +177,5 @@ DayNightController = NodePath("../Logic/DayNightController")
 
 [node name="Player" parent="." instance=ExtResource("9_kek77")]
 z_index = 1
-position = Vector2(1898, 808)
+position = Vector2(1261, 786)
 Inventory = SubResource("Resource_0rl1p")

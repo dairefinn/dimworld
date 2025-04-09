@@ -35,7 +35,7 @@ public partial class InventorySlotBaseState : State<InventorySlotUI>
 
 			if (@event.IsActionPressed("lmb") && !Parent.TargetSlot.IsEmpty)
 			{
-				ParentStateMachine.TransitionTo(this, "CLICKED");
+				ParentStateMachine.TransitionTo(this, InventorySlotUI.States.CLICKED.ToString());
 				return;
 			}
 			

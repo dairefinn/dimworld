@@ -10,6 +10,9 @@ using Godot;
 public partial class InputHandler : Node2D
 {
 
+    private bool CanUseInputs => !DeveloperMenu.IsOpen && !DeveloperConsole.IsFocused && !(Globals.Instance.Player.Stats.Health <= 0);
+
+
     public override void _Process(double delta)
     {
         base._Process(delta);
@@ -17,15 +20,13 @@ public partial class InputHandler : Node2D
         InventoryViewer inventoryViewer = Globals.Instance.InventoryViewer;
         Player player = Globals.Instance.Player;
 
-        bool canUseInputs = !DeveloperMenu.IsOpen && !DeveloperConsole.IsFocused;
-
         bool isMovingManually = Input.IsActionPressed("move_up") || Input.IsActionPressed("move_down") || Input.IsActionPressed("move_left") || Input.IsActionPressed("move_right");
         bool isMovingClick = Input.IsActionPressed("lmb");
         
-        bool canMove = canUseInputs && !inventoryViewer.IsViewing;
+        bool canMove = CanUseInputs && !inventoryViewer.IsViewing;
         bool canMoveClick = false;
-        bool canAbortMove = canUseInputs && Input.IsActionPressed("rmb");
-        bool canSprint = canUseInputs && Input.IsActionPressed("action_sprint") && !inventoryViewer.IsViewing;
+        bool canAbortMove = CanUseInputs && Input.IsActionPressed("rmb");
+        bool canSprint = CanUseInputs && Input.IsActionPressed("action_sprint") && !inventoryViewer.IsViewing;
         
         if (canMove)
         {
@@ -69,16 +70,14 @@ public partial class InputHandler : Node2D
         Player player = Globals.Instance.Player;
         CursorFollower cursorFollower = Globals.Instance.CursorFollower;
 
-        bool canUseInputs = !DeveloperMenu.IsOpen && !DeveloperConsole.IsFocused;
-
         bool isTogglingDeveloperMenu = @event.IsActionPressed("toggle_developer_menu");
 
-        bool canInteract = canUseInputs && @event.IsActionPressed("interact") && !inventoryViewer.IsViewing;
-        bool canOpenInventory = canUseInputs && @event.IsActionPressed("toggle_inventory") && !inventoryViewer.IsViewing;
-        bool canCloseInventory = canUseInputs && (@event.IsActionPressed("toggle_inventory") || @event.IsActionPressed("interact") || @event.IsActionPressed("ui_cancel")) && inventoryViewer.IsViewing;
-        bool canUseHotbarItems = canUseInputs && !inventoryViewer.IsViewing && @event.IsActionPressed("lmb");
+        bool canInteract = CanUseInputs && @event.IsActionPressed("interact") && !inventoryViewer.IsViewing;
+        bool canOpenInventory = CanUseInputs && @event.IsActionPressed("toggle_inventory") && !inventoryViewer.IsViewing;
+        bool canCloseInventory = CanUseInputs && (@event.IsActionPressed("toggle_inventory") || @event.IsActionPressed("interact") || @event.IsActionPressed("ui_cancel")) && inventoryViewer.IsViewing;
+        bool canUseHotbarItems = CanUseInputs && !inventoryViewer.IsViewing && @event.IsActionPressed("lmb");
         bool canCloseConsole = @event.IsActionPressed("ui_cancel") && DeveloperConsole.IsFocused;
-        bool canReload = canUseInputs && @event.IsActionPressed("action_reload") && !inventoryViewer.IsViewing;
+        bool canReload = CanUseInputs && @event.IsActionPressed("action_reload") && !inventoryViewer.IsViewing;
         
 
         if (canInteract)
@@ -116,7 +115,7 @@ public partial class InputHandler : Node2D
             inventoryViewer.TryReloadSelectedItem();
         }
 
-        if (canUseInputs)
+        if (CanUseInputs)
         {
             // If 1-5 are pressed, use the corresponding hotbar item
             if (@event.IsActionPressed("hotbar_slot_0"))

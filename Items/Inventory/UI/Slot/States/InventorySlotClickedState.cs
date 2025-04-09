@@ -15,7 +15,7 @@ public partial class InventorySlotClickedState : State<InventorySlotUI>
     {
         if (@event is InputEventMouse mouseEvent)
 		{
-			ParentStateMachine.TransitionTo(this, "DRAGGING");
+			ParentStateMachine.TransitionTo(this, InventorySlotUI.States.DRAGGING.ToString());
 			return;
 		}
     }

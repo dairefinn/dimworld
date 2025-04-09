@@ -13,6 +13,7 @@ public partial class ClothingController : Sprite2D
 	[Export] public Sprite2D OvertopSprite { get; set; }
 	[Export] public Sprite2D BottomsSprite { get; set; }
 	[Export] public Sprite2D ShoesSprite { get; set; }
+	[Export] public bool Blinking { get; set; }
 
 
     private SceneTreeTimer blinkTimer;
@@ -22,22 +23,43 @@ public partial class ClothingController : Sprite2D
     {
         base._Ready();
 
-        blinkTimer = GetTree().CreateTimer(2f);
-        blinkTimer.Timeout += () => CloseEyes();
+        StartBlinking();
     }
 
-    private void CloseEyes()
+    private void SetEyesState(bool eyesOpen)
     {
-        EyesSprite.Visible = false;
+        if (!Blinking) return;
+
+        EyesSprite.Visible = eyesOpen;
         blinkTimer = GetTree().CreateTimer(0.25f);
-        blinkTimer.Timeout += () => OpenEyes();
+        blinkTimer.Timeout += ToggleEyesState;
     }
 
-    private void OpenEyes()
+    private void ToggleEyesState()
     {
-        EyesSprite.Visible = true;
-        blinkTimer = GetTree().CreateTimer(2f);
-        blinkTimer.Timeout += () => CloseEyes();
+        if (!Blinking) return;
+
+        EyesSprite.Visible = !EyesSprite.Visible;
+        blinkTimer = GetTree().CreateTimer(0.25f);
+        blinkTimer.Timeout += ToggleEyesState;
+    }
+
+
+    public void StartBlinking()
+    {
+        ToggleEyesState();
+    }
+
+    public void StopBlinking(bool eyesOpen = true)
+    {
+        if (blinkTimer != null)
+        {
+            blinkTimer.Timeout -= ToggleEyesState;
+            blinkTimer.EmitSignal(SceneTreeTimer.SignalName.Timeout);
+        }
+
+        Blinking = false;
+        EyesSprite.Visible = eyesOpen;
     }
 
 

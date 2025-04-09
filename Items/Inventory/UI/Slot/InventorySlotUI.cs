@@ -154,12 +154,12 @@ public partial class InventorySlotUI : Panel
 
     public override void _Ready()
     {
-        _stateMachine = new StateMachine<InventorySlotUI>(this, _states, States.BASE.ToString());
-
         DragArea.ParentSlot = this;
 
         MouseEntered += OnMouseEntered;
         MouseExited += OnMouseExited;
+
+        _stateMachine = new StateMachine<InventorySlotUI>(this, _states, States.BASE.ToString());
     }
 
     public override void _Input(InputEvent @event)
