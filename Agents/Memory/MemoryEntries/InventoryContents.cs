@@ -19,7 +19,7 @@ public partial class InventoryContents : MemoryEntry
     public InventoryContents(IHasInventory nodeWithInventory)
     {
         Node = nodeWithInventory;
-        Inventory = new Inventory(nodeWithInventory.Inventory);
+        Inventory = nodeWithInventory.Inventory.Duplicate(true) as Inventory;
     }
 
 

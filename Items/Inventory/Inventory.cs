@@ -1,5 +1,6 @@
 namespace Dimworld.Items;
 
+using System.Linq;
 using Dimworld.Developer;
 using Godot;
 using Godot.Collections;
@@ -13,6 +14,7 @@ public partial class Inventory : Resource
 
 
 	[Export] public string InventoryName = "Inventory";
+
 	[Export] public Array<InventorySlot> Slots {
 		get => _slots;
 		set => SetSlots(value);
@@ -22,42 +24,37 @@ public partial class Inventory : Resource
 
 	public Inventory()
 	{
-		for(int i = 0; i < _slots.Count; i++)
-		{
-			_slots[i] = new InventorySlot(_slots[i]);
-		}
-	}
-
-	public Inventory(Inventory inventory)
-	{
-		InventoryName = inventory.InventoryName;
-		foreach (InventorySlot slot in inventory.Slots)
-		{
-			Slots.Add(new InventorySlot(slot));
-		}
+		_slots = _slots.Duplicate(true);
 	}
 
 
 	private void SetSlots(Array<InventorySlot> slots)
 	{
 		_slots = slots;
-		PopulateAllSlots();
+		InitializeSlots(slots);
 		CallDeferred(MethodName.OnUpdate);
 	}
 
-	public void PopulateAllSlots()
+	public void InitializeSlots(Array<InventorySlot> slots)
 	{
-		for(int i = 0; i < Slots.Count; i++)
+		for(int i = 0; i < slots.Count; i++)
 		{
-			if (Slots[i] == null)
+			if (slots[i] == null)
 			{
-				Slots[i] = new InventorySlot();
+				slots[i] = new InventorySlot();
 			}
 
-			if (!Slots[i].IsConnected(SignalName.OnUpdated, Callable.From(OnUpdate)))
-			{
-				Slots[i].OnUpdated += OnUpdate;
-			}
+			InitializeSlot(slots[i]);
+		}
+	}
+
+	private void InitializeSlot(InventorySlot slot)
+	{
+		if (slot == null) return;
+
+		if (!slot.IsConnected(SignalName.OnUpdated, Callable.From(OnUpdate)))
+		{
+			slot.OnUpdated += OnUpdate;	
 		}
 	}
 

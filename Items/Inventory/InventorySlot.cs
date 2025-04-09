@@ -7,47 +7,57 @@ using Godot;
 public partial class InventorySlot : Resource
 {
 
+    // public static InventorySlot From(InventorySlot inventorySlot)
+    // {
+    //     return new InventorySlot
+    //     {
+    //         _item = inventorySlot.Item?.Duplicate() as InventoryItem,
+    //         _quantity = inventorySlot.Quantity
+    //     };
+    // }
+
+
     [Signal] public delegate void OnUpdatedEventHandler();
 
     [Export] public InventoryItem Item {
         get => _item;
         set {
             _item = value;
-            OnUpdate();
+            OnUpdateItem();
+            EmitSignal(SignalName.OnUpdated);
         }
     }
     private InventoryItem _item = null;
+
     [Export] public int Quantity {
         get => _quantity;
         set {
             _quantity = value;
-            OnUpdate();
+            OnUpdateQuantity();
+            EmitSignal(SignalName.OnUpdated);
         }
     }
     private int _quantity = 0;
+
 
     public bool IsEmpty => Item == null || Quantity == 0;
     public bool IsFull => Item != null && Item.MaxStackSize == Quantity;
 
 
-    public InventorySlot()
+    private void OnUpdateItem()
     {
+        if (Item == null)
+        {
+            Quantity = 0;
+        }
     }
 
-    public InventorySlot(InventorySlot inventorySlot)
+    private void OnUpdateQuantity()
     {
-        if (inventorySlot.Item != null)
-        {
-            Item = inventorySlot.Item.Duplicate() as InventoryItem;
-        }
-        else
-        {
-            Item = null;
-        }
-        Quantity = inventorySlot.Quantity;
+        if (Item == null) return;
+        _quantity = Mathf.Clamp(_quantity, 0, Item.MaxStackSize);
     }
 
-    
     /// <summary>
     /// Add an item to the inventory slot.
     /// </summary>
@@ -89,32 +99,19 @@ public partial class InventorySlot : Resource
         return true;
     }
 
-    private void OnUpdate()
-    {
-        if (Item == null)
-        {
-            _quantity = 0;
-        }
-        else
-        {
-            _quantity = Mathf.Clamp(_quantity, 0, Item.MaxStackSize);
-        }
-
-        EmitSignal(SignalName.OnUpdated);
-    }
-
+    /// <summary>
+    /// Swaps the contents of this slot with the contents of another slot.
+    /// </summary>
+    /// <param name="slot">The slot to swap with.</param>
+    /// <returns>True if the swap was successful, false otherwise.</returns>
     public bool SwapWithExisting(InventorySlot slot)
     {
-        InventorySlot slotPrevious = new()
-        {
-            Item = _item,
-            Quantity = _quantity
-        };
+        InventorySlot slotPrevious = Duplicate(true) as InventorySlot;
 
-        _item = slot.Item?.Duplicate() as InventoryItem;
+        _item = slot.Item; // ?.Duplicate() as InventoryItem;
         _quantity = slot.Quantity;
 
-        slot.Item = slotPrevious.Item?.Duplicate() as InventoryItem;
+        slot.Item = slotPrevious.Item; //?.Duplicate() as InventoryItem;
         slot.Quantity = slotPrevious.Quantity;
 
         EmitSignal(SignalName.OnUpdated);
@@ -123,10 +120,14 @@ public partial class InventorySlot : Resource
         return true;
     }
 
+    /// <summary>
+    /// Clears the contents of the inventory slot.
+    /// </summary>
     public void ClearSlot()
     {
         _item = null;
-        OnUpdate();
+        _quantity = 0;
+        EmitSignal(SignalName.OnUpdated);
     }
 
 

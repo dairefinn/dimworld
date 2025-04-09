@@ -84,7 +84,7 @@ public partial class PickUpItem : GoapAction
             .Where(container => {
                 if (container is not Node2D node2D) return false; // Must be a node2D
                 if (!characterController.CanReachPoint(node2D.GlobalPosition)) return false;
-                if (!container.Inventory.HasItem(ItemId)) return false;
+                if (!container.Inventory.HasItem(itemId)) return false;
                 return true;
             })
             .ToArray()
