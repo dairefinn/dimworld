@@ -104,12 +104,14 @@ public partial class InventoryViewer : Control
         {
             PrimaryInventoryUI.OnVisibilityChanged -= OnPrimaryVisibilityChanged;
             PrimaryInventoryUI.OnVisibilityChanged += OnPrimaryVisibilityChanged;
+            PrimaryInventoryUI.OnSlotClicked += OnPrimaryInventorySlotClicked;
         }
 
         if (IsInstanceValid(SecondaryInventoryUI))
         {
             SecondaryInventoryUI.OnVisibilityChanged -= OnSecondaryVisibilityChanged;
             SecondaryInventoryUI.OnVisibilityChanged += OnSecondaryVisibilityChanged;
+            SecondaryInventoryUI.OnSlotClicked += OnSecondaryInventorySlotClicked;
         }
         
         if (IsInstanceValid(Hotbar))
@@ -122,6 +124,33 @@ public partial class InventoryViewer : Control
                 Hotbar.HotbarRow = PrimaryInventoryUI.RowsDisplayed; // Hotbar is the last row
             }
         }
+    }
+
+    
+    // QUICK TRANSFERRING
+
+    private void OnPrimaryInventorySlotClicked(InventorySlotUI slotUI)
+    {
+        if (slotUI == null) return;
+        if (slotUI.TargetSlot.IsEmpty) return;
+
+        InventorySlotUI firstEmptySlotInSecondary = SecondaryInventoryUI.GetFirstEmptySlot();
+        if (firstEmptySlotInSecondary == null) return;
+
+        // Move the item from the primary inventory to the secondary inventory
+        MoveItemFromSlotToSlot(slotUI, firstEmptySlotInSecondary);
+    }
+
+    private void OnSecondaryInventorySlotClicked(InventorySlotUI slotUI)
+    {
+        if (slotUI == null) return;
+        if (slotUI.TargetSlot.IsEmpty) return;
+
+        InventorySlotUI firstEmptySlotInPrimary = PrimaryInventoryUI.GetFirstEmptySlot();
+        if (firstEmptySlotInPrimary == null) return;
+
+        // Move the item from the secondary inventory to the primary inventory
+        MoveItemFromSlotToSlot(slotUI, firstEmptySlotInPrimary);
     }
 
 

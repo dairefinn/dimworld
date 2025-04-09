@@ -11,6 +11,7 @@ public partial class InventoryUI : Container
 
 
     [Signal] public delegate void OnVisibilityChangedEventHandler(bool visible);
+    [Signal] public delegate void OnSlotClickedEventHandler(InventorySlotUI slotUI);
 
 
     [Export] public Inventory TargetInventory {
@@ -100,10 +101,15 @@ public partial class InventoryUI : Container
                 InventorySlotUI slotUI = SCENE_SLOT_UI.Instantiate<InventorySlotUI>();
                 slotUI.TargetSlot = currentSlot;
                 slotUI.ParentInventoryUI = this;
+                slotUI.OnSlotClicked += OnSlotClickedInner;
                 SlotsGrid?.AddChild(slotUI);
             }
         }
+    }
 
+    private void OnSlotClickedInner(InventorySlotUI slotUI)
+    {
+        EmitSignal(SignalName.OnSlotClicked, slotUI);
     }
 
     public void SetVisibility(bool isVisible)
@@ -124,6 +130,37 @@ public partial class InventoryUI : Container
 
         if (_targetInventory == null) return;
         _targetInventory.OnUpdated += UpdateUI;
+    }
+
+    public InventorySlotUI GetFirstEmptySlot()
+    {
+        if (TargetInventory == null) return null;
+
+        InventorySlot firstEmptySlot = TargetInventory.GetFirstEmptySlot();
+        if (firstEmptySlot == null) return null;
+
+        InventorySlotUI firstEmptySlotUI = GetSlotUIForSlot(firstEmptySlot);
+        if (firstEmptySlotUI == null) return null;
+
+        return firstEmptySlotUI;
+    }
+
+    public InventorySlotUI GetSlotUIForSlot(InventorySlot slot)
+    {
+        if (slot == null) return null;
+
+        foreach (Node child in SlotsGrid.GetChildren())
+        {
+            if (!IsInstanceValid(child)) continue;
+            if (child is not InventorySlotUI slotUI) continue;
+
+            if (slotUI.TargetSlot == slot)
+            {
+                return slotUI;
+            }
+        }
+
+        return null;
     }
 
 }

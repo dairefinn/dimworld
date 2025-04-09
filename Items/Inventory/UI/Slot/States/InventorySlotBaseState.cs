@@ -17,22 +17,32 @@ public partial class InventorySlotBaseState : InventorySlotState
 			await ToSignal(inventorySlotUI, "ready");
 		}
 		
+		inventorySlotUI.DragArea.Position = Vector2.Zero;
+
 		inventorySlotUI.DragArea.Monitoring = false;
 		inventorySlotUI.DragArea.Monitorable = true;
 	}
 
 	public override void OnGuiInput(InputEvent @event)
 	{
-		if (mouseOverInventorySlot)
+		if (mouseOverInventorySlot && inventorySlotUI.CanBeSelected && !inventorySlotUI.TargetSlot.IsEmpty)
 		{
-			if (@event.IsActionPressed("lmb") && inventorySlotUI.CanBeSelected && !inventorySlotUI.TargetSlot.IsEmpty)
+			if (@event.IsActionPressed("shift_lmb"))
 			{
-				inventorySlotUI.DragArea.GlobalPosition = inventorySlotUI.DragArea.GetGlobalMousePosition();
-				EmitSignal(InventorySlotState.SignalName.TransitionRequested, this, (int)State.CLICKED);
+				inventorySlotUI.EmitSignal(InventorySlotUI.SignalName.OnSlotClicked, inventorySlotUI);
+				return;
 			}
-			else if (@event.IsActionPressed("rmb"))
+				
+			if (@event.IsActionPressed("lmb"))
+			{
+				EmitSignal(InventorySlotState.SignalName.TransitionRequested, this, (int)State.CLICKED);
+				return;
+			}
+			
+			if (@event.IsActionPressed("rmb"))
 			{
 				Globals.Instance.InventoryViewer.RequestContextMenu(inventorySlotUI);
+				return;
 			}
 
 		}

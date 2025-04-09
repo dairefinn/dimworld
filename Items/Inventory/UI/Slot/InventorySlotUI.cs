@@ -12,6 +12,9 @@ public partial class InventorySlotUI : Panel
     private static readonly StyleBox STYLEBOX_SELECTED = GD.Load<StyleBox>("res://Items/Inventory/UI/Slot/Styles/InventorySlotUI_Selected.tres");
 
 
+    [Signal] public delegate void OnSlotClickedEventHandler(InventorySlotUI slotUI);
+
+
     [Export] public InventorySlot TargetSlot {
         get => _targetSlot;
         set {

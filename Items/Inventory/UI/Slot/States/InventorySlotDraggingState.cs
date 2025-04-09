@@ -35,8 +35,6 @@ public partial class InventorySlotDraggingState : InventorySlotState
 
 	public override void Exit()
 	{
-		inventorySlotUI.DragArea.Position = Vector2.Zero;
-
 		if (previousStyleType != null)
 		{
 			inventorySlotUI.SetStyle(previousStyleType.Value);
