@@ -131,26 +131,14 @@ public partial class InventoryViewer : Control
 
     private void OnPrimaryInventorySlotClicked(InventorySlotUI slotUI)
     {
-        if (slotUI == null) return;
-        if (slotUI.TargetSlot.IsEmpty) return;
-
-        InventorySlotUI firstEmptySlotInSecondary = SecondaryInventoryUI.GetFirstEmptySlot();
-        if (firstEmptySlotInSecondary == null) return;
-
         // Move the item from the primary inventory to the secondary inventory
-        MoveItemFromSlotToSlot(slotUI, firstEmptySlotInSecondary);
+        MoveItemFromSourceToDestination(PrimaryInventoryUI, SecondaryInventoryUI, slotUI, null);
     }
 
     private void OnSecondaryInventorySlotClicked(InventorySlotUI slotUI)
     {
-        if (slotUI == null) return;
-        if (slotUI.TargetSlot.IsEmpty) return;
-
-        InventorySlotUI firstEmptySlotInPrimary = PrimaryInventoryUI.GetFirstEmptySlot();
-        if (firstEmptySlotInPrimary == null) return;
-
         // Move the item from the secondary inventory to the primary inventory
-        MoveItemFromSlotToSlot(slotUI, firstEmptySlotInPrimary);
+        MoveItemFromSourceToDestination(SecondaryInventoryUI, PrimaryInventoryUI, slotUI, null);
     }
 
 
@@ -213,17 +201,21 @@ public partial class InventoryViewer : Control
 
     // MOVING ITEMS
 
-    public void MoveItemFromSlotToSlot(InventorySlotUI sourceSlot, InventorySlotUI targetSlot)
+    public void MoveItemFromSourceToDestination(InventoryUI sourceInventory, InventoryUI destinationInventory, InventorySlotUI sourceSlot, InventorySlotUI destinationSlot)
     {
         if (sourceSlot == null) return;
-        if (targetSlot == null) return;
         if (sourceSlot.TargetSlot.IsEmpty) return;
-        if (sourceSlot == targetSlot) return;
-        
-        bool isChangingInventories = sourceSlot.ParentInventoryUI != targetSlot.ParentInventoryUI;
+        if (sourceSlot == destinationSlot) return;
+        if (destinationSlot == null)
+        {
+            destinationSlot = destinationInventory.GetFirstEmptySlot();
+            if (destinationSlot == null) return;
+        }
+
+        bool isChangingInventories = sourceInventory != destinationInventory;
 
         // Perform the actual swap
-        targetSlot.TargetSlot.SwapWithExisting(sourceSlot.TargetSlot);
+        destinationSlot.TargetSlot.SwapWithExisting(sourceSlot.TargetSlot);
 
         if (isChangingInventories)
         {
@@ -232,14 +224,15 @@ public partial class InventoryViewer : Control
                 Globals.Instance.Player.EquipmentHandler.Unequip(sourceItemCanBeEquipped);
             }
 
-            if (targetSlot.TargetSlot.Item is ICanBeEquipped targetItemCanBeEquipped)
+            if (destinationSlot.TargetSlot.Item is ICanBeEquipped targetItemCanBeEquipped)
             {
                 Globals.Instance.Player.EquipmentHandler.Unequip(targetItemCanBeEquipped);
             }
         }
 
-        sourceSlot.UpdateUI();
-        targetSlot.UpdateUI();
+        // TODO: InventorySlot.OnUpdate signal should handle this
+        // sourceSlot.UpdateUI();
+        // destinationSlot.UpdateUI();
     }
 
 
@@ -284,7 +277,7 @@ public partial class InventoryViewer : Control
         if (slotUI == null) return;
 
         ContextMenu.Hide();
-        slotUI.UpdateUI();
+        // slotUI.UpdateUI();
     }
 
     public void TryUseSelectedItem()

@@ -17,7 +17,11 @@ public partial class Inventory : Resource
 
 	[Export] public Array<InventorySlot> Slots {
 		get => _slots;
-		set => SetSlots(value);
+		set {
+			_slots = value;
+			OnSlotsUpdated();
+			OnUpdate();
+		}
 	}
 	private Array<InventorySlot> _slots = [];
 
@@ -28,34 +32,27 @@ public partial class Inventory : Resource
 	}
 
 
-	private void SetSlots(Array<InventorySlot> slots)
+	private void OnSlotsUpdated()
 	{
-		_slots = slots;
-		InitializeSlots(slots);
-		CallDeferred(MethodName.OnUpdate);
-	}
-
-	public void InitializeSlots(Array<InventorySlot> slots)
-	{
-		for(int i = 0; i < slots.Count; i++)
+		for(int i = 0; i < Slots.Count; i++)
 		{
-			if (slots[i] == null)
+			// Make sure that no slot is null
+			if (Slots[i] == null)
 			{
-				slots[i] = new InventorySlot();
+				Slots[i] = new InventorySlot();
 			}
 
-			InitializeSlot(slots[i]);
+			// Make sure that the OnUpdated signal for the slot also triggers the OnUpdated signal for the inventory
+			if (!Slots[i].IsConnected(SignalName.OnUpdated, Callable.From(OnUpdate)))
+			{
+				Slots[i].OnUpdated += OnUpdate;	
+			}
 		}
 	}
 
-	private void InitializeSlot(InventorySlot slot)
+	private void OnUpdate()
 	{
-		if (slot == null) return;
-
-		if (!slot.IsConnected(SignalName.OnUpdated, Callable.From(OnUpdate)))
-		{
-			slot.OnUpdated += OnUpdate;	
-		}
+		EmitSignal(SignalName.OnUpdated);
 	}
 
 
@@ -97,11 +94,6 @@ public partial class Inventory : Resource
 		return false;
 	}
 
-	private void OnUpdate()
-	{
-		EmitSignal(SignalName.OnUpdated);
-	}
-
 	/// <summary>
 	/// Check if the inventory contains an item.
 	/// </summary>
@@ -118,6 +110,11 @@ public partial class Inventory : Resource
 		return false;
 	}
 
+	/// <summary>
+	/// Check if the inventory contains an item by its ID.
+	/// </summary>
+	/// <param name="itemId">The ID of the item to check for.</param>
+	/// <returns>A boolean indicating whether the item is in the inventory.</returns>
 	public bool HasItem(string itemId)
 	{
 		foreach (InventorySlot slot in Slots)
@@ -162,6 +159,12 @@ public partial class Inventory : Resource
 		return null;
 	}
 
+	/// <summary>
+	/// Get the first slot with an item in the inventory by its ID.
+	/// </summary>
+	/// <param name="itemId">The ID of the item to check for.</param>
+	/// <param name="ignoreFull">Whether to ignore full slots.</param>
+	/// <returns>The first slot with the item in the inventory.</returns>
 	public InventorySlot GetFirstSlotWithItem(string itemId, bool ignoreFull = false)
 	{
 		foreach (InventorySlot slot in Slots)
@@ -175,6 +178,10 @@ public partial class Inventory : Resource
 		return null;
 	}
 
+	/// <summary>
+	/// Check if the inventory is full.
+	/// </summary>
+	/// <returns>A boolean indicating whether the inventory is full.</returns>
 	public bool IsFull()
 	{
 		foreach (InventorySlot slot in Slots)
@@ -185,6 +192,25 @@ public partial class Inventory : Resource
 		return true;
 	}
 
+	/// <summary>
+	/// Check if the inventory is empty.
+	/// </summary>
+	/// <returns>A boolean indicating whether the inventory is empty.</returns>
+	public bool IsEmpty()
+	{
+		foreach (InventorySlot slot in Slots)
+		{
+			if (!slot.IsEmpty) return false;
+		}
+
+		return true;
+	}
+
+	/// <summary>
+	/// Checks if a given slot is associated with this inventory.
+	/// </summary>
+	/// <param name="slot">The slot to check.</param>
+	/// <returns>A boolean indicating whether the slot is in the inventory.</returns>
 	public bool IsSlotInInventory(InventorySlot slot)
 	{
 		foreach (InventorySlot s in Slots)

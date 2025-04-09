@@ -7,6 +7,14 @@ using Godot;
 public partial class InventorySlotUI : Panel
 {
 
+    public enum StyleType
+    {
+        Default,
+        Active,
+        Selected
+    }
+
+
     private static readonly StyleBox STYLEBOX_DEFAULT = GD.Load<StyleBox>("res://Items/Inventory/UI/Slot/Styles/InventorySlotUI_Default.tres");
     private static readonly StyleBox STYLEBOX_ACTIVE = GD.Load<StyleBox>("res://Items/Inventory/UI/Slot/Styles/InventorySlotUI_Active.tres");
     private static readonly StyleBox STYLEBOX_SELECTED = GD.Load<StyleBox>("res://Items/Inventory/UI/Slot/Styles/InventorySlotUI_Selected.tres");
@@ -17,10 +25,7 @@ public partial class InventorySlotUI : Panel
 
     [Export] public InventorySlot TargetSlot {
         get => _targetSlot;
-        set {
-            _targetSlot = value;
-            OnUpdateTargetSlot();
-        }
+        set => SetTargetSlot(value);
     }
     private InventorySlot _targetSlot;
     [Export] public int SlotIndex {
@@ -40,84 +45,43 @@ public partial class InventorySlotUI : Panel
     [Export] public Label ItemLabel;
     [Export] public Label IndexLabel;
     [Export] public Panel HoverOverlay;
+    [Export] public InventorySlotDragArea DragArea;
+    [Export] public InventorySlotStateMachine StateMachine;
 
 
-    public InventorySlotDragArea DragArea;
+    public StyleType CurrentStyle = StyleType.Default;
 
 
-    private InventorySlotStateMachine StateMachine;
-
-
-    // LIFECYCLE EVENTS
-    
-    public override void _Ready()
+    private void SetTargetSlot(InventorySlot value)
     {
-        StateMachine = GetNode<InventorySlotStateMachine>("%StateMachine");
-        DragArea = GetNode<InventorySlotDragArea>("%DragArea");
-        DragArea.ParentSlot = this;
+        if (_targetSlot != null)
+        {
+            _targetSlot.OnUpdated -= UpdateUI;
+        }
 
-        StateMachine?.Init(this);
+        _targetSlot = value;
 
-        MouseEntered += OnMouseEntered;
-        MouseExited += OnMouseExited;
-
+        if (_targetSlot != null)
+        {
+            _targetSlot.OnUpdated += UpdateUI;
+        }
+        
         UpdateUI();
     }
 
-    public override void _Input(InputEvent @event)
+    private string GetLabelText(InventoryItem item)
     {
-		if (IsInstanceValid(StateMachine))
+        if (item == null) return "";
+
+        if (item is IUsesAmmo usesAmmo)
         {
-            StateMachine.OnInput(@event);
+            return $"{usesAmmo.AmmoRemaining}/{usesAmmo.AmmoCount}";
         }
+        
+        return "";
     }
 
-    public override void _GuiInput(InputEvent @event)
-    {
-		if (IsInstanceValid(StateMachine))
-        {
-            StateMachine.OnGuiInput(@event);
-        }
-    }
-
-    // SIGNAL HANDLERS
-
-	public void OnMouseEntered()
-	{
-		if (IsInstanceValid(HoverOverlay))
-        {
-            HoverOverlay.Show();
-        }
-		if (IsInstanceValid(StateMachine))
-        {
-            StateMachine.OnMouseEntered();
-        }
-	}
-
-	public void OnMouseExited()
-	{
-        if (IsInstanceValid(HoverOverlay))
-        {
-            HoverOverlay.Hide();
-        }
-        if (IsInstanceValid(StateMachine))
-        {
-            StateMachine.OnMouseExited();
-        }
-	}
-
-
-    // SETTERS
-
-    public void OnUpdateTargetSlot()
-    {
-        UpdateUI();
-
-        if (_targetSlot == null) return;
-        _targetSlot.OnUpdated += UpdateUI;
-    }
-
-    public void UpdateUI()
+    private void UpdateUI()
     {
         if (!IsInstanceValid(this)) return;
 
@@ -167,7 +131,58 @@ public partial class InventorySlotUI : Panel
             SetStyle(StyleType.Default);
 		}
     }
-    
+
+
+    public override void _Ready()
+    {
+        DragArea.ParentSlot = this;
+
+        StateMachine?.Init(this);
+
+        MouseEntered += OnMouseEntered;
+        MouseExited += OnMouseExited;
+    }
+
+    public override void _Input(InputEvent @event)
+    {
+		if (IsInstanceValid(StateMachine))
+        {
+            StateMachine.OnInput(@event);
+        }
+    }
+
+    public override void _GuiInput(InputEvent @event)
+    {
+		if (IsInstanceValid(StateMachine))
+        {
+            StateMachine.OnGuiInput(@event);
+        }
+    }
+
+	public void OnMouseEntered()
+	{
+		if (IsInstanceValid(HoverOverlay))
+        {
+            HoverOverlay.Show();
+        }
+		if (IsInstanceValid(StateMachine))
+        {
+            StateMachine.OnMouseEntered();
+        }
+	}
+
+	public void OnMouseExited()
+	{
+        if (IsInstanceValid(HoverOverlay))
+        {
+            HoverOverlay.Hide();
+        }
+        if (IsInstanceValid(StateMachine))
+        {
+            StateMachine.OnMouseExited();
+        }
+	}
+
     public void SetStyle(StyleType type)
     {
         if (!IsInstanceValid(this)) return;
@@ -176,56 +191,17 @@ public partial class InventorySlotUI : Panel
         {
             case StyleType.Default:
                 Set("theme_override_styles/panel", STYLEBOX_DEFAULT);
+                CurrentStyle = StyleType.Default;
                 break;
             case StyleType.Active:
                 Set("theme_override_styles/panel", STYLEBOX_ACTIVE);
+                CurrentStyle = StyleType.Active;
                 break;
             case StyleType.Selected:
                 Set("theme_override_styles/panel", STYLEBOX_SELECTED);
+                CurrentStyle = StyleType.Selected;
                 break;
         }
-    }
-
-    public StyleType GetStyle()
-    {
-        if (!IsInstanceValid(this)) return StyleType.Default;
-        if (Get("theme_override_styles/panel").Equals(null)) return StyleType.Default;
-
-        if (Get("theme_override_styles/panel").Equals(STYLEBOX_DEFAULT))
-        {
-            return StyleType.Default;
-        }
-        
-        if (Get("theme_override_styles/panel").Equals(STYLEBOX_ACTIVE))
-        {
-            return StyleType.Active;
-        }
-        
-        if (Get("theme_override_styles/panel").Equals(STYLEBOX_SELECTED))
-        {
-            return StyleType.Selected;
-        }
-
-        return StyleType.Default;
-    }
-
-    private string GetLabelText(InventoryItem item)
-    {
-        if (item == null) return "";
-
-        if (item is IUsesAmmo usesAmmo)
-        {
-            return $"{usesAmmo.AmmoRemaining}/{usesAmmo.AmmoCount}";
-        }
-        
-        return "";
-    }
-
-    public enum StyleType
-    {
-        Default,
-        Active,
-        Selected
     }
 
 }

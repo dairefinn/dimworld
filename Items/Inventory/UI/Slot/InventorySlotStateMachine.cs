@@ -57,7 +57,6 @@ public partial class InventorySlotStateMachine : Node
 	{
 		if (Engine.IsEditorHint()) return; // Ignore transitions in the editor
 		if (from != currentState) return; // Cannot transition from a state that is not the current state
-		GD.Print($"Transition requested from {from} to {to}");
 
 		InventorySlotState newState = states[to];
 

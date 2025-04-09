@@ -22,7 +22,7 @@ public partial class InventorySlotDraggingState : InventorySlotState
 			inventorySlotUI.Reparent(uiLayer);
 		}
 
-		previousStyleType = inventorySlotUI.GetStyle();
+		previousStyleType = inventorySlotUI.CurrentStyle;
 		inventorySlotUI.SetStyle(InventorySlotUI.StyleType.Selected);
 
 		minimumDragTimeElapsed = false;

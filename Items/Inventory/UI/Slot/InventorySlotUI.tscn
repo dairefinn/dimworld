@@ -46,7 +46,7 @@ font_color = Color(0.588235, 1, 0.333333, 1)
 shadow_size = 5
 shadow_color = Color(0, 0, 0, 0.588235)
 
-[node name="InventorySlotUI" type="Panel" node_paths=PackedStringArray("ItemIcon", "QuantityLabel", "ItemLabel", "IndexLabel", "HoverOverlay")]
+[node name="InventorySlotUI" type="Panel" node_paths=PackedStringArray("ItemIcon", "QuantityLabel", "ItemLabel", "IndexLabel", "HoverOverlay", "DragArea", "StateMachine")]
 custom_minimum_size = Vector2(100, 100)
 offset_right = 100.0
 offset_bottom = 100.0
@@ -58,6 +58,8 @@ QuantityLabel = NodePath("MarginContainer/QuantityLabel")
 ItemLabel = NodePath("MarginContainer/ItemLabel")
 IndexLabel = NodePath("MarginContainer/IndexLabel")
 HoverOverlay = NodePath("HoverOverlay")
+DragArea = NodePath("MarginContainer/DragArea")
+StateMachine = NodePath("StateMachine")
 
 [node name="MarginContainer" type="MarginContainer" parent="."]
 layout_mode = 1
