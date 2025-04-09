@@ -32,13 +32,10 @@ public partial class InventoryHotbarUI : Control
     private int _hotbarRow = 0;
     [Export] public int SelectedSlotIndex {
         get => _selectedSlotIndex;
-        set {
-            _selectedSlotIndex = value;
-            OnUpdateSelectedSlotIndex();
-            UpdateUI();
-        }
+        set => SetSelectedSlotIndex(value);
     }
     private int _selectedSlotIndex = -1;
+
 
     [ExportGroup("References")]
     [Export] public HBoxContainer SlotsContainer { get; set; }
@@ -49,37 +46,68 @@ public partial class InventoryHotbarUI : Control
 
     
     private Tween tweenSelectedBorder;
+    private bool _updateScheduled = true;
 
 
     public void SetInventory(Inventory value)
     {
+        if (_inventory != null)
+        {
+            _inventory.OnUpdated -= OnInventoryUpdated;
+        }
+
         _inventory = value;
 
         if (_inventory != null)
         {
-            _inventory.OnUpdated += UpdateUI;
+            _inventory.OnUpdated += OnInventoryUpdated;
         }
 
-        UpdateUI();
+        _updateScheduled = true;
     }
 
     public void SetColumnCount(int value)
     {
         _columnCount = value;
-        UpdateUI();
+        _updateScheduled = true;
     }
 
     public void SetHotbarRow(int value)
     {
         _hotbarRow = value;
-        UpdateUI();
+        _updateScheduled = true;
     }
 
-
-    public override void _Ready()
+    private void SetSelectedSlotIndex(int value)
     {
-        UpdateUI();
+        _selectedSlotIndex = value;
+        
+        SelectedSlotUI = GetSelectedSlotUI();
+
+        if (SelectedSlotUI != null)
+        {
+            EmitSignal(SignalName.OnSlotSelected, SelectedSlotUI);
+        }
+
+        UpdateSelectedBorderUI();
     }
+
+    private void OnInventoryUpdated()
+    {
+        UpdateSelectedBorderUI();
+    }
+
+    public override void _Process(double delta)
+    {
+        base._Process(delta);
+
+        if (_updateScheduled)
+        {
+            UpdateSlotUIs();
+            _updateScheduled = false;
+        }
+    }
+
 
     public override void _Input(InputEvent @event)
     {
@@ -95,29 +123,20 @@ public partial class InventoryHotbarUI : Control
         }
     }
 
-    private Array<InventorySlot> GetInventorySlots()
+    private Array<InventorySlot> GetInventorySlots(Array<InventorySlot> slots, int targetRow, int columns)
     {
-        Array<InventorySlot> slots = [];
-        if (Inventory == null) return slots;
+        Array<InventorySlot> slotsOutput = [];
+        if (Inventory == null) return slotsOutput;
 
-        for (int i = 0; i < Inventory.Slots.Count; i++)
+        for (int i = 0; i < slots.Count; i++)
         {
-            int row = i / ColumnCount;
-            if (row != HotbarRow) continue;
-            InventorySlot slot = Inventory.Slots[i];
-            slots.Add(slot);
+            int row = i / columns;
+            if (row != targetRow) continue;
+            InventorySlot slot = slots[i];
+            slotsOutput.Add(slot);
         }
 
-        return slots;
-    }
-    
-    // TODO: Get rid of this, replacing all the nodes is too heavy
-    private void UpdateUI()
-    {
-        if (!IsInstanceValid(this)) return;
-
-        CallDeferred(MethodName.UpdateSlotUIs);
-        CallDeferred(MethodName.UpdateSelectedBorderUI);
+        return slotsOutput;
     }
 
     private void UpdateSlotUIs()
@@ -143,7 +162,7 @@ public partial class InventoryHotbarUI : Control
 
         // Add new slots
         int index = 1;
-        Array<InventorySlot> slots = GetInventorySlots();
+        Array<InventorySlot> slots = GetInventorySlots(Inventory.Slots, HotbarRow, ColumnCount);
         foreach (InventorySlot slot in slots)
         {
             InventorySlotUI slotUI = SCENE_INVENTORY_SLOT_UI.Instantiate<InventorySlotUI>();
@@ -159,7 +178,9 @@ public partial class InventoryHotbarUI : Control
     {
         if (!IsInstanceValid(SelectedBorder)) return;
 
-        Array<InventorySlot> slots = GetInventorySlots();
+        Array<InventorySlot> inventorySlots = Inventory?.Slots ?? [];
+
+        Array<InventorySlot> slots = GetInventorySlots(inventorySlots, HotbarRow, ColumnCount);
         if (SelectedSlotIndex > -1 && SelectedSlotIndex < slots.Count)
         {
             SelectedBorder.Show();
@@ -197,7 +218,7 @@ public partial class InventoryHotbarUI : Control
         if (!IsInstanceValid(this)) return;
 
         if (slotIndex < 0) return;
-        if (slotIndex > GetInventorySlots().Count) return;
+        if (slotIndex > GetInventorySlots(Inventory.Slots, HotbarRow, ColumnCount).Count) return;
 
         SelectedSlotIndex = slotIndex;
     }
@@ -233,7 +254,7 @@ public partial class InventoryHotbarUI : Control
         }
         else
         {
-            SelectedSlotIndex = GetInventorySlots().Count - 1;
+            SelectedSlotIndex = GetInventorySlots(Inventory.Slots, HotbarRow, ColumnCount).Count - 1;
         }
     }
 
@@ -241,25 +262,13 @@ public partial class InventoryHotbarUI : Control
     {
         if (!IsInstanceValid(this)) return;
 
-        if (SelectedSlotIndex < GetInventorySlots().Count - 1)
+        if (SelectedSlotIndex < GetInventorySlots(Inventory.Slots, HotbarRow, ColumnCount).Count - 1)
         {
             SelectedSlotIndex++;
         }
         else
         {
             SelectedSlotIndex = 0;
-        }
-    }
-
-    private void OnUpdateSelectedSlotIndex()
-    {
-        if (!IsInstanceValid(this)) return;
-
-        SelectedSlotUI = GetSelectedSlotUI();
-
-        if (SelectedSlotUI != null)
-        {
-            EmitSignal(SignalName.OnSlotSelected, SelectedSlotUI);
         }
     }
 
