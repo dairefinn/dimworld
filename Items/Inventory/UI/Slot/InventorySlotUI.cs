@@ -1,11 +1,19 @@
 namespace Dimworld.Items.UI;
 
 using Dimworld.Items.Weapons;
+using Dimworld.States;
 using Godot;
-
+using Godot.Collections;
 
 public partial class InventorySlotUI : Panel
 {
+
+    public enum States
+    {
+        BASE,
+        CLICKED,
+        DRAGGING
+    }
 
     public enum StyleType
     {
@@ -44,10 +52,18 @@ public partial class InventorySlotUI : Panel
     [Export] public Label IndexLabel;
     [Export] public Panel HoverOverlay;
     [Export] public InventorySlotDragArea DragArea;
-    [Export] public InventorySlotStateMachine StateMachine;
+    
+
+    public StyleType CurrentStyle = StyleType.Default;    
 
 
-    public StyleType CurrentStyle = StyleType.Default;
+    private StateMachine<InventorySlotUI> _stateMachine;
+    private Dictionary<string, State<InventorySlotUI>> _states = new()
+    {
+        {States.BASE.ToString(), new InventorySlotBaseState()},
+        {States.CLICKED.ToString(), new InventorySlotClickedState()},
+        {States.DRAGGING.ToString(), new InventorySlotDraggingState()}
+    };
 
 
     private void SetTargetSlot(InventorySlot value)
@@ -138,9 +154,9 @@ public partial class InventorySlotUI : Panel
 
     public override void _Ready()
     {
-        DragArea.ParentSlot = this;
+        _stateMachine = new StateMachine<InventorySlotUI>(this, _states, States.BASE.ToString());
 
-        StateMachine?.Init(this);
+        DragArea.ParentSlot = this;
 
         MouseEntered += OnMouseEntered;
         MouseExited += OnMouseExited;
@@ -148,18 +164,12 @@ public partial class InventorySlotUI : Panel
 
     public override void _Input(InputEvent @event)
     {
-		if (IsInstanceValid(StateMachine))
-        {
-            StateMachine.OnInput(@event);
-        }
+        _stateMachine?.OnInput(@event);
     }
 
     public override void _GuiInput(InputEvent @event)
     {
-		if (IsInstanceValid(StateMachine))
-        {
-            StateMachine.OnGuiInput(@event);
-        }
+        _stateMachine?.OnGuiInput(@event);
     }
 
 	public void OnMouseEntered()
@@ -168,10 +178,8 @@ public partial class InventorySlotUI : Panel
         {
             HoverOverlay.Show();
         }
-		if (IsInstanceValid(StateMachine))
-        {
-            StateMachine.OnMouseEntered();
-        }
+
+        _stateMachine?.OnMouseEntered();
 	}
 
 	public void OnMouseExited()
@@ -180,10 +188,8 @@ public partial class InventorySlotUI : Panel
         {
             HoverOverlay.Hide();
         }
-        if (IsInstanceValid(StateMachine))
-        {
-            StateMachine.OnMouseExited();
-        }
+
+        _stateMachine?.OnMouseExited();
 	}
 
     public void SetStyle(StyleType type)

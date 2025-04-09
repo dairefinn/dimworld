@@ -1,14 +1,10 @@
-[gd_scene load_steps=18 format=3 uid="uid://cbc7lb60qv02d"]
+[gd_scene load_steps=14 format=3 uid="uid://cbc7lb60qv02d"]
 
 [ext_resource type="StyleBox" uid="uid://cuxjk7ngo011o" path="res://Items/Inventory/UI/Slot/Styles/InventorySlotUI_Default.tres" id="1_o4ioh"]
 [ext_resource type="Script" uid="uid://bo1stix1esiy8" path="res://Items/Inventory/UI/Slot/InventorySlotUI.cs" id="2_yi1il"]
 [ext_resource type="Resource" uid="uid://bbn4fu5m0emk1" path="res://Items/Instances/Weapons/Revolver.tres" id="3_3aqtj"]
 [ext_resource type="Script" uid="uid://bm0o5ggnfmm6y" path="res://Items/Inventory/InventorySlot.cs" id="4_bqq6p"]
-[ext_resource type="Script" uid="uid://1waxwqudtxwe" path="res://Items/Inventory/UI/Slot/InventorySlotStateMachine.cs" id="5_160kp"]
 [ext_resource type="Script" uid="uid://dyce8rtklida4" path="res://Items/Inventory/UI/Slot/InventorySlotDragArea.cs" id="5_f11j2"]
-[ext_resource type="Script" uid="uid://dctmd2sl8wn1j" path="res://Items/Inventory/UI/Slot/States/InventorySlotBaseState.cs" id="6_yjg2m"]
-[ext_resource type="Script" uid="uid://bfm3m077sdq4j" path="res://Items/Inventory/UI/Slot/States/InventorySlotClickedState.cs" id="7_x15h5"]
-[ext_resource type="Script" uid="uid://dhotkpi4inknx" path="res://Items/Inventory/UI/Slot/States/InventorySlotDraggingState.cs" id="8_nqjmp"]
 [ext_resource type="StyleBox" uid="uid://bcjpx3k1qej8l" path="res://Items/Inventory/UI/Slot/Styles/InventorySlotUI_Hover.tres" id="12_f11j2"]
 
 [sub_resource type="Resource" id="Resource_gfr1i"]
@@ -45,7 +41,7 @@ font_color = Color(0.588235, 1, 0.333333, 1)
 shadow_size = 5
 shadow_color = Color(0, 0, 0, 0.588235)
 
-[node name="InventorySlotUI" type="Panel" node_paths=PackedStringArray("ItemIcon", "QuantityLabel", "ItemLabel", "IndexLabel", "HoverOverlay", "DragArea", "StateMachine")]
+[node name="InventorySlotUI" type="Panel" node_paths=PackedStringArray("ItemIcon", "QuantityLabel", "ItemLabel", "IndexLabel", "HoverOverlay", "DragArea")]
 custom_minimum_size = Vector2(100, 100)
 offset_right = 100.0
 offset_bottom = 100.0
@@ -58,7 +54,6 @@ ItemLabel = NodePath("MarginContainer/ItemLabel")
 IndexLabel = NodePath("MarginContainer/IndexLabel")
 HoverOverlay = NodePath("HoverOverlay")
 DragArea = NodePath("MarginContainer/DragArea")
-StateMachine = NodePath("StateMachine")
 
 [node name="MarginContainer" type="MarginContainer" parent="."]
 layout_mode = 1
@@ -125,25 +120,6 @@ text = "-1"
 label_settings = SubResource("LabelSettings_f11j2")
 horizontal_alignment = 1
 vertical_alignment = 1
-
-[node name="StateMachine" type="Node" parent="." node_paths=PackedStringArray("initialState", "states")]
-unique_name_in_owner = true
-script = ExtResource("5_160kp")
-initialState = NodePath("StateBase")
-states = {
-0: NodePath("StateBase"),
-1: NodePath("StateClicked"),
-2: NodePath("StateDragging")
-}
-
-[node name="StateBase" type="Node" parent="StateMachine"]
-script = ExtResource("6_yjg2m")
-
-[node name="StateClicked" type="Node" parent="StateMachine"]
-script = ExtResource("7_x15h5")
-
-[node name="StateDragging" type="Node" parent="StateMachine"]
-script = ExtResource("8_nqjmp")
 
 [node name="HoverOverlay" type="Panel" parent="."]
 unique_name_in_owner = true

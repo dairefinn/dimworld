@@ -27,12 +27,6 @@ Item = ExtResource("12_vivmo")
 Quantity = 1
 metadata/_custom_type_script = "uid://bm0o5ggnfmm6y"
 
-[sub_resource type="Resource" id="Resource_yaehf"]
-script = ExtResource("11_ycdy4")
-Item = ExtResource("13_2cqfq")
-Quantity = 1
-metadata/_custom_type_script = "uid://bm0o5ggnfmm6y"
-
 [sub_resource type="Resource" id="Resource_074og"]
 script = ExtResource("11_ycdy4")
 Quantity = 0
@@ -118,10 +112,16 @@ script = ExtResource("11_ycdy4")
 Quantity = 0
 metadata/_custom_type_script = "uid://bm0o5ggnfmm6y"
 
+[sub_resource type="Resource" id="Resource_yaehf"]
+script = ExtResource("11_ycdy4")
+Item = ExtResource("13_2cqfq")
+Quantity = 1
+metadata/_custom_type_script = "uid://bm0o5ggnfmm6y"
+
 [sub_resource type="Resource" id="Resource_0rl1p"]
 script = ExtResource("12_w48qg")
 InventoryName = "Player Inventory"
-Slots = [SubResource("Resource_vivmo"), SubResource("Resource_2cqfq"), SubResource("Resource_yaehf"), SubResource("Resource_074og"), SubResource("Resource_cegan"), SubResource("Resource_82xsv"), SubResource("Resource_getpj"), SubResource("Resource_ryguw"), SubResource("Resource_d13ii"), SubResource("Resource_1u8w0"), SubResource("Resource_0odxb"), SubResource("Resource_lswn8"), SubResource("Resource_a6jrf"), SubResource("Resource_xuqvo"), SubResource("Resource_qsp4k"), SubResource("Resource_kq58d"), SubResource("Resource_seu75"), SubResource("Resource_htxhm"), SubResource("Resource_jq2sk"), SubResource("Resource_4k2k6")]
+Slots = Array[ExtResource("11_ycdy4")]([SubResource("Resource_vivmo"), SubResource("Resource_2cqfq"), SubResource("Resource_074og"), SubResource("Resource_cegan"), SubResource("Resource_82xsv"), SubResource("Resource_getpj"), SubResource("Resource_ryguw"), SubResource("Resource_d13ii"), SubResource("Resource_1u8w0"), SubResource("Resource_0odxb"), SubResource("Resource_lswn8"), SubResource("Resource_a6jrf"), SubResource("Resource_xuqvo"), SubResource("Resource_qsp4k"), SubResource("Resource_kq58d"), SubResource("Resource_seu75"), SubResource("Resource_htxhm"), SubResource("Resource_jq2sk"), SubResource("Resource_4k2k6"), SubResource("Resource_yaehf")])
 metadata/_custom_type_script = "uid://dph74un0q20el"
 
 [node name="Main" type="Node2D"]

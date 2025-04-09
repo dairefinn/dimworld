@@ -1,24 +1,13 @@
-namespace Dimworld.Items.UI;
+namespace Dimworld.States;
 
 using Godot;
 
 
-public partial class InventorySlotState : Node
+public partial class State<T> : Resource
 {
 
-    public enum State
-    {
-        BASE = 0,
-        CLICKED = 1,
-        DRAGGING = 2
-    }
-
-    [Signal] public delegate void TransitionRequestedEventHandler(InventorySlotState from, State to);
-
-    public virtual State StateId { get; set; }
-
-
-    public InventorySlotUI inventorySlotUI;
+    public virtual T Parent { get; set; }
+    public virtual StateMachine<T> ParentStateMachine { get; set; }
 
 
     public virtual void Enter()
@@ -32,6 +21,11 @@ public partial class InventorySlotState : Node
     }
 
     public virtual void Exit()
+    {
+        // Replace with function body
+    }
+
+    public virtual void OnProcess(double delta)
     {
         // Replace with function body
     }
