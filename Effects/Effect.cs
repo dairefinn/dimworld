@@ -1,6 +1,7 @@
 namespace Dimworld.Effects;
 
 using Dimworld.Developer;
+using Dimworld.Helpers;
 using Godot;
 using Godot.Collections;
 
@@ -82,7 +83,7 @@ public partial class Effect : Area2D
         };
 
         CollisionLayer = 0;
-        CollisionMask = ParseCollisionLayers(collisionLayers);
+        CollisionMask = UIntHelper.ParseCollisionLayers(collisionLayers);
 
         ZIndex = 1;
 
@@ -90,21 +91,6 @@ public partial class Effect : Area2D
         BodyExited += OnBodyExited;
         AreaEntered += OnAreaEntered;
         AreaExited += OnAreaExited;
-    }
-
-    /// <summary>
-    /// Converts the collision layers from an array of integers to a uint. This is used to set the collision mask of the effect.
-    /// </summary>
-    /// <param name="layers"></param>
-    /// <returns></returns>
-    private uint ParseCollisionLayers(params int[] layers)
-    {
-        uint collisionLayers = 0;
-        foreach (int layer in layers)
-        {
-            collisionLayers |= (uint)(1 << (layer - 1));
-        }
-        return collisionLayers;
     }
 
     public Effect SetVelocity(Vector2 velocity)

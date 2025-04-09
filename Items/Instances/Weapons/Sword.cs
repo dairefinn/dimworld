@@ -10,7 +10,6 @@ public partial class Sword : InventoryItem, ICanBeUsedFromHotbar
 
     public bool UseFromHotbar(EquipmentHandler equipmentHandler)
     {
-        GD.Print("Sword used from hotbar");
         float radius = 20.0f;
         float damage = -20f;
         float force = 1000.0f;

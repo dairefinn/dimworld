@@ -17,6 +17,7 @@ public partial class EquipmentHandler : Node2D
 
     public EquipmentHandler(Node2D parent)
     {
+        Name = "EquipmentHandler";
         _parent = parent;
         _parent.AddChild(this);
     }

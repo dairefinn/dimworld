@@ -1,5 +1,6 @@
 namespace Dimworld;
 
+using Dimworld.Helpers;
 using Godot;
 using Godot.Collections;
 using System;
@@ -14,16 +15,16 @@ public partial class DetectionHandler : Area2D
     [Signal] public delegate void OnNodeDetectedEventHandler(Node node);
     [Signal] public delegate void OnNodeLostEventHandler(Node node);
 
+
     [Export] public Array<Node> DetectedEntities { get; set; }
 
 
     public override void _Ready()
     {
-        if (DetectedEntities == null)
-        {
-            DetectedEntities = [];
-        }
+        DetectedEntities ??= [];
+
         base._Ready();
+
         Initialize();
     }
 
