@@ -143,6 +143,7 @@ TimePassedPerTick = 1.0
 PercentageOfDay = 100.0
 
 [node name="CursorFollower" parent="Logic" instance=ExtResource("3_ryguw")]
+collision_mask = 3
 
 [node name="UI" type="CanvasLayer" parent="."]
 
