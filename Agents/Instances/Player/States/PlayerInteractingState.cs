@@ -14,6 +14,7 @@ public partial class PlayerInteractingState : State<Player>
         base.Enter();
 
         TryInteract(Globals.Instance.CursorFollower);
+        Parent.AnimationPlayer.Play("interact");
     }
 
     public override void OnProcess(double delta)

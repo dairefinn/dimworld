@@ -120,7 +120,7 @@ metadata/_custom_type_script = "uid://bm0o5ggnfmm6y"
 [sub_resource type="Resource" id="Resource_0rl1p"]
 script = ExtResource("12_w48qg")
 InventoryName = "Player Inventory"
-Slots = [SubResource("Resource_vivmo"), SubResource("Resource_2cqfq"), SubResource("Resource_074og"), SubResource("Resource_cegan"), SubResource("Resource_82xsv"), SubResource("Resource_getpj"), SubResource("Resource_ryguw"), SubResource("Resource_d13ii"), SubResource("Resource_1u8w0"), SubResource("Resource_0odxb"), SubResource("Resource_lswn8"), SubResource("Resource_a6jrf"), SubResource("Resource_xuqvo"), SubResource("Resource_qsp4k"), SubResource("Resource_kq58d"), SubResource("Resource_seu75"), SubResource("Resource_htxhm"), SubResource("Resource_jq2sk"), SubResource("Resource_4k2k6"), SubResource("Resource_yaehf")]
+Slots = Array[ExtResource("11_ycdy4")]([SubResource("Resource_vivmo"), SubResource("Resource_2cqfq"), SubResource("Resource_074og"), SubResource("Resource_cegan"), SubResource("Resource_82xsv"), SubResource("Resource_getpj"), SubResource("Resource_ryguw"), SubResource("Resource_d13ii"), SubResource("Resource_1u8w0"), SubResource("Resource_0odxb"), SubResource("Resource_lswn8"), SubResource("Resource_a6jrf"), SubResource("Resource_xuqvo"), SubResource("Resource_qsp4k"), SubResource("Resource_kq58d"), SubResource("Resource_seu75"), SubResource("Resource_htxhm"), SubResource("Resource_jq2sk"), SubResource("Resource_4k2k6"), SubResource("Resource_yaehf")])
 metadata/_custom_type_script = "uid://dph74un0q20el"
 
 [node name="Main" type="Node2D"]
@@ -173,5 +173,5 @@ DayNightController = NodePath("../Logic/DayNightController")
 
 [node name="Player" parent="." instance=ExtResource("9_kek77")]
 z_index = 1
-position = Vector2(1261, 786)
+position = Vector2(1795, 962)
 Inventory = SubResource("Resource_0rl1p")
