@@ -81,6 +81,28 @@ public partial class InventorySlot : Resource
         return true;
     }
 
+    public bool CanAddItem(InventoryItem item)
+    {
+        if (IsFull) return false;
+
+        if (Item == null)
+        {
+            return true;
+        }
+
+        if (Item != item)
+        {
+            return false;
+        }
+
+        if (Quantity >= Item.MaxStackSize)
+        {
+            return false;
+        }
+
+        return true;
+    }
+
     /// <summary>
     /// Remove an item from the inventory slot.
     /// </summary>

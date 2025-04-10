@@ -1,7 +1,8 @@
-[gd_scene load_steps=35 format=3 uid="uid://ddc8qiig7j3wm"]
+[gd_scene load_steps=36 format=3 uid="uid://ddc8qiig7j3wm"]
 
 [ext_resource type="Script" uid="uid://1f6ukfmh33oo" path="res://DayNightController.cs" id="1_d13ii"]
 [ext_resource type="PackedScene" uid="uid://duk1q562jys3q" path="res://Player/CursorFollower.tscn" id="3_ryguw"]
+[ext_resource type="Script" uid="uid://diohp7emnm65v" path="res://UI/UIRootPanel.cs" id="5_w48qg"]
 [ext_resource type="Script" uid="uid://daxnr47vhajw0" path="res://Levels/LevelHandler/LevelHandler.cs" id="8_ycdy4"]
 [ext_resource type="PackedScene" uid="uid://dius53mdc51ny" path="res://Agents/Instances/Player/Player.tscn" id="9_kek77"]
 [ext_resource type="Resource" uid="uid://octn8jxqeqaq" path="res://Items/Instances/Weapons/Sword.tres" id="10_dg77c"]
@@ -145,7 +146,8 @@ PercentageOfDay = 100.0
 
 [node name="UI" type="CanvasLayer" parent="."]
 
-[node name="MarginContainer" type="MarginContainer" parent="UI"]
+[node name="UIRootContainer" type="Control" parent="UI"]
+layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
@@ -153,20 +155,18 @@ grow_horizontal = 2
 grow_vertical = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
-theme_override_constants/margin_left = 10
-theme_override_constants/margin_top = 10
-theme_override_constants/margin_right = 10
-theme_override_constants/margin_bottom = 10
+script = ExtResource("5_w48qg")
 
-[node name="InventoryViewer" parent="UI/MarginContainer" instance=ExtResource("23_d13ii")]
-layout_mode = 2
+[node name="InventoryViewer" parent="UI/UIRootContainer" instance=ExtResource("23_d13ii")]
+layout_mode = 1
 
-[node name="DeveloperMenu" parent="UI" instance=ExtResource("12_dg77c")]
+[node name="DeveloperMenu" parent="UI/UIRootContainer" instance=ExtResource("12_dg77c")]
 visible = false
+layout_mode = 1
 
 [node name="Globals" type="Node" parent="." node_paths=PackedStringArray("InventoryViewer", "CursorFollower", "LevelHandler", "DayNightController")]
 script = ExtResource("13_ycdy4")
-InventoryViewer = NodePath("../UI/MarginContainer/InventoryViewer")
+InventoryViewer = NodePath("../UI/UIRootContainer/InventoryViewer")
 CursorFollower = NodePath("../Logic/CursorFollower")
 LevelHandler = NodePath("../LevelHandler")
 DayNightController = NodePath("../Logic/DayNightController")

@@ -1,13 +1,13 @@
 [gd_scene load_steps=5 format=3 uid="uid://h5wikgb34lv4"]
 
-[ext_resource type="Texture2D" uid="uid://b8uqkpg1wb5pu" path="res://Assets/Cute_Fantasy_Free/Animals/Sheep/Sheep.png" id="1_ofla6"]
 [ext_resource type="Script" uid="uid://bys0f8ukivogt" path="res://Objects/Bomb/Bomb.cs" id="1_strgv"]
+[ext_resource type="Texture2D" uid="uid://bhdhjfrrv6cw5" path="res://Assets/Sprites/Items/Items.png" id="2_fkcl3"]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_gjm8s"]
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_fkcl3"]
-atlas = ExtResource("1_ofla6")
-region = Rect2(0, 0, 32, 32)
+atlas = ExtResource("2_fkcl3")
+region = Rect2(160, 0, 32, 32)
 
 [node name="Bomb" type="StaticBody2D"]
 collision_layer = 2
@@ -18,4 +18,5 @@ script = ExtResource("1_strgv")
 shape = SubResource("CircleShape2D_gjm8s")
 
 [node name="Sprite2D" type="Sprite2D" parent="."]
+position = Vector2(0, -2)
 texture = SubResource("AtlasTexture_fkcl3")

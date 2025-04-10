@@ -1,6 +1,7 @@
 namespace Dimworld;
 
 using Dimworld.Agents.Instances;
+using Dimworld.Dialogue;
 using Dimworld.Items.UI;
 using Dimworld.Levels;
 using Godot;
@@ -47,6 +48,8 @@ public partial class Globals : Node
     [Export] public LevelHandler LevelHandler { get; set; }
 
     [Export] public DayNightController DayNightController { get; set; }
+
+    [Export] public DialogueHandler DialogueHandler { get; set; }
 
 
     public int MainThreadId { get; private set; }

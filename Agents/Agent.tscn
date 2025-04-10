@@ -3,7 +3,7 @@
 [ext_resource type="Script" uid="uid://bwbmuqkjtx0ns" path="res://Agents/CharacterController.cs" id="1_v5emj"]
 [ext_resource type="Script" uid="uid://cxbp1npv1tukk" path="res://Agents/DetectionHandler.cs" id="3_07efl"]
 [ext_resource type="PackedScene" uid="uid://bb462hku8uk8i" path="res://Agents/UI/AgentStatsUI.tscn" id="3_o26ja"]
-[ext_resource type="PackedScene" uid="uid://v23vcyiu8qgc" path="res://Dialogue/SpeechBubble.tscn" id="4_ia2xe"]
+[ext_resource type="PackedScene" uid="uid://v23vcyiu8qgc" path="res://Dialogue/SpeechBubble/SpeechBubble.tscn" id="4_ia2xe"]
 
 [sub_resource type="CapsuleShape2D" id="CapsuleShape2D_4oknj"]
 

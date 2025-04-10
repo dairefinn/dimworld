@@ -41,8 +41,8 @@ public abstract partial class AgentStatsModifier : Modifier
 
         if (nodeWithStats.Stats == null)
         {
-            GD.PrintErr($"TargetStats is null for modifier: {this}");
-            throw new Exception("Failed to add modifier: TargetStats is null");
+            GD.PrintErr($"TargetStats == null for modifier: {this}");
+            throw new Exception("Failed to add modifier: TargetStats == null");
         }
 
         TargetStats = nodeWithStats.Stats;

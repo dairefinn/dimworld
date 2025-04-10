@@ -23,7 +23,7 @@ public partial class LevelHandler : Node
     {
         if (newLevelPath == null)
         {
-            GD.PrintErr("New level is null");
+            GD.PrintErr("New level == null");
             return;
         }
 

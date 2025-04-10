@@ -36,7 +36,7 @@ public partial class Inventory : Resource
 	{
 		for(int i = 0; i < Slots.Count; i++)
 		{
-			// Make sure that no slot is null
+			// Make sure that no slot == null
 			if (Slots[i] == null)
 			{
 				Slots[i] = new InventorySlot();
@@ -61,17 +61,27 @@ public partial class Inventory : Resource
 	/// </summary>
 	/// <param name="item">The item to add.</param>
 	/// <returns>A boolean indicating whether the item was added successfully.</returns>
-	public bool AddItem(InventoryItem item)
+	public bool AddItem(InventoryItem item, int quantity = 1)
 	{
-		InventorySlot slot = GetFirstSlotWithItem(item, true);
-		if (slot == null)
-		{
-			DeveloperConsole.Print("No slot found for item: " + item.ItemName);
-			slot = GetFirstEmptySlot();
-		}
-		if (slot == null) return false;
+		if (item == null) return false;
+		if (!CanAddItem(item, quantity)) return false;
 
-		return slot.AddItem(item);
+		while (quantity > 0)
+		{
+			InventorySlot slot = GetFirstSlotWithItem(item, true);
+			if (slot == null)
+			{
+				slot = GetFirstEmptySlot();
+				if (slot == null) return false;
+			}
+
+			if (!slot.CanAddItem(item)) return false;
+
+			slot.AddItem(item);
+			quantity--;
+		}
+
+		return true;
 	}
 
 	/// <summary>
@@ -79,19 +89,46 @@ public partial class Inventory : Resource
 	/// </summary>
 	/// <param name="item">The item to remove.</param>
 	/// <returns>A boolean indicating whether the item was removed successfully.</returns>
-	public bool RemoveItem(InventoryItem item)
+	public bool RemoveItem(InventoryItem item, int quantity = 1)
 	{
-		if (!HasItem(item)) return false;
+		if (item == null) return false;
+		if (CountItem(item) < quantity) return false;
 
-		foreach (InventorySlot slot in Slots)
+		while (quantity > 0)
 		{
-			if (slot.Item == item)
-			{
-				return slot.RemoveItem();
-			}
+			InventorySlot slot = GetFirstSlotWithItem(item);
+			if (slot == null) return false;
+
+			if (!slot.RemoveItem()) return false;
+
+			quantity--;
 		}
 
-		return false;
+		return true;
+	}
+
+	/// <summary>
+	/// Checks if there is space in the inventory for a given item. It will see if there are any slots that aren't full and if there are any empty slots.
+	/// </summary>
+	/// <param name="item"></param>
+	/// <param name="quantity"></param>
+	/// <returns></returns>
+	public bool CanAddItem(InventoryItem item, int quantity = 1)
+	{
+		while(quantity > 0)
+		{
+			InventorySlot slot = GetFirstSlotWithItem(item, true);
+			if (slot == null)
+			{
+				slot = GetFirstEmptySlot();
+				if (slot == null) return false;
+			}
+
+			if (!slot.CanAddItem(item)) return false;
+
+			quantity--;
+		}
+		return true;
 	}
 
 	/// <summary>
@@ -124,6 +161,18 @@ public partial class Inventory : Resource
 		}
 		
 		return false;
+	}
+
+	public int CountItem(InventoryItem item)
+	{
+		int count = 0;
+		foreach (InventorySlot slot in Slots)
+		{
+			if (slot.IsEmpty) continue;
+			if (slot.Item == item) count += slot.Quantity;
+		}
+		
+		return count;
 	}
 
 	/// <summary>

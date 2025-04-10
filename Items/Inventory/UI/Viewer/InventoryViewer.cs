@@ -4,7 +4,7 @@ using Dimworld.Items.Weapons;
 using Godot;
 
 
-public partial class InventoryViewer : Control
+public partial class InventoryViewer : MarginContainer
 {
 
     [Export] public Inventory PrimaryInventory {
@@ -37,7 +37,7 @@ public partial class InventoryViewer : Control
     }
     private InventoryHotbarUI _hotbar;
     [Export] public InventoryContextMenuUI ContextMenu { get; set; }
-
+    public bool CanOpen { get; set; } = true;
 
     public bool IsViewing => GetPrimaryInventoryVisibility() || GetSecondaryInventoryVisibility();
 

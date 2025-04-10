@@ -22,7 +22,7 @@
 [ext_resource type="Script" uid="uid://ckdaa4jpv4ysf" path="res://Agents/Visuals/ClothingController.cs" id="20_wq24c"]
 [ext_resource type="Texture2D" uid="uid://bm5yi454iqlnw" path="res://Agents/Visuals/CharacterSpriteSheet.tres" id="21_r0bra"]
 [ext_resource type="PackedScene" uid="uid://bb462hku8uk8i" path="res://Agents/UI/AgentStatsUI.tscn" id="22_lnc0x"]
-[ext_resource type="PackedScene" uid="uid://v23vcyiu8qgc" path="res://Dialogue/SpeechBubble.tscn" id="23_lx72n"]
+[ext_resource type="PackedScene" uid="uid://v23vcyiu8qgc" path="res://Dialogue/SpeechBubble/SpeechBubble.tscn" id="23_lx72n"]
 
 [sub_resource type="Resource" id="Resource_ol4on"]
 script = ExtResource("2_4up7x")
