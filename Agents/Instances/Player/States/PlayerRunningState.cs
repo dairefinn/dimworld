@@ -27,9 +27,11 @@ public partial class PlayerRunningState : State<Player>
     {
         base.OnProcess(delta);
 
-        if (!Input.IsActionPressed(InputActions.ACTION_SPRINT))
+        // If no longer sprinting or stopped moving, transition to walking state
+        if (!Input.IsActionPressed(InputActions.ACTION_SPRINT) || Parent.DesiredMovementDirection == Vector2.Zero)
         {
-            ParentStateMachine.TransitionTo(CharacterController.States.Walking.ToString());
+            ParentStateMachine.TransitionTo(Player.States.Walking.ToString());
+            return;
         }
     }
 

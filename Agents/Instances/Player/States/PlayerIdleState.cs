@@ -20,11 +20,26 @@ public partial class PlayerIdleState : State<Player>
     {
         base.OnProcess(delta);
 
-		bool isMoving = Parent.DesiredMovementDirection != Vector2.Zero; // TODO: Transition to walking state
-		if (isMoving)
+        // If moving, transition to walking state
+		if (Parent.DesiredMovementDirection != Vector2.Zero)
 		{
-			ParentStateMachine.TransitionTo(CharacterController.States.Walking.ToString());
+			ParentStateMachine.TransitionTo(Player.States.Walking.ToString());
+            return;
 		}
+        
+        // If attacking, transition to attacking state
+        if (Parent.TryingToAttack)
+        {
+            ParentStateMachine.TransitionTo(Player.States.Attacking.ToString());
+            return;
+        }
+
+        // If interacting, transition to interacting state
+        if (Parent.TryingToInteract)
+        {
+            ParentStateMachine.TransitionTo(Player.States.Interacting.ToString());
+            return;
+        }
     }
 
 }

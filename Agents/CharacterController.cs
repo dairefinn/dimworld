@@ -16,17 +16,6 @@ using Godot.Collections;
 public partial class CharacterController : CharacterBody2D, IHasAgentStats, ICanBeMoved, IHasInventory, IMemorableNode, IAffectedByModifiers, ICanSpeak
 {
 
-	public enum States
-	{
-		Idle,
-		Walking,
-		Running,
-		Attacking,
-		Interacting,
-		Dead
-	}
-
-
 	[ExportGroup("Movement")]
 	[Export] public float Speed { get; set; } = 100f;
 	[Export] public float Acceleration { get; set; } = 50f;

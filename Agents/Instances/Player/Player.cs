@@ -2,6 +2,7 @@ namespace Dimworld.Agents.Instances;
 
 using Dimworld.Agents.Instances.States;
 using Dimworld.Developer;
+using Dimworld.Items;
 using Dimworld.Items.UI;
 using Dimworld.Levels;
 using Dimworld.Modifiers;
@@ -13,6 +14,17 @@ using Godot.Collections;
 public partial class Player : CharacterController, ICanTriggerLevelTransitions
 {
 
+	public enum States
+	{
+		Idle,
+		Walking,
+		Running,
+		Attacking,
+		Interacting,
+		Dead
+	}
+
+
     private static bool CanUseInputs => !DeveloperMenu.IsOpen && !DeveloperConsole.IsFocused && !(Globals.Instance.Player.Stats.Health <= 0);
 
 
@@ -21,6 +33,18 @@ public partial class Player : CharacterController, ICanTriggerLevelTransitions
 	/// </summary>
 	public bool UsePathfinding { get; set; } = false;
 	public Vector2 DesiredMovementDirection { get; set; } = Vector2.Zero;
+
+
+    public bool TryingToAttack => 
+            Input.IsActionPressed(InputActions.LEFT_MOUSE) &&
+            !Globals.Instance.InventoryViewer.IsViewing &&
+            Globals.Instance.InventoryViewer.Hotbar.SelectedSlotUI != null &&
+            !Globals.Instance.InventoryViewer.Hotbar.SelectedSlotUI.TargetSlot.IsEmpty &&
+            Globals.Instance.InventoryViewer.Hotbar.SelectedSlotUI.TargetSlot.Item != null &&
+            Globals.Instance.InventoryViewer.Hotbar.SelectedSlotUI.TargetSlot.Item is ICanBeUsedFromHotbar;
+    public bool TryingToInteract =>
+        Input.IsActionPressed(InputActions.INTERACT) &&
+        !Globals.Instance.InventoryViewer.IsViewing;
 
 
 	private StateMachine<Player> _stateMachine;
@@ -65,17 +89,6 @@ public partial class Player : CharacterController, ICanTriggerLevelTransitions
 		Velocity = Velocity.Lerp(desiredVelocity, (float)(Acceleration * delta));
 	}
 
-    private void TryInteract(CursorFollower cursorFollower)
-    {
-        if (!IsInstanceValid(cursorFollower)) return;
-
-        ICanBeInteractedWith interactableObject = cursorFollower.InteractableObject;
-        if (interactableObject == null) return;
-
-        TryInteractWith(interactableObject);
-    }
-
-
 	public override void _Ready()
 	{
 		base._Ready();
@@ -104,22 +117,13 @@ public partial class Player : CharacterController, ICanTriggerLevelTransitions
         base._Input(@event);
         
         InventoryViewer inventoryViewer = Globals.Instance.InventoryViewer;
-        CursorFollower cursorFollower = Globals.Instance.CursorFollower;
 
         bool isTogglingDeveloperMenu = @event.IsActionPressed(InputActions.TOGGLE_DEVELOPER_MENU);
 
-        bool canInteract = CanUseInputs && @event.IsActionPressed(InputActions.INTERACT) && !inventoryViewer.IsViewing;
         bool canOpenInventory = CanUseInputs && @event.IsActionPressed(InputActions.TOGGLE_INVENTORY) && !inventoryViewer.IsViewing;
         bool canCloseInventory = CanUseInputs && (@event.IsActionPressed(InputActions.TOGGLE_INVENTORY) || @event.IsActionPressed(InputActions.INTERACT) || @event.IsActionPressed(InputActions.UI_CANCEL)) && inventoryViewer.IsViewing;
-        bool canUseHotbarItems = CanUseInputs && !inventoryViewer.IsViewing && @event.IsActionPressed(InputActions.LEFT_MOUSE);
         bool canCloseConsole = @event.IsActionPressed(InputActions.UI_CANCEL) && DeveloperConsole.IsFocused;
         bool canReload = CanUseInputs && @event.IsActionPressed(InputActions.ACTION_RELOAD) && !inventoryViewer.IsViewing;
-        
-
-        if (canInteract)
-        {
-            TryInteract(cursorFollower);
-        }
 
         if (canOpenInventory)
         {
@@ -139,11 +143,6 @@ public partial class Player : CharacterController, ICanTriggerLevelTransitions
         if (canCloseConsole)
         {
             DeveloperMenu.Instance?.Hide();
-        }
-
-        if (canUseHotbarItems)
-        {
-            inventoryViewer.TryUseSelectedItem();
         }
 
         if (canReload)

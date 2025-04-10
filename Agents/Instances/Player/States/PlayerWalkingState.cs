@@ -1,7 +1,9 @@
 namespace Dimworld.Agents.Instances.States;
 
+using Dimworld.Items;
 using Dimworld.States;
 using Godot;
+
 
 public partial class PlayerWalkingState : State<Player>
 {
@@ -19,16 +21,33 @@ public partial class PlayerWalkingState : State<Player>
     {
         base.OnProcess(delta);
 
+        // If no longer moving, transition to idle state
         if (Parent.DesiredMovementDirection == Vector2.Zero)
         {
-            ParentStateMachine.TransitionTo(CharacterController.States.Idle.ToString());
+            ParentStateMachine.TransitionTo(Player.States.Idle.ToString());
+            return;
         }
 
+        // If sprinting, transition to sprinting state
         if (Input.IsActionPressed(InputActions.ACTION_SPRINT))
         {
-            ParentStateMachine.TransitionTo(CharacterController.States.Running.ToString());
+            ParentStateMachine.TransitionTo(Player.States.Running.ToString());
+            return;
         }
-        
+
+        // If attacking, transition to attacking state
+        if (Parent.TryingToAttack)
+        {
+            ParentStateMachine.TransitionTo(Player.States.Attacking.ToString());
+            return;
+        }
+
+        // If interacting, transition to interacting state
+        if (Parent.TryingToInteract)
+        {
+            ParentStateMachine.TransitionTo(Player.States.Interacting.ToString());
+            return;
+        }
     }
 
 }
