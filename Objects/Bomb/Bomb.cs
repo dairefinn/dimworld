@@ -10,12 +10,12 @@ public partial class Bomb : StaticBody2D, ICanBeInteractedWith
 
     public void InteractWith()
     {
-        // TriggerExplosion();
+        TriggerExplosion();
         // TriggerFire();
         // TriggerKnockback();
         // TriggerPull();
         // TriggerKnockbackExplosion();
-        TriggerApplyModifier();
+        // TriggerApplyModifier();
     }
 
 

@@ -47,6 +47,7 @@ public partial class CharacterController : CharacterBody2D, IHasAgentStats, ICan
 	[Export] public SpeechBubble SpeechBubble { get; set; }
 	[Export] public ClothingController ClothingController { get; set; }
 	[Export] public DetectionHandler DetectionHandler { get; set; }
+	[Export] public AnimationPlayer AnimationPlayer { get; set; }
 	
 
 	public ModifierHandler ModifierHandler { get; set; } = new();
@@ -54,8 +55,7 @@ public partial class CharacterController : CharacterBody2D, IHasAgentStats, ICan
 	public EquipmentHandler EquipmentHandler { get; set; }
 
 
-    private Vector2 desiredMovementDirection = Vector2.Zero;
-	private Rid navigationRid;
+	private Rid _navigationRid;
 
 
 	// LIFECYCLE EVENTS
@@ -81,7 +81,7 @@ public partial class CharacterController : CharacterBody2D, IHasAgentStats, ICan
 
 		NavigationAgent.VelocityComputed += OnSafeVelocityComputed;
 
-		navigationRid = NavigationAgent.GetNavigationMap();
+		_navigationRid = NavigationAgent.GetNavigationMap();
 	}
 
 	public override void _PhysicsProcess(double delta)
@@ -136,17 +136,13 @@ public partial class CharacterController : CharacterBody2D, IHasAgentStats, ICan
 
 	public bool CanReachPoint(Vector2 targetPoint)
 	{
-		bool isTargetReachable = NavigationServer2D.MapGetClosestPoint(navigationRid, targetPoint).IsEqualApprox(targetPoint);
+		bool isTargetReachable = NavigationServer2D.MapGetClosestPoint(_navigationRid, targetPoint).IsEqualApprox(targetPoint);
 		return isTargetReachable;
 	}
 
-	private void ProcessNavigation(double delta)
+	protected virtual void ProcessNavigation(double delta)
 	{
-		if (desiredMovementDirection != Vector2.Zero)
-		{
-			ProcessNavigationInput(desiredMovementDirection, delta);
-		}
-		else if (NavigationAgent.IsTargetReached())
+		if (NavigationAgent.IsTargetReached())
 		{
 			Velocity = Velocity.Lerp(Vector2.Zero, (float)(Acceleration * delta));
 		}
@@ -156,25 +152,9 @@ public partial class CharacterController : CharacterBody2D, IHasAgentStats, ICan
 		}
 
 		MoveAndSlide();
-
-		desiredMovementDirection = Vector2.Zero;
 	}
 
-	private void ProcessNavigationInput(Vector2 desiredMovementDirection, double delta)
-	{
-		Vector2 desiredVelocity = desiredMovementDirection * Speed;
-
-		// Apply velocity modifiers
-		Array<VelocityModifier> velocityModifiers = ModifierHandler.GetAllByType<VelocityModifier>();
-		foreach (VelocityModifier velocityModifier in velocityModifiers)
-		{
-			desiredVelocity = velocityModifier.ApplyTo(desiredVelocity);
-		}
-
-		Velocity = Velocity.Lerp(desiredVelocity, (float)(Acceleration * delta));
-	}
-
-	private void ProcessNavigationPathfinding(double delta)
+	protected void ProcessNavigationPathfinding(double delta)
 	{
 		if (NavigationAgent == null) return;
 		if (NavigationAgent.IsNavigationFinished()) return;
@@ -198,12 +178,6 @@ public partial class CharacterController : CharacterBody2D, IHasAgentStats, ICan
 	public void OnSafeVelocityComputed(Vector2 safeVelocity)
 	{
 		Velocity = safeVelocity;
-	}
-
-	public void SetMovementDirection(Vector2 direction)
-	{
-		if (direction == Vector2.Zero) return;
-		desiredMovementDirection = direction;
 	}
 
 	public void SetSprinting(bool isSprinting)
@@ -238,9 +212,13 @@ public partial class CharacterController : CharacterBody2D, IHasAgentStats, ICan
     {
 		if (Stats.Health > 0) return;
 		DeveloperConsole.Print("Agent is dead");
-		QueueFree(); // TODO: Implement a state machine and move the character to the dead state instead of deleting it.
+		OnDeath();
     }
 
+    public virtual void OnDeath()
+    {
+        QueueFree();
+    }
 
 	// FORCE APPLICATION
 

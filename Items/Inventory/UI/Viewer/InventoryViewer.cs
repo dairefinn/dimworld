@@ -283,17 +283,20 @@ public partial class InventoryViewer : Control
         ContextMenu.Hide();
     }
 
-    public void TryUseSelectedItem()
+    public bool TryUseSelectedItem()
     {
         InventorySlot selectedSlot = GetSelectedSlotWithItem();
-        if (selectedSlot == null) return;
+        if (selectedSlot == null) return false;
 
         InventoryItem item = selectedSlot.Item;
 
-        if (item is not ICanBeUsedFromHotbar itemCanBeUsedFromHotbar) return;
+        if (item is not ICanBeUsedFromHotbar itemCanBeUsedFromHotbar) return false;
 
-        itemCanBeUsedFromHotbar.UseFromHotbar(Globals.Instance.Player.EquipmentHandler);
+        bool success = itemCanBeUsedFromHotbar.UseFromHotbar(Globals.Instance.Player.EquipmentHandler);
+        if (!success) return false;
+
         selectedSlot.EmitSignal(InventorySlot.SignalName.OnUpdated);
+        return true;
     }
 
     public void TryReloadSelectedItem()

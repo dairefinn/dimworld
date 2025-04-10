@@ -124,7 +124,7 @@ public partial class DeveloperConsole : PanelContainer
 
     public override void _GuiInput(InputEvent @event)
 	{
-        if (isMouseOver && @event.IsActionPressed("lmb"))
+        if (isMouseOver && @event.IsActionPressed(InputActions.LEFT_MOUSE))
         {
             FocusConsoleInput();
         }
@@ -135,7 +135,7 @@ public partial class DeveloperConsole : PanelContainer
         base._Input(@event);
         
         // If the up arrow is pressed, show the previous command
-        if (IsFocused && @event.IsActionPressed("ui_up"))
+        if (IsFocused && @event.IsActionPressed(InputActions.UI_UP))
         {
             ShowPreviousCommand();
         }

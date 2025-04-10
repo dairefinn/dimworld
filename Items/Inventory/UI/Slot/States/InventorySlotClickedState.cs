@@ -1,13 +1,13 @@
 namespace Dimworld.Items.UI;
 
+using Dimworld.States;
 using Godot;
 
 
-public partial class InventorySlotClickedState : InventorySlotState
+public partial class InventorySlotClickedState : State<InventorySlotUI>
 {
-	
-	public override State StateId { get; set; } = State.CLICKED;
 
+	public override string Key { get; set; } = "CLICKED";
 
 	public override void Enter()
 	{
@@ -17,7 +17,7 @@ public partial class InventorySlotClickedState : InventorySlotState
     {
         if (@event is InputEventMouse mouseEvent)
 		{
-			EmitSignal(InventorySlotState.SignalName.TransitionRequested, this, (int)State.DRAGGING);
+			ParentStateMachine.TransitionTo(this, InventorySlotUI.States.DRAGGING.ToString());
 			return;
 		}
     }

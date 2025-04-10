@@ -1,10 +1,9 @@
-[gd_scene load_steps=36 format=3 uid="uid://ddc8qiig7j3wm"]
+[gd_scene load_steps=35 format=3 uid="uid://ddc8qiig7j3wm"]
 
 [ext_resource type="Script" uid="uid://1f6ukfmh33oo" path="res://DayNightController.cs" id="1_d13ii"]
-[ext_resource type="Script" uid="uid://g354xqg3s44p" path="res://InputHandler.cs" id="2_lquwl"]
 [ext_resource type="PackedScene" uid="uid://duk1q562jys3q" path="res://Player/CursorFollower.tscn" id="3_ryguw"]
 [ext_resource type="Script" uid="uid://daxnr47vhajw0" path="res://Levels/LevelHandler/LevelHandler.cs" id="8_ycdy4"]
-[ext_resource type="PackedScene" uid="uid://dius53mdc51ny" path="res://Agents/Instances/Player.tscn" id="9_kek77"]
+[ext_resource type="PackedScene" uid="uid://dius53mdc51ny" path="res://Agents/Instances/Player/Player.tscn" id="9_kek77"]
 [ext_resource type="Resource" uid="uid://octn8jxqeqaq" path="res://Items/Instances/Weapons/Sword.tres" id="10_dg77c"]
 [ext_resource type="Script" uid="uid://bm0o5ggnfmm6y" path="res://Items/Inventory/InventorySlot.cs" id="11_ycdy4"]
 [ext_resource type="PackedScene" uid="uid://qds61vs7bsi1" path="res://Developer/DeveloperMenu.tscn" id="12_dg77c"]
@@ -24,12 +23,6 @@ metadata/_custom_type_script = "uid://bm0o5ggnfmm6y"
 [sub_resource type="Resource" id="Resource_2cqfq"]
 script = ExtResource("11_ycdy4")
 Item = ExtResource("12_vivmo")
-Quantity = 1
-metadata/_custom_type_script = "uid://bm0o5ggnfmm6y"
-
-[sub_resource type="Resource" id="Resource_yaehf"]
-script = ExtResource("11_ycdy4")
-Item = ExtResource("13_2cqfq")
 Quantity = 1
 metadata/_custom_type_script = "uid://bm0o5ggnfmm6y"
 
@@ -118,10 +111,16 @@ script = ExtResource("11_ycdy4")
 Quantity = 0
 metadata/_custom_type_script = "uid://bm0o5ggnfmm6y"
 
+[sub_resource type="Resource" id="Resource_yaehf"]
+script = ExtResource("11_ycdy4")
+Item = ExtResource("13_2cqfq")
+Quantity = 1
+metadata/_custom_type_script = "uid://bm0o5ggnfmm6y"
+
 [sub_resource type="Resource" id="Resource_0rl1p"]
 script = ExtResource("12_w48qg")
 InventoryName = "Player Inventory"
-Slots = [SubResource("Resource_vivmo"), SubResource("Resource_2cqfq"), SubResource("Resource_yaehf"), SubResource("Resource_074og"), SubResource("Resource_cegan"), SubResource("Resource_82xsv"), SubResource("Resource_getpj"), SubResource("Resource_ryguw"), SubResource("Resource_d13ii"), SubResource("Resource_1u8w0"), SubResource("Resource_0odxb"), SubResource("Resource_lswn8"), SubResource("Resource_a6jrf"), SubResource("Resource_xuqvo"), SubResource("Resource_qsp4k"), SubResource("Resource_kq58d"), SubResource("Resource_seu75"), SubResource("Resource_htxhm"), SubResource("Resource_jq2sk"), SubResource("Resource_4k2k6")]
+Slots = Array[ExtResource("11_ycdy4")]([SubResource("Resource_vivmo"), SubResource("Resource_2cqfq"), SubResource("Resource_074og"), SubResource("Resource_cegan"), SubResource("Resource_82xsv"), SubResource("Resource_getpj"), SubResource("Resource_ryguw"), SubResource("Resource_d13ii"), SubResource("Resource_1u8w0"), SubResource("Resource_0odxb"), SubResource("Resource_lswn8"), SubResource("Resource_a6jrf"), SubResource("Resource_xuqvo"), SubResource("Resource_qsp4k"), SubResource("Resource_kq58d"), SubResource("Resource_seu75"), SubResource("Resource_htxhm"), SubResource("Resource_jq2sk"), SubResource("Resource_4k2k6"), SubResource("Resource_yaehf")])
 metadata/_custom_type_script = "uid://dph74un0q20el"
 
 [node name="Main" type="Node2D"]
@@ -132,9 +131,6 @@ script = ExtResource("8_ycdy4")
 [node name="LevelTesting" parent="LevelHandler" instance=ExtResource("25_a6jrf")]
 
 [node name="Logic" type="Node" parent="."]
-
-[node name="InputHandler" type="Node2D" parent="Logic"]
-script = ExtResource("2_lquwl")
 
 [node name="DayNightController" type="DirectionalLight2D" parent="Logic"]
 visible = false
@@ -177,5 +173,5 @@ DayNightController = NodePath("../Logic/DayNightController")
 
 [node name="Player" parent="." instance=ExtResource("9_kek77")]
 z_index = 1
-position = Vector2(1898, 808)
+position = Vector2(1795, 962)
 Inventory = SubResource("Resource_0rl1p")
