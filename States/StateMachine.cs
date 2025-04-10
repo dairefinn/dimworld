@@ -43,9 +43,6 @@ public class StateMachine<T>
 		if (state == null) return; // Cannot enter a null state
 		if (state == currentState) return; // Cannot enter a state that is already the current state
 
-		
-		GD.Print($"Transitioning from {currentState?.Key} to {state.Key}");
-
 		currentState?.Exit();
 
 		currentState = state;
