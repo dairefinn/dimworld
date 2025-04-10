@@ -58,14 +58,15 @@ public partial class CharacterController : CharacterBody2D, IHasAgentStats, ICan
 	[Export] public SpeechBubble SpeechBubble { get; set; }
 	[Export] public ClothingController ClothingController { get; set; }
 	[Export] public DetectionHandler DetectionHandler { get; set; }
+	[Export] public AnimationPlayer AnimationPlayer { get; set; }
 	
 
 	public ModifierHandler ModifierHandler { get; set; } = new();
 	public MemoryHandler MemoryHandler { get; set; } = new();
 	public EquipmentHandler EquipmentHandler { get; set; }
+    public Vector2 DesiredMovementDirection { get; set; } = Vector2.Zero;
 
 
-    private Vector2 _desiredMovementDirection = Vector2.Zero;
 	private Rid _navigationRid;
 
 
@@ -153,9 +154,9 @@ public partial class CharacterController : CharacterBody2D, IHasAgentStats, ICan
 
 	private void ProcessNavigation(double delta)
 	{
-		if (_desiredMovementDirection != Vector2.Zero)
+		if (DesiredMovementDirection != Vector2.Zero)
 		{
-			ProcessNavigationInput(_desiredMovementDirection, delta);
+			ProcessNavigationInput(DesiredMovementDirection, delta);
 		}
 		else if (NavigationAgent.IsTargetReached())
 		{
@@ -168,7 +169,7 @@ public partial class CharacterController : CharacterBody2D, IHasAgentStats, ICan
 
 		MoveAndSlide();
 
-		_desiredMovementDirection = Vector2.Zero;
+		DesiredMovementDirection = Vector2.Zero;
 	}
 
 	private void ProcessNavigationInput(Vector2 desiredMovementDirection, double delta)
@@ -211,10 +212,10 @@ public partial class CharacterController : CharacterBody2D, IHasAgentStats, ICan
 		Velocity = safeVelocity;
 	}
 
-	public void SetMovementDirection(Vector2 direction)
+	public virtual void SetDesiredMovementDirection(Vector2 direction)
 	{
 		if (direction == Vector2.Zero) return;
-		_desiredMovementDirection = direction;
+		DesiredMovementDirection = direction;
 	}
 
 	public void SetSprinting(bool isSprinting)

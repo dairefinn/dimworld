@@ -7,6 +7,8 @@ using Godot;
 public partial class InventorySlotDraggingState : State<InventorySlotUI>
 {
 
+	public override string Key { get; set; } = "DRAGGING";
+
 	// private bool _minimumDragTimeElapsed = false;
 	private InventorySlotUI.StyleType? _previousStyleType;
 	private Vector2 _dragAreaSize = Vector2.Zero;

@@ -13,6 +13,17 @@ public partial class InputHandler : Node2D
     private bool CanUseInputs => !DeveloperMenu.IsOpen && !DeveloperConsole.IsFocused && !(Globals.Instance.Player.Stats.Health <= 0);
 
 
+    private Vector2 GetDesiredMovementDirection()
+    {
+        Vector2 direction = new(
+            Input.IsActionPressed("move_right") ? 1 : (Input.IsActionPressed("move_left") ? -1 : 0),
+            Input.IsActionPressed("move_down") ? 1 : (Input.IsActionPressed("move_up") ? -1 : 0)
+        );
+
+        return direction;
+    }
+
+
     public override void _Process(double delta)
     {
         base._Process(delta);
@@ -20,7 +31,8 @@ public partial class InputHandler : Node2D
         InventoryViewer inventoryViewer = Globals.Instance.InventoryViewer;
         Player player = Globals.Instance.Player;
 
-        bool isMovingManually = Input.IsActionPressed("move_up") || Input.IsActionPressed("move_down") || Input.IsActionPressed("move_left") || Input.IsActionPressed("move_right");
+        Vector2 desiredMovementDirection = GetDesiredMovementDirection();
+        bool isMovingManually = !desiredMovementDirection.IsZeroApprox();
         bool isMovingClick = Input.IsActionPressed("lmb");
         
         bool canMove = CanUseInputs && !inventoryViewer.IsViewing;
@@ -32,13 +44,8 @@ public partial class InputHandler : Node2D
         {
             if (isMovingManually)
             {
-                Vector2 direction = new(
-                    Input.IsActionPressed("move_right") ? 1 : (Input.IsActionPressed("move_left") ? -1 : 0),
-                    Input.IsActionPressed("move_down") ? 1 : (Input.IsActionPressed("move_up") ? -1 : 0)
-                );
-
                 player.StopNavigating();
-                player.SetMovementDirection(direction);
+                player.SetDesiredMovementDirection(desiredMovementDirection);
             }
             else if (canMoveClick && isMovingClick)
             {
@@ -140,7 +147,6 @@ public partial class InputHandler : Node2D
             }
         }
     }
-
 
 
     // INTERACTIONS

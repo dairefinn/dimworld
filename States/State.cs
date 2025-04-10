@@ -6,48 +6,25 @@ using Godot;
 public partial class State<T> : Resource
 {
 
+    public virtual string Key { get; set; } = string.Empty;
     public virtual T Parent { get; set; }
     public virtual StateMachine<T> ParentStateMachine { get; set; }
 
 
-    public virtual void Enter()
-    {
-        // Replace with function body
-    }
+    public virtual void Enter() { }
 
-    public virtual void PostEnter()
-    {
-        // Replace with function body
-    }
+    public virtual void PostEnter() { }
 
-    public virtual void Exit()
-    {
-        // Replace with function body
-    }
+    public virtual void Exit() { }
 
-    public virtual void OnProcess(double delta)
-    {
-        // Replace with function body
-    }
+    public virtual void OnProcess(double delta) { }
 
-    public virtual void OnInput(InputEvent @event)
-    {
-        // Replace with function body
-    }
+    public virtual void OnInput(InputEvent @event) { }
 
-    public virtual void OnGuiInput(InputEvent @event)
-    {
-        // Replace with function body
-    }
+    public virtual void OnGuiInput(InputEvent @event) { }
 
-    public virtual void OnMouseEntered()
-    {
-        // Replace with function body
-    }
+    public virtual void OnMouseEntered() { }
 
-    public virtual void OnMouseExited()
-    {
-        // Replace with function body
-    }
+    public virtual void OnMouseExited() { }
 
 }

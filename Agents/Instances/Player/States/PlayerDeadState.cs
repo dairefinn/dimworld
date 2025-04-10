@@ -7,6 +7,9 @@ using Godot;
 public partial class PlayerDeadState : State<Player>
 {
 
+    public override string Key { get; set; } = "DEAD";
+
+
     public override void Enter()
     {
         base.Enter();

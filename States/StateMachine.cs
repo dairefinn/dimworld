@@ -10,7 +10,7 @@ public class StateMachine<T>
 	public Dictionary<string, State<T>> States = [];
 
 
-	private State<T> currentState;
+	protected State<T> currentState;
 
 
 	public StateMachine()
@@ -40,6 +40,12 @@ public class StateMachine<T>
 	
 	private void EnterState(State<T> state)
 	{
+		if (state == null) return; // Cannot enter a null state
+		if (state == currentState) return; // Cannot enter a state that is already the current state
+
+		
+		GD.Print($"Transitioning from {currentState?.Key} to {state.Key}");
+
 		currentState?.Exit();
 
 		currentState = state;
@@ -47,6 +53,11 @@ public class StateMachine<T>
 		currentState.PostEnter();
 	}
 
+
+	public void OnProcess(double delta)
+	{
+		currentState?.OnProcess(delta);
+	}
 
 	public void OnInput(InputEvent _event)
 	{
@@ -79,7 +90,6 @@ public class StateMachine<T>
 		if (from != currentState) return; // Cannot transition from a state that is not the current state
 
 		State<T> newState = States[to];
-
 		if (newState == null) return; // Cannot transition to a state that does not exist
 
 		EnterState(newState);

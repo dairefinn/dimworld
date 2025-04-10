@@ -7,4 +7,6 @@ using Godot;
 public partial class PlayerRunningState : State<Player>
 {
 
+    public override string Key { get; set; } = "RUNNING";
+
 }

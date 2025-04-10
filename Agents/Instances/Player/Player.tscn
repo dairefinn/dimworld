@@ -1,4 +1,4 @@
-[gd_scene load_steps=42 format=3 uid="uid://dius53mdc51ny"]
+[gd_scene load_steps=46 format=3 uid="uid://dius53mdc51ny"]
 
 [ext_resource type="Script" uid="uid://bl231uey5msax" path="res://Agents/Instances/Player/Player.cs" id="1_t81nq"]
 [ext_resource type="Texture2D" uid="uid://dpxdm8niupad2" path="res://Assets/Sprites/Characters/Character.png" id="2_ekqt3"]
@@ -156,7 +156,73 @@ region = Rect2(96, 64, 32, 32)
 [sub_resource type="CircleShape2D" id="CircleShape2D_ilihy"]
 radius = 100.0
 
-[node name="Player" type="CharacterBody2D" node_paths=PackedStringArray("NavigationAgent", "StatsUI", "SpeechBubble", "ClothingController", "DetectionHandler")]
+[sub_resource type="Animation" id="Animation_mhn8k"]
+resource_name = "walk"
+length = 0.4
+loop_mode = 1
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("BodySprite:position")
+tracks/0/interp = 2
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.2, 0.4),
+"transitions": PackedFloat32Array(1, 1, 1),
+"update": 0,
+"values": [Vector2(0, 0), Vector2(0, -2), Vector2(0, 0)]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = false
+tracks/1/path = NodePath("BodySprite:rotation")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0, 0.1, 0.3, 0.4),
+"transitions": PackedFloat32Array(1, 1, 1, 1),
+"update": 0,
+"values": [0.0, -0.0436332, 0.0436332, 0.0]
+}
+
+[sub_resource type="Animation" id="Animation_gg041"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("BodySprite:position")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector2(0, -7)]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("BodySprite:rotation")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [0.0]
+}
+
+[sub_resource type="Animation" id="Animation_1cb1f"]
+resource_name = "idle"
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_1cb1f"]
+_data = {
+&"RESET": SubResource("Animation_gg041"),
+&"idle": SubResource("Animation_1cb1f"),
+&"walk": SubResource("Animation_mhn8k")
+}
+
+[node name="Player" type="CharacterBody2D" node_paths=PackedStringArray("NavigationAgent", "StatsUI", "SpeechBubble", "ClothingController", "DetectionHandler", "AnimationPlayer")]
 script = ExtResource("1_t81nq")
 NavigationAgent = NodePath("NavigationAgent2D")
 Inventory = SubResource("Resource_hcpbs")
@@ -165,11 +231,13 @@ StatsUI = NodePath("AgentStatsUI")
 SpeechBubble = NodePath("CenterContainer/SpeechBubble")
 ClothingController = NodePath("BodySprite")
 DetectionHandler = NodePath("DetectionHandler")
+AnimationPlayer = NodePath("AnimationPlayer")
 
 [node name="Hitbox" type="CollisionShape2D" parent="."]
 shape = SubResource("CapsuleShape2D_2rjig")
 
 [node name="BodySprite" type="Sprite2D" parent="." node_paths=PackedStringArray("HairSprite", "EyesSprite", "TopSprite", "OvertopSprite", "BottomsSprite", "ShoesSprite")]
+position = Vector2(0, -7)
 texture = SubResource("AtlasTexture_ff6s7")
 script = ExtResource("3_teve5")
 HairSprite = NodePath("Hair")
@@ -235,3 +303,8 @@ Text = ""
 
 [node name="Camera2D" type="Camera2D" parent="."]
 zoom = Vector2(2, 2)
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
+libraries = {
+&"": SubResource("AnimationLibrary_1cb1f")
+}

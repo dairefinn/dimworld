@@ -7,6 +7,8 @@ using Godot;
 public partial class InventorySlotBaseState : State<InventorySlotUI>
 {
 
+    public override string Key { get; set; } = "BASE";
+
 	private bool mouseOverInventorySlot = false;
 
 

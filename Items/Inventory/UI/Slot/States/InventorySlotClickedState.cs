@@ -7,6 +7,8 @@ using Godot;
 public partial class InventorySlotClickedState : State<InventorySlotUI>
 {
 
+	public override string Key { get; set; } = "CLICKED";
+
 	public override void Enter()
 	{
 	}
