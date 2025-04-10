@@ -18,4 +18,11 @@ public partial class PlayerDeadState : State<Player>
         Parent.ClothingController.StopBlinking(false);
     }
 
+    public override void OnProcess(double delta)
+    {
+        base.OnProcess(delta);
+
+        Parent.DesiredMovementDirection = Vector2.Zero;
+    }
+
 }

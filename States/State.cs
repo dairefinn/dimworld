@@ -19,6 +19,8 @@ public partial class State<T> : Resource
 
     public virtual void OnProcess(double delta) { }
 
+    public virtual void OnPhysicsProcess(double delta) { }
+
     public virtual void OnInput(InputEvent @event) { }
 
     public virtual void OnGuiInput(InputEvent @event) { }

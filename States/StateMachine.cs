@@ -59,6 +59,11 @@ public class StateMachine<T>
 		currentState?.OnProcess(delta);
 	}
 
+	public void OnPhysicsProcess(double delta)
+	{
+		currentState?.OnPhysicsProcess(delta);
+	}
+
 	public void OnInput(InputEvent _event)
 	{
 		currentState?.OnInput(_event);

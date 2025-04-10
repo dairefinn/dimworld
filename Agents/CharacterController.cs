@@ -64,7 +64,6 @@ public partial class CharacterController : CharacterBody2D, IHasAgentStats, ICan
 	public ModifierHandler ModifierHandler { get; set; } = new();
 	public MemoryHandler MemoryHandler { get; set; } = new();
 	public EquipmentHandler EquipmentHandler { get; set; }
-    public Vector2 DesiredMovementDirection { get; set; } = Vector2.Zero;
 
 
 	private Rid _navigationRid;
@@ -152,13 +151,9 @@ public partial class CharacterController : CharacterBody2D, IHasAgentStats, ICan
 		return isTargetReachable;
 	}
 
-	private void ProcessNavigation(double delta)
+	protected virtual void ProcessNavigation(double delta)
 	{
-		if (DesiredMovementDirection != Vector2.Zero)
-		{
-			ProcessNavigationInput(DesiredMovementDirection, delta);
-		}
-		else if (NavigationAgent.IsTargetReached())
+		if (NavigationAgent.IsTargetReached())
 		{
 			Velocity = Velocity.Lerp(Vector2.Zero, (float)(Acceleration * delta));
 		}
@@ -168,25 +163,9 @@ public partial class CharacterController : CharacterBody2D, IHasAgentStats, ICan
 		}
 
 		MoveAndSlide();
-
-		DesiredMovementDirection = Vector2.Zero;
 	}
 
-	private void ProcessNavigationInput(Vector2 desiredMovementDirection, double delta)
-	{
-		Vector2 desiredVelocity = desiredMovementDirection * Speed;
-
-		// Apply velocity modifiers
-		Array<VelocityModifier> velocityModifiers = ModifierHandler.GetAllByType<VelocityModifier>();
-		foreach (VelocityModifier velocityModifier in velocityModifiers)
-		{
-			desiredVelocity = velocityModifier.ApplyTo(desiredVelocity);
-		}
-
-		Velocity = Velocity.Lerp(desiredVelocity, (float)(Acceleration * delta));
-	}
-
-	private void ProcessNavigationPathfinding(double delta)
+	protected void ProcessNavigationPathfinding(double delta)
 	{
 		if (NavigationAgent == null) return;
 		if (NavigationAgent.IsNavigationFinished()) return;
@@ -210,12 +189,6 @@ public partial class CharacterController : CharacterBody2D, IHasAgentStats, ICan
 	public void OnSafeVelocityComputed(Vector2 safeVelocity)
 	{
 		Velocity = safeVelocity;
-	}
-
-	public virtual void SetDesiredMovementDirection(Vector2 direction)
-	{
-		if (direction == Vector2.Zero) return;
-		DesiredMovementDirection = direction;
 	}
 
 	public void SetSprinting(bool isSprinting)

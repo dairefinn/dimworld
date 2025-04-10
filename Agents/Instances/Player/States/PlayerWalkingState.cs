@@ -21,7 +21,12 @@ public partial class PlayerWalkingState : State<Player>
 
         if (Parent.DesiredMovementDirection == Vector2.Zero)
         {
-            ParentStateMachine.TransitionTo(Player.States.Idle.ToString());
+            ParentStateMachine.TransitionTo(CharacterController.States.Idle.ToString());
+        }
+
+        if (Input.IsActionPressed("action_sprint"))
+        {
+            ParentStateMachine.TransitionTo(CharacterController.States.Running.ToString());
         }
         
     }

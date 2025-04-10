@@ -16,4 +16,15 @@ public partial class PlayerIdleState : State<Player>
         Parent.AnimationPlayer.Play("idle");
     }
 
+    public override void OnProcess(double delta)
+    {
+        base.OnProcess(delta);
+
+		bool isMoving = Parent.DesiredMovementDirection != Vector2.Zero; // TODO: Transition to walking state
+		if (isMoving)
+		{
+			ParentStateMachine.TransitionTo(CharacterController.States.Walking.ToString());
+		}
+    }
+
 }
