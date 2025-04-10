@@ -44,8 +44,8 @@ public partial class Player : CharacterController, ICanTriggerLevelTransitions
 	private Vector2 GetDesiredMovementDirection()
 	{
 		Vector2 direction = new(
-			Input.IsActionPressed("move_right") ? 1 : (Input.IsActionPressed("move_left") ? -1 : 0),
-			Input.IsActionPressed("move_down") ? 1 : (Input.IsActionPressed("move_up") ? -1 : 0)
+			Input.IsActionPressed(InputActions.MOVE_RIGHT) ? 1 : (Input.IsActionPressed(InputActions.MOVE_LEFT) ? -1 : 0),
+			Input.IsActionPressed(InputActions.MOVE_DOWN) ? 1 : (Input.IsActionPressed(InputActions.MOVE_UP) ? -1 : 0)
 		);
 
 		return direction;
@@ -106,14 +106,14 @@ public partial class Player : CharacterController, ICanTriggerLevelTransitions
         InventoryViewer inventoryViewer = Globals.Instance.InventoryViewer;
         CursorFollower cursorFollower = Globals.Instance.CursorFollower;
 
-        bool isTogglingDeveloperMenu = @event.IsActionPressed("toggle_developer_menu");
+        bool isTogglingDeveloperMenu = @event.IsActionPressed(InputActions.TOGGLE_DEVELOPER_MENU);
 
-        bool canInteract = CanUseInputs && @event.IsActionPressed("interact") && !inventoryViewer.IsViewing;
-        bool canOpenInventory = CanUseInputs && @event.IsActionPressed("toggle_inventory") && !inventoryViewer.IsViewing;
-        bool canCloseInventory = CanUseInputs && (@event.IsActionPressed("toggle_inventory") || @event.IsActionPressed("interact") || @event.IsActionPressed("ui_cancel")) && inventoryViewer.IsViewing;
-        bool canUseHotbarItems = CanUseInputs && !inventoryViewer.IsViewing && @event.IsActionPressed("lmb");
-        bool canCloseConsole = @event.IsActionPressed("ui_cancel") && DeveloperConsole.IsFocused;
-        bool canReload = CanUseInputs && @event.IsActionPressed("action_reload") && !inventoryViewer.IsViewing;
+        bool canInteract = CanUseInputs && @event.IsActionPressed(InputActions.INTERACT) && !inventoryViewer.IsViewing;
+        bool canOpenInventory = CanUseInputs && @event.IsActionPressed(InputActions.TOGGLE_INVENTORY) && !inventoryViewer.IsViewing;
+        bool canCloseInventory = CanUseInputs && (@event.IsActionPressed(InputActions.TOGGLE_INVENTORY) || @event.IsActionPressed(InputActions.INTERACT) || @event.IsActionPressed(InputActions.UI_CANCEL)) && inventoryViewer.IsViewing;
+        bool canUseHotbarItems = CanUseInputs && !inventoryViewer.IsViewing && @event.IsActionPressed(InputActions.LEFT_MOUSE);
+        bool canCloseConsole = @event.IsActionPressed(InputActions.UI_CANCEL) && DeveloperConsole.IsFocused;
+        bool canReload = CanUseInputs && @event.IsActionPressed(InputActions.ACTION_RELOAD) && !inventoryViewer.IsViewing;
         
 
         if (canInteract)
@@ -154,23 +154,23 @@ public partial class Player : CharacterController, ICanTriggerLevelTransitions
         if (CanUseInputs)
         {
             // If 1-5 are pressed, use the corresponding hotbar item
-            if (@event.IsActionPressed("hotbar_slot_0"))
+            if (@event.IsActionPressed(InputActions.HOTBAR_SLOT_0))
             {
                 inventoryViewer.Hotbar.SelectSlot(0);
             }
-            else if (@event.IsActionPressed("hotbar_slot_1"))
+            else if (@event.IsActionPressed(InputActions.HOTBAR_SLOT_1))
             {
                 inventoryViewer.Hotbar.SelectSlot(1);
             }
-            else if (@event.IsActionPressed("hotbar_slot_2"))
+            else if (@event.IsActionPressed(InputActions.HOTBAR_SLOT_2))
             {
                 inventoryViewer.Hotbar.SelectSlot(2);
             }
-            else if (@event.IsActionPressed("hotbar_slot_3"))
+            else if (@event.IsActionPressed(InputActions.HOTBAR_SLOT_3))
             {
                 inventoryViewer.Hotbar.SelectSlot(3);
             }
-            else if (@event.IsActionPressed("hotbar_slot_4"))
+            else if (@event.IsActionPressed(InputActions.HOTBAR_SLOT_4))
             {
                 inventoryViewer.Hotbar.SelectSlot(4);
             }

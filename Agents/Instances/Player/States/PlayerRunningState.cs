@@ -27,7 +27,7 @@ public partial class PlayerRunningState : State<Player>
     {
         base.OnProcess(delta);
 
-        if (!Input.IsActionPressed("action_sprint"))
+        if (!Input.IsActionPressed(InputActions.ACTION_SPRINT))
         {
             ParentStateMachine.TransitionTo(CharacterController.States.Walking.ToString());
         }

@@ -113,11 +113,11 @@ public partial class InventoryHotbarUI : Control
     {
         base._Input(@event);
 
-        if (@event.IsActionPressed("hotbar_slot_prev"))
+        if (@event.IsActionPressed(InputActions.HOTBAR_SLOT_PREV))
         {
             SelectNextSlot();
         }
-        else if (@event.IsActionPressed("hotbar_slot_next"))
+        else if (@event.IsActionPressed(InputActions.HOTBAR_SLOT_NEXT))
         {
             SelectPreviousSlot();
         }

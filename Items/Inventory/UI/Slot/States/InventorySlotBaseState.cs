@@ -29,19 +29,19 @@ public partial class InventorySlotBaseState : State<InventorySlotUI>
 	{
 		if (mouseOverInventorySlot && Parent.CanBeSelected)
 		{
-			if (@event.IsActionPressed("shift_lmb"))
+			if (@event.IsActionPressed(InputActions.SHIFT_LMB))
 			{
 				Parent.EmitSignal(InventorySlotUI.SignalName.OnSlotClicked, Parent);
 				return;
 			}
 
-			if (@event.IsActionPressed("lmb") && !Parent.TargetSlot.IsEmpty)
+			if (@event.IsActionPressed(InputActions.LEFT_MOUSE) && !Parent.TargetSlot.IsEmpty)
 			{
 				ParentStateMachine.TransitionTo(this, InventorySlotUI.States.CLICKED.ToString());
 				return;
 			}
 			
-			if (@event.IsActionPressed("rmb"))
+			if (@event.IsActionPressed(InputActions.RIGHT_MOUSE))
 			{
 				Parent.EmitSignal(InventorySlotUI.SignalName.OnSlotAlternateClicked, Parent);
 				return;

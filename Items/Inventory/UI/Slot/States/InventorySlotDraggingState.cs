@@ -49,13 +49,13 @@ public partial class InventorySlotDraggingState : State<InventorySlotUI>
 			Parent.DragArea.GlobalPosition = mouseMotion.GlobalPosition - _dragAreaSize;
 		}
 
-		if (@event.IsActionPressed("rmb"))
+		if (@event.IsActionPressed(InputActions.RIGHT_MOUSE))
 		{
 			ParentStateMachine.TransitionTo(this, InventorySlotUI.States.BASE.ToString());
 			return;
 		}
 		
-		if (@event.IsActionReleased("lmb"))
+		if (@event.IsActionReleased(InputActions.LEFT_MOUSE))
 		{
 			ReleaseDragOn(Parent.DragArea.Target);
 			ParentStateMachine.TransitionTo(this, InventorySlotUI.States.BASE.ToString());
