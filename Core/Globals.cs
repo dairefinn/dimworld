@@ -49,7 +49,7 @@ public partial class Globals : Node
 
     [Export] public DayNightController DayNightController { get; set; }
 
-    [Export] public DialogueHandler DialogueHandler { get; set; }
+    [Export] public DialoguePanelUI DialoguePanelUI { get; set; }
 
 
     public int MainThreadId { get; private set; }

@@ -1,8 +1,9 @@
-[gd_scene load_steps=36 format=3 uid="uid://ddc8qiig7j3wm"]
+[gd_scene load_steps=37 format=3 uid="uid://ddc8qiig7j3wm"]
 
-[ext_resource type="Script" uid="uid://1f6ukfmh33oo" path="res://DayNightController.cs" id="1_d13ii"]
+[ext_resource type="Script" uid="uid://1f6ukfmh33oo" path="res://Core/DayNightController.cs" id="1_d13ii"]
 [ext_resource type="PackedScene" uid="uid://duk1q562jys3q" path="res://Player/CursorFollower.tscn" id="3_ryguw"]
-[ext_resource type="Script" uid="uid://diohp7emnm65v" path="res://UI/UIRootPanel.cs" id="5_w48qg"]
+[ext_resource type="Script" uid="uid://diohp7emnm65v" path="res://Core/UIRootPanel.cs" id="5_w48qg"]
+[ext_resource type="PackedScene" uid="uid://yw15jku1xwks" path="res://Dialogue/Scenes/DialoguePanelUI/DialoguePanelUI.tscn" id="8_vivmo"]
 [ext_resource type="Script" uid="uid://daxnr47vhajw0" path="res://Levels/LevelHandler/LevelHandler.cs" id="8_ycdy4"]
 [ext_resource type="PackedScene" uid="uid://dius53mdc51ny" path="res://Agents/Instances/Player/Player.tscn" id="9_kek77"]
 [ext_resource type="Resource" uid="uid://octn8jxqeqaq" path="res://Items/Instances/Weapons/Sword.tres" id="10_dg77c"]
@@ -11,7 +12,7 @@
 [ext_resource type="Resource" uid="uid://bbn4fu5m0emk1" path="res://Items/Instances/Weapons/Revolver.tres" id="12_vivmo"]
 [ext_resource type="Script" uid="uid://dph74un0q20el" path="res://Items/Inventory/Inventory.cs" id="12_w48qg"]
 [ext_resource type="Resource" uid="uid://bfbm4tftgemqa" path="res://Items/Instances/Utility/Torch.tres" id="13_2cqfq"]
-[ext_resource type="Script" uid="uid://5l72ubbv8qqo" path="res://Globals.cs" id="13_ycdy4"]
+[ext_resource type="Script" uid="uid://5l72ubbv8qqo" path="res://Core/Globals.cs" id="13_ycdy4"]
 [ext_resource type="PackedScene" uid="uid://d21nkwnu7y4od" path="res://Items/Inventory/UI/Viewer/InventoryViewer.tscn" id="23_d13ii"]
 [ext_resource type="PackedScene" uid="uid://b3v4ub2lqydho" path="res://Levels/LevelTesting.tscn" id="25_a6jrf"]
 
@@ -165,12 +166,26 @@ layout_mode = 1
 visible = false
 layout_mode = 1
 
-[node name="Globals" type="Node" parent="." node_paths=PackedStringArray("InventoryViewer", "CursorFollower", "LevelHandler", "DayNightController")]
+[node name="DialoguePanelUI" parent="UI/UIRootContainer" instance=ExtResource("8_vivmo")]
+visible = false
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -250.0
+offset_top = -200.0
+offset_right = 250.0
+offset_bottom = 200.0
+
+[node name="Globals" type="Node" parent="." node_paths=PackedStringArray("InventoryViewer", "CursorFollower", "LevelHandler", "DayNightController", "DialoguePanelUI")]
 script = ExtResource("13_ycdy4")
 InventoryViewer = NodePath("../UI/UIRootContainer/InventoryViewer")
 CursorFollower = NodePath("../Logic/CursorFollower")
 LevelHandler = NodePath("../LevelHandler")
 DayNightController = NodePath("../Logic/DayNightController")
+DialoguePanelUI = NodePath("../UI/UIRootContainer/DialoguePanelUI")
 
 [node name="Player" parent="." instance=ExtResource("9_kek77")]
 z_index = 1

@@ -23,7 +23,7 @@ public partial class PlayerInteractingState : State<Player>
 
         Parent.DesiredMovementDirection = Vector2.Zero;
 
-        if (!Globals.Instance.InventoryViewer.IsViewing)
+        if (!Parent.TryingToInteract && !Globals.Instance.InventoryViewer.IsViewing)
         {
             ParentStateMachine.TransitionTo(Player.States.Idle.ToString());
             return;

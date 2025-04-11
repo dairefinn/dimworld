@@ -1,6 +1,6 @@
 [gd_scene load_steps=4 format=3 uid="uid://v23vcyiu8qgc"]
 
-[ext_resource type="Script" uid="uid://u551fomk6by0" path="res://Dialogue/SpeechBubble/SpeechBubble.cs" id="1_inyif"]
+[ext_resource type="Script" uid="uid://u551fomk6by0" path="res://Dialogue/Scenes/SpeechBubble/SpeechBubble.cs" id="1_inyif"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_o26ja"]
 bg_color = Color(1, 1, 1, 1)

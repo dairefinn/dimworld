@@ -7,11 +7,8 @@ using Godot;
 public partial class DialogueOptionEndDialogue : DialogueOption
 {
 
-    public override string Name { get; set; } = "End dialogue";
-
-
     public override bool OnSelected() {
-        Globals.Instance.DialogueHandler.EndDialogue();
+        Globals.Instance.DialoguePanelUI.EndDialogue();
         return true;
     }
 

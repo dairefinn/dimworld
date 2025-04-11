@@ -4,6 +4,7 @@ using Dimworld.Items.Weapons;
 using Godot;
 
 
+// TODO: Need to separate the hotbar from the inventory UI so it can be controlled from the UIRoot node
 public partial class InventoryViewer : MarginContainer
 {
 

@@ -4,11 +4,8 @@ using Godot;
 
 
 [GlobalClass]
-public abstract partial class DialogueOption : RefCounted
+public abstract partial class DialogueOption : Resource
 {
-
-    public virtual string Name { get; set; } = "Dialogue option";
-
 
     public virtual bool ShouldShow() {
         return true;
@@ -17,10 +14,5 @@ public abstract partial class DialogueOption : RefCounted
     public virtual bool OnSelected() {
         return true;
     }
-
-	public override string ToString()
-	{
-        return Name;
-	}
 
 }

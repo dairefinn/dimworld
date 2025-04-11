@@ -5,9 +5,8 @@ using Dimworld.UI;
 using Godot;
 
 
-public partial class DialogueHandler : Node {
-
-    public static DialogueHandler Instance {get; private set;}
+public partial class DialoguePanelUI : Control
+{
 
     public DialogueMenu CurrentDialogue {
         get => _currentDialogue;
@@ -20,14 +19,12 @@ public partial class DialogueHandler : Node {
             {
                 UIRootPanel.Instance.DisablePanel<DialoguePanelUI>();
             }
+            UpdateUI();
         }
     }
     private DialogueMenu _currentDialogue;
+    [Export] public RichTextLabel DialogueTextLabel { get; set; }
 
-    public override void _Ready()
-    {
-        Instance = this;
-    }
 
 	public override void _Process(double delta)
 	{
@@ -53,6 +50,18 @@ public partial class DialogueHandler : Node {
     public void EndDialogue(){
         CurrentDialogue = null;
         TradeController.Instance.EndTrade();
+    }
+
+    public void UpdateUI()
+    {
+        string message = string.Empty;
+
+        if (CurrentDialogue != null)
+        {
+            message = CurrentDialogue.GetRandomMessage();
+        }
+
+        DialogueTextLabel.Text = message;
     }
 
 }

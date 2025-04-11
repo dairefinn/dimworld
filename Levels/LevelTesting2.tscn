@@ -1,7 +1,7 @@
 [gd_scene load_steps=11 format=4 uid="uid://76x2747d2p5d"]
 
 [ext_resource type="Script" uid="uid://dvuy36fh5vjfh" path="res://Levels/LevelHandler/GameLevel.cs" id="1_scwad"]
-[ext_resource type="TileSet" uid="uid://me5j3tknec74" path="res://Tileset.tres" id="1_yrnnv"]
+[ext_resource type="TileSet" uid="uid://me5j3tknec74" path="res://Core/Tileset.tres" id="1_yrnnv"]
 [ext_resource type="PackedScene" uid="uid://btq4doy261mt6" path="res://Levels/Transitions/LevelTransitionArea.tscn" id="2_eek5e"]
 [ext_resource type="PackedScene" uid="uid://d0m7n2m01rmhp" path="res://Levels/SpawnPoint/SpawnPoint.tscn" id="3_0xkmx"]
 

@@ -5,7 +5,7 @@ using Dimworld.Items;
 using Godot;
 
 
-public partial class TradeHistory : RefCounted {
+public partial class TradeHistory : Resource {
 
     public InventoryItem Item { get; set; }
     public int Price { get; set; }

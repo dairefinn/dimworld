@@ -11,8 +11,13 @@ public partial class Trader : NpcController, IHasDialogueTree, ICanBeInteractedW
 
     public void InteractWith()
     {
-        GD.Print("Interacted with trader");
-        // TODO: Send the dialogue tree to the dialogue UI
+        if (DialogueTree == null)
+        {
+            GD.Print("No dialogue tree assigned to trader.");
+            return;
+        }
+
+        Globals.Instance.DialoguePanelUI.StartDialogue(DialogueTree);
     }
 
 }

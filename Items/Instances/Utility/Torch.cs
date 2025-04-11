@@ -9,7 +9,7 @@ public partial class Torch : InventoryItem, IHasContextMenu, ICanBeEquipped, ICa
     private PointLight2D lightSource = new()
     {
         Name = "Torch Light",
-        Texture = GD.Load<Texture2D>("res://LightTexture.tres"),
+        Texture = GD.Load<Texture2D>("res://Assets/LightTexture.tres"),
         ZIndex = -1
     };
 

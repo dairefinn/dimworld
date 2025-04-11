@@ -16,7 +16,7 @@ public partial class DialogueOptionNewMenu : DialogueOption
     {
         if (NextDialogueRoot == null) return false;
         NextDialogueRoot.ShuffleMessage();
-        Globals.Instance.DialogueHandler.StartDialogue(NextDialogueRoot);
+        Globals.Instance.DialoguePanelUI.StartDialogue(NextDialogueRoot);
 
         if (NextDialogueRoot is DialogueMenuTrade)
         {

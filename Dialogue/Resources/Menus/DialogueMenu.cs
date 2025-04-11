@@ -6,7 +6,7 @@ using Godot.Collections;
 
 
 [GlobalClass]
-public abstract partial class DialogueMenu : RefCounted
+public abstract partial class DialogueMenu : Resource
 {
 
     [Export] public Array<string> Messages { get; set; } = [];
