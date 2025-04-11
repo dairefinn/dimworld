@@ -1,4 +1,4 @@
-namespace Dimworld.Helpers;
+namespace Dimworld.Utils;
 
 using Godot;
 

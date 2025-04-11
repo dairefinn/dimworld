@@ -1,6 +1,7 @@
 namespace Dimworld;
 
 using System;
+using Dimworld.Utils;
 using Godot;
 
 
@@ -65,13 +66,13 @@ public partial class DayNightController : DirectionalLight2D
 	private void UpdateSkyColour(float percentageOfDay) {
 		float lerpAdjusted;
 		if (percentageOfDay < 25) { // 0.5 to 1
-			lerpAdjusted = Utils.Lerp(0.5f, 1, percentageOfDay / 25);
+			lerpAdjusted = Interpolation.Lerp(0.5f, 1, percentageOfDay / 25);
 		} else if (percentageOfDay < 50) { // 1 to 0.5
-			lerpAdjusted = Utils.Lerp(1, 0.5f, (percentageOfDay - 25) / 25);
+			lerpAdjusted = Interpolation.Lerp(1, 0.5f, (percentageOfDay - 25) / 25);
 		} else if (percentageOfDay < 75) { // 0.5 to 0
-			lerpAdjusted = Utils.Lerp(0.5f, 0, (percentageOfDay - 50) / 25);
+			lerpAdjusted = Interpolation.Lerp(0.5f, 0, (percentageOfDay - 50) / 25);
 		} else { // 0 to 0.5
-			lerpAdjusted = Utils.Lerp(0, 0.5f, (percentageOfDay - 75) / 25);
+			lerpAdjusted = Interpolation.Lerp(0, 0.5f, (percentageOfDay - 75) / 25);
 		}
 
         // Color = Utils.Lerp(NightColor, NightColor, lerpAdjusted);
@@ -79,7 +80,7 @@ public partial class DayNightController : DirectionalLight2D
         // 0.1 at day (25%)
         // 1 at night (75%)
         
-        Energy = Utils.Lerp(0.0f, 1.0f, 1 - lerpAdjusted);
+        Energy = Interpolation.Lerp(0.0f, 1.0f, 1 - lerpAdjusted);
 	}
     
     private void SetPercentageOfDay(float value) {

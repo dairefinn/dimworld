@@ -1,9 +1,9 @@
-namespace Dimworld;
+namespace Dimworld.Utils;
 
-using System;
 using Godot;
 
-public class Utils
+
+public class Interpolation
 {
 
     public static double Lerp(double a, double b, double t)

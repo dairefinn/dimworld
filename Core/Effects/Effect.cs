@@ -1,7 +1,7 @@
 namespace Dimworld.Effects;
 
 using Dimworld.Developer;
-using Dimworld.Helpers;
+using Dimworld.Utils;
 using Godot;
 using Godot.Collections;
 

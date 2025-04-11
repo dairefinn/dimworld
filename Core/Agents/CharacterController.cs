@@ -3,13 +3,12 @@ namespace Dimworld.Agents;
 using Dimworld.Developer;
 using Dimworld.Dialogue;
 using Dimworld.Effects;
-using Dimworld.Helpers;
 using Dimworld.Items;
 using Dimworld.Memory;
 using Dimworld.Memory.MemoryEntries;
 using Dimworld.Modifiers;
+using Dimworld.Utils;
 using Godot;
-using Godot.Collections;
 
 
 // TODO: Might want to make this even more abstract and then have HumanoidController and AnimalController inherit from this (Because an animal might not have a speech bubble or clothing controller)
