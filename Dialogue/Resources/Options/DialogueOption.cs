@@ -7,6 +7,9 @@ using Godot;
 public abstract partial class DialogueOption : Resource
 {
 
+    [Export] public virtual string Name { get; set; } = string.Empty;
+
+
     public virtual bool ShouldShow() {
         return true;
     }

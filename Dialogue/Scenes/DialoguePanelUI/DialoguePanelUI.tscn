@@ -15,7 +15,7 @@ corner_radius_top_right = 12
 corner_radius_bottom_right = 12
 corner_radius_bottom_left = 12
 
-[node name="DialoguePanelUI" type="PanelContainer" node_paths=PackedStringArray("DialogueTextLabel")]
+[node name="DialoguePanelUI" type="PanelContainer" node_paths=PackedStringArray("DialogueTextLabel", "DialogueOptionsContainer")]
 custom_minimum_size = Vector2(500, 400)
 anchors_preset = 15
 anchor_right = 1.0
@@ -27,6 +27,7 @@ size_flags_vertical = 3
 theme_override_styles/panel = SubResource("StyleBoxFlat_g2lq5")
 script = ExtResource("1_g2lq5")
 DialogueTextLabel = NodePath("MarginContainer/VBoxContainer/SpeakerName")
+DialogueOptionsContainer = NodePath("MarginContainer/VBoxContainer/DialogueOptions")
 
 [node name="MarginContainer" type="MarginContainer" parent="."]
 layout_mode = 2

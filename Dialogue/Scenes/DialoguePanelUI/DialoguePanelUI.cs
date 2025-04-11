@@ -1,9 +1,10 @@
 namespace Dimworld.Dialogue;
 
 using Dimworld.Developer;
+using Dimworld.Dialogue.Options;
 using Dimworld.UI;
 using Godot;
-
+using Godot.Collections;
 
 public partial class DialoguePanelUI : Control
 {
@@ -24,6 +25,7 @@ public partial class DialoguePanelUI : Control
     }
     private DialogueMenu _currentDialogue;
     [Export] public RichTextLabel DialogueTextLabel { get; set; }
+    [Export] public Container DialogueOptionsContainer { get; set; }
 
 
 	public override void _Process(double delta)
@@ -49,19 +51,44 @@ public partial class DialoguePanelUI : Control
 
     public void EndDialogue(){
         CurrentDialogue = null;
-        TradeController.Instance.EndTrade();
+        // TradeController.Instance.EndTrade(); // TODO: Implement this
     }
 
     public void UpdateUI()
     {
         string message = string.Empty;
+        Array<DialogueOption> options = [];
 
         if (CurrentDialogue != null)
         {
             message = CurrentDialogue.GetRandomMessage();
+            options = CurrentDialogue.Options;
         }
 
         DialogueTextLabel.Text = message;
+        
+        foreach(Node child in DialogueOptionsContainer.GetChildren())
+        {
+            child.QueueFree();
+        }
+
+        foreach (DialogueOption option in options)
+        {
+            Button label = new()
+            {
+                Text = option.Name
+            };
+            label.Pressed += () =>
+            {
+                option.OnSelected();
+            };
+            DialogueOptionsContainer.AddChild(label);
+        }
+        
+        if (CurrentDialogue == null)
+        {
+            Hide();
+        }
     }
 
 }
