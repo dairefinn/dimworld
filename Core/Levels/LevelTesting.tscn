@@ -1,4 +1,4 @@
-[gd_scene load_steps=71 format=4 uid="uid://b3v4ub2lqydho"]
+[gd_scene load_steps=73 format=4 uid="uid://b3v4ub2lqydho"]
 
 [ext_resource type="Script" uid="uid://dvuy36fh5vjfh" path="res://Core/Levels/LevelHandler/GameLevel.cs" id="1_3pabw"]
 [ext_resource type="TileSet" uid="uid://me5j3tknec74" path="res://Resources/Tilesets/Tileset.tres" id="1_uaggo"]
@@ -22,6 +22,7 @@
 [ext_resource type="Script" uid="uid://da3ccx60v3tuo" path="res://Core/Agents/Dialogue/Resources/Options/DialogueOptionTradeToInventory.cs" id="19_3pabw"]
 [ext_resource type="Script" uid="uid://cjjrvakff5xa1" path="res://Core/Agents/Dialogue/Resources/Menus/DialogueMenuTalk.cs" id="19_7iri2"]
 [ext_resource type="Script" uid="uid://b0512j2omli3y" path="res://Core/Agents/Dialogue/Resources/Menus/DialogueMenuTrade.cs" id="20_01cvm"]
+[ext_resource type="Script" uid="uid://cfo010by4mvxd" path="res://Core/Agents/Dialogue/Resources/Options/DialogueOptionUndoTrade.cs" id="20_3vcnh"]
 [ext_resource type="Script" uid="uid://dm05re8l761f7" path="res://Core/Agents/Dialogue/Resources/Options/DialogueOptionNewMenu.cs" id="21_4fweh"]
 
 [sub_resource type="NavigationPolygon" id="NavigationPolygon_1eql1"]
@@ -231,6 +232,11 @@ TradeOption = 0
 Name = "Revolver"
 metadata/_custom_type_script = "uid://da3ccx60v3tuo"
 
+[sub_resource type="Resource" id="Resource_c511v"]
+script = ExtResource("20_3vcnh")
+Name = "Refund purchase"
+metadata/_custom_type_script = "uid://cfo010by4mvxd"
+
 [sub_resource type="Resource" id="Resource_3by8r"]
 script = ExtResource("18_01e6d")
 Name = "Bye!"
@@ -239,7 +245,7 @@ metadata/_custom_type_script = "uid://e0p8f80o2res"
 [sub_resource type="Resource" id="Resource_1cqng"]
 script = ExtResource("20_01cvm")
 Messages = Array[String](["What're ya buyin?"])
-Options = Array[ExtResource("17_0bk61")]([SubResource("Resource_eb50o"), SubResource("Resource_3by8r")])
+Options = Array[ExtResource("17_0bk61")]([SubResource("Resource_eb50o"), SubResource("Resource_c511v"), SubResource("Resource_3by8r")])
 metadata/_custom_type_script = "uid://b0512j2omli3y"
 
 [sub_resource type="Resource" id="Resource_oeo7j"]
