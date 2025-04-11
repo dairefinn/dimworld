@@ -1,0 +1,9 @@
+[gd_resource type="Resource" load_steps=2 format=3 uid="uid://dklafmkxavest"]
+
+[ext_resource type="Script" uid="uid://dnpw75tc1iqua" path="res://Core/Goap/Actions/FindItem.cs" id="1_r3lsj"]
+
+[resource]
+script = ExtResource("1_r3lsj")
+Name = "Find item"
+Cost = 1000
+metadata/_custom_type_script = "uid://dmhsbr32vw1tk"
