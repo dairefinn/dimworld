@@ -1,0 +1,59 @@
+[gd_scene load_steps=5 format=3 uid="uid://d21nkwnu7y4od"]
+
+[ext_resource type="Script" uid="uid://dnfjwmt5hy17g" path="res://Core/Items/Inventory/UI/Viewer/InventoryViewer.cs" id="1_tdqb6"]
+[ext_resource type="PackedScene" uid="uid://bypfigpr23v58" path="res://Core/Items/Inventory/UI/InventoryUI.tscn" id="2_wxqvu"]
+[ext_resource type="PackedScene" uid="uid://d1j133js04tk1" path="res://Core/Items/Inventory/UI/Hotbar/InventoryHotbarUI.tscn" id="3_5gkt5"]
+[ext_resource type="PackedScene" uid="uid://dk54wpv1dffmh" path="res://Core/Items/Inventory/UI/ContextMenu/InventoryContextMenuUI.tscn" id="3_wxqvu"]
+
+[node name="InventoryViewer" type="MarginContainer" node_paths=PackedStringArray("PrimaryInventoryUI", "SecondaryInventoryUI", "Hotbar", "ContextMenu")]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+theme_override_constants/margin_left = 16
+theme_override_constants/margin_top = 16
+theme_override_constants/margin_right = 16
+theme_override_constants/margin_bottom = 16
+script = ExtResource("1_tdqb6")
+PrimaryInventoryUI = NodePath("VBoxContainer/HBoxContainer/PrimaryInventoryUI")
+SecondaryInventoryUI = NodePath("VBoxContainer/HBoxContainer/SecondaryInventoryUI")
+Hotbar = NodePath("VBoxContainer/Hotbar")
+ContextMenu = NodePath("InventoryContextMenuUI")
+
+[node name="VBoxContainer" type="VBoxContainer" parent="."]
+layout_mode = 2
+size_flags_horizontal = 4
+alignment = 1
+
+[node name="HBoxContainer" type="HBoxContainer" parent="VBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 6
+theme_override_constants/separation = 50
+alignment = 1
+
+[node name="PrimaryInventoryUI" parent="VBoxContainer/HBoxContainer" instance=ExtResource("2_wxqvu")]
+unique_name_in_owner = true
+visible = false
+layout_mode = 2
+
+[node name="SecondaryInventoryUI" parent="VBoxContainer/HBoxContainer" instance=ExtResource("2_wxqvu")]
+unique_name_in_owner = true
+visible = false
+layout_mode = 2
+
+[node name="Hotbar" parent="VBoxContainer" instance=ExtResource("3_5gkt5")]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 6
+size_flags_vertical = 4
+Inventory = null
+HotbarRow = 0
+SelectedSlotIndex = -1
+
+[node name="InventoryContextMenuUI" parent="." instance=ExtResource("3_wxqvu")]
+visible = false
+layout_mode = 2

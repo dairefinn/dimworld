@@ -1,0 +1,74 @@
+[gd_scene load_steps=13 format=3 uid="uid://b8wxyl1qi2fee"]
+
+[ext_resource type="Shader" uid="uid://cg2ysaclvjgfx" path="res://Resources/Materials/Outline.gdshader" id="1_52da7"]
+[ext_resource type="Texture2D" uid="uid://dpxdm8niupad2" path="res://Resources/Sprites/Character.png" id="2_fji81"]
+[ext_resource type="Script" uid="uid://ckdaa4jpv4ysf" path="res://Core/Agents/Visuals/ClothingController.cs" id="3_bfyej"]
+[ext_resource type="Texture2D" uid="uid://bm5yi454iqlnw" path="res://Core/Agents/Visuals/CharacterSpriteSheet.tres" id="4_kh25y"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_pnfg3"]
+shader = ExtResource("1_52da7")
+shader_parameter/color = Color(0.212305, 0.212305, 0.212305, 1)
+shader_parameter/width = 0.5
+shader_parameter/pattern = 0
+shader_parameter/inside = false
+shader_parameter/add_margins = true
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_um2er"]
+atlas = ExtResource("2_fji81")
+region = Rect2(0, 0, 32, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_fymy7"]
+atlas = ExtResource("4_kh25y")
+region = Rect2(32, 0, 32, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_pnfg3"]
+atlas = ExtResource("4_kh25y")
+region = Rect2(64, 0, 32, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_8lqvm"]
+atlas = ExtResource("4_kh25y")
+region = Rect2(0, 32, 32, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_nawka"]
+atlas = ExtResource("4_kh25y")
+region = Rect2(32, 32, 32, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_4oknj"]
+atlas = ExtResource("4_kh25y")
+region = Rect2(64, 32, 32, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_55c5q"]
+atlas = ExtResource("4_kh25y")
+region = Rect2(0, 64, 32, 32)
+
+[node name="BodySprite" type="Sprite2D" node_paths=PackedStringArray("HairSprite", "EyesSprite", "TopSprite", "OvertopSprite", "BottomsSprite", "ShoesSprite")]
+texture_filter = 1
+material = SubResource("ShaderMaterial_pnfg3")
+texture = SubResource("AtlasTexture_um2er")
+script = ExtResource("3_bfyej")
+HairSprite = NodePath("Hair")
+EyesSprite = NodePath("Eyes")
+TopSprite = NodePath("Top")
+OvertopSprite = NodePath("Overtop")
+BottomsSprite = NodePath("Bottom")
+ShoesSprite = NodePath("Shoes")
+
+[node name="Shoes" type="Sprite2D" parent="."]
+texture = SubResource("AtlasTexture_fymy7")
+
+[node name="Bottom" type="Sprite2D" parent="."]
+texture = SubResource("AtlasTexture_pnfg3")
+
+[node name="Top" type="Sprite2D" parent="."]
+texture = SubResource("AtlasTexture_8lqvm")
+
+[node name="Overtop" type="Sprite2D" parent="."]
+texture = SubResource("AtlasTexture_nawka")
+
+[node name="Eyes" type="Sprite2D" parent="."]
+unique_name_in_owner = true
+texture = SubResource("AtlasTexture_4oknj")
+
+[node name="Hair" type="Sprite2D" parent="."]
+use_parent_material = true
+texture = SubResource("AtlasTexture_55c5q")

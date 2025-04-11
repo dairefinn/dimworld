@@ -1,6 +1,0 @@
-[gd_scene load_steps=2 format=3 uid="uid://btq4doy261mt6"]
-
-[ext_resource type="Script" uid="uid://b1o6i3n0ah2pq" path="res://Levels/Transitions/LevelTransitionArea.cs" id="1_t6web"]
-
-[node name="LevelTransitionArea" type="Area2D"]
-script = ExtResource("1_t6web")

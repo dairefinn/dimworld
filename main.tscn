@@ -1,18 +1,22 @@
-[gd_scene load_steps=35 format=3 uid="uid://ddc8qiig7j3wm"]
+[gd_scene load_steps=39 format=3 uid="uid://ddc8qiig7j3wm"]
 
-[ext_resource type="Script" uid="uid://1f6ukfmh33oo" path="res://DayNightController.cs" id="1_d13ii"]
-[ext_resource type="PackedScene" uid="uid://duk1q562jys3q" path="res://Player/CursorFollower.tscn" id="3_ryguw"]
-[ext_resource type="Script" uid="uid://daxnr47vhajw0" path="res://Levels/LevelHandler/LevelHandler.cs" id="8_ycdy4"]
-[ext_resource type="PackedScene" uid="uid://dius53mdc51ny" path="res://Agents/Instances/Player/Player.tscn" id="9_kek77"]
-[ext_resource type="Resource" uid="uid://octn8jxqeqaq" path="res://Items/Instances/Weapons/Sword.tres" id="10_dg77c"]
-[ext_resource type="Script" uid="uid://bm0o5ggnfmm6y" path="res://Items/Inventory/InventorySlot.cs" id="11_ycdy4"]
-[ext_resource type="PackedScene" uid="uid://qds61vs7bsi1" path="res://Developer/DeveloperMenu.tscn" id="12_dg77c"]
-[ext_resource type="Resource" uid="uid://bbn4fu5m0emk1" path="res://Items/Instances/Weapons/Revolver.tres" id="12_vivmo"]
-[ext_resource type="Script" uid="uid://dph74un0q20el" path="res://Items/Inventory/Inventory.cs" id="12_w48qg"]
-[ext_resource type="Resource" uid="uid://bfbm4tftgemqa" path="res://Items/Instances/Utility/Torch.tres" id="13_2cqfq"]
-[ext_resource type="Script" uid="uid://5l72ubbv8qqo" path="res://Globals.cs" id="13_ycdy4"]
-[ext_resource type="PackedScene" uid="uid://d21nkwnu7y4od" path="res://Items/Inventory/UI/Viewer/InventoryViewer.tscn" id="23_d13ii"]
-[ext_resource type="PackedScene" uid="uid://b3v4ub2lqydho" path="res://Levels/LevelTesting.tscn" id="25_a6jrf"]
+[ext_resource type="Script" uid="uid://1f6ukfmh33oo" path="res://Core/DayNightController.cs" id="1_d13ii"]
+[ext_resource type="PackedScene" uid="uid://duk1q562jys3q" path="res://Core/CursorFollower.tscn" id="3_ryguw"]
+[ext_resource type="Script" uid="uid://nkgns80j1gwr" path="res://Core/Agents/Dialogue/Resources/TradeController.cs" id="5_2cqfq"]
+[ext_resource type="Script" uid="uid://diohp7emnm65v" path="res://Core/UIRootPanel.cs" id="5_w48qg"]
+[ext_resource type="Script" uid="uid://bx2ktxey0dxrs" path="res://Core/Items/CurrencyController.cs" id="6_yaehf"]
+[ext_resource type="PackedScene" uid="uid://yw15jku1xwks" path="res://Core/Agents/Dialogue/Scenes/DialoguePanelUI/DialoguePanelUI.tscn" id="8_vivmo"]
+[ext_resource type="Script" uid="uid://daxnr47vhajw0" path="res://Core/Levels/LevelHandler/LevelHandler.cs" id="8_ycdy4"]
+[ext_resource type="PackedScene" uid="uid://dius53mdc51ny" path="res://Core/Agents/Instances/Player/Player.tscn" id="9_kek77"]
+[ext_resource type="Resource" uid="uid://octn8jxqeqaq" path="res://Core/Items/Instances/Weapons/Sword.tres" id="10_dg77c"]
+[ext_resource type="Script" uid="uid://bm0o5ggnfmm6y" path="res://Core/Items/Inventory/InventorySlot.cs" id="11_ycdy4"]
+[ext_resource type="PackedScene" uid="uid://qds61vs7bsi1" path="res://Core/Developer/DeveloperMenu.tscn" id="12_dg77c"]
+[ext_resource type="Resource" uid="uid://bbn4fu5m0emk1" path="res://Core/Items/Instances/Weapons/Revolver.tres" id="12_vivmo"]
+[ext_resource type="Script" uid="uid://dph74un0q20el" path="res://Core/Items/Inventory/Inventory.cs" id="12_w48qg"]
+[ext_resource type="Resource" uid="uid://bfbm4tftgemqa" path="res://Core/Items/Instances/Utility/Torch.tres" id="13_2cqfq"]
+[ext_resource type="Script" uid="uid://5l72ubbv8qqo" path="res://Core/Globals.cs" id="13_ycdy4"]
+[ext_resource type="PackedScene" uid="uid://d21nkwnu7y4od" path="res://Core/Items/Inventory/UI/Viewer/InventoryViewer.tscn" id="23_d13ii"]
+[ext_resource type="PackedScene" uid="uid://b3v4ub2lqydho" path="res://Core/Levels/LevelTesting.tscn" id="25_a6jrf"]
 
 [sub_resource type="Resource" id="Resource_vivmo"]
 script = ExtResource("11_ycdy4")
@@ -120,7 +124,7 @@ metadata/_custom_type_script = "uid://bm0o5ggnfmm6y"
 [sub_resource type="Resource" id="Resource_0rl1p"]
 script = ExtResource("12_w48qg")
 InventoryName = "Player Inventory"
-Slots = Array[ExtResource("11_ycdy4")]([SubResource("Resource_vivmo"), SubResource("Resource_2cqfq"), SubResource("Resource_074og"), SubResource("Resource_cegan"), SubResource("Resource_82xsv"), SubResource("Resource_getpj"), SubResource("Resource_ryguw"), SubResource("Resource_d13ii"), SubResource("Resource_1u8w0"), SubResource("Resource_0odxb"), SubResource("Resource_lswn8"), SubResource("Resource_a6jrf"), SubResource("Resource_xuqvo"), SubResource("Resource_qsp4k"), SubResource("Resource_kq58d"), SubResource("Resource_seu75"), SubResource("Resource_htxhm"), SubResource("Resource_jq2sk"), SubResource("Resource_4k2k6"), SubResource("Resource_yaehf")])
+Slots = [SubResource("Resource_vivmo"), SubResource("Resource_2cqfq"), SubResource("Resource_074og"), SubResource("Resource_cegan"), SubResource("Resource_82xsv"), SubResource("Resource_getpj"), SubResource("Resource_ryguw"), SubResource("Resource_d13ii"), SubResource("Resource_1u8w0"), SubResource("Resource_0odxb"), SubResource("Resource_lswn8"), SubResource("Resource_a6jrf"), SubResource("Resource_xuqvo"), SubResource("Resource_qsp4k"), SubResource("Resource_kq58d"), SubResource("Resource_seu75"), SubResource("Resource_htxhm"), SubResource("Resource_jq2sk"), SubResource("Resource_4k2k6"), SubResource("Resource_yaehf")]
 metadata/_custom_type_script = "uid://dph74un0q20el"
 
 [node name="Main" type="Node2D"]
@@ -142,10 +146,19 @@ TimePassedPerTick = 1.0
 PercentageOfDay = 100.0
 
 [node name="CursorFollower" parent="Logic" instance=ExtResource("3_ryguw")]
+collision_mask = 3
+
+[node name="TradeController" type="Node" parent="Logic"]
+script = ExtResource("5_2cqfq")
+
+[node name="CurrencyController" type="Node" parent="Logic"]
+script = ExtResource("6_yaehf")
+Money = 500
 
 [node name="UI" type="CanvasLayer" parent="."]
 
-[node name="MarginContainer" type="MarginContainer" parent="UI"]
+[node name="UIRootContainer" type="Control" parent="UI"]
+layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
@@ -153,23 +166,37 @@ grow_horizontal = 2
 grow_vertical = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
-theme_override_constants/margin_left = 10
-theme_override_constants/margin_top = 10
-theme_override_constants/margin_right = 10
-theme_override_constants/margin_bottom = 10
+script = ExtResource("5_w48qg")
 
-[node name="InventoryViewer" parent="UI/MarginContainer" instance=ExtResource("23_d13ii")]
-layout_mode = 2
+[node name="InventoryViewer" parent="UI/UIRootContainer" instance=ExtResource("23_d13ii")]
+layout_mode = 1
 
-[node name="DeveloperMenu" parent="UI" instance=ExtResource("12_dg77c")]
+[node name="DeveloperMenu" parent="UI/UIRootContainer" instance=ExtResource("12_dg77c")]
 visible = false
+layout_mode = 1
 
-[node name="Globals" type="Node" parent="." node_paths=PackedStringArray("InventoryViewer", "CursorFollower", "LevelHandler", "DayNightController")]
+[node name="DialoguePanelUI" parent="UI/UIRootContainer" instance=ExtResource("8_vivmo")]
+visible = false
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -250.0
+offset_top = -200.0
+offset_right = 250.0
+offset_bottom = 200.0
+
+[node name="Globals" type="Node" parent="." node_paths=PackedStringArray("InventoryViewer", "CursorFollower", "LevelHandler", "DayNightController", "DialoguePanelUI", "TradeController", "CurrencyController")]
 script = ExtResource("13_ycdy4")
-InventoryViewer = NodePath("../UI/MarginContainer/InventoryViewer")
+InventoryViewer = NodePath("../UI/UIRootContainer/InventoryViewer")
 CursorFollower = NodePath("../Logic/CursorFollower")
 LevelHandler = NodePath("../LevelHandler")
 DayNightController = NodePath("../Logic/DayNightController")
+DialoguePanelUI = NodePath("../UI/UIRootContainer/DialoguePanelUI")
+TradeController = NodePath("../Logic/TradeController")
+CurrencyController = NodePath("../Logic/CurrencyController")
 
 [node name="Player" parent="." instance=ExtResource("9_kek77")]
 z_index = 1
