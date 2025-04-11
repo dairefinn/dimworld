@@ -19,7 +19,7 @@ public partial class DialogueOptionTradeToWorld : DialogueOptionTrade
     public override bool OnSelected()
     {
         if (Item == null) return false;
-        var wasBought = TradeController.Instance.TryBuy(Item, Price, Quantity, false);
+        var wasBought = Globals.Instance.TradeController.TryBuy(Item, Price, Quantity, false);
         if (!wasBought) return false;
 
         // if (Item is IVehicleItem)

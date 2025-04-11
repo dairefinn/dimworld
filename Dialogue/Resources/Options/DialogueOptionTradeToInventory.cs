@@ -13,8 +13,8 @@ public partial class DialogueOptionTradeToInventory : DialogueOptionTrade
 
 		return TradeOption switch
 		{
-			TradeOption.BUY => TradeController.Instance.TryBuy(Item, Price, Quantity, true),
-			TradeOption.SELL => TradeController.Instance.TrySell(Item, Price),
+			TradeOption.BUY => Globals.Instance.TradeController.TryBuy(Item, Price, Quantity, true),
+			TradeOption.SELL => Globals.Instance.TradeController.TrySell(Item, Price),
 			_ => false,
 		};
 	}

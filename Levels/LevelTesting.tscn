@@ -1,4 +1,4 @@
-[gd_scene load_steps=63 format=4 uid="uid://b3v4ub2lqydho"]
+[gd_scene load_steps=71 format=4 uid="uid://b3v4ub2lqydho"]
 
 [ext_resource type="Script" uid="uid://dvuy36fh5vjfh" path="res://Levels/LevelHandler/GameLevel.cs" id="1_3pabw"]
 [ext_resource type="TileSet" uid="uid://me5j3tknec74" path="res://Core/Tileset.tres" id="1_uaggo"]
@@ -18,7 +18,11 @@
 [ext_resource type="PackedScene" uid="uid://b87ej4bbh38c3" path="res://Agents/Instances/Trader/Trader.tscn" id="16_ol4on"]
 [ext_resource type="Script" uid="uid://bdqqobcum35r6" path="res://Dialogue/Resources/Options/DialogueOption.cs" id="17_0bk61"]
 [ext_resource type="Script" uid="uid://e0p8f80o2res" path="res://Dialogue/Resources/Options/DialogueOptionEndDialogue.cs" id="18_01e6d"]
+[ext_resource type="Resource" uid="uid://bbn4fu5m0emk1" path="res://Items/Instances/Weapons/Revolver.tres" id="18_3by8r"]
+[ext_resource type="Script" uid="uid://da3ccx60v3tuo" path="res://Dialogue/Resources/Options/DialogueOptionTradeToInventory.cs" id="19_3pabw"]
 [ext_resource type="Script" uid="uid://cjjrvakff5xa1" path="res://Dialogue/Resources/Menus/DialogueMenuTalk.cs" id="19_7iri2"]
+[ext_resource type="Script" uid="uid://b0512j2omli3y" path="res://Dialogue/Resources/Menus/DialogueMenuTrade.cs" id="20_01cvm"]
+[ext_resource type="Script" uid="uid://dm05re8l761f7" path="res://Dialogue/Resources/Options/DialogueOptionNewMenu.cs" id="21_4fweh"]
 
 [sub_resource type="NavigationPolygon" id="NavigationPolygon_1eql1"]
 vertices = PackedVector2Array(938, 442, 938, 458, 922, 458, 902, 454, 902, 410, 1194, 214, 1194, 282, 1190, 278, 1190, 218, 1126, 214, 1130, 218, 1126, 282, 1130, 278, 1158, 282, 1162, 282, 374, 170, 394, 150, 410, 150, 410, 166, 390, 186, 374, 186, 422, 202, 442, 166, 442, 182, 438, 218, 458, 182, 458, 198, 454, 234, 438, 234, 490, 198, 490, 214, 486, 250, 454, 250, 506, 214, 506, 230, 538, 230, 538, 246, 714, 266, 694, 246, 694, 230, 742, 230, 790, 266, 742, 214, 794, 214, 794, 230, 810, 230, 810, 246, 806, 282, 790, 282, 826, 246, 826, 262, 822, 298, 806, 298, 838, 314, 858, 262, 858, 294, 854, 346, 890, 294, 890, 326, 870, 362, 854, 362, 906, 326, 906, 342, 886, 378, 870, 378, 922, 342, 922, 358, 886, 410, 954, 358, 954, 374, 1018, 374, 1018, 390, 1002, 410, 970, 426, 1046, 390, 1046, 374, 1158, 374, 1130, 410, 1158, 314, 1126, 314, 1126, 310, 1158, 310, 1162, 374, 1274, 374, 1274, 390, 1238, 410, 1302, 390, 1302, 374, 1354, 374, 1354, 426, 1238, 426, 1130, 426, 1030, 426, 1030, 410, 1002, 426, 970, 442, 838, 346, 822, 314, 714, 282, 550, 282, 550, 266, 486, 266, 422, 218, 390, 202, 262, 166, 266, 170, 266, 186, 250, 186, 230, 182, 230, 166, 250, 202, 234, 202, 214, 198, 214, 182, 234, 218, 218, 218, 218, 250, 202, 250, 182, 246, 182, 198, 202, 346, 186, 346, 166, 294, 166, 246, 166, 458, 186, 406, 202, 406, 202, 422, 198, 474, 166, 474, 218, 422, 218, 438, 310, 438, 310, 422, 426, 422, 426, 438, 330, 458, 454, 458, 506, 438, 506, 454, 486, 474, 586, 458, 566, 454, 566, 438, 582, 438, 602, 442, 602, 458, 582, 422, 598, 422, 618, 426, 618, 442, 598, 406, 614, 406, 634, 410, 634, 426, 614, 390, 630, 390, 650, 394, 650, 410, 630, 374, 646, 374, 666, 378, 666, 394, 646, 358, 682, 358, 682, 378, 586, 502, 618, 502, 618, 518, 730, 518, 730, 534, 646, 538, 826, 538, 806, 534, 806, 518, 838, 518, 858, 522, 858, 538, 838, 502, 870, 502, 890, 522, 870, 486, 886, 486, 890, 490, 906, 474, 886, 454, 922, 474, 906, 490, 826, 554, 666, 554, 666, 570, 650, 570, 646, 566, 650, 602, 634, 602, 630, 582, 630, 566, 614, 614, 634, 634, 618, 634, 598, 630, 618, 650, 602, 650, 582, 630, 602, 682, 586, 682, 582, 662, 586, 698, 566, 698, 566, 662, 598, 614, 614, 582, 566, 538, 566, 522, 534, 522, 534, 506, 518, 506, 518, 490, 486, 490, 454, 474, 330, 474, 298, 474, 298, 490, 198, 490, 150, 458, 150, 294, 262, 150, 294, 150, 294, 134, 394, 134)
@@ -218,6 +222,32 @@ State = Dictionary[String, Variant]({
 })
 metadata/_custom_type_script = "uid://cqsim0vts1sc1"
 
+[sub_resource type="Resource" id="Resource_eb50o"]
+script = ExtResource("19_3pabw")
+Price = 50
+Quantity = 1
+Item = ExtResource("18_3by8r")
+TradeOption = 0
+Name = "Revolver"
+metadata/_custom_type_script = "uid://da3ccx60v3tuo"
+
+[sub_resource type="Resource" id="Resource_3by8r"]
+script = ExtResource("18_01e6d")
+Name = "Bye!"
+metadata/_custom_type_script = "uid://e0p8f80o2res"
+
+[sub_resource type="Resource" id="Resource_1cqng"]
+script = ExtResource("20_01cvm")
+Messages = Array[String](["What're ya buyin?"])
+Options = Array[ExtResource("17_0bk61")]([SubResource("Resource_eb50o"), SubResource("Resource_3by8r")])
+metadata/_custom_type_script = "uid://b0512j2omli3y"
+
+[sub_resource type="Resource" id="Resource_oeo7j"]
+script = ExtResource("21_4fweh")
+NextDialogueRoot = SubResource("Resource_1cqng")
+Name = "Start trading"
+metadata/_custom_type_script = "uid://dm05re8l761f7"
+
 [sub_resource type="Resource" id="Resource_j0mrk"]
 script = ExtResource("18_01e6d")
 Name = "End dialogue"
@@ -226,7 +256,7 @@ metadata/_custom_type_script = "uid://e0p8f80o2res"
 [sub_resource type="Resource" id="Resource_gq7i2"]
 script = ExtResource("19_7iri2")
 Messages = Array[String](["Hello"])
-Options = Array[ExtResource("17_0bk61")]([SubResource("Resource_j0mrk")])
+Options = Array[ExtResource("17_0bk61")]([SubResource("Resource_oeo7j"), SubResource("Resource_j0mrk")])
 metadata/_custom_type_script = "uid://cjjrvakff5xa1"
 
 [sub_resource type="Resource" id="Resource_0bk61"]
@@ -334,6 +364,6 @@ position = Vector2(1845, 815)
 WorldState = SubResource("Resource_ol4on")
 
 [node name="Trader" parent="Characters" instance=ExtResource("16_ol4on")]
-position = Vector2(1819, 711)
+position = Vector2(1861, 892)
 DialogueTree = SubResource("Resource_gq7i2")
 WorldState = SubResource("Resource_0bk61")

@@ -18,7 +18,7 @@ public partial class TradeController : Node {
     }
 
     public bool TryBuy(InventoryItem item, int price, int quantity, bool addToInventory) {
-        bool canAfford = CurrencyHandler.Instance.HasMoney(price);
+        bool canAfford = Globals.Instance.CurrencyController.HasMoney(price);
         if (!canAfford) { DeveloperConsole.PrintInfo("Not enough money"); return false; }
 
         if (addToInventory) {
@@ -27,7 +27,7 @@ public partial class TradeController : Node {
             Globals.Instance.Player.Inventory.AddItem(item, quantity);
         }
 
-        CurrencyHandler.Instance.RemoveMoney(price);
+        Globals.Instance.CurrencyController.RemoveMoney(price);
         
         AddTradeHistory(item, price, quantity, TradeOption.BUY, addToInventory);
 
@@ -38,7 +38,7 @@ public partial class TradeController : Node {
         InventorySlot slotWithItem = Globals.Instance.Player.Inventory.GetFirstSlotWithItem(item);
         if (slotWithItem == null) return false;
         Globals.Instance.Player.Inventory.RemoveItem(item);
-        CurrencyHandler.Instance.AddMoney(price);
+        Globals.Instance.CurrencyController.AddMoney(price);
 
         AddTradeHistory(item, price, 1, TradeOption.SELL);
 
@@ -53,12 +53,12 @@ public partial class TradeController : Node {
         if (TradeHistory.Count == 0) return;
         TradeHistory lastTrade = TradeHistory.Last();
         if (lastTrade.TradeOption == TradeOption.BUY) {
-            CurrencyHandler.Instance.AddMoney(lastTrade.Price);
+            Globals.Instance.CurrencyController.AddMoney(lastTrade.Price);
             if (lastTrade.AddedToInventory) {
                 Globals.Instance.Player.Inventory.RemoveItem(lastTrade.Item, lastTrade.Quantity);
             }
         } else {
-            CurrencyHandler.Instance.RemoveMoney(lastTrade.Price);
+            Globals.Instance.CurrencyController.RemoveMoney(lastTrade.Price);
             if (lastTrade.AddedToInventory) {
                 Globals.Instance.Player.Inventory.AddItem(lastTrade.Item, lastTrade.Quantity);
             }

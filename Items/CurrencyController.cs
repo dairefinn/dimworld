@@ -3,9 +3,10 @@ namespace Dimworld.Items;
 using Godot;
 
 
-public partial class CurrencyHandler : Node
+// TODO: Each agent should have their own count of currency instead of a global one
+public partial class CurrencyController : Node
 {
-    public static CurrencyHandler Instance { get; private set; }
+    public static CurrencyController Instance { get; private set; }
 
     [Export] public int Money { get; private set; } = 0;
     [Export] public int MaxMoney { get; private set; } = 10000;

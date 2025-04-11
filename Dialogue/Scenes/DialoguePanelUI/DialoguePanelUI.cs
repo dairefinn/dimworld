@@ -51,7 +51,7 @@ public partial class DialoguePanelUI : Control
 
     public void EndDialogue(){
         CurrentDialogue = null;
-        // TradeController.Instance.EndTrade(); // TODO: Implement this
+        // Globals.Instance.TradeController.EndTrade(); // TODO: Implement this
     }
 
     public void UpdateUI()

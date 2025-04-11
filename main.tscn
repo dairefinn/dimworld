@@ -1,8 +1,10 @@
-[gd_scene load_steps=37 format=3 uid="uid://ddc8qiig7j3wm"]
+[gd_scene load_steps=39 format=3 uid="uid://ddc8qiig7j3wm"]
 
 [ext_resource type="Script" uid="uid://1f6ukfmh33oo" path="res://Core/DayNightController.cs" id="1_d13ii"]
 [ext_resource type="PackedScene" uid="uid://duk1q562jys3q" path="res://Player/CursorFollower.tscn" id="3_ryguw"]
+[ext_resource type="Script" uid="uid://nkgns80j1gwr" path="res://Dialogue/Resources/TradeController.cs" id="5_2cqfq"]
 [ext_resource type="Script" uid="uid://diohp7emnm65v" path="res://Core/UIRootPanel.cs" id="5_w48qg"]
+[ext_resource type="Script" uid="uid://bx2ktxey0dxrs" path="res://Items/CurrencyController.cs" id="6_yaehf"]
 [ext_resource type="PackedScene" uid="uid://yw15jku1xwks" path="res://Dialogue/Scenes/DialoguePanelUI/DialoguePanelUI.tscn" id="8_vivmo"]
 [ext_resource type="Script" uid="uid://daxnr47vhajw0" path="res://Levels/LevelHandler/LevelHandler.cs" id="8_ycdy4"]
 [ext_resource type="PackedScene" uid="uid://dius53mdc51ny" path="res://Agents/Instances/Player/Player.tscn" id="9_kek77"]
@@ -146,6 +148,13 @@ PercentageOfDay = 100.0
 [node name="CursorFollower" parent="Logic" instance=ExtResource("3_ryguw")]
 collision_mask = 3
 
+[node name="TradeController" type="Node" parent="Logic"]
+script = ExtResource("5_2cqfq")
+
+[node name="CurrencyController" type="Node" parent="Logic"]
+script = ExtResource("6_yaehf")
+Money = 500
+
 [node name="UI" type="CanvasLayer" parent="."]
 
 [node name="UIRootContainer" type="Control" parent="UI"]
@@ -179,13 +188,15 @@ offset_top = -200.0
 offset_right = 250.0
 offset_bottom = 200.0
 
-[node name="Globals" type="Node" parent="." node_paths=PackedStringArray("InventoryViewer", "CursorFollower", "LevelHandler", "DayNightController", "DialoguePanelUI")]
+[node name="Globals" type="Node" parent="." node_paths=PackedStringArray("InventoryViewer", "CursorFollower", "LevelHandler", "DayNightController", "DialoguePanelUI", "TradeController", "CurrencyController")]
 script = ExtResource("13_ycdy4")
 InventoryViewer = NodePath("../UI/UIRootContainer/InventoryViewer")
 CursorFollower = NodePath("../Logic/CursorFollower")
 LevelHandler = NodePath("../LevelHandler")
 DayNightController = NodePath("../Logic/DayNightController")
 DialoguePanelUI = NodePath("../UI/UIRootContainer/DialoguePanelUI")
+TradeController = NodePath("../Logic/TradeController")
+CurrencyController = NodePath("../Logic/CurrencyController")
 
 [node name="Player" parent="." instance=ExtResource("9_kek77")]
 z_index = 1
