@@ -1,7 +1,7 @@
 [gd_scene load_steps=8 format=3 uid="uid://bb462hku8uk8i"]
 
 [ext_resource type="Script" uid="uid://q0dgqu0eetv" path="res://Game/UI/Characters/CharacterStatsUI.cs" id="1_nuio0"]
-[ext_resource type="Script" uid="uid://cru4kq28c8nuw" path="res://Core/Characters/Stats/CharacterStats.cs" id="2_j3chy"]
+[ext_resource type="Texture2D" uid="uid://cxfbafspfsq5r" path="res://Assets/Textures/FactionsTextureAtlas.tres" id="2_ur42m"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_v5emj"]
 bg_color = Color(0, 0, 0, 0.196078)
@@ -11,11 +11,9 @@ corner_radius_bottom_right = 1
 corner_radius_bottom_left = 1
 anti_aliasing = false
 
-[sub_resource type="Resource" id="Resource_741j8"]
-script = ExtResource("2_j3chy")
-MaxHealth = 100.0
-MaxStamina = 100.0
-metadata/_custom_type_script = "uid://cru4kq28c8nuw"
+[sub_resource type="AtlasTexture" id="AtlasTexture_kjeuu"]
+atlas = ExtResource("2_ur42m")
+region = Rect2(32, 0, 32, 32)
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_741j8"]
 bg_color = Color(1, 1, 1, 0)
@@ -46,7 +44,6 @@ offset_bottom = 5.0
 grow_horizontal = 2
 theme_override_styles/panel = SubResource("StyleBoxFlat_v5emj")
 script = ExtResource("1_nuio0")
-Stats = SubResource("Resource_741j8")
 
 [node name="MarginContainer" type="MarginContainer" parent="."]
 layout_mode = 2
@@ -55,12 +52,25 @@ theme_override_constants/margin_top = 1
 theme_override_constants/margin_right = 1
 theme_override_constants/margin_bottom = 1
 
-[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer"]
-custom_minimum_size = Vector2(20, 0)
+[node name="HBoxContainer" type="HBoxContainer" parent="MarginContainer"]
 layout_mode = 2
 theme_override_constants/separation = 1
 
-[node name="BarHealth" type="ProgressBar" parent="MarginContainer/VBoxContainer"]
+[node name="FactionIcon" type="TextureRect" parent="MarginContainer/HBoxContainer"]
+unique_name_in_owner = true
+visible = false
+layout_mode = 2
+size_flags_horizontal = 0
+texture = SubResource("AtlasTexture_kjeuu")
+expand_mode = 2
+
+[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer/HBoxContainer"]
+custom_minimum_size = Vector2(20, 0)
+layout_mode = 2
+theme_override_constants/separation = 1
+alignment = 1
+
+[node name="BarHealth" type="ProgressBar" parent="MarginContainer/HBoxContainer/VBoxContainer"]
 unique_name_in_owner = true
 layout_mode = 2
 theme_override_styles/background = SubResource("StyleBoxFlat_741j8")
@@ -68,7 +78,7 @@ theme_override_styles/fill = SubResource("StyleBoxFlat_j3chy")
 value = 50.0
 show_percentage = false
 
-[node name="BarStamina" type="ProgressBar" parent="MarginContainer/VBoxContainer"]
+[node name="BarStamina" type="ProgressBar" parent="MarginContainer/HBoxContainer/VBoxContainer"]
 unique_name_in_owner = true
 layout_mode = 2
 theme_override_styles/background = SubResource("StyleBoxFlat_741j8")

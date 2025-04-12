@@ -1,7 +1,7 @@
 [gd_resource type="Resource" load_steps=4 format=3 uid="uid://bfbm4tftgemqa"]
 
 [ext_resource type="Script" uid="uid://cpxj4g8jbfg2x" path="res://Game/Items/Utility/Torch.cs" id="1_7u14b"]
-[ext_resource type="Texture2D" uid="uid://xid32hy6vbe" path="res://Game/Items/ItemsSpriteSheet.tres" id="1_mjj0s"]
+[ext_resource type="Texture2D" uid="uid://xid32hy6vbe" path="res://Assets/Textures/ItemsTextureAtlas.tres" id="1_mjj0s"]
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_mjj0s"]
 atlas = ExtResource("1_mjj0s")

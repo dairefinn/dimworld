@@ -105,6 +105,11 @@ This also uses level transition areas and spawn points to create areas that trig
 Using the Effects and Inventory systems, I've added a sword and a revolver. These can be used by left clicking with them selected in the hotbar. The sword will damage any character caught in it's area of effect and knock them back a short distance. The revolver will fire a projectile which will damage any character it hits.
 
 
+### Factions and faction relations
+
+Any node can belong to a faction: characters, objects, items, etc. Factions have an affinity towards each other which can be positive or negative. This allows for a dynamic relationship between factions. This is used to determine if an agent will be friendly towards another or if they can access an item/object owned by another faction.
+
+
 ## Planned features
 
 ### Communication actions
@@ -130,11 +135,6 @@ I want the player to be able to place structures in the world. I'm not fully sur
 ### Item ownership and inventory permissions
 
 I want to add a system which allows items to be owned by a specific agent. This will allow characters to have their own inventories and not be able to access other characters' inventories. Once implemented, I can add the concept of stealing items from other characters. Fun fact: I had this idea when I accidentally introduced a bug where an agent trying to find a sword to patrol would see the player as a container because they implement the `IHasInventory` interface and chase them around to search them.
-
-
-### Factions and faction relations
-
-I want to be able to add characters to factions and have this determine if they are hostile or friendly to each other. The relations system could be dynamic and allow them to become friends or enemies over time.
 
 
 ### Save/Load system

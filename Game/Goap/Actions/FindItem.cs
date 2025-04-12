@@ -5,6 +5,7 @@ using Dimworld.Core.Characters.Dialogue;
 using Dimworld.Core.Characters.Memory;
 using Dimworld.Core.Characters.Memory.MemoryEntries;
 using Dimworld.Core.Developer;
+using Dimworld.Core.Factions;
 using Dimworld.Core.GOAP;
 using Dimworld.Core.Items;
 using Godot;
@@ -61,7 +62,7 @@ public partial class FindItem : GoapAction
         if (goapAgent is not IHasNavigation hasNavigation) return false; // Can only be performed by a character controller
         if (ItemId == null) return false; // Must have a target item set
 
-        NodeLocation[] containerLocations = hasMemory.MemoryHandler.GetMemoriesOfType<NodeLocation>().Where(node => node.Node is IHasInventory hasInventory && hasInventory.CanTakeFromInventory).ToArray();
+        NodeLocation[] containerLocations = hasMemory.MemoryHandler.GetMemoriesOfType<NodeLocation>().Where(node => node.Node is IHasInventory hasInventory && Faction.CanAccessNode(goapAgent, node.Node)).ToArray();
         if (containerLocations.Length == 0) return false; // Must have at least one chest location in memory
 
         InventoryContents[] inventoryContents = hasMemory.MemoryHandler.GetMemoriesOfType<InventoryContents>();

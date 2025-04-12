@@ -11,6 +11,12 @@
 [ext_resource type="PackedScene" uid="uid://bb462hku8uk8i" path="res://Game/UI/Characters/CharacterStatsUI.tscn" id="6_ea428"]
 [ext_resource type="PackedScene" uid="uid://v23vcyiu8qgc" path="res://Game/UI/Dialogue/SpeechBubble/SpeechBubble.tscn" id="7_i1fwj"]
 
+[sub_resource type="Resource" id="Resource_esjyg"]
+script = ExtResource("4_ilihy")
+MaxHealth = 100.0
+MaxStamina = 100.0
+metadata/_custom_type_script = "uid://cru4kq28c8nuw"
+
 [sub_resource type="Resource" id="Resource_h5stk"]
 script = ExtResource("2_i1fwj")
 Quantity = 0
@@ -116,12 +122,6 @@ script = ExtResource("3_ilihy")
 InventoryName = "Player Inventory"
 Slots = Array[ExtResource("2_i1fwj")]([SubResource("Resource_h5stk"), SubResource("Resource_flror"), SubResource("Resource_121xs"), SubResource("Resource_0tote"), SubResource("Resource_p4euq"), SubResource("Resource_j0pea"), SubResource("Resource_q4tx7"), SubResource("Resource_qsuhl"), SubResource("Resource_7t8lt"), SubResource("Resource_wsjn7"), SubResource("Resource_kotm5"), SubResource("Resource_imikn"), SubResource("Resource_std2d"), SubResource("Resource_i8l7r"), SubResource("Resource_85q64"), SubResource("Resource_tb8vu"), SubResource("Resource_uuxni"), SubResource("Resource_e01t7"), SubResource("Resource_c7wbt"), SubResource("Resource_ss5n8")])
 metadata/_custom_type_script = "uid://dph74un0q20el"
-
-[sub_resource type="Resource" id="Resource_esjyg"]
-script = ExtResource("4_ilihy")
-MaxHealth = 100.0
-MaxStamina = 100.0
-metadata/_custom_type_script = "uid://cru4kq28c8nuw"
 
 [sub_resource type="CapsuleShape2D" id="CapsuleShape2D_2rjig"]
 
@@ -385,8 +385,8 @@ _data = {
 [node name="Player" type="CharacterBody2D" node_paths=PackedStringArray("NavigationAgent", "ClothingController", "DetectionHandler", "AnimationPlayer")]
 script = ExtResource("1_t81nq")
 NavigationAgent = NodePath("NavigationAgent2D")
-Inventory = SubResource("Resource_hcpbs")
 Stats = SubResource("Resource_esjyg")
+Inventory = SubResource("Resource_hcpbs")
 ClothingController = NodePath("BodySprite")
 DetectionHandler = NodePath("DetectionHandler")
 AnimationPlayer = NodePath("AnimationPlayer")
@@ -460,7 +460,7 @@ layout_mode = 2
 Text = ""
 
 [node name="Camera2D" type="Camera2D" parent="."]
-zoom = Vector2(2, 2)
+zoom = Vector2(4, 4)
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="."]
 libraries = {
