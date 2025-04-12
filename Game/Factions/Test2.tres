@@ -1,0 +1,17 @@
+[gd_resource type="Resource" script_class="Faction" load_steps=4 format=3 uid="uid://dioofc8k307fw"]
+
+[ext_resource type="Script" uid="uid://m44dko2uexhy" path="res://Core/Factions/Faction.cs" id="1_5dj6a"]
+[ext_resource type="Texture2D" uid="uid://xid32hy6vbe" path="res://Assets/Textures/ItemsSpriteSheet.tres" id="1_xgie7"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_akcqx"]
+atlas = ExtResource("1_xgie7")
+region = Rect2(32, 0, 32, 32)
+
+[resource]
+script = ExtResource("1_5dj6a")
+Name = "Test Faction 2"
+Description = "Description of the faction."
+Color = Color(0.862448, 0.736686, 1.15514e-06, 1)
+Icon = SubResource("AtlasTexture_akcqx")
+Relations = Dictionary[ExtResource("1_5dj6a"), float]({})
+metadata/_custom_type_script = "uid://m44dko2uexhy"

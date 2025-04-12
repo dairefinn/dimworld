@@ -13,4 +13,5 @@ Name = "Test Faction"
 Description = "This is a test faction"
 Color = Color(0.684788, 0.00352548, 0.975855, 1)
 Icon = SubResource("AtlasTexture_f6wyn")
+Relations = Dictionary[ExtResource("1_xquk2"), float]({})
 metadata/_custom_type_script = "uid://m44dko2uexhy"

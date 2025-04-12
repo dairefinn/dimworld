@@ -6,6 +6,7 @@ using Dimworld.Core.Currency;
 using Dimworld.Core.Interaction;
 using Dimworld.Core.Levels;
 using Dimworld.Core.UI;
+using Dimworld.Factions;
 using Dimworld.UI.Developer;
 using Dimworld.UI.Dialogue;
 using Dimworld.UI.Inventory;
@@ -35,6 +36,15 @@ public partial class Globals : Node
         Instance = this;
         MainThreadId = System.Environment.CurrentManagedThreadId;
     }
+
+
+    public override void _Ready()
+    {
+        base._Ready();
+
+        FactionDefaults.Initialize();
+    }
+
 
 
     [Export] public Player Player {

@@ -132,10 +132,11 @@ metadata/_custom_type_script = "uid://dph74un0q20el"
 
 [node name="Main" type="Node2D"]
 
-[node name="LevelHandlerOld" type="Node" parent="."]
+[node name="LevelHandler" type="Node" parent="."]
 script = ExtResource("8_ycdy4")
+metadata/_custom_type_script = "uid://daxnr47vhajw0"
 
-[node name="LevelTesting" parent="LevelHandlerOld" instance=ExtResource("25_a6jrf")]
+[node name="LevelTesting" parent="LevelHandler" instance=ExtResource("25_a6jrf")]
 
 [node name="Logic" type="Node" parent="."]
 
@@ -144,7 +145,7 @@ script = ExtResource("13_ycdy4")
 Player = NodePath("../../Player")
 InventoryViewer = NodePath("../../UI/UIRootContainer/InventoryViewer")
 CursorFollower = NodePath("../CursorFollower")
-LevelHandler = NodePath("../../LevelHandlerOld")
+LevelHandler = NodePath("../../LevelHandler")
 DayNightController = NodePath("../DayNightController")
 DialoguePanelUI = NodePath("../../UI/UIRootContainer/DialoguePanelUI")
 TradeController = NodePath("../TradeController")
