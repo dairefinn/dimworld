@@ -1,6 +1,7 @@
 namespace Dimworld.GOAP.Actions;
 
 using Dimworld.Core.Characters;
+using Dimworld.Core.Characters.Memory;
 using Dimworld.Core.Characters.Memory.MemoryEntries;
 using Dimworld.Core.GOAP;
 using Dimworld.Core.Items;
@@ -76,20 +77,21 @@ public partial class PickUpItem : GoapAction
 
     private IHasInventory GetClosestContainerWithItem(IGoapAgent goapAgent, string itemId)
     {
-        if (goapAgent is not CharacterController characterController) return null; // Must be a character controller
+        if (goapAgent is not IHasMemory hasMemory) return null;
+        if (goapAgent is not IHasNavigation hasNavigation) return null;
 
-        Vector2 agentPosition = characterController.GlobalPosition;
+        Vector2 agentPosition = goapAgent.GlobalPositionThreadSafe;
 
-        NodeLocation[] containerLocations = characterController.MemoryHandler.GetMemoriesOfType<NodeLocation>().Where(node => node.Node is IHasInventory hasInventory && hasInventory.CanTakeFromInventory).ToArray();
+        NodeLocation[] containerLocations = hasMemory.MemoryHandler.GetMemoriesOfType<NodeLocation>().Where(node => node.Node is IHasInventory hasInventory && hasInventory.CanTakeFromInventory).ToArray();
         if (containerLocations.Length == 0) return null; // Must have at least one chest location in memory
 
-        InventoryContents[] inventoryContents = characterController.MemoryHandler.GetMemoriesOfType<InventoryContents>();
+        InventoryContents[] inventoryContents = hasMemory.MemoryHandler.GetMemoriesOfType<InventoryContents>();
 
         System.Collections.Generic.List<IHasInventory> containersToSearch = containerLocations
             .Where(location => {
                 if (location.Node == null) return false; // Skip null nodes
                 if (location.Node is not IHasInventory container) return false; // Must be a container
-                if (!characterController.CanReachPoint(location.Position)) return false; // Must be reachable
+                if (!hasNavigation.CanReachPoint(location.Position)) return false; // Must be reachable
             
                 InventoryContents contentsMemory = inventoryContents.FirstOrDefault(memory => memory.Node == container);
 

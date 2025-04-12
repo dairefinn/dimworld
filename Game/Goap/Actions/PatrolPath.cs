@@ -2,6 +2,7 @@ namespace Dimworld.GOAP.Actions;
 
 using System.Threading;
 using Dimworld.Core.Characters;
+using Dimworld.Core.Characters.Dialogue;
 using Dimworld.Core.GOAP;
 using Godot;
 using Godot.Collections;
@@ -34,8 +35,6 @@ public partial class PatrolPath : GoapAction
 
     public override bool CheckProceduralPrecondition(IGoapAgent goapAgent, GoapState worldState)
     {
-        if (goapAgent is not CharacterController characterController) return false; // Must be a character
-
         patrolPath = GetPatrolPath(goapAgent);
         if (patrolPath.Count == 0) return false; // Must have at least one point in the patrol path
 
@@ -44,18 +43,18 @@ public partial class PatrolPath : GoapAction
 
     public override bool Perform(IGoapAgent goapAgent, GoapState worldState, double delta)
     {
-        if (goapAgent is not CharacterController characterController) return false;
+        if (goapAgent is not IHasNavigation hasNavigation) return false;
         if (patrolPath == null) return false; // Must have a patrol path
         if (patrolPath.Count == 0) return false; // Must have at least one point in the patrol path
 
-        CurrentPointIndex = GetNextPointOnPath(characterController, patrolPath);
+        CurrentPointIndex = GetNextPointOnPath(goapAgent, hasNavigation, patrolPath);
 
         Vector2 currentPoint = patrolPath[CurrentPointIndex];
-        characterController.NavigateTo(currentPoint);
+        hasNavigation.NavigateTo(currentPoint);
 
-        if (!actionStarted)
+        if (!actionStarted && goapAgent is ICanSpeak canSpeak)
         {
-            characterController.Say("I'm starting my patrol.");
+            canSpeak.Say("I'm starting my patrol.");
         }
         actionStarted = true;
 
@@ -65,13 +64,13 @@ public partial class PatrolPath : GoapAction
     /// <summary>
     /// Gets the next point on the patrol path. If the current point has not been reached, it returns the current point index.
     /// </summary>
-    /// <param name="characterController">The character controller that is patrolling</param>
+    /// <param name="hasNavigation">The character controller that is patrolling</param>
     /// <param name="points">The points of the patrol path</param>
     /// <returns>The index of the next point on the patrol path or the nearest point if not currently patrolling</returns>
-    private int GetNextPointOnPath(CharacterController characterController, Array<Vector2> points)
+    private int GetNextPointOnPath(IGoapAgent goapAgent, IHasNavigation hasNavigation, Array<Vector2> points)
     {
-        Vector2 currentPosition = characterController.GlobalPosition;
-        Vector2 currentTarget = characterController.NavigationAgent.TargetPosition;
+        Vector2 currentPosition = goapAgent.GlobalPositionThreadSafe;
+        Vector2 currentTarget = hasNavigation.GetTargetPosition();
 
         // If CurrentPoint is not on the path, find the nearest point on the path
         if (!points.Contains(currentTarget))
@@ -93,7 +92,7 @@ public partial class PatrolPath : GoapAction
         }
 
         // If the current point has not been reached, continue to the current point
-        if (!characterController.NavigationAgent.IsNavigationFinished())
+        if (!hasNavigation.IsTargetReached())
         {
             return CurrentPointIndex;
         }

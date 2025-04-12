@@ -1,7 +1,9 @@
 namespace Dimworld.GOAP.Actions;
 
 using Dimworld.Core.Characters;
+using Dimworld.Core.Characters.Dialogue;
 using Dimworld.Core.GOAP;
+using Dimworld.Core.Items;
 using Godot;
 using Godot.Collections;
 
@@ -10,7 +12,7 @@ using Godot.Collections;
 public partial class MoveTo : GoapAction
 {
 
-    public Vector2? TargetPosition { get; set; }
+    public Vector2 TargetPosition { get; set; }
 
 
     public override GoapState GetEffects()
@@ -22,29 +24,34 @@ public partial class MoveTo : GoapAction
 
     public override bool CheckProceduralPrecondition(IGoapAgent goapAgent, GoapState worldState)
     {
-        if (goapAgent is not CharacterController characterController) return false; // Can only be performed by a character controller
-        if (characterController.Inventory.IsFull()) return false; // Cannot pick up a sword if the agent's inventory is full
+        if (goapAgent is not IHasInventory hasInventory) return false; // Can only be performed by a character controller
+        if (hasInventory.Inventory.IsFull()) return false; // Cannot pick up a sword if the agent's inventory is full
 
         // Get the TargetItemId from the world state
         if (!worldState.ContainsKey("target_position")) return false; // Must have a target item set
-        TargetPosition = worldState.GetKey("target_position").AsVector2();
-        if (TargetPosition == null) return false; // Must have a target item set
+        Vector2? targetPosition = worldState.GetKey("target_position").AsVector2();
+        if (targetPosition == null) return false; // Must have a target item set
+
+        TargetPosition = targetPosition.Value;
 
         return true;
     }
 
     public override bool Perform(IGoapAgent goapAgent, GoapState worldState, double delta)
     {
-        if (goapAgent is not CharacterController characterController) return false; // Must be a character controller
+        if (goapAgent is not IHasNavigation hasNavigation) return false; // Must be a character controller
 
-        if (characterController.NavigationAgent.TargetPosition != TargetPosition)
+        if (!hasNavigation.IsTargetingPoint(TargetPosition))
         {
-            characterController.Say("I'm moving to " + TargetPosition);
+            if (goapAgent is ICanSpeak canSpeak)
+            {
+                canSpeak.Say("I'm moving to " + TargetPosition);
+            }
         }
 
-        characterController.NavigateTo(TargetPosition.Value);
+        hasNavigation.NavigateTo(TargetPosition);
 
-        return characterController.NavigationAgent.IsTargetReached();
+        return hasNavigation.IsTargetReached();
     }
 
 }

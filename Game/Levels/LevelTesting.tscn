@@ -229,17 +229,17 @@ Price = 50
 Quantity = 1
 Item = ExtResource("18_3by8r")
 TradeOption = 0
-Label = "Revolver"
+Label = ""
 metadata/_custom_type_script = "uid://da3ccx60v3tuo"
 
 [sub_resource type="Resource" id="Resource_c511v"]
 script = ExtResource("20_3vcnh")
-Label = "Refund purchase"
+Label = ""
 metadata/_custom_type_script = "uid://cfo010by4mvxd"
 
 [sub_resource type="Resource" id="Resource_3by8r"]
 script = ExtResource("18_01e6d")
-Label = "Bye!"
+Label = ""
 metadata/_custom_type_script = "uid://e0p8f80o2res"
 
 [sub_resource type="Resource" id="Resource_1cqng"]
@@ -251,12 +251,12 @@ metadata/_custom_type_script = "uid://b0512j2omli3y"
 [sub_resource type="Resource" id="Resource_oeo7j"]
 script = ExtResource("21_4fweh")
 NextDialogueRoot = SubResource("Resource_1cqng")
-Label = "Start trading"
+Label = ""
 metadata/_custom_type_script = "uid://dm05re8l761f7"
 
 [sub_resource type="Resource" id="Resource_j0mrk"]
 script = ExtResource("18_01e6d")
-Label = "End dialogue"
+Label = ""
 metadata/_custom_type_script = "uid://e0p8f80o2res"
 
 [sub_resource type="Resource" id="Resource_gq7i2"]

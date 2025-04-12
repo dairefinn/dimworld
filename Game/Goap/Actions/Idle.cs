@@ -26,16 +26,16 @@ public partial class Idle : GoapAction
 
     public override bool Perform(IGoapAgent agent, GoapState worldState, double delta)
     {
-        if (agent is not CharacterController characterController) return false;
+        if (agent is not IHasNavigation hasNavigation) return false;
 
         // Check if the idle time has elapsed
         currentIdleTimeRemaining -= (float)delta;
         if (currentIdleTimeRemaining >= 0.0f) return false;
 
         // Get a random position around the character
-        Vector2 randomPosition = characterController.GlobalPosition;
+        Vector2 randomPosition = agent.GlobalPositionThreadSafe;
         randomPosition += new Vector2((float)GD.RandRange(-Radius, Radius), (float)GD.RandRange(-Radius, Radius));
-        characterController.NavigateTo(randomPosition);
+        hasNavigation.NavigateTo(randomPosition);
 
         // Reset the idle timer
         currentIdleTimeRemaining = IdleTime;

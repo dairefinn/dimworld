@@ -2,6 +2,7 @@ namespace Dimworld.GOAP.Actions;
 
 using System.Linq;
 using Dimworld.Core.Characters;
+using Dimworld.Core.Characters.Dialogue;
 using Dimworld.Core.Characters.Memory;
 using Dimworld.Core.Characters.Memory.MemoryEntries;
 using Dimworld.Core.Developer;
@@ -27,12 +28,13 @@ public partial class TurnOnLights : GoapAction
 
     public override bool CheckProceduralPrecondition(IGoapAgent goapAgent, GoapState worldState)
     {
-        if (goapAgent is not CharacterController characterController) return false;
+        if (goapAgent is not IHasMemory hasMemory) return false;
+        if (goapAgent is not IHasNavigation hasNavigation) return false;
 
         // Get any lightbulbs in the correct state
-        System.Collections.Generic.List<LightBulb> lightBulbs = [..characterController.MemoryHandler.GetMemoriesOfType<NodeLocation>()
+        System.Collections.Generic.List<LightBulb> lightBulbs = [..hasMemory.MemoryHandler.GetMemoriesOfType<NodeLocation>()
             .Where(memory => memory.Node is LightBulb)
-            .Where(memory => characterController.CanReachPoint(memory.Position))
+            .Where(memory => hasNavigation.CanReachPoint(memory.Position))
             .Select(memory => (LightBulb)memory.Node)
             .Where(lightBulb => lightBulb.IsOn == targetBulbState)
             .ToArray()
@@ -41,9 +43,9 @@ public partial class TurnOnLights : GoapAction
         if (lightBulbs.Count == 0) return false;
 
         // Get any light switches that control the lightbulbs
-        System.Collections.Generic.List<LightSwitch> lightSwitches = [..characterController.MemoryHandler.GetMemoriesOfType<NodeLocation>()
+        System.Collections.Generic.List<LightSwitch> lightSwitches = [..hasMemory.MemoryHandler.GetMemoriesOfType<NodeLocation>()
             .Where(memory => memory.Node is LightSwitch)
-            .Where(memory => characterController.CanReachPoint(memory.Position))
+            .Where(memory => hasNavigation.CanReachPoint(memory.Position))
             .OrderBy(memory => memory.Position.DistanceTo(goapAgent.GlobalPositionThreadSafe))
             .Select(memory => (LightSwitch)memory.Node)
             .Where(lightSwitch => {
@@ -67,38 +69,40 @@ public partial class TurnOnLights : GoapAction
 
     public override bool Perform(IGoapAgent goapAgent, GoapState worldState, double delta)
     {
-        if (goapAgent is not CharacterController characterController) return false;
+        if (goapAgent is not IHasNavigation hasNavigation) return false;
 
-        if (!actionStarted)
+        if (!actionStarted && goapAgent is ICanSpeak canSpeak)
         {
-            characterController.Say("I need to turn on the lights");
+            canSpeak.Say("I need to turn on the lights");
         }
         actionStarted = true;
 
-        characterController.NavigateTo(detectedLightSwitch.GlobalPosition);
+        hasNavigation.NavigateTo(detectedLightSwitch.GlobalPosition);
 
-        if(characterController.NavigationAgent.IsNavigationFinished())
+        if(hasNavigation.IsTargetReached())
         {
             DeveloperConsole.Print("Reached light switch, toggling it");
             detectedLightSwitch.Toggle();
-            DeleteMemoryOfAssociatedLights(characterController, detectedLightSwitch);
+            DeleteMemoryOfAssociatedLights(goapAgent, detectedLightSwitch);
         }
 
         return detectedLightSwitch.IsOn;
     }
 
-    private void DeleteMemoryOfAssociatedLights(CharacterController characterController, LightSwitch lightSwitch)
+    private void DeleteMemoryOfAssociatedLights(IGoapAgent goapAgent, LightSwitch lightSwitch)
     {
+        if (goapAgent is not IHasMemory hasMemory) return;
+
         Array<LightBulb> bulbs = lightSwitch.AssociatedLights;
 
         foreach (LightBulb lightBulb in bulbs)
         {
             if (lightBulb is not IMemorableNode memorableNode) continue;
             NodeLocation memoryEntry = memorableNode.GetNodeLocationMemory();
-            MemoryEntry memoryEntryExisting = memoryEntry.GetMatchingEntryFrom(characterController.MemoryHandler.MemoryEntries);
+            MemoryEntry memoryEntryExisting = memoryEntry.GetMatchingEntryFrom(hasMemory.MemoryHandler.MemoryEntries);
             if (memoryEntryExisting == null) continue; // Only update memory for known lightbulbs
             DeveloperConsole.Print($"Deleting memory of lightbulb {lightBulb.Name}");
-            characterController.MemoryHandler.AddMemory(memoryEntry);
+            hasMemory.MemoryHandler.AddMemory(memoryEntry);
         }
     }
 

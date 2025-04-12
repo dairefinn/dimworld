@@ -7,6 +7,8 @@ namespace Dimworld.Core.Characters.Dialogue;
 public interface ICanSpeak
 {
 
-    public ISpeechBubble SpeechBubble { get; set; }
+    public SpeechHandler SpeechHandler { get; set; }
+
+    public void Say(string message);
 
 }

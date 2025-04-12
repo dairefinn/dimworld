@@ -1,6 +1,8 @@
 namespace Dimworld.GOAP.Actions;
 
 using Dimworld.Core.Characters;
+using Dimworld.Core.Characters.Dialogue;
+using Dimworld.Core.Characters.Memory;
 using Dimworld.Core.Characters.Memory.MemoryEntries;
 using Dimworld.Core.Developer;
 using Dimworld.Core.GOAP;
@@ -55,19 +57,20 @@ public partial class FindItem : GoapAction
 
     public override bool CheckProceduralPrecondition(IGoapAgent goapAgent, GoapState worldState)
     {
-        if (goapAgent is not CharacterController characterController) return false; // Can only be performed by a character controller
+        if (goapAgent is not IHasMemory hasMemory) return false; // Can only be performed by a character controller
+        if (goapAgent is not IHasNavigation hasNavigation) return false; // Can only be performed by a character controller
         if (ItemId == null) return false; // Must have a target item set
 
-        NodeLocation[] containerLocations = characterController.MemoryHandler.GetMemoriesOfType<NodeLocation>().Where(node => node.Node is IHasInventory hasInventory && hasInventory.CanTakeFromInventory).ToArray();
+        NodeLocation[] containerLocations = hasMemory.MemoryHandler.GetMemoriesOfType<NodeLocation>().Where(node => node.Node is IHasInventory hasInventory && hasInventory.CanTakeFromInventory).ToArray();
         if (containerLocations.Length == 0) return false; // Must have at least one chest location in memory
 
-        InventoryContents[] inventoryContents = characterController.MemoryHandler.GetMemoriesOfType<InventoryContents>();
+        InventoryContents[] inventoryContents = hasMemory.MemoryHandler.GetMemoriesOfType<InventoryContents>();
 
         foreach (NodeLocation location in containerLocations)
         {
             if (location.Node == null) continue; // Skip null nodes
             if (location.Node is not IHasInventory container) continue; // Must be a container
-            if (!characterController.CanReachPoint(location.Position)) return false; // Must be reachable
+            if (!hasNavigation.CanReachPoint(location.Position)) return false; // Must be reachable
             
             InventoryContents contentsMemory = inventoryContents.FirstOrDefault(memory => memory.Node == container);
 
@@ -92,22 +95,23 @@ public partial class FindItem : GoapAction
 
     public override bool Perform(IGoapAgent goapAgent, GoapState worldState, double delta)
     {
-        if (goapAgent is not CharacterController characterController) return false; // Must be a character controller
-
         if (!actionStarted)
         {
-            if (knowsWhereItemIs)
+            if (goapAgent is ICanSpeak canSpeak)
             {
-                characterController.Say($"I know where the item is: {ItemId}.");
-            }
-            else
-            {
-                characterController.Say($"I'm looking for: {ItemId}.");
+                if (knowsWhereItemIs)
+                {
+                    canSpeak.Say($"I know where the item is: {ItemId}.");
+                }
+                else
+                {
+                    canSpeak.Say($"I'm looking for: {ItemId}.");
+                }
             }
         }
         actionStarted = true;
         
-        Vector2 agentPosition = characterController.GlobalPosition;
+        Vector2 agentPosition = goapAgent.GlobalPositionThreadSafe;
 
         // Get the next container to search
         if (currentTarget == null)
@@ -133,14 +137,22 @@ public partial class FindItem : GoapAction
             return false; // No containers left to search
         }
 
-        characterController.NavigateTo(containerNode2D.GlobalPosition);
-        if (characterController.NavigationAgent.IsTargetReached())
+        if (goapAgent is not IHasNavigation hasNavigation) return false;
+
+        hasNavigation.NavigateTo(containerNode2D.GlobalPosition);
+        if (hasNavigation.IsTargetReached())
         {
-            characterController.MemoryHandler.AddMemory(new InventoryContents(currentTarget));
+            if (goapAgent is IHasMemory hasMemory)
+            {
+                hasMemory.MemoryHandler.AddMemory(new InventoryContents(currentTarget));
+            }
 
             if (currentTarget.Inventory.HasItem(ItemId))
             {
-                characterController.Say($"I found the item: {ItemId}.");
+                if (goapAgent is ICanSpeak canSpeak)
+                {
+                    canSpeak.Say($"I found the item: {ItemId}.");
+                }
                 Array itemsArray = [];
                 
                 if (goapAgent.WorldState.ContainsKey("can_reach_items"))
@@ -155,7 +167,10 @@ public partial class FindItem : GoapAction
             else
             {
                 DeveloperConsole.Print("Item not found in container");
-                characterController.Say($"I couldn't find the item: {ItemId}.");
+                if (goapAgent is ICanSpeak canSpeak)
+                {
+                    canSpeak.Say($"I couldn't find the item: {ItemId}.");
+                }
                 containersChecked.Add(currentTarget);
                 RemoveContainerFromBacklog(currentTarget);
                 currentTarget = null;

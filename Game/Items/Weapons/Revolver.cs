@@ -38,13 +38,6 @@ public partial class Revolver : InventoryItem, ICanBeUsedFromHotbar, IUsesAmmo
             return false;
         }
 
-        Node parent = equipmentHandler.GetParent();
-        if (parent is not CharacterController characterController) return true;
-        CollisionShape2D hitbox = characterController.GetChildOrNull<CollisionShape2D>(0);
-        if (hitbox == null) return true;
-        CapsuleShape2D capsuleShape = hitbox.Shape as CapsuleShape2D;
-        if (capsuleShape == null) return true;
-
         // Effects will be placed at <radius> units away in the direction of the cursor
         Vector2 direction = equipmentHandler.GlobalPosition.DirectionTo(Globals.Instance.CursorFollower.GlobalPosition);
         Vector2 effectPosition = equipmentHandler.GlobalPosition + (direction * BulletRadius);
@@ -53,6 +46,7 @@ public partial class Revolver : InventoryItem, ICanBeUsedFromHotbar, IUsesAmmo
         {
             Radius = BulletRadius
         };
+        Node parent = equipmentHandler.GetParent();
         Array<Node> nodeBlacklist = [parent];
 
         Effect damageEffect = new AddHealthEffect(effectArea, [1, 2], BulletDamage).SetDuration(10f).SetNodeBlacklist(nodeBlacklist).SetStartPosition(effectPosition).SetVelocity(direction * BulletSpeed);
@@ -107,7 +101,7 @@ public partial class Revolver : InventoryItem, ICanBeUsedFromHotbar, IUsesAmmo
 
         if (parent is not ICanSpeak canSpeak) return;
 
-        canSpeak.SpeechBubble.Say(message);
+        canSpeak.Say(message);
     }
 
 }

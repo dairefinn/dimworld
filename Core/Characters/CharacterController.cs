@@ -20,7 +20,7 @@ using Godot;
 /// Base class for all character controllers.
 /// This class handles the common functionality for all character controllers.
 /// </summary>
-public partial class CharacterController : CharacterBody2D, IHasCharacterStats, ICanBeMoved, IHasInventory, IMemorableNode, IAffectedByModifiers, ICanSpeak
+public partial class CharacterController : CharacterBody2D, IHasCharacterStats, ICanBeMoved, IHasInventory, IMemorableNode, IAffectedByModifiers, ICanSpeak, IHasNavigation, IHasMemory
 {
 
 	[ExportGroup("Movement")]
@@ -51,10 +51,9 @@ public partial class CharacterController : CharacterBody2D, IHasCharacterStats, 
 	private CharacterStatsUI _statsUI;
 
 	[ExportGroup("References")]
-	[Export] public Node SpeechBubbleNode { get; set; }
-	public ISpeechBubble SpeechBubble { get => SpeechBubbleNode as ISpeechBubble; set => SpeechBubbleNode = value as Node; }
 	[Export] public ClothingController ClothingController { get; set; }
 	[Export] public DetectionHandler DetectionHandler { get; set; }
+	[Export] public SpeechHandler SpeechHandler { get; set; }
 	[Export] public AnimationPlayer AnimationPlayer { get; set; }
 	
 
@@ -141,10 +140,25 @@ public partial class CharacterController : CharacterBody2D, IHasCharacterStats, 
 		NavigationAgent.TargetPosition = GlobalPosition;
 	}
 
+	public bool IsTargetReached()
+	{
+		return NavigationAgent.IsTargetReached();
+	}
+
 	public bool CanReachPoint(Vector2 targetPoint)
 	{
 		bool isTargetReachable = NavigationServer2D.MapGetClosestPoint(_navigationRid, targetPoint).IsEqualApprox(targetPoint);
 		return isTargetReachable;
+	}
+
+	public bool IsTargetingPoint(Vector2 targetPoint)
+	{
+		return NavigationAgent.TargetPosition.IsEqualApprox(targetPoint);
+	}
+
+	public Vector2 GetTargetPosition()
+	{
+		return NavigationAgent.TargetPosition;
 	}
 
 	protected virtual void ProcessNavigation(double delta)
@@ -247,7 +261,7 @@ public partial class CharacterController : CharacterBody2D, IHasCharacterStats, 
 	{
 		string formattedText = $"{BBCodeHelper.Colors.Cyan(text)}";
 		DeveloperConsole.Print($"Guard: \"{formattedText}\"");
-		SpeechBubble?.Say(text);
+		SpeechHandler?.Say(text);
 	}
 
 }

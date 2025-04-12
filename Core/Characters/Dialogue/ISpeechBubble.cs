@@ -7,6 +7,6 @@ namespace Dimworld.Core.Characters.Dialogue;
 public interface ISpeechBubble
 {
 
-    public void Say(string text);
+    public string Text { get; set; } // The text to be displayed in the speech bubble
 
 }

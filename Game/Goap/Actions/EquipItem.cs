@@ -1,6 +1,7 @@
 namespace Dimworld.GOAP.Actions;
 
 using Dimworld.Core.Characters;
+using Dimworld.Core.Characters.Dialogue;
 using Dimworld.Core.GOAP;
 using Godot;
 using Godot.Collections;
@@ -57,9 +58,10 @@ public partial class EquipItem : GoapAction
 
     public override bool Perform(IGoapAgent goapAgent, GoapState worldState, double delta)
     {
-        if (goapAgent is not CharacterController characterController) return false;
-
-        characterController.Say("I'm equipping my sword.");
+        if (goapAgent is ICanSpeak canSpeak)
+        {
+            canSpeak.Say("I'm equipping my sword.");
+        }
 
         Array equippedItems = [];
         
