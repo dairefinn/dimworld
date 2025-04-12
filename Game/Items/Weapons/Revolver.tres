@@ -1,7 +1,7 @@
 [gd_resource type="Resource" load_steps=4 format=3 uid="uid://bbn4fu5m0emk1"]
 
 [ext_resource type="Script" uid="uid://dewqh81o5g4sj" path="res://Game/Items/Weapons/Revolver.cs" id="1_1sl0i"]
-[ext_resource type="Texture2D" uid="uid://xid32hy6vbe" path="res://Game/Items/ItemsSpriteSheet.tres" id="1_ombdn"]
+[ext_resource type="Texture2D" uid="uid://xid32hy6vbe" path="res://Assets/Textures/ItemsSpriteSheet.tres" id="1_ombdn"]
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_qchby"]
 atlas = ExtResource("1_ombdn")

@@ -93,8 +93,6 @@ public partial class CharacterStatsUI : Control
 
         if (_stats == null) return;
 
-        GD.Print(Json.Stringify(_stats.Health));
-
         if (IsInstanceValid(barHealth))
         {
             tweenHealth?.Kill();

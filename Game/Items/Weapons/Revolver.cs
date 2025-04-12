@@ -1,7 +1,6 @@
 namespace Dimworld.Items.Weapons;
 
 using Dimworld.Core;
-using Dimworld.Core.Characters;
 using Dimworld.Core.Characters.Dialogue;
 using Dimworld.Core.Effects;
 using Dimworld.Core.Items;

@@ -6,6 +6,7 @@ using Dimworld.Core.Characters.Memory.MemoryEntries;
 using Dimworld.Core.Characters.Stats;
 using Dimworld.Core.Developer;
 using Dimworld.Core.Effects;
+using Dimworld.Core.Factions;
 using Dimworld.Core.Interaction;
 using Dimworld.Core.Items;
 using Dimworld.Core.Modifiers;
@@ -17,7 +18,7 @@ using Godot;
 /// Base class for all character controllers.
 /// This class handles the common functionality for all character controllers.
 /// </summary>
-public partial class CharacterController : CharacterBody2D, IHasCharacterStats, ICanBeMoved, IHasInventory, IMemorableNode, IAffectedByModifiers, ICanSpeak, IHasNavigation, IHasMemory
+public partial class CharacterController : CharacterBody2D, IHasCharacterStats, ICanBeMoved, IHasInventory, IMemorableNode, IAffectedByModifiers, ICanSpeak, IHasNavigation, IHasMemory, IHasFactionAffiliation
 {
 
 	[ExportGroup("Movement")]
@@ -31,8 +32,10 @@ public partial class CharacterController : CharacterBody2D, IHasCharacterStats, 
 
 	[ExportGroup("Stats")]
 	[Export] public CharacterStats Stats { get; set; }
+	[Export] public Faction Affiliation { get; set; }
 
-	[ExportGroup("References")]
+
+	[ExportGroup("Node references")]
 	[Export] public ClothingController ClothingController { get; set; }
 	[Export] public DetectionHandler DetectionHandler { get; set; }
 	[Export] public SpeechHandler SpeechHandler { get; set; }
@@ -42,6 +45,7 @@ public partial class CharacterController : CharacterBody2D, IHasCharacterStats, 
 	public ModifierHandler ModifierHandler { get; set; } = new();
 	public MemoryHandler MemoryHandler { get; set; } = new();
 	public EquipmentHandler EquipmentHandler { get; set; }
+
 
     private Rid _navigationRid;
 
