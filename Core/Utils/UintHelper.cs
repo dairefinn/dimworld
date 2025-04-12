@@ -1,6 +1,10 @@
 namespace Dimworld.Utils;
 
 
+/// <summary>
+/// Helper class for manipulating unsigned integers.
+/// Godot properties that control layers are often unsigned integers so this is primarily used for that.
+/// </summary>
 public static class UIntHelper
 {
 

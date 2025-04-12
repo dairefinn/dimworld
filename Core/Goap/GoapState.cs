@@ -1,9 +1,12 @@
-namespace Dimworld.GOAP;
+namespace Dimworld.Core.GOAP;
 
 using Godot;
 using Godot.Collections;
 
 
+/// <summary>
+/// Represents the state of the world in the eyes of a GOAP agent.
+/// </summary>
 [GlobalClass]
 public partial class GoapState : Resource
 {

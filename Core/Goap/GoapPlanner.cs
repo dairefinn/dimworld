@@ -1,11 +1,14 @@
-namespace Dimworld.GOAP;
+namespace Dimworld.Core.GOAP;
 
 using System.Linq;
-using Dimworld.Developer;
-using Godot;
+using Dimworld.Core.Developer;
 using Godot.Collections;
 
 
+/// <summary>
+/// A static class that handles the planning system.
+/// This class is responsible for generating a plan of actions to achieve a given goal.
+/// </summary>
 public class GoapPlanner
 {
 

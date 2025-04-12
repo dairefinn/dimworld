@@ -1,11 +1,15 @@
-namespace Dimworld.Effects;
+namespace Dimworld.Core.Effects;
 
-using Dimworld.Developer;
+using Dimworld.Core.Developer;
 using Dimworld.Utils;
 using Godot;
 using Godot.Collections;
 
 
+/// <summary>
+/// This class represents an effect that can be applied to nodes in the game.
+/// It offers a wide range of customization options, including velocity, duration, scale change, and more.
+/// </summary>
 public partial class Effect : Area2D
 {
 

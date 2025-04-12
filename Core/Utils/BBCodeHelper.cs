@@ -2,6 +2,10 @@ namespace Dimworld.Utils;
 
 using Godot;
 
+
+/// <summary>
+/// Helper class for BBCode formatting.
+/// </summary>
 public static class BBCodeHelper
 {
 

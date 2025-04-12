@@ -1,9 +1,0 @@
-[gd_resource type="Resource" load_steps=2 format=3 uid="uid://dny1yv708gqi3"]
-
-[ext_resource type="Script" uid="uid://xka3qhhg8lrc" path="res://Core/Goap/Actions/EquipItem.cs" id="1_7b0ac"]
-
-[resource]
-script = ExtResource("1_7b0ac")
-Name = "Equip item"
-Cost = 1000
-metadata/_custom_type_script = "uid://dmhsbr32vw1tk"

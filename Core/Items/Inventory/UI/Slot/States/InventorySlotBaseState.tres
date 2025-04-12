@@ -1,7 +1,0 @@
-[gd_resource type="Resource" load_steps=2 format=3 uid="uid://cltifogd8juvw"]
-
-[ext_resource type="Script" uid="uid://dctmd2sl8wn1j" path="res://Core/Items/Inventory/UI/Slot/States/InventorySlotBaseState.cs" id="1_q72bh"]
-
-[resource]
-script = ExtResource("1_q72bh")
-metadata/_custom_type_script = "uid://d0as3eq5ivedj"

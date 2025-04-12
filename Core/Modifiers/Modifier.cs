@@ -1,9 +1,12 @@
-namespace Dimworld.Modifiers;
+namespace Dimworld.Core.Modifiers;
 
 using Godot;
 
 
-public abstract partial class Modifier : Resource
+/// <summary>
+/// The base class for all modifiers. This can be extended to create different types of modifiers.
+/// </summary>
+public abstract partial class Modifier : Resource // TODO: Try making this RefCounted
 {
 
     // TODO: Might want to add "Tags" to the modifiers to allow for more complex retrieval of modifiers. For example, this would allow for an item that removes all debuffs.

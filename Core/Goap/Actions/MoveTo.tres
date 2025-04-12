@@ -1,9 +1,0 @@
-[gd_resource type="Resource" load_steps=2 format=3 uid="uid://b2plhfobhuj2k"]
-
-[ext_resource type="Script" uid="uid://bli3irohc3nft" path="res://Core/Goap/Actions/MoveTo.cs" id="1_kuljp"]
-
-[resource]
-script = ExtResource("1_kuljp")
-Name = "Move to"
-Cost = 1000
-metadata/_custom_type_script = "uid://dmhsbr32vw1tk"

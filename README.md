@@ -5,6 +5,14 @@ This is mainly a testbed for me to implement technologies I find interesting. Or
 It's created in Godot using C#.
 
 
+## Folder structure
+
+- `Assets/` - Base assets like textures and fonts
+- `Docs/` - Documentation for different features
+- `Levels/` - Contains all the levels in the game
+- `Core/` - Core game logic and systems
+
+
 ## Features
 
 ### Agents

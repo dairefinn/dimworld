@@ -1,8 +1,13 @@
-namespace Dimworld.GOAP;
+namespace Dimworld.Core.GOAP;
 
 using Godot;
 
 
+/// <summary>
+/// Represents an action that can be performed by a GOAP agent.
+/// This is the base class for all actions.
+/// The action is defined by its name, cost, preconditions and effects and will be evaluated by the GOAP planner.
+/// </summary>
 [GlobalClass]
 public partial class GoapAction : Resource
 {

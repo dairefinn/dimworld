@@ -1,22 +1,25 @@
-[gd_scene load_steps=39 format=3 uid="uid://ddc8qiig7j3wm"]
+[gd_scene load_steps=40 format=3 uid="uid://ddc8qiig7j3wm"]
 
-[ext_resource type="Script" uid="uid://1f6ukfmh33oo" path="res://Core/DayNightController.cs" id="1_d13ii"]
-[ext_resource type="PackedScene" uid="uid://duk1q562jys3q" path="res://Core/CursorFollower.tscn" id="3_ryguw"]
-[ext_resource type="Script" uid="uid://nkgns80j1gwr" path="res://Core/Agents/Dialogue/Resources/TradeController.cs" id="5_2cqfq"]
-[ext_resource type="Script" uid="uid://diohp7emnm65v" path="res://Core/UIRootPanel.cs" id="5_w48qg"]
-[ext_resource type="Script" uid="uid://bx2ktxey0dxrs" path="res://Core/Items/CurrencyController.cs" id="6_yaehf"]
-[ext_resource type="PackedScene" uid="uid://yw15jku1xwks" path="res://Core/Agents/Dialogue/Scenes/DialoguePanelUI/DialoguePanelUI.tscn" id="8_vivmo"]
-[ext_resource type="Script" uid="uid://daxnr47vhajw0" path="res://Core/Levels/LevelHandler/LevelHandler.cs" id="8_ycdy4"]
-[ext_resource type="PackedScene" uid="uid://dius53mdc51ny" path="res://Core/Agents/Instances/Player/Player.tscn" id="9_kek77"]
-[ext_resource type="Resource" uid="uid://octn8jxqeqaq" path="res://Core/Items/Instances/Weapons/Sword.tres" id="10_dg77c"]
-[ext_resource type="Script" uid="uid://bm0o5ggnfmm6y" path="res://Core/Items/Inventory/InventorySlot.cs" id="11_ycdy4"]
-[ext_resource type="PackedScene" uid="uid://qds61vs7bsi1" path="res://Core/Developer/DeveloperMenu.tscn" id="12_dg77c"]
-[ext_resource type="Resource" uid="uid://bbn4fu5m0emk1" path="res://Core/Items/Instances/Weapons/Revolver.tres" id="12_vivmo"]
-[ext_resource type="Script" uid="uid://dph74un0q20el" path="res://Core/Items/Inventory/Inventory.cs" id="12_w48qg"]
-[ext_resource type="Resource" uid="uid://bfbm4tftgemqa" path="res://Core/Items/Instances/Utility/Torch.tres" id="13_2cqfq"]
+[ext_resource type="Script" uid="uid://1f6ukfmh33oo" path="res://Core/DayNightCycle/DayNightController.cs" id="1_d13ii"]
+[ext_resource type="Script" uid="uid://nkgns80j1gwr" path="res://Core/Characters/Dialogue/TradeController.cs" id="5_2cqfq"]
+[ext_resource type="Script" uid="uid://diohp7emnm65v" path="res://Core/UI/UIRootPanel.cs" id="5_w48qg"]
+[ext_resource type="Script" uid="uid://080qtwyw16wf" path="res://Core/Interaction/CursorFollower.cs" id="6_074og"]
+[ext_resource type="Script" uid="uid://bx2ktxey0dxrs" path="res://Core/Currency/CurrencyController.cs" id="6_yaehf"]
+[ext_resource type="PackedScene" uid="uid://yw15jku1xwks" path="res://UI/Dialogue/DialoguePanelUI/DialoguePanelUI.tscn" id="8_vivmo"]
+[ext_resource type="Script" uid="uid://daxnr47vhajw0" path="res://Core/Levels/LevelHandler.cs" id="8_ycdy4"]
+[ext_resource type="PackedScene" uid="uid://dius53mdc51ny" path="res://Characters/Player/Player.tscn" id="9_kek77"]
+[ext_resource type="Resource" uid="uid://octn8jxqeqaq" path="res://Items/Weapons/Sword.tres" id="10_dg77c"]
+[ext_resource type="Script" uid="uid://bm0o5ggnfmm6y" path="res://Core/Items/InventorySlot.cs" id="11_ycdy4"]
+[ext_resource type="PackedScene" uid="uid://qds61vs7bsi1" path="res://UI/Developer/DeveloperMenuUI.tscn" id="12_dg77c"]
+[ext_resource type="Resource" uid="uid://bbn4fu5m0emk1" path="res://Items/Weapons/Revolver.tres" id="12_vivmo"]
+[ext_resource type="Script" uid="uid://dph74un0q20el" path="res://Core/Items/Inventory.cs" id="12_w48qg"]
+[ext_resource type="Resource" uid="uid://bfbm4tftgemqa" path="res://Items/Utility/Torch.tres" id="13_2cqfq"]
 [ext_resource type="Script" uid="uid://5l72ubbv8qqo" path="res://Core/Globals.cs" id="13_ycdy4"]
-[ext_resource type="PackedScene" uid="uid://d21nkwnu7y4od" path="res://Core/Items/Inventory/UI/Viewer/InventoryViewer.tscn" id="23_d13ii"]
-[ext_resource type="PackedScene" uid="uid://b3v4ub2lqydho" path="res://Core/Levels/LevelTesting.tscn" id="25_a6jrf"]
+[ext_resource type="PackedScene" uid="uid://d21nkwnu7y4od" path="res://UI/Inventory/Viewer/InventoryViewer.tscn" id="23_d13ii"]
+[ext_resource type="PackedScene" uid="uid://b3v4ub2lqydho" path="res://Levels/LevelTesting.tscn" id="25_a6jrf"]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_cegan"]
+radius = 5.0
 
 [sub_resource type="Resource" id="Resource_vivmo"]
 script = ExtResource("11_ycdy4")
@@ -129,24 +132,25 @@ metadata/_custom_type_script = "uid://dph74un0q20el"
 
 [node name="Main" type="Node2D"]
 
-[node name="LevelHandler" type="Node" parent="."]
+[node name="LevelHandlerOld" type="Node" parent="."]
 script = ExtResource("8_ycdy4")
 
-[node name="LevelTesting" parent="LevelHandler" instance=ExtResource("25_a6jrf")]
+[node name="LevelTesting" parent="LevelHandlerOld" instance=ExtResource("25_a6jrf")]
 
 [node name="Logic" type="Node" parent="."]
 
-[node name="DayNightController" type="DirectionalLight2D" parent="Logic"]
-visible = false
-color = Color(0.0784314, 0.0784314, 0.0784314, 1)
-energy = 0.0
-blend_mode = 2
-script = ExtResource("1_d13ii")
-TimePassedPerTick = 1.0
-PercentageOfDay = 100.0
-
-[node name="CursorFollower" parent="Logic" instance=ExtResource("3_ryguw")]
-collision_mask = 3
+[node name="Globals" type="Node" parent="Logic" node_paths=PackedStringArray("Player", "InventoryViewer", "CursorFollower", "LevelHandler", "DayNightController", "DialoguePanelUI", "TradeController", "CurrencyController", "UIRoot", "DeveloperMenu")]
+script = ExtResource("13_ycdy4")
+Player = NodePath("../../Player")
+InventoryViewer = NodePath("../../UI/UIRootContainer/InventoryViewer")
+CursorFollower = NodePath("../CursorFollower")
+LevelHandler = NodePath("../../LevelHandlerOld")
+DayNightController = NodePath("../DayNightController")
+DialoguePanelUI = NodePath("../../UI/UIRootContainer/DialoguePanelUI")
+TradeController = NodePath("../TradeController")
+CurrencyController = NodePath("../CurrencyController")
+UIRoot = NodePath("../../UI/UIRootContainer")
+DeveloperMenu = NodePath("../../UI/UIRootContainer/DeveloperMenu")
 
 [node name="TradeController" type="Node" parent="Logic"]
 script = ExtResource("5_2cqfq")
@@ -154,6 +158,22 @@ script = ExtResource("5_2cqfq")
 [node name="CurrencyController" type="Node" parent="Logic"]
 script = ExtResource("6_yaehf")
 Money = 500
+
+[node name="DayNightController" type="DirectionalLight2D" parent="Logic"]
+color = Color(0.0784314, 0.0784314, 0.0784314, 1)
+energy = 0.0
+blend_mode = 2
+script = ExtResource("1_d13ii")
+TimePassedPerTick = 1.0
+PercentageOfDay = 25.0
+metadata/_custom_type_script = "uid://1f6ukfmh33oo"
+
+[node name="CursorFollower" type="Area2D" parent="Logic"]
+script = ExtResource("6_074og")
+metadata/_custom_type_script = "uid://080qtwyw16wf"
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Logic/CursorFollower"]
+shape = SubResource("CircleShape2D_cegan")
 
 [node name="UI" type="CanvasLayer" parent="."]
 
@@ -187,16 +207,6 @@ offset_left = -250.0
 offset_top = -200.0
 offset_right = 250.0
 offset_bottom = 200.0
-
-[node name="Globals" type="Node" parent="." node_paths=PackedStringArray("InventoryViewer", "CursorFollower", "LevelHandler", "DayNightController", "DialoguePanelUI", "TradeController", "CurrencyController")]
-script = ExtResource("13_ycdy4")
-InventoryViewer = NodePath("../UI/UIRootContainer/InventoryViewer")
-CursorFollower = NodePath("../Logic/CursorFollower")
-LevelHandler = NodePath("../LevelHandler")
-DayNightController = NodePath("../Logic/DayNightController")
-DialoguePanelUI = NodePath("../UI/UIRootContainer/DialoguePanelUI")
-TradeController = NodePath("../Logic/TradeController")
-CurrencyController = NodePath("../Logic/CurrencyController")
 
 [node name="Player" parent="." instance=ExtResource("9_kek77")]
 z_index = 1

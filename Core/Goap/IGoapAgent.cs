@@ -1,8 +1,12 @@
-namespace Dimworld.GOAP;
+namespace Dimworld.Core.GOAP;
 
 using Godot;
 using Godot.Collections;
 
+
+/// <summary>
+/// Any agent which uses the planning system must implement this interface.
+/// </summary>
 public interface IGoapAgent
 {
 

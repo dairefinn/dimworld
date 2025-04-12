@@ -1,6 +1,11 @@
-namespace Dimworld;
+namespace Dimworld.Core;
 
 
+/// <summary>
+/// This class contains all the input actions used in the game.
+/// It is used to easily access the input actions and to avoid hardcoding strings.
+/// The input actions are defined in the Input Map in the Godot project settings.
+/// </summary>
 public static class InputActions
 {
 
