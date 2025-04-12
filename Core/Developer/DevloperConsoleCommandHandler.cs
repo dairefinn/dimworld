@@ -124,7 +124,7 @@ public class DeveloperConsoleCommandHandler
         if (args.Length == 1)
         {
             string levelName = args[0];
-            string fullLevelPath = $"res://Levels/{levelName}.tscn";
+            string fullLevelPath = $"res://Game/Levels/{levelName}.tscn";
             Globals.Instance.LevelHandler.ChangeLevel(fullLevelPath);
         }
         else

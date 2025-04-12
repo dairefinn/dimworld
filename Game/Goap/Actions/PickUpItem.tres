@@ -1,0 +1,13 @@
+[gd_resource type="Resource" load_steps=2 format=3 uid="uid://d0jpp418n0xh5"]
+
+[ext_resource type="Script" uid="uid://dh1rg47nrpv5x" path="res://Game/Goap/Actions/PickUpItem.cs" id="1_4xv30"]
+
+[resource]
+script = ExtResource("1_4xv30")
+Name = "Pick up item"
+Preconditions = Dictionary[String, Variant]({
+"can_reach": "ITEM_NAME"
+})
+Effects = null
+Cost = 1000
+metadata/_custom_type_script = "uid://dmhsbr32vw1tk"

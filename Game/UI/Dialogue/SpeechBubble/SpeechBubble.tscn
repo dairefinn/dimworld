@@ -1,0 +1,49 @@
+[gd_scene load_steps=4 format=3 uid="uid://v23vcyiu8qgc"]
+
+[ext_resource type="Script" uid="uid://u551fomk6by0" path="res://Game/UI/Dialogue/SpeechBubble/SpeechBubble.cs" id="1_inyif"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_o26ja"]
+bg_color = Color(1, 1, 1, 1)
+corner_radius_top_left = 2
+corner_radius_top_right = 2
+corner_radius_bottom_right = 2
+corner_radius_bottom_left = 2
+shadow_size = 1
+shadow_offset = Vector2(0.5, 0.5)
+anti_aliasing = false
+
+[sub_resource type="LabelSettings" id="LabelSettings_o26ja"]
+line_spacing = 1.0
+font_size = 12
+font_color = Color(0.2, 0.2, 0.2, 1)
+
+[node name="SpeechBubble" type="PanelContainer" node_paths=PackedStringArray("Label", "HideTimer")]
+custom_minimum_size = Vector2(10, 1)
+offset_right = 86.0
+offset_bottom = 29.0
+size_flags_horizontal = 4
+size_flags_vertical = 8
+theme_override_styles/panel = SubResource("StyleBoxFlat_o26ja")
+script = ExtResource("1_inyif")
+Text = "Speech bubble"
+Label = NodePath("MarginContainer/Label")
+HideTimer = NodePath("HideTimer")
+
+[node name="MarginContainer" type="MarginContainer" parent="."]
+layout_mode = 2
+theme_override_constants/margin_left = 6
+theme_override_constants/margin_top = 3
+theme_override_constants/margin_right = 6
+theme_override_constants/margin_bottom = 3
+
+[node name="Label" type="Label" parent="MarginContainer"]
+layout_mode = 2
+size_flags_horizontal = 4
+text = "Speech bubble"
+label_settings = SubResource("LabelSettings_o26ja")
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="HideTimer" type="Timer" parent="."]
+wait_time = 2.0
+autostart = true

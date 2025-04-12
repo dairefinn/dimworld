@@ -1,0 +1,231 @@
+[gd_scene load_steps=50 format=3 uid="uid://bqxgobv2wbi30"]
+
+[ext_resource type="Script" uid="uid://sfynx6lgjnik" path="res://Game/Characters/Guard/Guard.cs" id="1_jg3xo"]
+[ext_resource type="Script" uid="uid://cqsim0vts1sc1" path="res://Core/Goap/GoapState.cs" id="2_4up7x"]
+[ext_resource type="Resource" uid="uid://dny1yv708gqi3" path="res://Game/Goap/Actions/EquipItem.tres" id="4_no6b3"]
+[ext_resource type="Resource" uid="uid://dklafmkxavest" path="res://Game/Goap/Actions/FindItem.tres" id="5_3i4ft"]
+[ext_resource type="Resource" uid="uid://be3ryk2ex3pr1" path="res://Game/Goap/Actions/Idle.tres" id="6_5fylf"]
+[ext_resource type="Resource" uid="uid://c0vymkdfnl7rp" path="res://Game/Goap/Actions/PatrolPath.tres" id="7_vhb1s"]
+[ext_resource type="Resource" uid="uid://d0jpp418n0xh5" path="res://Game/Goap/Actions/PickUpItem.tres" id="8_hjpy8"]
+[ext_resource type="Resource" uid="uid://d0w3ss4kpt10s" path="res://Game/Goap/Actions/TurnOffLights.tres" id="9_lq4k4"]
+[ext_resource type="Resource" uid="uid://cor2aifcdpfoy" path="res://Game/Goap/Actions/TurnOnLights.tres" id="10_3iefa"]
+[ext_resource type="Resource" uid="uid://dyo8ce1njn67q" path="res://Game/Goap/Goals/EnsureVisibility.tres" id="12_7b7o7"]
+[ext_resource type="Resource" uid="uid://ckvaxlnjoqs1o" path="res://Game/Goap/Goals/Patrol.tres" id="13_50rlj"]
+[ext_resource type="Resource" uid="uid://c7fy02pjbecvf" path="res://Game/Goap/Goals/Idle.tres" id="14_13jt4"]
+[ext_resource type="Script" uid="uid://bm0o5ggnfmm6y" path="res://Core/Items/InventorySlot.cs" id="15_4q4b3"]
+[ext_resource type="Script" uid="uid://dph74un0q20el" path="res://Core/Items/Inventory.cs" id="16_2bl6y"]
+[ext_resource type="Script" uid="uid://cru4kq28c8nuw" path="res://Core/Characters/Stats/CharacterStats.cs" id="17_aiwl3"]
+[ext_resource type="Script" uid="uid://cxbp1npv1tukk" path="res://Core/Characters/DetectionHandler.cs" id="18_4u824"]
+[ext_resource type="Texture2D" uid="uid://dpxdm8niupad2" path="res://Assets/Sprites/Character.png" id="19_ydx4a"]
+[ext_resource type="Script" uid="uid://ckdaa4jpv4ysf" path="res://Core/Characters/ClothingController.cs" id="20_wq24c"]
+[ext_resource type="Texture2D" uid="uid://bm5yi454iqlnw" path="res://Game/Characters/CharacterSpriteSheet.tres" id="21_r0bra"]
+[ext_resource type="PackedScene" uid="uid://bb462hku8uk8i" path="res://Game/UI/Characters/CharacterStatsUI.tscn" id="22_lnc0x"]
+[ext_resource type="PackedScene" uid="uid://v23vcyiu8qgc" path="res://Game/UI/Dialogue/SpeechBubble/SpeechBubble.tscn" id="23_lx72n"]
+
+[sub_resource type="Resource" id="Resource_ol4on"]
+script = ExtResource("2_4up7x")
+State = Dictionary[String, Variant]({})
+
+[sub_resource type="Resource" id="Resource_1io8r"]
+script = ExtResource("15_4q4b3")
+Quantity = 0
+metadata/_custom_type_script = "uid://bm0o5ggnfmm6y"
+
+[sub_resource type="Resource" id="Resource_y11bb"]
+script = ExtResource("15_4q4b3")
+Quantity = 0
+metadata/_custom_type_script = "uid://bm0o5ggnfmm6y"
+
+[sub_resource type="Resource" id="Resource_5qwyp"]
+script = ExtResource("15_4q4b3")
+Quantity = 0
+metadata/_custom_type_script = "uid://bm0o5ggnfmm6y"
+
+[sub_resource type="Resource" id="Resource_nicww"]
+script = ExtResource("15_4q4b3")
+Quantity = 0
+metadata/_custom_type_script = "uid://bm0o5ggnfmm6y"
+
+[sub_resource type="Resource" id="Resource_tngpp"]
+script = ExtResource("15_4q4b3")
+Quantity = 0
+metadata/_custom_type_script = "uid://bm0o5ggnfmm6y"
+
+[sub_resource type="Resource" id="Resource_3mkj5"]
+script = ExtResource("15_4q4b3")
+Quantity = 0
+metadata/_custom_type_script = "uid://bm0o5ggnfmm6y"
+
+[sub_resource type="Resource" id="Resource_l60ej"]
+script = ExtResource("15_4q4b3")
+Quantity = 0
+metadata/_custom_type_script = "uid://bm0o5ggnfmm6y"
+
+[sub_resource type="Resource" id="Resource_xu668"]
+script = ExtResource("15_4q4b3")
+Quantity = 0
+metadata/_custom_type_script = "uid://bm0o5ggnfmm6y"
+
+[sub_resource type="Resource" id="Resource_emr33"]
+script = ExtResource("15_4q4b3")
+Quantity = 0
+metadata/_custom_type_script = "uid://bm0o5ggnfmm6y"
+
+[sub_resource type="Resource" id="Resource_jxhy1"]
+script = ExtResource("15_4q4b3")
+Quantity = 0
+metadata/_custom_type_script = "uid://bm0o5ggnfmm6y"
+
+[sub_resource type="Resource" id="Resource_ojdlt"]
+script = ExtResource("15_4q4b3")
+Quantity = 0
+metadata/_custom_type_script = "uid://bm0o5ggnfmm6y"
+
+[sub_resource type="Resource" id="Resource_l0rot"]
+script = ExtResource("15_4q4b3")
+Quantity = 0
+metadata/_custom_type_script = "uid://bm0o5ggnfmm6y"
+
+[sub_resource type="Resource" id="Resource_d4tiv"]
+script = ExtResource("15_4q4b3")
+Quantity = 0
+metadata/_custom_type_script = "uid://bm0o5ggnfmm6y"
+
+[sub_resource type="Resource" id="Resource_t7c3t"]
+script = ExtResource("15_4q4b3")
+Quantity = 0
+metadata/_custom_type_script = "uid://bm0o5ggnfmm6y"
+
+[sub_resource type="Resource" id="Resource_s17b3"]
+script = ExtResource("15_4q4b3")
+Quantity = 0
+metadata/_custom_type_script = "uid://bm0o5ggnfmm6y"
+
+[sub_resource type="Resource" id="Resource_2rp7y"]
+script = ExtResource("15_4q4b3")
+Quantity = 0
+metadata/_custom_type_script = "uid://bm0o5ggnfmm6y"
+
+[sub_resource type="Resource" id="Resource_gmsq1"]
+script = ExtResource("16_2bl6y")
+InventoryName = "Guard Inventory"
+Slots = Array[ExtResource("15_4q4b3")]([SubResource("Resource_1io8r"), SubResource("Resource_y11bb"), SubResource("Resource_5qwyp"), SubResource("Resource_nicww"), SubResource("Resource_tngpp"), SubResource("Resource_3mkj5"), SubResource("Resource_l60ej"), SubResource("Resource_xu668"), SubResource("Resource_emr33"), SubResource("Resource_jxhy1"), SubResource("Resource_ojdlt"), SubResource("Resource_l0rot"), SubResource("Resource_d4tiv"), SubResource("Resource_t7c3t"), SubResource("Resource_s17b3"), SubResource("Resource_2rp7y")])
+metadata/_custom_type_script = "uid://dph74un0q20el"
+
+[sub_resource type="Resource" id="Resource_rksrv"]
+script = ExtResource("17_aiwl3")
+MaxHealth = 100.0
+MaxStamina = 100.0
+metadata/_custom_type_script = "uid://cru4kq28c8nuw"
+
+[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_cwv1k"]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_k7cs3"]
+radius = 100.0
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_6ulni"]
+atlas = ExtResource("19_ydx4a")
+region = Rect2(0, 0, 32, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_1io8r"]
+atlas = ExtResource("21_r0bra")
+region = Rect2(64, 0, 32, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_y11bb"]
+atlas = ExtResource("21_r0bra")
+region = Rect2(0, 32, 32, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_gmsq1"]
+atlas = ExtResource("21_r0bra")
+region = Rect2(64, 32, 32, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_5qwyp"]
+atlas = ExtResource("21_r0bra")
+region = Rect2(96, 32, 32, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_nicww"]
+atlas = ExtResource("21_r0bra")
+region = Rect2(32, 64, 32, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_tngpp"]
+atlas = ExtResource("21_r0bra")
+region = Rect2(0, 96, 32, 32)
+
+[node name="Guard" type="CharacterBody2D" node_paths=PackedStringArray("NavigationAgent", "StatsUI", "SpeechBubbleNode", "ClothingController", "DetectionHandler")]
+script = ExtResource("1_jg3xo")
+WorldState = SubResource("Resource_ol4on")
+ActionSet = [ExtResource("4_no6b3"), ExtResource("5_3i4ft"), ExtResource("6_5fylf"), ExtResource("7_vhb1s"), ExtResource("8_hjpy8"), ExtResource("9_lq4k4"), ExtResource("10_3iefa")]
+GoalSet = [ExtResource("12_7b7o7"), ExtResource("13_50rlj"), ExtResource("14_13jt4")]
+NavigationAgent = NodePath("NavigationAgent2D")
+Inventory = SubResource("Resource_gmsq1")
+Stats = SubResource("Resource_rksrv")
+StatsUI = NodePath("AgentStatsUI")
+SpeechBubbleNode = NodePath("CenterContainer/SpeechBubble")
+ClothingController = NodePath("BodySprite")
+DetectionHandler = NodePath("DetectionHandler")
+
+[node name="Hitbox" type="CollisionShape2D" parent="."]
+shape = SubResource("CapsuleShape2D_cwv1k")
+
+[node name="DetectionHandler" type="Area2D" parent="." node_paths=PackedStringArray("DetectedEntities")]
+collision_layer = 0
+collision_mask = 3
+script = ExtResource("18_4u824")
+DetectedEntities = []
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="DetectionHandler"]
+shape = SubResource("CircleShape2D_k7cs3")
+debug_color = Color(0, 0.608985, 0.644943, 0.42)
+
+[node name="NavigationAgent2D" type="NavigationAgent2D" parent="."]
+path_desired_distance = 5.0
+target_desired_distance = 5.0
+path_postprocessing = 1
+radius = 1.0
+debug_use_custom = true
+debug_path_custom_color = Color(0.870387, 1.44392e-06, 1.2514e-06, 1)
+
+[node name="BodySprite" type="Sprite2D" parent="." node_paths=PackedStringArray("HairSprite", "EyesSprite", "TopSprite", "OvertopSprite", "BottomsSprite", "ShoesSprite")]
+texture = SubResource("AtlasTexture_6ulni")
+script = ExtResource("20_wq24c")
+HairSprite = NodePath("Hair")
+EyesSprite = NodePath("Eyes")
+TopSprite = NodePath("Top")
+OvertopSprite = NodePath("Overtop")
+BottomsSprite = NodePath("Bottom")
+ShoesSprite = NodePath("Shoes")
+
+[node name="Shoes" type="Sprite2D" parent="BodySprite"]
+texture = SubResource("AtlasTexture_1io8r")
+
+[node name="Bottom" type="Sprite2D" parent="BodySprite"]
+texture = SubResource("AtlasTexture_y11bb")
+
+[node name="Top" type="Sprite2D" parent="BodySprite"]
+texture = SubResource("AtlasTexture_gmsq1")
+
+[node name="Overtop" type="Sprite2D" parent="BodySprite"]
+texture = SubResource("AtlasTexture_5qwyp")
+
+[node name="Eyes" type="Sprite2D" parent="BodySprite"]
+unique_name_in_owner = true
+texture = SubResource("AtlasTexture_nicww")
+
+[node name="Hair" type="Sprite2D" parent="BodySprite"]
+texture = SubResource("AtlasTexture_tngpp")
+
+[node name="AgentStatsUI" parent="." instance=ExtResource("22_lnc0x")]
+offset_left = -11.0
+offset_top = 16.0
+offset_right = 11.0
+offset_bottom = 21.0
+
+[node name="CenterContainer" type="CenterContainer" parent="."]
+offset_top = -30.0
+offset_bottom = -30.0
+use_top_left = true
+
+[node name="SpeechBubble" parent="CenterContainer" instance=ExtResource("23_lx72n")]
+visible = false
+layout_mode = 2
+Text = ""

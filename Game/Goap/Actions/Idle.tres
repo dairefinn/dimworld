@@ -1,0 +1,9 @@
+[gd_resource type="Resource" load_steps=2 format=3 uid="uid://be3ryk2ex3pr1"]
+
+[ext_resource type="Script" uid="uid://c7oqqd4ipgemf" path="res://Game/Goap/Actions/Idle.cs" id="1_rcn5o"]
+
+[resource]
+script = ExtResource("1_rcn5o")
+Name = "Idle"
+Cost = 1000
+metadata/_custom_type_script = "uid://dmhsbr32vw1tk"

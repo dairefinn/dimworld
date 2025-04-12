@@ -5,18 +5,18 @@
 [ext_resource type="Script" uid="uid://diohp7emnm65v" path="res://Core/UI/UIRootPanel.cs" id="5_w48qg"]
 [ext_resource type="Script" uid="uid://080qtwyw16wf" path="res://Core/Interaction/CursorFollower.cs" id="6_074og"]
 [ext_resource type="Script" uid="uid://bx2ktxey0dxrs" path="res://Core/Currency/CurrencyController.cs" id="6_yaehf"]
-[ext_resource type="PackedScene" uid="uid://yw15jku1xwks" path="res://UI/Dialogue/DialoguePanelUI/DialoguePanelUI.tscn" id="8_vivmo"]
+[ext_resource type="PackedScene" uid="uid://yw15jku1xwks" path="res://Game/UI/Dialogue/DialoguePanelUI/DialoguePanelUI.tscn" id="8_vivmo"]
 [ext_resource type="Script" uid="uid://daxnr47vhajw0" path="res://Core/Levels/LevelHandler.cs" id="8_ycdy4"]
-[ext_resource type="PackedScene" uid="uid://dius53mdc51ny" path="res://Characters/Player/Player.tscn" id="9_kek77"]
-[ext_resource type="Resource" uid="uid://octn8jxqeqaq" path="res://Items/Weapons/Sword.tres" id="10_dg77c"]
+[ext_resource type="PackedScene" uid="uid://dius53mdc51ny" path="res://Game/Characters/Player/Player.tscn" id="9_kek77"]
+[ext_resource type="Resource" uid="uid://octn8jxqeqaq" path="res://Game/Items/Weapons/Sword.tres" id="10_dg77c"]
 [ext_resource type="Script" uid="uid://bm0o5ggnfmm6y" path="res://Core/Items/InventorySlot.cs" id="11_ycdy4"]
-[ext_resource type="PackedScene" uid="uid://qds61vs7bsi1" path="res://UI/Developer/DeveloperMenuUI.tscn" id="12_dg77c"]
-[ext_resource type="Resource" uid="uid://bbn4fu5m0emk1" path="res://Items/Weapons/Revolver.tres" id="12_vivmo"]
+[ext_resource type="PackedScene" uid="uid://qds61vs7bsi1" path="res://Game/UI/Developer/DeveloperMenuUI.tscn" id="12_dg77c"]
+[ext_resource type="Resource" uid="uid://bbn4fu5m0emk1" path="res://Game/Items/Weapons/Revolver.tres" id="12_vivmo"]
 [ext_resource type="Script" uid="uid://dph74un0q20el" path="res://Core/Items/Inventory.cs" id="12_w48qg"]
-[ext_resource type="Resource" uid="uid://bfbm4tftgemqa" path="res://Items/Utility/Torch.tres" id="13_2cqfq"]
+[ext_resource type="Resource" uid="uid://bfbm4tftgemqa" path="res://Game/Items/Utility/Torch.tres" id="13_2cqfq"]
 [ext_resource type="Script" uid="uid://5l72ubbv8qqo" path="res://Core/Globals.cs" id="13_ycdy4"]
-[ext_resource type="PackedScene" uid="uid://d21nkwnu7y4od" path="res://UI/Inventory/Viewer/InventoryViewer.tscn" id="23_d13ii"]
-[ext_resource type="PackedScene" uid="uid://b3v4ub2lqydho" path="res://Levels/LevelTesting.tscn" id="25_a6jrf"]
+[ext_resource type="PackedScene" uid="uid://d21nkwnu7y4od" path="res://Game/UI/Inventory/Viewer/InventoryViewer.tscn" id="23_d13ii"]
+[ext_resource type="PackedScene" uid="uid://b3v4ub2lqydho" path="res://Game/Levels/LevelTesting.tscn" id="25_a6jrf"]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_cegan"]
 radius = 5.0
@@ -127,7 +127,7 @@ metadata/_custom_type_script = "uid://bm0o5ggnfmm6y"
 [sub_resource type="Resource" id="Resource_0rl1p"]
 script = ExtResource("12_w48qg")
 InventoryName = "Player Inventory"
-Slots = [SubResource("Resource_vivmo"), SubResource("Resource_2cqfq"), SubResource("Resource_074og"), SubResource("Resource_cegan"), SubResource("Resource_82xsv"), SubResource("Resource_getpj"), SubResource("Resource_ryguw"), SubResource("Resource_d13ii"), SubResource("Resource_1u8w0"), SubResource("Resource_0odxb"), SubResource("Resource_lswn8"), SubResource("Resource_a6jrf"), SubResource("Resource_xuqvo"), SubResource("Resource_qsp4k"), SubResource("Resource_kq58d"), SubResource("Resource_seu75"), SubResource("Resource_htxhm"), SubResource("Resource_jq2sk"), SubResource("Resource_4k2k6"), SubResource("Resource_yaehf")]
+Slots = Array[ExtResource("11_ycdy4")]([SubResource("Resource_vivmo"), SubResource("Resource_2cqfq"), SubResource("Resource_074og"), SubResource("Resource_cegan"), SubResource("Resource_82xsv"), SubResource("Resource_getpj"), SubResource("Resource_ryguw"), SubResource("Resource_d13ii"), SubResource("Resource_1u8w0"), SubResource("Resource_0odxb"), SubResource("Resource_lswn8"), SubResource("Resource_a6jrf"), SubResource("Resource_xuqvo"), SubResource("Resource_qsp4k"), SubResource("Resource_kq58d"), SubResource("Resource_seu75"), SubResource("Resource_htxhm"), SubResource("Resource_jq2sk"), SubResource("Resource_4k2k6"), SubResource("Resource_yaehf")])
 metadata/_custom_type_script = "uid://dph74un0q20el"
 
 [node name="Main" type="Node2D"]
