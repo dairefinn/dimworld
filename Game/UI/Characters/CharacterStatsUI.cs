@@ -14,7 +14,7 @@ public partial class CharacterStatsUI : Control
             OnSourceChanged();
         }
     }
-    private NodePath _statsSource = "..";
+    private NodePath _statsSource;
     [Export] public float FadeOutTime = 2.5f;
 
 
@@ -32,7 +32,6 @@ public partial class CharacterStatsUI : Control
 
     public override void _Ready()
     {
-        Hide();
         barHealth = GetNode<ProgressBar>("%BarHealth");
         barStamina = GetNode<ProgressBar>("%BarStamina");
 
@@ -40,9 +39,9 @@ public partial class CharacterStatsUI : Control
         GetTree().CreateTimer(0.5f).Timeout += () =>
         {
             initialized = true;
-            OnSourceChanged();
-            Show();
         };
+
+        CallDeferred(MethodName.OnSourceChanged);
     }
 
 

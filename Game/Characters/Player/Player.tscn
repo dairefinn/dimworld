@@ -447,6 +447,7 @@ offset_left = -11.0
 offset_top = 16.0
 offset_right = 11.0
 offset_bottom = 21.0
+StatsSource = NodePath("..")
 
 [node name="CenterContainer" type="CenterContainer" parent="."]
 offset_top = -30.0
