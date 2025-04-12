@@ -11,6 +11,14 @@ using Godot;
 public partial class CharacterStats : Resource
 {
 
+    public static CharacterStats GetStatsFor(object @object)
+    {
+        if (@object == null) return null;
+        if (@object is not IHasCharacterStats hasCharacterStats) return null;
+        return hasCharacterStats.Stats;
+    }
+
+
     [Signal] public delegate void HealthChangedEventHandler();
     [Signal] public delegate void StaminaChangedEventHandler();
 

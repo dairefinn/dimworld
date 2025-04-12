@@ -1,6 +1,7 @@
 namespace Dimworld.UI.Characters;
 
 using Dimworld.Core.Characters.Stats;
+using Dimworld.Core.Factions;
 using Godot;
 
 
@@ -19,26 +20,29 @@ public partial class CharacterStatsUI : Control
 
 
     private CharacterStats _stats;
-    private ProgressBar barHealth;
-    private ProgressBar barStamina;
-    private SceneTreeTimer fadeTimer;
-    private Tween tweenHealth;
-    private Tween tweenStamina;
-    private Tween tweenVisibility;
-    private bool initialized = false;
+    private Faction _faction;
+    private ProgressBar _barHealth;
+    private ProgressBar _barStamina;
+    private TextureRect _factionIcon;
+    private SceneTreeTimer _fadeTimer;
+    private Tween _tweenHealth;
+    private Tween _tweenStamina;
+    private Tween _tweenVisibility;
+    private bool _initialized = false;
 
 
     // LIFECYCLE EVENTS
 
     public override void _Ready()
     {
-        barHealth = GetNode<ProgressBar>("%BarHealth");
-        barStamina = GetNode<ProgressBar>("%BarStamina");
+        _barHealth = GetNode<ProgressBar>("%BarHealth");
+        _barStamina = GetNode<ProgressBar>("%BarStamina");
+        _factionIcon = GetNode<TextureRect>("%FactionIcon");
 
         // This is a bit of a hack but it prevents the initial stats update from showing the stats UI
         GetTree().CreateTimer(0.5f).Timeout += () =>
         {
-            initialized = true;
+            _initialized = true;
         };
 
         CallDeferred(MethodName.OnSourceChanged);
@@ -54,9 +58,11 @@ public partial class CharacterStatsUI : Control
         Node statsNode = GetNodeOrNull<Node>(StatsSource);
         if (statsNode == null) return;
 
-        if (statsNode is not IHasCharacterStats hasCharacterStats) return;
+        CharacterStats statsFromNode = CharacterStats.GetStatsFor(statsNode);
+        Faction factionFromNode = Faction.GetAffiliationFor(statsNode);
 
-        SetStats(hasCharacterStats.Stats);
+        SetStats(statsFromNode);
+        SetFaction(factionFromNode);
     }
 
     public void SetStats(CharacterStats value)
@@ -81,6 +87,26 @@ public partial class CharacterStatsUI : Control
         UpdateUI();
     }
 
+    public void SetFaction(Faction value)
+    {
+        // Unregister old faction
+        if (_faction != null)
+        {
+            _faction.Changed -= UpdateUI;
+        }
+
+        // Update value
+        _faction = value;
+
+        // Register new faction
+        if (_faction != null)
+        {
+            _faction.Changed += UpdateUI;
+        }
+
+        UpdateUI();
+    }
+
 
     // UI UPDATES
 
@@ -91,42 +117,60 @@ public partial class CharacterStatsUI : Control
             await ToSignal(this, "ready");
         }
 
-        if (_stats == null) return;
-
-        if (IsInstanceValid(barHealth))
+        if (_stats == null)
         {
-            tweenHealth?.Kill();
-            tweenHealth = CreateTween().SetTrans(Tween.TransitionType.Linear).SetEase(Tween.EaseType.InOut);
-            tweenHealth.TweenProperty(barHealth, "value", _stats.GetHealthPercent(), 0.5f);
+            Hide();
+            return;
         }
 
-        if (IsInstanceValid(barStamina))
+        if (IsInstanceValid(_barHealth))
         {
-            tweenStamina?.Kill();
-            tweenStamina = CreateTween().SetTrans(Tween.TransitionType.Linear).SetEase(Tween.EaseType.InOut);
-            tweenStamina.TweenProperty(barStamina, "value", _stats.GetStaminaPercent(), 0.5f);
+            _tweenHealth?.Kill();
+            _tweenHealth = CreateTween().SetTrans(Tween.TransitionType.Linear).SetEase(Tween.EaseType.InOut);
+            _tweenHealth.TweenProperty(_barHealth, "value", _stats.GetHealthPercent(), 0.5f);
+        }
+
+        if (IsInstanceValid(_barStamina))
+        {
+            _tweenStamina?.Kill();
+            _tweenStamina = CreateTween().SetTrans(Tween.TransitionType.Linear).SetEase(Tween.EaseType.InOut);
+            _tweenStamina.TweenProperty(_barStamina, "value", _stats.GetStaminaPercent(), 0.5f);
+        }
+
+        if (IsInstanceValid(_factionIcon))
+        {
+            if (_faction != null)
+            {
+                _factionIcon.Texture = _faction?.Icon;
+                _factionIcon.Show();
+            }
+            else
+            {
+                _factionIcon.Texture = null;
+                _factionIcon.Hide();
+            }
         }
 
         // Card shows and then fades out over time when the stats change
-        if (!initialized) return;
+        if (!_initialized) return;
 
         Show();
         Modulate = new Color(Modulate.R, Modulate.G, Modulate.B, 1);
         
-        if (fadeTimer != null)
+        if (_fadeTimer != null)
         {
-            fadeTimer = null;
+            _fadeTimer = null;
         }
 
-        fadeTimer = GetTree().CreateTimer(FadeOutTime);
-        fadeTimer.Timeout += () => StartFadeOut();
+        _fadeTimer = GetTree().CreateTimer(FadeOutTime);
+        _fadeTimer.Timeout += () => StartFadeOut();
     }
 
     private void StartFadeOut()
     {
-        tweenVisibility?.Kill();
-        tweenVisibility = CreateTween().SetTrans(Tween.TransitionType.Sine).SetEase(Tween.EaseType.InOut);
-        tweenVisibility.TweenProperty(this, "modulate", new Color(Modulate.R, Modulate.G, Modulate.B, 0), 0.5f);
-        tweenVisibility.Finished += () => Hide(); // Hide the UI after the fade-out completes
+        _tweenVisibility?.Kill();
+        _tweenVisibility = CreateTween().SetTrans(Tween.TransitionType.Sine).SetEase(Tween.EaseType.InOut);
+        _tweenVisibility.TweenProperty(this, "modulate", new Color(Modulate.R, Modulate.G, Modulate.B, 0), 0.5f);
+        _tweenVisibility.Finished += () => Hide(); // Hide the UI after the fade-out completes
     }
 }
