@@ -1,4 +1,4 @@
-[gd_scene load_steps=41 format=3 uid="uid://ddc8qiig7j3wm"]
+[gd_scene load_steps=40 format=3 uid="uid://ddc8qiig7j3wm"]
 
 [ext_resource type="Script" uid="uid://1f6ukfmh33oo" path="res://Core/DayNightCycle/DayNightController.cs" id="1_d13ii"]
 [ext_resource type="Script" uid="uid://nkgns80j1gwr" path="res://Core/Characters/Dialogue/TradeController.cs" id="5_2cqfq"]
@@ -14,7 +14,6 @@
 [ext_resource type="Resource" uid="uid://bbn4fu5m0emk1" path="res://Game/Items/Weapons/Revolver.tres" id="12_vivmo"]
 [ext_resource type="Script" uid="uid://dph74un0q20el" path="res://Core/Items/Inventory.cs" id="12_w48qg"]
 [ext_resource type="Resource" uid="uid://bfbm4tftgemqa" path="res://Game/Items/Utility/Torch.tres" id="13_2cqfq"]
-[ext_resource type="Resource" uid="uid://ck58np1o4orj0" path="res://Game/Factions/Test.tres" id="13_074og"]
 [ext_resource type="Script" uid="uid://5l72ubbv8qqo" path="res://Core/Globals.cs" id="13_ycdy4"]
 [ext_resource type="PackedScene" uid="uid://d21nkwnu7y4od" path="res://Game/UI/Inventory/Viewer/InventoryViewer.tscn" id="23_d13ii"]
 [ext_resource type="PackedScene" uid="uid://b3v4ub2lqydho" path="res://Game/Levels/LevelTesting.tscn" id="25_a6jrf"]
@@ -215,5 +214,4 @@ offset_bottom = 200.0
 [node name="Player" parent="." instance=ExtResource("9_kek77")]
 z_index = 1
 position = Vector2(1795, 962)
-Affiliation = ExtResource("13_074og")
 Inventory = SubResource("Resource_0rl1p")

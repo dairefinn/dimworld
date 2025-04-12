@@ -1,7 +1,7 @@
 [gd_resource type="Resource" script_class="Faction" load_steps=4 format=3 uid="uid://db4ljgr8l0k11"]
 
 [ext_resource type="Script" uid="uid://m44dko2uexhy" path="res://Core/Factions/Faction.cs" id="1_8aejp"]
-[ext_resource type="Texture2D" uid="uid://xid32hy6vbe" path="res://Assets/Textures/ItemsSpriteSheet.tres" id="1_g2ke0"]
+[ext_resource type="Texture2D" uid="uid://cxfbafspfsq5r" path="res://Assets/Textures/FactionsTextureAtlas.tres" id="1_g2ke0"]
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_o1ofs"]
 atlas = ExtResource("1_g2ke0")

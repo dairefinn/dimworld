@@ -1,7 +1,7 @@
 [gd_scene load_steps=8 format=3 uid="uid://bb462hku8uk8i"]
 
 [ext_resource type="Script" uid="uid://q0dgqu0eetv" path="res://Game/UI/Characters/CharacterStatsUI.cs" id="1_nuio0"]
-[ext_resource type="Texture2D" uid="uid://xid32hy6vbe" path="res://Assets/Textures/ItemsSpriteSheet.tres" id="2_ur42m"]
+[ext_resource type="Texture2D" uid="uid://cxfbafspfsq5r" path="res://Assets/Textures/FactionsTextureAtlas.tres" id="2_ur42m"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_v5emj"]
 bg_color = Color(0, 0, 0, 0.196078)

@@ -1,10 +1,10 @@
 [gd_resource type="Resource" script_class="Faction" load_steps=4 format=3 uid="uid://dioofc8k307fw"]
 
 [ext_resource type="Script" uid="uid://m44dko2uexhy" path="res://Core/Factions/Faction.cs" id="1_5dj6a"]
-[ext_resource type="Texture2D" uid="uid://xid32hy6vbe" path="res://Assets/Textures/ItemsSpriteSheet.tres" id="1_xgie7"]
+[ext_resource type="Texture2D" uid="uid://cxfbafspfsq5r" path="res://Assets/Textures/FactionsTextureAtlas.tres" id="1_17mrm"]
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_akcqx"]
-atlas = ExtResource("1_xgie7")
+atlas = ExtResource("1_17mrm")
 region = Rect2(32, 0, 32, 32)
 
 [resource]

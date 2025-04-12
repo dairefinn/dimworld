@@ -1,6 +1,6 @@
 [gd_resource type="Resource" script_class="Faction" load_steps=4 format=3 uid="uid://ck58np1o4orj0"]
 
-[ext_resource type="Texture2D" uid="uid://xid32hy6vbe" path="res://Assets/Textures/ItemsSpriteSheet.tres" id="1_ljah4"]
+[ext_resource type="Texture2D" uid="uid://cxfbafspfsq5r" path="res://Assets/Textures/FactionsTextureAtlas.tres" id="1_ljah4"]
 [ext_resource type="Script" uid="uid://m44dko2uexhy" path="res://Core/Factions/Faction.cs" id="1_xquk2"]
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_f6wyn"]
