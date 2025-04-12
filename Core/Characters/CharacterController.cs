@@ -10,7 +10,6 @@ using Dimworld.Core.Interaction;
 using Dimworld.Core.Items;
 using Dimworld.Core.Modifiers;
 using Dimworld.Core.Utils;
-using Dimworld.UI.Characters;
 using Godot;
 
 
@@ -31,22 +30,7 @@ public partial class CharacterController : CharacterBody2D, IHasCharacterStats, 
     [Export] public bool CanTakeFromInventory { get; set; } = false;
 
 	[ExportGroup("Stats")]
-	[Export] public CharacterStats Stats {
-		get => _stats;
-		set {
-			_stats = value;
-			LinkStatsToUI();
-		}
-	}
-	private CharacterStats _stats;
-	[Export] public CharacterStatsUI StatsUI { // TODO: StatsUI Should be given a reference to a node with IHasCharacterStats
-		get => _statsUI;
-		set {
-			_statsUI = value;
-			LinkStatsToUI();
-		}
-	}
-	private CharacterStatsUI _statsUI;
+	[Export] public CharacterStats Stats { get; set; }
 
 	[ExportGroup("References")]
 	[Export] public ClothingController ClothingController { get; set; }
@@ -77,12 +61,6 @@ public partial class CharacterController : CharacterBody2D, IHasCharacterStats, 
 			Stats.HealthChanged += OnHealthChanged;
 		}
 
-		if (StatsUI == null)
-		{
-			StatsUI = GetNode<CharacterStatsUI>("AgentStatsUI");
-			StatsUI.Stats = Stats;
-		}
-
 		if (SpeechHandler != null)
 		{
 			SpeechHandler.Initalize(this);
@@ -107,15 +85,6 @@ public partial class CharacterController : CharacterBody2D, IHasCharacterStats, 
 		base._Process(delta);
 
 		ModifierHandler?.ProcessConditions(delta);
-	}
-
-
-	// STATS & STATS UI
-
-	private void LinkStatsToUI()
-	{
-		if (StatsUI == null) return;
-		StatsUI.Stats = Stats;
 	}
 
 

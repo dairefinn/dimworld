@@ -382,13 +382,11 @@ _data = {
 &"walk": SubResource("Animation_mhn8k")
 }
 
-[node name="Player" type="CharacterBody2D" node_paths=PackedStringArray("NavigationAgent", "StatsUI", "SpeechBubbleNode", "ClothingController", "DetectionHandler", "AnimationPlayer")]
+[node name="Player" type="CharacterBody2D" node_paths=PackedStringArray("NavigationAgent", "ClothingController", "DetectionHandler", "AnimationPlayer")]
 script = ExtResource("1_t81nq")
 NavigationAgent = NodePath("NavigationAgent2D")
 Inventory = SubResource("Resource_hcpbs")
 Stats = SubResource("Resource_esjyg")
-StatsUI = NodePath("AgentStatsUI")
-SpeechBubbleNode = NodePath("CenterContainer/SpeechBubble")
 ClothingController = NodePath("BodySprite")
 DetectionHandler = NodePath("DetectionHandler")
 AnimationPlayer = NodePath("AnimationPlayer")

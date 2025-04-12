@@ -159,7 +159,7 @@ region = Rect2(32, 64, 32, 32)
 atlas = ExtResource("21_r0bra")
 region = Rect2(0, 96, 32, 32)
 
-[node name="Guard" type="CharacterBody2D" node_paths=PackedStringArray("NavigationAgent", "StatsUI", "ClothingController", "DetectionHandler")]
+[node name="Guard" type="CharacterBody2D" node_paths=PackedStringArray("NavigationAgent", "ClothingController", "DetectionHandler")]
 script = ExtResource("1_jg3xo")
 WorldState = SubResource("Resource_ol4on")
 ActionSet = Array[ExtResource("3_00kru")]([ExtResource("4_no6b3"), ExtResource("5_3i4ft"), ExtResource("6_5fylf"), ExtResource("7_vhb1s"), ExtResource("8_hjpy8"), ExtResource("9_lq4k4"), ExtResource("10_3iefa")])
@@ -167,7 +167,6 @@ GoalSet = Array[ExtResource("11_tq4nn")]([ExtResource("12_7b7o7"), ExtResource("
 NavigationAgent = NodePath("NavigationAgent2D")
 Inventory = SubResource("Resource_gmsq1")
 Stats = SubResource("Resource_rksrv")
-StatsUI = NodePath("AgentStatsUI")
 ClothingController = NodePath("BodySprite")
 DetectionHandler = NodePath("DetectionHandler")
 SpeechHandler = SubResource("Resource_gsw0c")

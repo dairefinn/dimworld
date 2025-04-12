@@ -4,20 +4,24 @@ using Dimworld.Core.Characters.Stats;
 using Godot;
 
 
-public partial class CharacterStatsUI : PanelContainer
+public partial class CharacterStatsUI : Control
 {
-    [Export] public CharacterStats Stats {
-        get => _stats;
-        set => SetStats(value);
+
+    [Export] public NodePath StatsSource {
+        get => _statsSource;
+        set {
+            _statsSource = value;
+            OnSourceChanged();
+        }
     }
-    private CharacterStats _stats;
+    private NodePath _statsSource = "..";
     [Export] public float FadeOutTime = 2.5f;
 
+
+    private CharacterStats _stats;
     private ProgressBar barHealth;
     private ProgressBar barStamina;
-
     private SceneTreeTimer fadeTimer;
-
     private Tween tweenHealth;
     private Tween tweenStamina;
     private Tween tweenVisibility;
@@ -28,6 +32,7 @@ public partial class CharacterStatsUI : PanelContainer
 
     public override void _Ready()
     {
+        Hide();
         barHealth = GetNode<ProgressBar>("%BarHealth");
         barStamina = GetNode<ProgressBar>("%BarStamina");
 
@@ -35,11 +40,25 @@ public partial class CharacterStatsUI : PanelContainer
         GetTree().CreateTimer(0.5f).Timeout += () =>
         {
             initialized = true;
+            OnSourceChanged();
+            Show();
         };
     }
 
 
     // SETTERS
+
+    public void OnSourceChanged()
+    {
+        if (StatsSource == null) return;
+
+        Node statsNode = GetNodeOrNull<Node>(StatsSource);
+        if (statsNode == null) return;
+
+        if (statsNode is not IHasCharacterStats hasCharacterStats) return;
+
+        SetStats(hasCharacterStats.Stats);
+    }
 
     public void SetStats(CharacterStats value)
     {
@@ -73,20 +92,22 @@ public partial class CharacterStatsUI : PanelContainer
             await ToSignal(this, "ready");
         }
 
-        if (Stats == null) return;
+        if (_stats == null) return;
+
+        GD.Print(Json.Stringify(_stats.Health));
 
         if (IsInstanceValid(barHealth))
         {
             tweenHealth?.Kill();
             tweenHealth = CreateTween().SetTrans(Tween.TransitionType.Linear).SetEase(Tween.EaseType.InOut);
-            tweenHealth.TweenProperty(barHealth, "value", Stats.GetHealthPercent(), 0.5f);
+            tweenHealth.TweenProperty(barHealth, "value", _stats.GetHealthPercent(), 0.5f);
         }
 
         if (IsInstanceValid(barStamina))
         {
             tweenStamina?.Kill();
             tweenStamina = CreateTween().SetTrans(Tween.TransitionType.Linear).SetEase(Tween.EaseType.InOut);
-            tweenStamina.TweenProperty(barStamina, "value", Stats.GetStaminaPercent(), 0.5f);
+            tweenStamina.TweenProperty(barStamina, "value", _stats.GetStaminaPercent(), 0.5f);
         }
 
         // Card shows and then fades out over time when the stats change

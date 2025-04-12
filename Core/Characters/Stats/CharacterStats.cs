@@ -31,25 +31,24 @@ public partial class CharacterStats : Resource
         get => _health;
         set => SetHealth(value);
     }
-    private float _health;
+    private float _health = 100;
     public float Stamina {
         get => _stamina;
         set => SetStamina(value);
     }
-    private float _stamina;
+    private float _stamina = 100;
 
 
     public CharacterStats()
     {
-
+        FillStats();
     }
     
     public CharacterStats(CharacterStats source)
     {
         _maxHealth = source._maxHealth;
         _maxStamina = source._maxStamina;
-        _health = source._maxHealth;
-        _stamina = source._maxStamina;
+        FillStats();
     }
 
 
@@ -81,6 +80,12 @@ public partial class CharacterStats : Resource
 
 
     // METHODS
+
+    public void FillStats()
+    {
+        SetHealth(MaxHealth);
+        SetStamina(MaxStamina);
+    }
 
     public float GetHealthPercent()
     {
