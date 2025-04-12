@@ -30,6 +30,12 @@
 script = ExtResource("2_4up7x")
 State = Dictionary[String, Variant]({})
 
+[sub_resource type="Resource" id="Resource_rksrv"]
+script = ExtResource("17_aiwl3")
+MaxHealth = 100.0
+MaxStamina = 100.0
+metadata/_custom_type_script = "uid://cru4kq28c8nuw"
+
 [sub_resource type="Resource" id="Resource_1io8r"]
 script = ExtResource("15_4q4b3")
 Quantity = 0
@@ -116,12 +122,6 @@ InventoryName = "Guard Inventory"
 Slots = Array[ExtResource("15_4q4b3")]([SubResource("Resource_1io8r"), SubResource("Resource_y11bb"), SubResource("Resource_5qwyp"), SubResource("Resource_nicww"), SubResource("Resource_tngpp"), SubResource("Resource_3mkj5"), SubResource("Resource_l60ej"), SubResource("Resource_xu668"), SubResource("Resource_emr33"), SubResource("Resource_jxhy1"), SubResource("Resource_ojdlt"), SubResource("Resource_l0rot"), SubResource("Resource_d4tiv"), SubResource("Resource_t7c3t"), SubResource("Resource_s17b3"), SubResource("Resource_2rp7y")])
 metadata/_custom_type_script = "uid://dph74un0q20el"
 
-[sub_resource type="Resource" id="Resource_rksrv"]
-script = ExtResource("17_aiwl3")
-MaxHealth = 100.0
-MaxStamina = 100.0
-metadata/_custom_type_script = "uid://cru4kq28c8nuw"
-
 [sub_resource type="Resource" id="Resource_gsw0c"]
 script = ExtResource("18_tq4nn")
 SpeechBubblePath = NodePath("CenterContainer/SpeechBubble")
@@ -166,9 +166,9 @@ WorldState = SubResource("Resource_ol4on")
 ActionSet = Array[ExtResource("3_00kru")]([ExtResource("4_no6b3"), ExtResource("5_3i4ft"), ExtResource("6_5fylf"), ExtResource("7_vhb1s"), ExtResource("8_hjpy8"), ExtResource("9_lq4k4"), ExtResource("10_3iefa")])
 GoalSet = Array[ExtResource("11_tq4nn")]([ExtResource("12_7b7o7"), ExtResource("13_50rlj"), ExtResource("14_13jt4")])
 NavigationAgent = NodePath("NavigationAgent2D")
-Inventory = SubResource("Resource_gmsq1")
 Stats = SubResource("Resource_rksrv")
 Affiliation = ExtResource("18_gsw0c")
+Inventory = SubResource("Resource_gmsq1")
 ClothingController = NodePath("BodySprite")
 DetectionHandler = NodePath("DetectionHandler")
 SpeechHandler = SubResource("Resource_gsw0c")

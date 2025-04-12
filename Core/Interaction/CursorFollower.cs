@@ -30,10 +30,8 @@ public partial class CursorFollower : Area2D
 
     public void OnBodyEntered(Node node)
     {
-        if (node is ICanBeInteractedWith interactableObject)
-        {
-            InteractableObject = interactableObject;
-        }
+        if (node is not ICanBeInteractedWith interactableObject) return;
+        InteractableObject = interactableObject;
     }
 
     public void OnBodyExited(Node node)

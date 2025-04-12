@@ -3,6 +3,7 @@ namespace Dimworld.GOAP.Actions;
 using Dimworld.Core.Characters;
 using Dimworld.Core.Characters.Memory;
 using Dimworld.Core.Characters.Memory.MemoryEntries;
+using Dimworld.Core.Factions;
 using Dimworld.Core.GOAP;
 using Dimworld.Core.Items;
 using Godot;
@@ -82,7 +83,7 @@ public partial class PickUpItem : GoapAction
 
         Vector2 agentPosition = goapAgent.GlobalPositionThreadSafe;
 
-        NodeLocation[] containerLocations = hasMemory.MemoryHandler.GetMemoriesOfType<NodeLocation>().Where(node => node.Node is IHasInventory hasInventory && hasInventory.CanTakeFromInventory).ToArray();
+        NodeLocation[] containerLocations = hasMemory.MemoryHandler.GetMemoriesOfType<NodeLocation>().Where(node => node.Node is IHasInventory hasInventory && Faction.CanAccessNode(goapAgent, node.Node)).ToArray();
         if (containerLocations.Length == 0) return null; // Must have at least one chest location in memory
 
         InventoryContents[] inventoryContents = hasMemory.MemoryHandler.GetMemoriesOfType<InventoryContents>();

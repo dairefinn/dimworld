@@ -3,6 +3,7 @@ namespace Dimworld.Entities.Objects;
 using Dimworld.Core;
 using Dimworld.Core.Characters.Memory;
 using Dimworld.Core.Characters.Memory.MemoryEntries;
+using Dimworld.Core.Factions;
 using Dimworld.Core.Interaction;
 using Dimworld.Core.Items;
 using Godot;
@@ -12,11 +13,12 @@ using Godot;
 /// A chest containing an inventory.
 /// Used for storing items.
 /// </summary>
-public partial class Chest : StaticBody2D, ICanBeInteractedWith, IMemorableNode, IHasInventory
+public partial class Chest : StaticBody2D, ICanBeInteractedWith, IMemorableNode, IHasInventory, IHasFactionAffiliation
 {
 
     [Export] public Inventory Inventory { get; set; }
-    [Export] public bool CanTakeFromInventory { get; set; } = true;
+    [Export] public Faction Affiliation { get; set; }
+
 
 
     /// <summary>

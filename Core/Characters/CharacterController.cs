@@ -26,13 +26,10 @@ public partial class CharacterController : CharacterBody2D, IHasCharacterStats, 
 	[Export] public float Acceleration { get; set; } = 50f;
 	[Export] public NavigationAgent2D NavigationAgent { get; set; }
 
-	[ExportGroup("Inventory")]
-	[Export] public Inventory Inventory { get; set; }
-    [Export] public bool CanTakeFromInventory { get; set; } = false;
-
-	[ExportGroup("Stats")]
+	[ExportGroup("Details")]
 	[Export] public CharacterStats Stats { get; set; }
 	[Export] public Faction Affiliation { get; set; }
+	[Export] public Inventory Inventory { get; set; }
 
 
 	[ExportGroup("Node references")]
@@ -197,6 +194,7 @@ public partial class CharacterController : CharacterBody2D, IHasCharacterStats, 
         if (target is Node2D targetNode2D)
         {
             if (!DetectionHandler.CanSee(targetNode2D)) return;
+			if (!Faction.CanAccessNode(this, targetNode2D)) return;
 
             target.InteractWith();
         }

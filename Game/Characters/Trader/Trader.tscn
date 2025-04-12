@@ -16,6 +16,12 @@
 script = ExtResource("2_njvor")
 State = Dictionary[String, Variant]({})
 
+[sub_resource type="Resource" id="Resource_fii88"]
+script = ExtResource("4_fhppm")
+MaxHealth = 100.0
+MaxStamina = 100.0
+metadata/_custom_type_script = "uid://cru4kq28c8nuw"
+
 [sub_resource type="Resource" id="Resource_c201q"]
 script = ExtResource("2_r5mgb")
 Quantity = 0
@@ -97,12 +103,6 @@ InventoryName = "Trader Inventory"
 Slots = Array[ExtResource("2_r5mgb")]([SubResource("Resource_c201q"), SubResource("Resource_w5v3e"), SubResource("Resource_3yclk"), SubResource("Resource_2vavr"), SubResource("Resource_h8c30"), SubResource("Resource_jbsy0"), SubResource("Resource_l8oum"), SubResource("Resource_yiv0j"), SubResource("Resource_gnywb"), SubResource("Resource_i3wml"), SubResource("Resource_oj62l"), SubResource("Resource_j6h07"), SubResource("Resource_7rdtx"), SubResource("Resource_bdjle"), SubResource("Resource_0s5bi")])
 metadata/_custom_type_script = "uid://dph74un0q20el"
 
-[sub_resource type="Resource" id="Resource_fii88"]
-script = ExtResource("4_fhppm")
-MaxHealth = 100.0
-MaxStamina = 100.0
-metadata/_custom_type_script = "uid://cru4kq28c8nuw"
-
 [sub_resource type="CapsuleShape2D" id="CapsuleShape2D_70kxo"]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_aqd4d"]
@@ -148,8 +148,8 @@ region = Rect2(96, 96, 32, 32)
 script = ExtResource("1_wymmq")
 WorldState = SubResource("Resource_0bk61")
 NavigationAgent = NodePath("NavigationAgent2D")
-Inventory = SubResource("Resource_yms12")
 Stats = SubResource("Resource_fii88")
+Inventory = SubResource("Resource_yms12")
 ClothingController = NodePath("BodySprite")
 DetectionHandler = NodePath("DetectionHandler")
 
