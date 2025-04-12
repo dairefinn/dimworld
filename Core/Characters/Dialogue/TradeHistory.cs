@@ -5,6 +5,10 @@ using Dimworld.Core.Items;
 using Godot;
 
 
+/// <summary>
+/// Class representing a trade history resource.
+/// This class stores information about a trade.
+/// </summary>
 public partial class TradeHistory : Resource {
 
     public InventoryItem Item { get; set; }

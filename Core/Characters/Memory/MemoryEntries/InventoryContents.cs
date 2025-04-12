@@ -5,6 +5,11 @@ using Dimworld.Core.Items;
 using Godot;
 using Godot.Collections;
 
+
+/// <summary>
+/// Class representing a memory of what the contents of an inventory were.
+/// This should be given to an agent whenever they interact with an inventory so that they can remember what was in it.
+/// </summary>
 public partial class InventoryContents : MemoryEntry
 {
 
@@ -18,7 +23,7 @@ public partial class InventoryContents : MemoryEntry
 
     public InventoryContents(IHasInventory nodeWithInventory)
     {
-        Node = nodeWithInventory;
+        Node = nodeWithInventory; // TODO: Might want to store an ID here instead - if the node moves in the world this reference might give them knowledge of it when they shouldn't
         Inventory = nodeWithInventory.Inventory.Duplicate(true) as Inventory;
     }
 

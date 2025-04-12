@@ -4,6 +4,9 @@ using Dimworld.Core;
 using Godot;
 
 
+/// <summary>
+/// Class representing a dialogue option which will result in items being added to the purchaser's inventory.
+/// </summary>
 [GlobalClass]
 public partial class DialogueOptionTradeToInventory : DialogueOptionTrade
 {

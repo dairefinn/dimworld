@@ -4,6 +4,10 @@ using Dimworld.Core.Items;
 using Godot;
 
 
+/// <summary>
+/// Abstract class representing a trade option in the dialogue.
+/// Any trade-related dialogue options should inherit from this class.
+/// </summary>
 [GlobalClass]
 public abstract partial class DialogueOptionTrade : DialogueOption
 {

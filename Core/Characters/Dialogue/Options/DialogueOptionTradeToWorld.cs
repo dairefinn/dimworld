@@ -5,6 +5,9 @@ using Dimworld.Core.Developer;
 using Godot;
 
 
+/// <summary>
+/// Class representing a dialogue option which will result in items being added to world.
+/// </summary>
 [GlobalClass]
 public partial class DialogueOptionTradeToWorld : DialogueOptionTrade
 {
@@ -13,28 +16,8 @@ public partial class DialogueOptionTradeToWorld : DialogueOptionTrade
     [Export] public Vector2 SpawnRotation { get; set; }
     [Export] public Vector2 SpawnScale { get; set; }
 
+
     // TODO: Finish implementing this once Vehicles and Dropping items is added
-
-    public override bool OnSelected()
-    {
-        if (Item == null) return false;
-        var wasBought = Globals.Instance.TradeController.TryBuy(Item, Price, Quantity, false);
-        if (!wasBought) return false;
-
-        // if (Item is IVehicleItem)
-        // {
-        //     return SpawnVehicle( Item, SpawnPosition, SpawnRotation, SpawnScale );
-        // }
-        // else
-        // {
-        //     return SpawnItem( Item, SpawnPosition, SpawnRotation, SpawnScale );
-        // }
-        
-        DeveloperConsole.PrintErr( $"Failed to spawn item: {Item}" );
-        return false;
-        
-    }
-
     // private static bool SpawnItem(InventoryItem item, Vector2 position, Vector2 rotation, Vector2 scale )
     // {
     //     try {            
@@ -76,5 +59,26 @@ public partial class DialogueOptionTradeToWorld : DialogueOptionTrade
     //         return false;
     //     }
     // }
+
+
+    public override bool OnSelected()
+    {
+        if (Item == null) return false;
+        var wasBought = Globals.Instance.TradeController.TryBuy(Item, Price, Quantity, false);
+        if (!wasBought) return false;
+
+        // if (Item is IVehicleItem)
+        // {
+        //     return SpawnVehicle( Item, SpawnPosition, SpawnRotation, SpawnScale );
+        // }
+        // else
+        // {
+        //     return SpawnItem( Item, SpawnPosition, SpawnRotation, SpawnScale );
+        // }
+        
+        DeveloperConsole.PrintErr( $"Failed to spawn item: {Item}" );
+        return false;
+        
+    }
 
 }

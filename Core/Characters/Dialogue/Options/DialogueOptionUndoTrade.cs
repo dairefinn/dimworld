@@ -4,6 +4,10 @@ using Dimworld.Core;
 using Godot;
 
 
+/// <summary>
+/// Class representing an option to undo the last trade.
+/// This option is only shown if there is at least one trade in the history.
+/// </summary>
 [GlobalClass]
 public partial class DialogueOptionUndoTrade : DialogueOption
 {

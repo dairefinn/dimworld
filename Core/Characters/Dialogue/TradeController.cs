@@ -8,12 +8,42 @@ using Dimworld.Core.Items;
 using Godot;
 using Godot.Collections;
 
+
+/// <summary>
+/// Controller for managing trade operations.
+/// This includes buying and selling items, as well as tracking trade history.
+/// </summary>
 public partial class TradeController : Node
 {
 
     [Export] public Array<TradeHistory> TradeHistory { get; private set; } = [];
 
 
+    private void AddTradeHistory(InventoryItem item, int price, int quantity, TradeOption tradeOption, bool addToInventory = true) {
+        if (!addToInventory) return;
+
+        TradeHistory newHistoryItem = new()
+        {
+            Item = item,
+            Price = price,
+            Quantity = quantity,
+            Date = DateTime.Now,
+            TradeOption = tradeOption,
+            AddedToInventory = addToInventory
+        };
+
+        TradeHistory.Add(newHistoryItem);
+    }
+
+
+    /// <summary>
+    /// Attempts to buy an item.
+    /// </summary>
+    /// <param name="item">The item to buy.</param>
+    /// <param name="price">The price of the item.</param>
+    /// <param name="quantity">The quantity of the item to buy.</param>
+    /// <param name="addToInventory">True if the item should be added to the inventory, false otherwise.</param>
+    /// <returns>True if the item was successfully bought, false otherwise.</returns>
     public bool TryBuy(InventoryItem item, int price, int quantity, bool addToInventory) {
         bool canAfford = Globals.Instance.CurrencyController.HasMoney(price);
         if (!canAfford) { DeveloperConsole.PrintInfo("Not enough money"); return false; }
@@ -31,6 +61,12 @@ public partial class TradeController : Node
         return true;
     }
 
+    /// <summary>
+    /// Attempts to sell an item.
+    /// </summary>
+    /// <param name="item">The item to sell.</param>
+    /// <param name="price">The price of the item.</param>
+    /// <returns>True if the item was successfully sold, false otherwise.</returns>
     public bool TrySell(InventoryItem item, int price) {
         InventorySlot slotWithItem = Globals.Instance.Player.Inventory.GetFirstSlotWithItem(item);
         if (slotWithItem == null) return false;
@@ -42,10 +78,16 @@ public partial class TradeController : Node
         return true;
     }
 
+    /// <summary>
+    /// Ends the trade session.
+    /// </summary>
     public void EndTrade() {
         TradeHistory = [];
     }
 
+    /// <summary>
+    /// Undoes the last trade operation from the trade history.
+    /// </summary>
     public void UndoLastTrade() {
         if (TradeHistory.Count == 0) return;
         TradeHistory lastTrade = TradeHistory.Last();
@@ -61,23 +103,6 @@ public partial class TradeController : Node
             }
         }
         TradeHistory.Remove(lastTrade);
-    }
-
-    private void AddTradeHistory(InventoryItem item, int price, int quantity, TradeOption tradeOption, bool addToInventory = true) {
-        // TODO: We don't track one off purchases so they cannot be refunded. Eg - buying a car or house upgrade. Might just want to have another bool on the tradeHistory item to control if you can refund or no.
-        if (!addToInventory) return;
-
-        TradeHistory newHistoryItem = new()
-        {
-            Item = item,
-            Price = price,
-            Quantity = quantity,
-            Date = DateTime.Now,
-            TradeOption = tradeOption,
-            AddedToInventory = addToInventory
-        };
-
-        TradeHistory.Add(newHistoryItem);
     }
 
 }

@@ -7,7 +7,10 @@ using Godot;
 using Godot.Collections;
 
 
-public partial class MemoryHandler : Node2D
+/// <summary>
+/// Manages any memories an entity has.
+/// </summary>
+public partial class MemoryHandler : Node
 {
 
     [Signal] public delegate void OnMemoryEntryAddedEventHandler(MemoryEntry memoryEntry);
@@ -15,6 +18,14 @@ public partial class MemoryHandler : Node2D
 
 
     public Array<MemoryEntry> MemoryEntries { get; set; } = [];
+
+
+    private void LogCurrentMemoryEntries()
+    {
+        // JSON serialization for better readability
+        // string memoryEntriesString = Json.Stringify(MemoryEntries.Select(entry => entry.ToString()).ToArray());
+        // DeveloperConsole.Print("Current Memory Entries: "+ memoryEntriesString);
+    }
 
 
     public override void _Ready()
@@ -28,7 +39,6 @@ public partial class MemoryHandler : Node2D
             LogCurrentMemoryEntries();
         };
     }
-
 
     public override void _Process(double delta)
     {
@@ -47,20 +57,23 @@ public partial class MemoryHandler : Node2D
     }
 
 
+    /// <summary>
+    /// Called when a node is detected. Determines if a memory entry should be added based on the node type.
+    /// </summary>
+    /// <param name="node">The detected node.</param>
     public void OnNodeDetected(Node node)
     {
         if (node is IMemorableNode memorableNode)
         {
             AddMemory(memorableNode.GetNodeLocationMemory());
         }
-
-        // Done manually when interacting with the node
-        // if (node is IHasInventory nodeWithInventory)
-        // {
-        //     AddMemory(InventoryContents.FromNode(nodeWithInventory));
-        // }
     }
 
+    /// <summary>
+    /// Adds a memory entry to the memory list. If a matching entry already exists, it is removed first.
+    /// </summary>
+    /// <param name="memoryEntry">The memory entry to add.</param>
+    /// <returns>True if the memory entry was added successfully; otherwise, false.</returns>
     public bool AddMemory(MemoryEntry memoryEntry)
     {
         if (memoryEntry == null) return false; // Invalid memory entry
@@ -79,6 +92,11 @@ public partial class MemoryHandler : Node2D
         return true;
     }
 
+    /// <summary>
+    /// Removes a memory entry from the memory list. If the entry is not found, it returns false.
+    /// </summary>
+    /// <param name="memoryEntry">The memory entry to remove.</param>
+    /// <returns>True if the memory entry was removed successfully; otherwise, false.</returns>
     public bool RemoveMemory(MemoryEntry memoryEntry)
     {
         if (memoryEntry == null) return false; // Invalid memory entry
@@ -88,16 +106,14 @@ public partial class MemoryHandler : Node2D
         return true;
     }
 
+    /// <summary>
+    /// Retrieves all memory entries of a specific type.
+    /// </summary>
+    /// <typeparam name="T">The type of memory entry to retrieve.</typeparam>
+    /// <returns>An array of memory entries of the specified type.</returns>
     public T[] GetMemoriesOfType<T>() where T : MemoryEntry
     {
         return MemoryEntries.OfType<T>().ToArray();
-    }
-
-    private void LogCurrentMemoryEntries()
-    {
-        // JSON serialization for better readability
-        // string memoryEntriesString = Json.Stringify(MemoryEntries.Select(entry => entry.ToString()).ToArray());
-        // DeveloperConsole.Print("Current Memory Entries: "+ memoryEntriesString);
     }
 
 }

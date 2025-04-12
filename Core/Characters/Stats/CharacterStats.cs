@@ -4,7 +4,6 @@ using Dimworld.Core.Developer;
 using Godot;
 
 
-// TODO: Hunger? Thirst?
 /// <summary>
 /// A class that handles the stats of an agent.
 /// </summary>

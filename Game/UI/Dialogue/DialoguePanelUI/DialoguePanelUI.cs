@@ -63,7 +63,7 @@ public partial class DialoguePanelUI : Control
 
         if (CurrentDialogue != null)
         {
-            message = CurrentDialogue.GetRandomMessage();
+            message = CurrentDialogue.Message;
             options = CurrentDialogue.Options;
         }
 
@@ -78,7 +78,7 @@ public partial class DialoguePanelUI : Control
         {
             Button label = new()
             {
-                Text = option.Name
+                Text = option.Label
             };
             label.Pressed += () =>
             {
