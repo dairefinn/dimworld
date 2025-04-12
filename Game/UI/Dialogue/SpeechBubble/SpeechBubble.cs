@@ -1,10 +1,11 @@
 namespace Dimworld.UI.Dialogue;
 
+using Dimworld.Core.Characters.Dialogue;
 using Godot;
 
 
 [Tool] // Enables the script to run in the editor
-public partial class SpeechBubble : Control
+public partial class SpeechBubble : Control, ISpeechBubble
 {
     [Export] public string Text
     {

@@ -1,7 +1,7 @@
 namespace Dimworld.Core.Developer;
 
 using Dimworld.Core;
-using Dimworld.Utils;
+using Dimworld.Core.Utils;
 using Godot;
 using Godot.Collections;
 using System;

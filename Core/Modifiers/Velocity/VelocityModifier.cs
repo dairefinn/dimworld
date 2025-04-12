@@ -1,6 +1,5 @@
-namespace Dimworld.Modifiers;
+namespace Dimworld.Core.Modifiers;
 
-using Dimworld.Core.Modifiers;
 using Godot;
 
 

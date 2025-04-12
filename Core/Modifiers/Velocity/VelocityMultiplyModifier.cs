@@ -1,4 +1,4 @@
-namespace Dimworld.Modifiers;
+namespace Dimworld.Core.Modifiers;
 
 using Godot;
 

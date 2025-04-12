@@ -2,7 +2,7 @@ namespace Dimworld.Core.Characters.Memory;
 
 using System.Linq;
 using Dimworld.Core.Developer;
-using Dimworld.Utils;
+using Dimworld.Core.Utils;
 using Godot;
 using Godot.Collections;
 

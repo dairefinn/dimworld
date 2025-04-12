@@ -5,13 +5,12 @@ using Dimworld.Core;
 using Dimworld.Core.StateMachines;
 using Dimworld.Core.Items;
 using Dimworld.Core.Levels.Transitions;
-using Dimworld.Modifiers;
 using Dimworld.UI.Inventory;
 using Godot;
 using Godot.Collections;
 using Dimworld.Core.Developer;
 using Dimworld.Core.Characters;
-
+using Dimworld.Core.Modifiers;
 
 public partial class Player : CharacterController, ICanTriggerLevelTransitions
 {

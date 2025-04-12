@@ -1,4 +1,4 @@
-namespace Dimworld.Utils;
+namespace Dimworld.Core.Utils;
 
 
 /// <summary>

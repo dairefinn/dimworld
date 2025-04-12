@@ -3,30 +3,65 @@ namespace Dimworld.Core.Characters.Dialogue;
 using Godot;
 
 
-public partial class SpeechHandler : Node
+[GlobalClass]
+public partial class SpeechHandler : Resource
 {
 
-    [Export(PropertyHint.File, "*.tscn")] public PackedScene SpeechBubbleScene;
+    [Export] public NodePath SpeechBubblePath { get; set; }
 
 
+    private Node2D _parent;
+
+
+    public void Initalize(Node2D parent)
+    {
+        _parent = parent;
+    }
+
+
+    // public void Say(string message)
+    // {
+    //     if (SpeechBubbleScene == null)
+    //     {
+    //         GD.PrintErr("SpeechBubbleScene is not set. Please assign a scene to the SpeechHandler.");
+    //         return;
+    //     }
+
+    //     ISpeechBubble speechBubble = SpeechBubbleScene.Instantiate<ISpeechBubble>();
+    //     if (speechBubble == null)
+    //     {
+    //         GD.PrintErr("Failed to instantiate speech bubble. Please check the scene.");
+    //         return;
+    //     }
+
+    //     _parent.AddChild(speechBubble as Node2D);
+    //     (speechBubble as Node2D).GlobalPosition = _parent.GlobalPosition;
+        
+    //     speechBubble.Text = message;
+    // }
+    
     public void Say(string message)
     {
-        if (SpeechBubbleScene == null)
+        if (SpeechBubblePath == null)
         {
-            GD.PrintErr("SpeechBubbleScene is not set. Please assign a scene to the SpeechHandler.");
+            GD.PrintErr("SpeechBubblePath is not set. Please assign a path to the SpeechHandler.");
             return;
         }
 
-        ISpeechBubble speechBubble = SpeechBubbleScene.Instantiate<ISpeechBubble>();
+        Control speechBubble = _parent.GetNode<Control>(SpeechBubblePath);
         if (speechBubble == null)
         {
-            GD.PrintErr("Failed to instantiate speech bubble. Please check the scene.");
+            GD.PrintErr("Failed to find speech bubble. Please check the path.");
             return;
         }
 
-        AddChild(speechBubble as Node); // Add the speech bubble to the scene tree
-        speechBubble.Text = message; // Call the Say method on the speech bubble
+        if (speechBubble is not ISpeechBubble iSpeechBubble)
+        {
+            GD.PrintErr("The node at the specified path is not a speech bubble. Please check the path.");
+            return;
+        }
+
+        iSpeechBubble.Text = message;
     }
-    
 
 }

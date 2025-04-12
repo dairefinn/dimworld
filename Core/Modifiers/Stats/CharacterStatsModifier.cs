@@ -1,8 +1,7 @@
-namespace Dimworld.Modifiers;
+namespace Dimworld.Core.Modifiers;
 
 using System;
 using Dimworld.Core.Characters.Stats;
-using Dimworld.Core.Modifiers;
 using Godot;
 
 

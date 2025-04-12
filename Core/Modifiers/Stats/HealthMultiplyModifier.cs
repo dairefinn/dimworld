@@ -1,6 +1,4 @@
-using Dimworld.Core.Modifiers;
-
-namespace Dimworld.Modifiers;
+namespace Dimworld.Core.Modifiers;
 
 
 public partial class HealthMultiplyModifier : CharacterStatsModifier

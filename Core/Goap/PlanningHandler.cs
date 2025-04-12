@@ -3,7 +3,7 @@ namespace Dimworld.Core.GOAP;
 using System.Linq;
 using System.Threading;
 using Dimworld.Core.Developer;
-using Dimworld.Utils;
+using Dimworld.Core.Utils;
 using Godot;
 using Godot.Collections;
 

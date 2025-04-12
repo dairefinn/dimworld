@@ -9,13 +9,11 @@ using Dimworld.Core.Effects;
 using Dimworld.Core.Interaction;
 using Dimworld.Core.Items;
 using Dimworld.Core.Modifiers;
-using Dimworld.Modifiers;
+using Dimworld.Core.Utils;
 using Dimworld.UI.Characters;
-using Dimworld.Utils;
 using Godot;
 
 
-// TODO: Might want to make this even more abstract and then have HumanoidController and AnimalController inherit from this (Because an animal might not have a speech bubble or clothing controller)
 /// <summary>
 /// Base class for all character controllers.
 /// This class handles the common functionality for all character controllers.
@@ -41,7 +39,7 @@ public partial class CharacterController : CharacterBody2D, IHasCharacterStats, 
 		}
 	}
 	private CharacterStats _stats;
-	[Export] public CharacterStatsUI StatsUI {
+	[Export] public CharacterStatsUI StatsUI { // TODO: StatsUI Should be given a reference to a node with IHasCharacterStats
 		get => _statsUI;
 		set {
 			_statsUI = value;
@@ -83,6 +81,11 @@ public partial class CharacterController : CharacterBody2D, IHasCharacterStats, 
 		{
 			StatsUI = GetNode<CharacterStatsUI>("AgentStatsUI");
 			StatsUI.Stats = Stats;
+		}
+
+		if (SpeechHandler != null)
+		{
+			SpeechHandler.Initalize(this);
 		}
 
 		NavigationAgent.VelocityComputed += OnSafeVelocityComputed;

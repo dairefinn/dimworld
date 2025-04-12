@@ -1,7 +1,7 @@
 namespace Dimworld;
 
 using System;
-using Dimworld.Utils;
+using Dimworld.Core.Utils;
 using Godot;
 
 

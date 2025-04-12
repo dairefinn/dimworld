@@ -4,7 +4,7 @@ using System;
 using System.Collections.Generic;
 using Dimworld.Characters;
 using Dimworld.Core;
-using Dimworld.Utils;
+using Dimworld.Core.Utils;
 using Godot;
 
 
