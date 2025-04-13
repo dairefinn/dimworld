@@ -3,13 +3,13 @@
 [ext_resource type="Script" uid="uid://sfynx6lgjnik" path="res://Game/Characters/Guard/Guard.cs" id="1_jg3xo"]
 [ext_resource type="Script" uid="uid://cqsim0vts1sc1" path="res://Core/Goap/GoapState.cs" id="2_4up7x"]
 [ext_resource type="Script" uid="uid://dmhsbr32vw1tk" path="res://Core/Goap/GoapAction.cs" id="3_00kru"]
-[ext_resource type="Resource" uid="uid://dny1yv708gqi3" path="res://Game/Goap/Actions/EquipItem.tres" id="4_no6b3"]
-[ext_resource type="Resource" uid="uid://dklafmkxavest" path="res://Game/Goap/Actions/FindItem.tres" id="5_3i4ft"]
-[ext_resource type="Resource" uid="uid://be3ryk2ex3pr1" path="res://Game/Goap/Actions/Idle.tres" id="6_5fylf"]
-[ext_resource type="Resource" uid="uid://c0vymkdfnl7rp" path="res://Game/Goap/Actions/PatrolPath.tres" id="7_vhb1s"]
-[ext_resource type="Resource" uid="uid://d0jpp418n0xh5" path="res://Game/Goap/Actions/PickUpItem.tres" id="8_hjpy8"]
-[ext_resource type="Resource" uid="uid://d0w3ss4kpt10s" path="res://Game/Goap/Actions/TurnOffLights.tres" id="9_lq4k4"]
-[ext_resource type="Resource" uid="uid://cor2aifcdpfoy" path="res://Game/Goap/Actions/TurnOnLights.tres" id="10_3iefa"]
+[ext_resource type="Resource" uid="uid://dny1yv708gqi3" path="res://Game/Goap/Actions/Interaction/EquipItem.tres" id="4_no6b3"]
+[ext_resource type="Resource" uid="uid://dklafmkxavest" path="res://Game/Goap/Actions/Interaction/FindItem.tres" id="5_3i4ft"]
+[ext_resource type="Resource" uid="uid://be3ryk2ex3pr1" path="res://Game/Goap/Actions/Movement/Idle.tres" id="6_5fylf"]
+[ext_resource type="Resource" uid="uid://c0vymkdfnl7rp" path="res://Game/Goap/Actions/Movement/PatrolPath.tres" id="7_vhb1s"]
+[ext_resource type="Resource" uid="uid://d0jpp418n0xh5" path="res://Game/Goap/Actions/Interaction/PickUpItem.tres" id="8_hjpy8"]
+[ext_resource type="Resource" uid="uid://d0w3ss4kpt10s" path="res://Game/Goap/Actions/Interaction/TurnOffLights.tres" id="9_lq4k4"]
+[ext_resource type="Resource" uid="uid://cor2aifcdpfoy" path="res://Game/Goap/Actions/Interaction/TurnOnLights.tres" id="10_3iefa"]
 [ext_resource type="Script" uid="uid://bv86wsekmnlli" path="res://Core/Goap/GoapGoal.cs" id="11_tq4nn"]
 [ext_resource type="Resource" uid="uid://dyo8ce1njn67q" path="res://Game/Goap/Goals/EnsureVisibility.tres" id="12_7b7o7"]
 [ext_resource type="Resource" uid="uid://ckvaxlnjoqs1o" path="res://Game/Goap/Goals/Patrol.tres" id="13_50rlj"]
@@ -21,7 +21,7 @@
 [ext_resource type="Script" uid="uid://vpbv18xheaa8" path="res://Core/Characters/Dialogue/SpeechHandler.cs" id="18_tq4nn"]
 [ext_resource type="Texture2D" uid="uid://dpxdm8niupad2" path="res://Assets/Sprites/Character.png" id="19_ydx4a"]
 [ext_resource type="Script" uid="uid://ckdaa4jpv4ysf" path="res://Core/Characters/ClothingController.cs" id="20_wq24c"]
-[ext_resource type="Texture2D" uid="uid://bm5yi454iqlnw" path="res://Game/Characters/CharacterSpriteSheet.tres" id="21_r0bra"]
+[ext_resource type="Texture2D" uid="uid://bm5yi454iqlnw" path="res://Assets/Textures/CharacterTextureAtlas.tres" id="21_r0bra"]
 [ext_resource type="PackedScene" uid="uid://bb462hku8uk8i" path="res://Game/UI/Characters/CharacterStatsUI.tscn" id="22_lnc0x"]
 [ext_resource type="PackedScene" uid="uid://v23vcyiu8qgc" path="res://Game/UI/Dialogue/SpeechBubble/SpeechBubble.tscn" id="23_lx72n"]
 
@@ -141,7 +141,7 @@ region = Rect2(64, 0, 32, 32)
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_y11bb"]
 atlas = ExtResource("21_r0bra")
-region = Rect2(0, 32, 32, 32)
+region = Rect2(128, 0, 32, 32)
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_gmsq1"]
 atlas = ExtResource("21_r0bra")
@@ -149,11 +149,11 @@ region = Rect2(64, 32, 32, 32)
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_5qwyp"]
 atlas = ExtResource("21_r0bra")
-region = Rect2(96, 32, 32, 32)
+region = Rect2(128, 32, 32, 32)
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_nicww"]
 atlas = ExtResource("21_r0bra")
-region = Rect2(32, 64, 32, 32)
+region = Rect2(64, 64, 32, 32)
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_tngpp"]
 atlas = ExtResource("21_r0bra")

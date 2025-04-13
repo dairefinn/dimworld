@@ -1,6 +1,6 @@
 [gd_resource type="Resource" load_steps=2 format=3 uid="uid://d0jpp418n0xh5"]
 
-[ext_resource type="Script" uid="uid://dh1rg47nrpv5x" path="res://Game/Goap/Actions/PickUpItem.cs" id="1_4xv30"]
+[ext_resource type="Script" uid="uid://dh1rg47nrpv5x" path="res://Game/Goap/Actions/Interaction/PickUpItem.cs" id="1_4xv30"]
 
 [resource]
 script = ExtResource("1_4xv30")

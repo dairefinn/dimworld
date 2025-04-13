@@ -5,7 +5,7 @@
 [ext_resource type="Script" uid="uid://bm0o5ggnfmm6y" path="res://Core/Items/InventorySlot.cs" id="2_i1fwj"]
 [ext_resource type="Script" uid="uid://dph74un0q20el" path="res://Core/Items/Inventory.cs" id="3_ilihy"]
 [ext_resource type="Script" uid="uid://ckdaa4jpv4ysf" path="res://Core/Characters/ClothingController.cs" id="3_teve5"]
-[ext_resource type="Texture2D" uid="uid://bm5yi454iqlnw" path="res://Game/Characters/CharacterSpriteSheet.tres" id="4_bgvks"]
+[ext_resource type="Texture2D" uid="uid://bm5yi454iqlnw" path="res://Assets/Textures/CharacterTextureAtlas.tres" id="4_bgvks"]
 [ext_resource type="Script" uid="uid://cru4kq28c8nuw" path="res://Core/Characters/Stats/CharacterStats.cs" id="4_ilihy"]
 [ext_resource type="Script" uid="uid://cxbp1npv1tukk" path="res://Core/Characters/DetectionHandler.cs" id="5_ff6s7"]
 [ext_resource type="PackedScene" uid="uid://bb462hku8uk8i" path="res://Game/UI/Characters/CharacterStatsUI.tscn" id="6_ea428"]
@@ -143,15 +143,15 @@ region = Rect2(32, 32, 32, 32)
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_h5stk"]
 atlas = ExtResource("4_bgvks")
-region = Rect2(96, 32, 32, 32)
+region = Rect2(128, 32, 32, 32)
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_flror"]
 atlas = ExtResource("4_bgvks")
-region = Rect2(32, 64, 32, 32)
+region = Rect2(64, 64, 32, 32)
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_121xs"]
 atlas = ExtResource("4_bgvks")
-region = Rect2(96, 64, 32, 32)
+region = Rect2(128, 64, 32, 32)
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_ilihy"]
 radius = 100.0

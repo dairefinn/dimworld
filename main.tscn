@@ -1,6 +1,7 @@
 [gd_scene load_steps=40 format=3 uid="uid://ddc8qiig7j3wm"]
 
 [ext_resource type="Script" uid="uid://1f6ukfmh33oo" path="res://Core/DayNightCycle/DayNightController.cs" id="1_d13ii"]
+[ext_resource type="PackedScene" uid="uid://76x2747d2p5d" path="res://Game/Levels/LevelTesting2.tscn" id="2_yaehf"]
 [ext_resource type="Script" uid="uid://nkgns80j1gwr" path="res://Core/Characters/Dialogue/TradeController.cs" id="5_2cqfq"]
 [ext_resource type="Script" uid="uid://diohp7emnm65v" path="res://Core/UI/UIRootPanel.cs" id="5_w48qg"]
 [ext_resource type="Script" uid="uid://080qtwyw16wf" path="res://Core/Interaction/CursorFollower.cs" id="6_074og"]
@@ -16,7 +17,6 @@
 [ext_resource type="Resource" uid="uid://bfbm4tftgemqa" path="res://Game/Items/Utility/Torch.tres" id="13_2cqfq"]
 [ext_resource type="Script" uid="uid://5l72ubbv8qqo" path="res://Core/Globals.cs" id="13_ycdy4"]
 [ext_resource type="PackedScene" uid="uid://d21nkwnu7y4od" path="res://Game/UI/Inventory/Viewer/InventoryViewer.tscn" id="23_d13ii"]
-[ext_resource type="PackedScene" uid="uid://b3v4ub2lqydho" path="res://Game/Levels/LevelTesting.tscn" id="25_a6jrf"]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_cegan"]
 radius = 5.0
@@ -136,7 +136,7 @@ metadata/_custom_type_script = "uid://dph74un0q20el"
 script = ExtResource("8_ycdy4")
 metadata/_custom_type_script = "uid://daxnr47vhajw0"
 
-[node name="LevelTesting" parent="LevelHandler" instance=ExtResource("25_a6jrf")]
+[node name="LevelTesting" parent="LevelHandler" instance=ExtResource("2_yaehf")]
 
 [node name="Logic" type="Node" parent="."]
 
@@ -213,5 +213,5 @@ offset_bottom = 200.0
 
 [node name="Player" parent="." instance=ExtResource("9_kek77")]
 z_index = 1
-position = Vector2(1795, 962)
+position = Vector2(1413, 1007)
 Inventory = SubResource("Resource_0rl1p")
