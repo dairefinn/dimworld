@@ -1,6 +1,6 @@
 [gd_resource type="Resource" load_steps=2 format=3 uid="uid://cor2aifcdpfoy"]
 
-[ext_resource type="Script" uid="uid://h755k2xh0v75" path="res://Game/Goap/Actions/TurnOnLights.cs" id="1_ep477"]
+[ext_resource type="Script" uid="uid://h755k2xh0v75" path="res://Game/Goap/Actions/Interaction/TurnOnLights.cs" id="1_ep477"]
 
 [resource]
 script = ExtResource("1_ep477")

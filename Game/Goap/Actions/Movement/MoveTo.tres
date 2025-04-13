@@ -1,6 +1,6 @@
 [gd_resource type="Resource" load_steps=2 format=3 uid="uid://b2plhfobhuj2k"]
 
-[ext_resource type="Script" uid="uid://bli3irohc3nft" path="res://Game/Goap/Actions/MoveTo.cs" id="1_kuljp"]
+[ext_resource type="Script" uid="uid://bli3irohc3nft" path="res://Game/Goap/Actions/Movement/MoveTo.cs" id="1_kuljp"]
 
 [resource]
 script = ExtResource("1_kuljp")

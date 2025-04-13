@@ -1,0 +1,201 @@
+[gd_scene load_steps=38 format=3 uid="uid://bplmcchha5t13"]
+
+[ext_resource type="Script" uid="uid://bdvk60pflg60s" path="res://Game/Characters/Bandit/Bandit.cs" id="1_mdnes"]
+[ext_resource type="Script" uid="uid://cqsim0vts1sc1" path="res://Core/Goap/GoapState.cs" id="2_hhkfy"]
+[ext_resource type="Script" uid="uid://cru4kq28c8nuw" path="res://Core/Characters/Stats/CharacterStats.cs" id="3_bmubm"]
+[ext_resource type="Resource" uid="uid://dioofc8k307fw" path="res://Game/Factions/TestEnemy.tres" id="4_262fr"]
+[ext_resource type="Script" uid="uid://bm0o5ggnfmm6y" path="res://Core/Items/InventorySlot.cs" id="5_rhaul"]
+[ext_resource type="Script" uid="uid://dph74un0q20el" path="res://Core/Items/Inventory.cs" id="6_2xg1e"]
+[ext_resource type="Script" uid="uid://vpbv18xheaa8" path="res://Core/Characters/Dialogue/SpeechHandler.cs" id="7_wpbn4"]
+[ext_resource type="Script" uid="uid://cxbp1npv1tukk" path="res://Core/Characters/DetectionHandler.cs" id="19_vb1yy"]
+[ext_resource type="Texture2D" uid="uid://dpxdm8niupad2" path="res://Assets/Sprites/Character.png" id="20_tisor"]
+[ext_resource type="Script" uid="uid://ckdaa4jpv4ysf" path="res://Core/Characters/ClothingController.cs" id="21_bbbr2"]
+[ext_resource type="Texture2D" uid="uid://bm5yi454iqlnw" path="res://Assets/Textures/CharacterTextureAtlas.tres" id="22_na4ya"]
+[ext_resource type="PackedScene" uid="uid://bb462hku8uk8i" path="res://Game/UI/Characters/CharacterStatsUI.tscn" id="23_qdnna"]
+[ext_resource type="PackedScene" uid="uid://v23vcyiu8qgc" path="res://Game/UI/Dialogue/SpeechBubble/SpeechBubble.tscn" id="24_do6vi"]
+
+[sub_resource type="Resource" id="Resource_cbyuk"]
+script = ExtResource("2_hhkfy")
+State = Dictionary[String, Variant]({})
+
+[sub_resource type="Resource" id="Resource_oiir5"]
+script = ExtResource("3_bmubm")
+MaxHealth = 100.0
+MaxStamina = 100.0
+metadata/_custom_type_script = "uid://cru4kq28c8nuw"
+
+[sub_resource type="Resource" id="Resource_7o8jt"]
+script = ExtResource("5_rhaul")
+Quantity = 0
+metadata/_custom_type_script = "uid://bm0o5ggnfmm6y"
+
+[sub_resource type="Resource" id="Resource_ek1wb"]
+script = ExtResource("5_rhaul")
+Quantity = 0
+metadata/_custom_type_script = "uid://bm0o5ggnfmm6y"
+
+[sub_resource type="Resource" id="Resource_ys2m0"]
+script = ExtResource("5_rhaul")
+Quantity = 0
+metadata/_custom_type_script = "uid://bm0o5ggnfmm6y"
+
+[sub_resource type="Resource" id="Resource_2w248"]
+script = ExtResource("5_rhaul")
+Quantity = 0
+metadata/_custom_type_script = "uid://bm0o5ggnfmm6y"
+
+[sub_resource type="Resource" id="Resource_23a2l"]
+script = ExtResource("5_rhaul")
+Quantity = 0
+metadata/_custom_type_script = "uid://bm0o5ggnfmm6y"
+
+[sub_resource type="Resource" id="Resource_dx82p"]
+script = ExtResource("5_rhaul")
+Quantity = 0
+metadata/_custom_type_script = "uid://bm0o5ggnfmm6y"
+
+[sub_resource type="Resource" id="Resource_hhkfy"]
+script = ExtResource("5_rhaul")
+Quantity = 0
+metadata/_custom_type_script = "uid://bm0o5ggnfmm6y"
+
+[sub_resource type="Resource" id="Resource_l8k6k"]
+script = ExtResource("5_rhaul")
+Quantity = 0
+metadata/_custom_type_script = "uid://bm0o5ggnfmm6y"
+
+[sub_resource type="Resource" id="Resource_2ipdn"]
+script = ExtResource("5_rhaul")
+Quantity = 0
+metadata/_custom_type_script = "uid://bm0o5ggnfmm6y"
+
+[sub_resource type="Resource" id="Resource_wvn7a"]
+script = ExtResource("5_rhaul")
+Quantity = 0
+metadata/_custom_type_script = "uid://bm0o5ggnfmm6y"
+
+[sub_resource type="Resource" id="Resource_mdhbg"]
+script = ExtResource("6_2xg1e")
+InventoryName = "Bandit's Inventory"
+Slots = Array[ExtResource("5_rhaul")]([SubResource("Resource_7o8jt"), SubResource("Resource_ek1wb"), SubResource("Resource_ys2m0"), SubResource("Resource_2w248"), SubResource("Resource_23a2l"), SubResource("Resource_dx82p"), SubResource("Resource_hhkfy"), SubResource("Resource_l8k6k"), SubResource("Resource_2ipdn"), SubResource("Resource_wvn7a")])
+metadata/_custom_type_script = "uid://dph74un0q20el"
+
+[sub_resource type="Resource" id="Resource_cjumr"]
+script = ExtResource("7_wpbn4")
+SpeechBubblePath = NodePath("CenterContainer/SpeechBubble")
+metadata/_custom_type_script = "uid://vpbv18xheaa8"
+
+[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_cbyuk"]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_2s2l8"]
+radius = 100.0
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_bhch5"]
+atlas = ExtResource("20_tisor")
+region = Rect2(0, 0, 32, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_ydo5j"]
+atlas = ExtResource("22_na4ya")
+region = Rect2(32, 0, 32, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_l0qmc"]
+atlas = ExtResource("22_na4ya")
+region = Rect2(96, 0, 32, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_bmubm"]
+atlas = ExtResource("22_na4ya")
+region = Rect2(32, 32, 32, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_262fr"]
+atlas = ExtResource("20_tisor")
+region = Rect2(32, 64, 32, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_rhaul"]
+atlas = ExtResource("22_na4ya")
+region = Rect2(64, 64, 32, 32)
+
+[sub_resource type="CompressedTexture2D" id="CompressedTexture2D_2s2l8"]
+load_path = "res://.godot/imported/Character.png-2be146b9792193a479e5eca47ebd32ea.ctex"
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_2xg1e"]
+atlas = SubResource("CompressedTexture2D_2s2l8")
+region = Rect2(32, 96, 32, 32)
+
+[node name="Bandit" type="CharacterBody2D" node_paths=PackedStringArray("NavigationAgent", "ClothingController", "DetectionHandler")]
+script = ExtResource("1_mdnes")
+WorldState = SubResource("Resource_cbyuk")
+NavigationAgent = NodePath("NavigationAgent2D")
+Stats = SubResource("Resource_oiir5")
+Affiliation = ExtResource("4_262fr")
+Inventory = SubResource("Resource_mdhbg")
+ClothingController = NodePath("BodySprite")
+DetectionHandler = NodePath("DetectionHandler")
+SpeechHandler = SubResource("Resource_cjumr")
+
+[node name="Hitbox" type="CollisionShape2D" parent="."]
+shape = SubResource("CapsuleShape2D_cbyuk")
+
+[node name="DetectionHandler" type="Area2D" parent="." node_paths=PackedStringArray("DetectedEntities")]
+collision_layer = 0
+collision_mask = 3
+script = ExtResource("19_vb1yy")
+DetectedEntities = []
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="DetectionHandler"]
+shape = SubResource("CircleShape2D_2s2l8")
+debug_color = Color(0, 0.608985, 0.644943, 0.42)
+
+[node name="NavigationAgent2D" type="NavigationAgent2D" parent="."]
+path_desired_distance = 5.0
+target_desired_distance = 5.0
+path_postprocessing = 1
+avoidance_enabled = true
+radius = 1.0
+debug_use_custom = true
+debug_path_custom_color = Color(0.870387, 1.44392e-06, 1.2514e-06, 1)
+
+[node name="BodySprite" type="Sprite2D" parent="." node_paths=PackedStringArray("HairSprite", "EyesSprite", "TopSprite", "OvertopSprite", "BottomsSprite", "ShoesSprite")]
+texture = SubResource("AtlasTexture_bhch5")
+script = ExtResource("21_bbbr2")
+HairSprite = NodePath("Hair")
+EyesSprite = NodePath("Eyes")
+TopSprite = NodePath("Top")
+OvertopSprite = NodePath("Overtop")
+BottomsSprite = NodePath("Bottom")
+ShoesSprite = NodePath("Shoes")
+
+[node name="Shoes" type="Sprite2D" parent="BodySprite"]
+texture = SubResource("AtlasTexture_ydo5j")
+
+[node name="Bottom" type="Sprite2D" parent="BodySprite"]
+texture = SubResource("AtlasTexture_l0qmc")
+
+[node name="Top" type="Sprite2D" parent="BodySprite"]
+texture = SubResource("AtlasTexture_bmubm")
+
+[node name="Overtop" type="Sprite2D" parent="BodySprite"]
+texture = SubResource("AtlasTexture_262fr")
+
+[node name="Eyes" type="Sprite2D" parent="BodySprite"]
+unique_name_in_owner = true
+texture = SubResource("AtlasTexture_rhaul")
+
+[node name="Hair" type="Sprite2D" parent="BodySprite"]
+texture = SubResource("AtlasTexture_2xg1e")
+
+[node name="AgentStatsUI" parent="." instance=ExtResource("23_qdnna")]
+offset_left = -11.0
+offset_top = 16.0
+offset_right = 11.0
+offset_bottom = 21.0
+StatsSource = NodePath("..")
+
+[node name="CenterContainer" type="CenterContainer" parent="."]
+offset_top = -30.0
+offset_bottom = -30.0
+use_top_left = true
+
+[node name="SpeechBubble" parent="CenterContainer" instance=ExtResource("24_do6vi")]
+visible = false
+layout_mode = 2
+Text = ""
