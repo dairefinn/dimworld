@@ -1,6 +1,5 @@
 namespace Dimworld.Core.Effects;
 
-using Dimworld.Core.Developer;
 using Dimworld.Core.Utils;
 using Godot;
 using Godot.Collections;
@@ -171,7 +170,7 @@ public partial class Effect : Area2D
 
 
     // LIFECYCLE EVENTS
-    
+
     public override void _EnterTree()
     {
         base._EnterTree();
@@ -190,7 +189,8 @@ public partial class Effect : Area2D
         base._Ready();
 
         // TODO: This is a massive hack to ensure the collision detection and trigger is run at least once. It makes sure the effect exists for at least 0.1 seconds before it is destroyed.
-        GetTree().CreateTimer(0.1f).Timeout += () => {
+        GetTree().CreateTimer(0.1f).Timeout += () =>
+        {
             _isReadyTimerElapsed = true;
         };
 
@@ -219,7 +219,7 @@ public partial class Effect : Area2D
         {
             ProcessNodes(delta);
         }
-        
+
         UpdateVelocity(delta);
     }
 
@@ -278,7 +278,7 @@ public partial class Effect : Area2D
 
 
     // INTERVAL HANDLING
-    
+
     private void UpdateIntervalTimer(double delta)
     {
         _intervalTimerRemaining -= (float)delta;
@@ -292,7 +292,7 @@ public partial class Effect : Area2D
 
     public virtual void TriggerEffectOnNodes(double delta)
     {
-        foreach(Node node in DetectedNodes)
+        foreach (Node node in DetectedNodes)
         {
             TriggerEffectOnNode(node, delta);
         }

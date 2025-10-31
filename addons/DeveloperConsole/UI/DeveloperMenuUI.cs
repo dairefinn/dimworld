@@ -1,7 +1,7 @@
-namespace Dimworld.UI.Developer;
+namespace DaireFinn.Plugins.DeveloperConsole.UI;
 
-using Dimworld.Core.Developer;
 using Godot;
+using Dimworld.Core.Developer;
 
 
 public partial class DeveloperMenuUI : Control
@@ -21,7 +21,7 @@ public partial class DeveloperMenuUI : Control
         Console = GetNode<DeveloperConsole>("%DeveloperConsole");
     }
 
-    
+
     public void ToggleVisibility()
     {
         if (Visible)

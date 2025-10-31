@@ -1,13 +1,14 @@
 namespace Dimworld.Core;
 
+using DaireFinn.Plugins.DeveloperConsole.UI;
 using Dimworld.Characters;
 using Dimworld.Core.Characters.Dialogue;
 using Dimworld.Core.Currency;
+using Dimworld.Core.Developer;
 using Dimworld.Core.Interaction;
 using Dimworld.Core.Levels;
 using Dimworld.Core.UI;
 using Dimworld.Factions;
-using Dimworld.UI.Developer;
 using Dimworld.UI.Dialogue;
 using Dimworld.UI.Inventory;
 using Godot;
@@ -43,22 +44,29 @@ public partial class Globals : Node
         base._Ready();
 
         FactionDefaults.Initialize();
+        DeveloperConsoleCommandHandler.RegisterCommands();
     }
 
 
 
-    [Export] public Player Player {
+    [Export]
+    public Player Player
+    {
         get => _player;
-        set {
+        set
+        {
             _player = value;
             LinkPlayerInventory();
         }
     }
     private Player _player;
 
-    [Export] public InventoryViewer InventoryViewer {
+    [Export]
+    public InventoryViewer InventoryViewer
+    {
         get => _inventoryViewer;
-        set {
+        set
+        {
             _inventoryViewer = value;
             LinkPlayerInventory();
         }

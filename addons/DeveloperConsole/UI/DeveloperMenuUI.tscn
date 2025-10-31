@@ -1,7 +1,7 @@
 [gd_scene load_steps=3 format=3 uid="uid://qds61vs7bsi1"]
 
-[ext_resource type="Script" uid="uid://b1uqqx4b00801" path="res://Game/UI/Developer/DeveloperMenuUI.cs" id="1_4jk31"]
-[ext_resource type="PackedScene" uid="uid://diumqxcpymweo" path="res://Game/UI/Developer/DeveloperConsoleUI.tscn" id="2_5m7ao"]
+[ext_resource type="Script" uid="uid://dpen2up2erce7" path="res://addons/DeveloperConsole/UI/DeveloperMenuUI.cs" id="1_4jk31"]
+[ext_resource type="PackedScene" uid="uid://diumqxcpymweo" path="res://addons/DeveloperConsole/UI/DeveloperConsoleUI.tscn" id="2_dnwa2"]
 
 [node name="DeveloperMenu" type="Control"]
 layout_mode = 3
@@ -24,7 +24,7 @@ theme_override_constants/margin_top = 37
 theme_override_constants/margin_right = 37
 theme_override_constants/margin_bottom = 37
 
-[node name="DeveloperConsole" parent="MarginContainer" instance=ExtResource("2_5m7ao")]
+[node name="DeveloperConsole" parent="MarginContainer" instance=ExtResource("2_dnwa2")]
 unique_name_in_owner = true
 layout_mode = 2
 

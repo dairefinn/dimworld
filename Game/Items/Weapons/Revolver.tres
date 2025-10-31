@@ -9,14 +9,7 @@ region = Rect2(32, 0, 32, 32)
 
 [resource]
 script = ExtResource("1_1sl0i")
-BulletRadius = 2.0
-BulletLength = 10.0
-BulletDamage = -20.0
-BulletSpeed = 200.0
-AmmoCount = 6
 Id = "item-revolver"
 ItemName = "Revolver"
-ItemDescription = "Item description"
 Icon = SubResource("AtlasTexture_qchby")
-MaxStackSize = 1
 metadata/_custom_type_script = "uid://frg4uic6tym5"

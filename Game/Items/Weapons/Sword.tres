@@ -11,7 +11,5 @@ region = Rect2(0, 0, 32, 32)
 script = ExtResource("1_jm3gf")
 Id = "item-sword"
 ItemName = "Sword"
-ItemDescription = "Item description"
 Icon = SubResource("AtlasTexture_0g53v")
-MaxStackSize = 1
 metadata/_custom_type_script = "uid://frg4uic6tym5"

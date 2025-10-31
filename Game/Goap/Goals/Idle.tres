@@ -13,6 +13,5 @@ metadata/_custom_type_script = "uid://cqsim0vts1sc1"
 [resource]
 script = ExtResource("1_182nm")
 Name = "Idle"
-Priority = 0
 DesiredState = SubResource("Resource_rn6bh")
 metadata/_custom_type_script = "uid://bv86wsekmnlli"

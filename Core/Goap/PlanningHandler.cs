@@ -14,7 +14,7 @@ using Godot.Collections;
 public partial class PlanningHandler : Node2D
 {
 
-    [Export] public float lookForGoalsEveryXSeconds = 0.5f;
+	[Export] public float lookForGoalsEveryXSeconds = 0.5f;
 
 
 	private float secondsToNextGoalUpdate = 0;
@@ -70,7 +70,7 @@ public partial class PlanningHandler : Node2D
 
 			// If nothing has changed, don't update the plan
 			if (CurrentGoal != null && CurrentGoal.Name == goal.Name) break;
-			if(CurrentPlan == planForGoal) break;
+			if (CurrentPlan == planForGoal) break;
 
 			DeveloperConsole.Print("New goal: " + goal.Name);
 			DeveloperConsole.Print("Plan: [" + string.Join(", ", planForGoal.Select(action => action.Name)) + "]");

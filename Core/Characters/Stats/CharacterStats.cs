@@ -23,24 +23,30 @@ public partial class CharacterStats : Resource
     [Signal] public delegate void StaminaChangedEventHandler();
 
 
-    [Export] public float MaxHealth {
+    [Export]
+    public float MaxHealth
+    {
         get => _maxHealth;
         set => SetMaxHealth(value);
     }
     private float _maxHealth = 100;
-    [Export] public float MaxStamina {
+    [Export]
+    public float MaxStamina
+    {
         get => _maxStamina;
         set => SetMaxStamina(value);
     }
     private float _maxStamina = 100;
 
 
-    public float Health {
+    public float Health
+    {
         get => _health;
         set => SetHealth(value);
     }
     private float _health = 100;
-    public float Stamina {
+    public float Stamina
+    {
         get => _stamina;
         set => SetStamina(value);
     }
@@ -51,7 +57,7 @@ public partial class CharacterStats : Resource
     {
         FillStats();
     }
-    
+
     public CharacterStats(CharacterStats source)
     {
         _maxHealth = source._maxHealth;
